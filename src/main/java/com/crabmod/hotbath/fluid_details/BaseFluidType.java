@@ -51,6 +51,7 @@ public class BaseFluidType extends FluidType {
     return fogColor;
   }
 
+  @SuppressWarnings("removal")
   @Override
   public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
     consumer.accept(

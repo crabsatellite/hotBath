@@ -17,28 +17,18 @@ public class CraftingEventHandler {
   public static void onItemCrafted(ItemCraftedEvent event) {
     if (event.getInventory() instanceof CraftingContainer craftingInventory) {
       boolean foundHotWaterBucket = false;
-      boolean foundMilkBucket = false;
 
-      // Iterate through all items in the crafting grid
+      // Check if hot water bucket was used in the recipe
       for (int i = 0; i < craftingInventory.getContainerSize(); i++) {
         ItemStack itemStack = craftingInventory.getItem(i);
-        Item item = itemStack.getItem();
-
-        // Check if the item is the custom hot water bucket
-        if (item == HOT_WATER_BUCKET.get()) {
+        if (itemStack.getItem() == HOT_WATER_BUCKET.get()) {
           foundHotWaterBucket = true;
-          // Remove the hot water bucket from the crafting grid
-          itemStack.shrink(1);
-        }
-
-        // Check if the item is a milk bucket
-        if (item == Items.MILK_BUCKET) {
-          foundMilkBucket = true;
+          break;
         }
       }
 
-      // If the recipe contains both the hot water bucket and milk bucket, add an empty bucket
-      if (foundHotWaterBucket && foundMilkBucket) {
+      // If hot water bucket was used, give back an empty bucket to the player
+      if (foundHotWaterBucket) {
         if (event.getEntity() instanceof Player player) {
           ItemStack emptyBucket = new ItemStack(Items.BUCKET);
           if (!player.getInventory().add(emptyBucket)) {
