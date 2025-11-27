@@ -7,7 +7,7 @@
   "item.hotbath.rose_bath_bucket": "玫瑰浴桶",
   "fluid.hotbath.hot_water_block": "热水方块",
   "item.hotbath.bath_herb": "洗浴用药草",
-  "itemGroup.hotBathTab": "热水澡",
+  "itemGroup.hot_bath_tab": "热水澡",
   "hotbath.advancement.hot_bath": "热水澡",
   "hotbath.advancement.hot_bath.desc": "用热水澡开始你的一天。",
   "hotbath.advancement.foot_health": "足力健",
