@@ -29,13 +29,13 @@ public class ItemGroup {
                                                 pOutput.accept(ItemRegister.MILK_BATH_BUCKET.get());
                                                 pOutput.accept(ItemRegister.PEONY_BATH_BUCKET.get());
                                                 pOutput.accept(ItemRegister.ROSE_BATH_BUCKET.get());
-                                                pOutput.accept(ItemRegister.BATH_HERB.get());
                                                 pOutput.accept(ItemRegister.HOT_WATER_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.HONEY_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.MILK_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.HERBAL_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.PEONY_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.ROSE_BATH_BOTTLE.get());
+                                                pOutput.accept(ItemRegister.BATH_HERB.get());
                                             })
                                     .build());
 
