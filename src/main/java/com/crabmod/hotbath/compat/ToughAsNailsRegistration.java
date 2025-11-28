@@ -12,11 +12,12 @@ public class ToughAsNailsRegistration {
 
     public static void init() {
         try {
-            LOGGER.info("Registering Hot Bath temperature modifier with Tough As Nails...");
+            LOGGER.info("Registering Hot Bath temperature modifiers with Tough As Nails...");
             TemperatureHelper.registerPlayerTemperatureModifier(new HotBathTANPlayerModifier());
-            LOGGER.info("Successfully registered Hot Bath temperature modifier with Tough As Nails!");
+            TemperatureHelper.registerPlayerTemperatureModifier(new BathWaterBottleTANModifier());
+            LOGGER.info("Successfully registered Hot Bath temperature modifiers with Tough As Nails!");
         } catch (Exception e) {
-            LOGGER.error("Failed to register Hot Bath modifier with Tough As Nails: {}", e.getMessage(), e);
+            LOGGER.error("Failed to register Hot Bath modifiers with Tough As Nails: {}", e.getMessage(), e);
         }
     }
 }
