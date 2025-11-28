@@ -1,6 +1,8 @@
 package com.crabmod.hotbath.items;
 
+import com.crabmod.hotbath.compat.BathWaterBottleColdSweatModifier;
 import com.crabmod.hotbath.compat.BathWaterBottleTANModifier;
+import com.crabmod.hotbath.compat.ColdSweatIntegration;
 import com.crabmod.hotbath.compat.ToughAsNailsIntegration;
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
@@ -23,7 +25,7 @@ public class BathWaterEffects {
      */
     public static void hotWaterEffect(LivingEntity entity) {
         entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 5 * 20, 0, false, false, true));
-        applyToughAsNailsWarmEffect(entity);
+        applyTemperatureEffects(entity);
     }
 
     /**
@@ -32,7 +34,7 @@ public class BathWaterEffects {
     public static void honeyBathEffect(LivingEntity entity) {
         entity.heal(2.0F); // Instant heal 2 hearts
         entity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 5 * 20, 0, false, false, true));
-        applyToughAsNailsWarmEffect(entity);
+        applyTemperatureEffects(entity);
     }
 
     /**
@@ -52,7 +54,7 @@ public class BathWaterEffects {
             MobEffectInstance effectToRemove = harmfulEffects.get(RANDOM.nextInt(harmfulEffects.size()));
             entity.removeEffect(effectToRemove.getEffect());
         }
-        applyToughAsNailsWarmEffect(entity);
+        applyTemperatureEffects(entity);
     }
 
     /**
@@ -60,7 +62,7 @@ public class BathWaterEffects {
      */
     public static void herbalBathEffect(LivingEntity entity) {
         entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 5 * 20, 0, false, false, true));
-        applyToughAsNailsWarmEffect(entity);
+        applyTemperatureEffects(entity);
     }
 
     /**
@@ -68,7 +70,7 @@ public class BathWaterEffects {
      */
     public static void peonyBathEffect(LivingEntity entity) {
         entity.heal(2.0F); // Instant heal 2 hearts
-        applyToughAsNailsWarmEffect(entity);
+        applyTemperatureEffects(entity);
     }
 
     /**
@@ -77,16 +79,25 @@ public class BathWaterEffects {
     public static void roseBathEffect(LivingEntity entity) {
         entity.heal(2.0F); // Instant heal 2 hearts
         entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 5 * 20, 0, false, false, true));
-        applyToughAsNailsWarmEffect(entity);
+        applyTemperatureEffects(entity);
     }
 
     /**
-     * Apply ToughAsNails WARM temperature effect if mod is loaded
-     * Uses the BathWaterBottleTANModifier to track temporary warm effect
+     * Apply temperature effects for both ToughAsNails and Cold Sweat if mods are loaded
      */
-    private static void applyToughAsNailsWarmEffect(LivingEntity entity) {
-        if (ToughAsNailsIntegration.isToughAsNailsLoaded() && entity instanceof net.minecraft.world.entity.player.Player player) {
+    private static void applyTemperatureEffects(LivingEntity entity) {
+        if (!(entity instanceof net.minecraft.world.entity.player.Player player)) {
+            return;
+        }
+        
+        // Apply ToughAsNails temperature effect (10 seconds, WARM)
+        if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {
             BathWaterBottleTANModifier.applyWarmEffect(player);
+        }
+        
+        // Apply Cold Sweat temperature effect (5 seconds, 36°C)
+        if (ColdSweatIntegration.isColdSweatLoaded()) {
+            BathWaterBottleColdSweatModifier.applyWarmEffect(player);
         }
     }
 

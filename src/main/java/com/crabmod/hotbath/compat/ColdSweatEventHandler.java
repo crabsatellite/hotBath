@@ -19,11 +19,12 @@ public class ColdSweatEventHandler {
         }
 
         try {
-            LOGGER.info("Registering Hot Bath immersion modifier with Cold Sweat...");
+            LOGGER.info("Registering Hot Bath temperature modifiers with Cold Sweat...");
             event.register(ResourceLocation.parse("hotbath:immersion"), HotBathImmersionModifier::new);
-            LOGGER.info("Successfully registered Hot Bath immersion modifier!");
+            event.register(ResourceLocation.parse("hotbath:bottle"), BathWaterBottleColdSweatModifier::new);
+            LOGGER.info("Successfully registered Hot Bath temperature modifiers!");
         } catch (Exception e) {
-            LOGGER.error("Failed to register Hot Bath modifier with Cold Sweat: {}", e.getMessage(), e);
+            LOGGER.error("Failed to register Hot Bath modifiers with Cold Sweat: {}", e.getMessage(), e);
         }
     }
 
@@ -36,6 +37,13 @@ public class ColdSweatEventHandler {
         event.addModifier(
                 com.momosoftworks.coldsweat.api.util.Temperature.Trait.WORLD,
                 new HotBathImmersionModifier(),
+                com.momosoftworks.coldsweat.api.util.Placement.Duplicates.BY_CLASS,
+                com.momosoftworks.coldsweat.api.util.Placement.AFTER_LAST
+        );
+        
+        event.addModifier(
+                com.momosoftworks.coldsweat.api.util.Temperature.Trait.WORLD,
+                new BathWaterBottleColdSweatModifier(),
                 com.momosoftworks.coldsweat.api.util.Placement.Duplicates.BY_CLASS,
                 com.momosoftworks.coldsweat.api.util.Placement.AFTER_LAST
         );
