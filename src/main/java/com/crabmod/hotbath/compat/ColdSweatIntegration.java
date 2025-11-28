@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 /**
  * Integration with Cold Sweat mod
  * Registers temperature modifiers for hot bath blocks using TempModifier API
- * Block temperatures are configured via data/hotbath/coldsweat/block_temperatures.json
  */
 @EventBusSubscriber(modid = "hotbath")
 public class ColdSweatIntegration {
