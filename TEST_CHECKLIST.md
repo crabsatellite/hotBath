@@ -93,8 +93,10 @@ _仅在安装 Cold Sweat mod 时测试_
 #### 3.2 ToughAsNails 集成
 
 - [ ] [ToughAsNails] 游戏启动时日志显示成功注册温度修改器
-- [ ] [ToughAsNails] 所有药水效果正常工作
-- [ ] [ToughAsNails] 温度效果正常应用
+- [ ] [ToughAsNails] 所有浴水瓶饮用后正确应用温度效果
+- [ ] [ToughAsNails] 温度效果正确应用
+- [ ] [ToughAsNails] 在浴缸中使用右键喝水功能，获得温暖效果（10 秒）
+- [ ] [ToughAsNails] 右键喝水时不会获得浴水瓶的药水效果（只有温度）
 - [ ] [ToughAsNails] 移除 ToughAsNails mod 后游戏仍能正常运行
 
 #### 3.3 Cold Sweat 集成
@@ -109,7 +111,34 @@ _仅在安装 Cold Sweat mod 时测试_
 - [ ] [Cold Sweat] 在热带环境中，浴缸温度不会降低玩家体温
 - [ ] [Cold Sweat] 移除 Cold Sweat mod 后游戏仍能正常运行
 
-### 4. 热水浴缸温度效果测试
+### 4. ToughAsNails 右键喝水集成测试
+
+_测试 ToughAsNails 的手动喝水功能在浴缸中的表现_
+
+#### 4.1 基础右键喝水功能
+
+- [ ] [ToughAsNails] 在热水浴缸中潜行 + 主手空着 + 右键，可以喝水
+- [ ] [ToughAsNails] 喝水后恢复口渴值
+- [ ] [ToughAsNails] 喝水后获得温暖效果（TAN: 10 秒 WARM）
+- [ ] [ToughAsNails + Cold Sweat] 喝水后同时获得两种温度效果（TAN: 10 秒, Cold Sweat: 5 秒 36°C）
+
+#### 4.2 不同浴缸类型测试
+
+- [ ] [ToughAsNails] 在蜂蜜浴缸中右键喝水，获得温度效果
+- [ ] [ToughAsNails] 在牛奶浴缸中右键喝水，获得温度效果
+- [ ] [ToughAsNails] 在草药浴缸中右键喝水，获得温度效果
+- [ ] [ToughAsNails] 在牡丹浴缸中右键喝水，获得温度效果
+- [ ] [ToughAsNails] 在玫瑰浴缸中右键喝水，获得温度效果
+- [ ] [ToughAsNails] 所有浴缸类型右键喝水效果一致（只有温度，无药水效果）
+
+#### 4.3 与浴水瓶效果对比
+
+- [ ] [ToughAsNails] 右键喝水：只有温度效果
+- [ ] [ToughAsNails] 喝浴水瓶：温度效果 + 药水效果
+- [ ] [ToughAsNails] 右键喝水后不会获得速度、力量等药水效果
+- [ ] [ToughAsNails] 右键喝水后不会恢复生命值
+
+### 5. 热水浴缸温度效果测试
 
 _测试玩家在热水浴缸中的温度调节功能_
 

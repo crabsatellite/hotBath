@@ -102,6 +102,22 @@ public class BathWaterEffects {
     }
 
     /**
+     * Apply only temperature effects (no potion effects).
+     * Used when player drinks from bath water sources using ToughAsNails' hand drinking feature.
+     */
+    public static void applyTemperatureEffectsOnly(net.minecraft.world.entity.player.Player player) {
+        // Apply ToughAsNails temperature effect (10 seconds, WARM)
+        if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {
+            BathWaterBottleTANModifier.applyWarmEffect(player);
+        }
+        
+        // Apply Cold Sweat temperature effect (5 seconds, 36°C)
+        if (ColdSweatIntegration.isColdSweatLoaded()) {
+            BathWaterBottleColdSweatModifier.applyWarmEffect(player);
+        }
+    }
+
+    /**
      * Check if effect is harmful
      */
     private static boolean isHarmfulEffect(Holder<MobEffect> effect) {
