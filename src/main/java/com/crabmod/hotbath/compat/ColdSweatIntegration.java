@@ -1,9 +1,8 @@
 package com.crabmod.hotbath.compat;
 
-import com.crabmod.hotbath.registers.FluidsRegister;
 import com.mojang.logging.LogUtils;
-import com.momosoftworks.coldsweat.api.event.core.registry.BlockTempRegisterEvent;
-import net.minecraft.world.level.block.Block;
+import com.momosoftworks.coldsweat.api.event.core.registry.TempModifierRegisterEvent;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -27,38 +26,45 @@ public class ColdSweatIntegration {
     }
 
     /**
-     * Event handler for Cold Sweat's BlockTempRegisterEvent
-     * This is called when Cold Sweat is ready to accept block temperature registrations
+     * Event handler for Cold Sweat's TempModifierRegisterEvent
+     * This is called when Cold Sweat is ready to accept temperature modifier registrations
      */
     @SubscribeEvent
-    public static void onBlockTempRegister(BlockTempRegisterEvent event) {
+    public static void onTempModifierRegister(TempModifierRegisterEvent event) {
         if (!isColdSweatLoaded()) {
             return;
         }
 
         try {
-            LOGGER.info("Registering Hot Bath blocks with Cold Sweat via BlockTempRegisterEvent...");
+            LOGGER.info("Registering Hot Bath immersion modifier with Cold Sweat...");
 
-            // Get all hot bath blocks
-            Block hotWaterBlock = FluidsRegister.HOT_WATER_BLOCK.get();
-            Block herbalBathBlock = FluidsRegister.HERBAL_BATH_BLOCK.get();
-            Block honeyBathBlock = FluidsRegister.HONEY_BATH_BLOCK.get();
-            Block milkBathBlock = FluidsRegister.MILK_BATH_BLOCK.get();
-            Block peonyBathBlock = FluidsRegister.PEONY_BATH_BLOCK.get();
-            Block roseBathBlock = FluidsRegister.ROSE_BATH_BLOCK.get();
+            // Register the immersion modifier
+            // This handles the fixed temperature when inside the bath
+            event.register(ResourceLocation.parse("hotbath:immersion"), HotBathImmersionModifier::new);
 
-            // Register each bath type with Cold Sweat
-            // All bath blocks provide the same warmth level
-            event.register(new HotBathTempModifier(HotBathTempModifier.BASE_TEMPERATURE, hotWaterBlock));
-            event.register(new HotBathTempModifier(HotBathTempModifier.BASE_TEMPERATURE, herbalBathBlock));
-            event.register(new HotBathTempModifier(HotBathTempModifier.BASE_TEMPERATURE, honeyBathBlock));
-            event.register(new HotBathTempModifier(HotBathTempModifier.BASE_TEMPERATURE, milkBathBlock));
-            event.register(new HotBathTempModifier(HotBathTempModifier.BASE_TEMPERATURE, peonyBathBlock));
-            event.register(new HotBathTempModifier(HotBathTempModifier.BASE_TEMPERATURE, roseBathBlock));
-
-            LOGGER.info("Successfully registered 6 hot bath block temperatures with Cold Sweat!");
+            LOGGER.info("Successfully registered Hot Bath immersion modifier!");
         } catch (Exception e) {
-            LOGGER.error("Failed to register Hot Bath blocks with Cold Sweat: {}", e.getMessage(), e);
+            LOGGER.error("Failed to register Hot Bath modifier with Cold Sweat: {}", e.getMessage(), e);
         }
+    }
+
+    /**
+     * Add the Hot Bath immersion modifier to players
+     */
+    @SubscribeEvent
+    public static void onDefaultModifiers(com.momosoftworks.coldsweat.api.event.core.init.DefaultTempModifiersEvent event) {
+        if (!isColdSweatLoaded()) {
+            return;
+        }
+        
+        // Add the modifier to the WORLD trait
+        // Use BY_CLASS to avoid duplicates
+        // Place it AFTER_LAST to ensure it overrides other modifiers if necessary (though our logic handles override internally)
+        event.addModifier(
+            com.momosoftworks.coldsweat.api.util.Temperature.Trait.WORLD,
+            new HotBathImmersionModifier(),
+            com.momosoftworks.coldsweat.api.util.Placement.Duplicates.BY_CLASS,
+            com.momosoftworks.coldsweat.api.util.Placement.AFTER_LAST
+        );
     }
 }
