@@ -51,14 +51,10 @@ public class HotBath {
   }
 
   private void commonSetup(final FMLCommonSetupEvent event) {
-    // Some common setup code
     LOGGER.info("HELLO FROM COMMON SETUP");
     
-    // Cold Sweat integration will be handled automatically via BlockTempRegisterEvent
     if (ColdSweatIntegration.isColdSweatLoaded()) {
-      LOGGER.info("Cold Sweat detected! Temperature integration will be registered via event system.");
-    } else {
-      LOGGER.info("Cold Sweat not detected, skipping temperature integration.");
+      LOGGER.info("Cold Sweat detected! Temperature integration enabled.");
     }
   }
 

@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 
 /**
  * Integration with Cold Sweat mod
- * Provides temperature effects for hot bath blocks
- * Uses Cold Sweat's event system to register block temperatures
+ * Registers temperature modifiers for hot bath blocks using TempModifier API
+ * Block temperatures are configured via data/hotbath/coldsweat/block_temperatures.json
  */
 @EventBusSubscriber(modid = "hotbath")
 public class ColdSweatIntegration {
@@ -50,6 +50,7 @@ public class ColdSweatIntegration {
 
     /**
      * Add the Hot Bath immersion modifier to players
+     * This modifier applies when players are submerged in hot bath blocks
      */
     @SubscribeEvent
     public static void onDefaultModifiers(com.momosoftworks.coldsweat.api.event.core.init.DefaultTempModifiersEvent event) {
@@ -57,9 +58,6 @@ public class ColdSweatIntegration {
             return;
         }
         
-        // Add the modifier to the WORLD trait
-        // Use BY_CLASS to avoid duplicates
-        // Place it AFTER_LAST to ensure it overrides other modifiers if necessary (though our logic handles override internally)
         event.addModifier(
             com.momosoftworks.coldsweat.api.util.Temperature.Trait.WORLD,
             new HotBathImmersionModifier(),
