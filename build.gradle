@@ -99,6 +99,11 @@ repositories {
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
+    // ColdSweat - Temperature and season mod (optional dependency)
+    // compileOnly for API access, runtimeOnly to have it in dev environment
+    compileOnly "curse.maven:cold-sweat-506194:7193946"
+    runtimeOnly "curse.maven:cold-sweat-506194:7193946"
+
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"

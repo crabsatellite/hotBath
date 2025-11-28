@@ -10,7 +10,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
-@EventBusSubscriber(modid = HotBath.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = HotBath.MOD_ID)
 public class ExtraEventsRegister {
   @SubscribeEvent
   public static void registerParticlesFactories(final RegisterParticleProvidersEvent event) {

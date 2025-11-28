@@ -1,5 +1,6 @@
 package com.crabmod.hotbath;
 
+import com.crabmod.hotbath.compat.ColdSweatIntegration;
 import com.crabmod.hotbath.fluid_blocks.*;
 import com.crabmod.hotbath.fluid_details.HotbathFluidType;
 import com.crabmod.hotbath.item.ItemGroup;
@@ -52,6 +53,13 @@ public class HotBath {
   private void commonSetup(final FMLCommonSetupEvent event) {
     // Some common setup code
     LOGGER.info("HELLO FROM COMMON SETUP");
+    
+    // Cold Sweat integration will be handled automatically via BlockTempRegisterEvent
+    if (ColdSweatIntegration.isColdSweatLoaded()) {
+      LOGGER.info("Cold Sweat detected! Temperature integration will be registered via event system.");
+    } else {
+      LOGGER.info("Cold Sweat not detected, skipping temperature integration.");
+    }
   }
 
 //  Duplicated register
@@ -76,7 +84,7 @@ public class HotBath {
 
   // You can use EventBusSubscriber to automatically register all static methods in the class
   // annotated with @SubscribeEvent
-  @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+  @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
   public static class ClientModEvents {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
