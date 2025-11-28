@@ -57,12 +57,12 @@ public class ColdSweatIntegration {
         if (!isColdSweatLoaded()) {
             return;
         }
-        
+
         event.addModifier(
-            com.momosoftworks.coldsweat.api.util.Temperature.Trait.WORLD,
-            new HotBathImmersionModifier(),
-            com.momosoftworks.coldsweat.api.util.Placement.Duplicates.BY_CLASS,
-            com.momosoftworks.coldsweat.api.util.Placement.AFTER_LAST
+                com.momosoftworks.coldsweat.api.util.Temperature.Trait.WORLD,
+                new HotBathImmersionModifier(),
+                com.momosoftworks.coldsweat.api.util.Placement.Duplicates.BY_CLASS,
+                com.momosoftworks.coldsweat.api.util.Placement.AFTER_LAST
         );
     }
 }
