@@ -10,9 +10,10 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import net.neoforged.neoforge.event.village.WandererTradesEvent;
 
+import static com.crabmod.hotbath.HotBath.MOD_ID;
 import static com.crabmod.hotbath.registers.ItemRegister.BATH_HERB;
 
-@EventBusSubscriber(modid = "hotbath", bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = MOD_ID)
 public class TradeEventHandler {
     @SubscribeEvent
     public static void onVillagerTradesEvent(VillagerTradesEvent event) {

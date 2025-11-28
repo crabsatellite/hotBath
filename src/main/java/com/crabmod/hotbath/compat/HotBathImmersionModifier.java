@@ -1,14 +1,13 @@
 package com.crabmod.hotbath.compat;
 
-import com.crabmod.hotbath.registers.FluidsRegister;
+import com.crabmod.hotbath.util.CustomFluidHandler;
 import com.momosoftworks.coldsweat.api.temperature.modifier.TempModifier;
 import com.momosoftworks.coldsweat.api.util.Temperature;
 import com.momosoftworks.coldsweat.util.world.WorldHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.Function;
 
@@ -30,21 +29,16 @@ public class HotBathImmersionModifier extends TempModifier {
             return temp -> temp;
         }
 
+        // Only apply to players (CustomFluidHandler methods expect Player type)
+        if (!(entity instanceof Player player)) {
+            return temp -> temp;
+        }
+
         Level level = entity.level();
         BlockPos pos = entity.blockPosition();
-        BlockState state = level.getBlockState(pos);
-        Block block = state.getBlock();
 
-        // Check if the entity is inside one of our hot bath blocks
-        boolean isInsideHotBath =
-                block == FluidsRegister.HOT_WATER_BLOCK.get() ||
-                        block == FluidsRegister.HERBAL_BATH_BLOCK.get() ||
-                        block == FluidsRegister.HONEY_BATH_BLOCK.get() ||
-                        block == FluidsRegister.MILK_BATH_BLOCK.get() ||
-                        block == FluidsRegister.PEONY_BATH_BLOCK.get() ||
-                        block == FluidsRegister.ROSE_BATH_BLOCK.get();
-
-        if (isInsideHotBath) {
+        // Check if the entity is inside any hot bath block using the existing utility method
+        if (CustomFluidHandler.isPlayerInHotBathBlock(player)) {
             // Calculate target temperature in Minecraft units
             double targetTempMC = Temperature.convert(TARGET_TEMP_C, Temperature.Units.C, Temperature.Units.MC, true);
 

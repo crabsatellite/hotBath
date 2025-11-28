@@ -1,8 +1,11 @@
 package com.crabmod.hotbath.registers;
 
 import com.crabmod.hotbath.HotBath;
+import com.crabmod.hotbath.items.BathBucketItem;
+import com.crabmod.hotbath.items.BathWaterBottleItem;
+import com.crabmod.hotbath.items.BathWaterEffects;
+import com.crabmod.hotbath.items.DescriptiveItem;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -16,48 +19,73 @@ public class ItemRegister {
             ITEMS.register(
                     "herbal_bath_bucket",
                     () ->
-                            new BucketItem(
-                                    FluidsRegister.HERBAL_BATH_FLUID.get(),
+                            new BathBucketItem(
+                                    FluidsRegister.HERBAL_BATH_FLUID,
                                     new Item.Properties().stacksTo(1)));
 
     public static final DeferredHolder<Item, Item> HONEY_BATH_BUCKET =
             ITEMS.register(
                     "honey_bath_bucket",
                     () ->
-                            new BucketItem(
-                                    FluidsRegister.HONEY_BATH_FLUID.get(),
+                            new BathBucketItem(
+                                    FluidsRegister.HONEY_BATH_FLUID,
                                     new Item.Properties().stacksTo(1)));
 
     public static final DeferredHolder<Item, Item> HOT_WATER_BUCKET = ITEMS.register("hot_water_bucket",
-            () -> new BucketItem(FluidsRegister.HOT_WATER_FLUID.get(),
+            () -> new BathBucketItem(FluidsRegister.HOT_WATER_FLUID,
                     new Item.Properties().stacksTo(1)));
 
     public static final DeferredHolder<Item, Item> MILK_BATH_BUCKET =
             ITEMS.register(
                     "milk_bath_bucket",
                     () ->
-                            new BucketItem(
-                                    FluidsRegister.MILK_BATH_FLUID.get(),
+                            new BathBucketItem(
+                                    FluidsRegister.MILK_BATH_FLUID,
                                     new Item.Properties().stacksTo(1)));
 
     public static final DeferredHolder<Item, Item> PEONY_BATH_BUCKET =
             ITEMS.register(
                     "peony_bath_bucket",
                     () ->
-                            new BucketItem(
-                                    FluidsRegister.PEONY_BATH_FLUID.get(),
+                            new BathBucketItem(
+                                    FluidsRegister.PEONY_BATH_FLUID,
                                     new Item.Properties().stacksTo(1)));
 
     public static final DeferredHolder<Item, Item> ROSE_BATH_BUCKET =
             ITEMS.register(
                     "rose_bath_bucket",
                     () ->
-                            new BucketItem(
-                                    FluidsRegister.ROSE_BATH_FLUID.get(),
+                            new BathBucketItem(
+                                    FluidsRegister.ROSE_BATH_FLUID,
                                     new Item.Properties().stacksTo(1)));
 
     public static final DeferredHolder<Item, Item> BATH_HERB =
-            ITEMS.register("bath_herb", () -> new Item(new Item.Properties()));
+            ITEMS.register("bath_herb", () -> new DescriptiveItem(new Item.Properties()));
+
+    // Bath Water Bottles
+    public static final DeferredHolder<Item, Item> HOT_WATER_BOTTLE =
+            ITEMS.register("hot_water_bottle",
+                    () -> new BathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::hotWaterEffect));
+
+    public static final DeferredHolder<Item, Item> HONEY_BATH_BOTTLE =
+            ITEMS.register("honey_bath_bottle",
+                    () -> new BathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::honeyBathEffect));
+
+    public static final DeferredHolder<Item, Item> MILK_BATH_BOTTLE =
+            ITEMS.register("milk_bath_bottle",
+                    () -> new BathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::milkBathEffect));
+
+    public static final DeferredHolder<Item, Item> HERBAL_BATH_BOTTLE =
+            ITEMS.register("herbal_bath_bottle",
+                    () -> new BathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::herbalBathEffect));
+
+    public static final DeferredHolder<Item, Item> PEONY_BATH_BOTTLE =
+            ITEMS.register("peony_bath_bottle",
+                    () -> new BathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::peonyBathEffect));
+
+    public static final DeferredHolder<Item, Item> ROSE_BATH_BOTTLE =
+            ITEMS.register("rose_bath_bottle",
+                    () -> new BathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::roseBathEffect));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

@@ -1,6 +1,7 @@
 package com.crabmod.hotbath;
 
 import com.crabmod.hotbath.compat.ColdSweatIntegration;
+import com.crabmod.hotbath.compat.ToughAsNailsIntegration;
 import com.crabmod.hotbath.fluid_details.HotbathFluidType;
 import com.crabmod.hotbath.item.ItemGroup;
 import com.crabmod.hotbath.registers.BlocksRegister;
@@ -51,6 +52,23 @@ public class HotBath {
 
         if (ColdSweatIntegration.isColdSweatLoaded()) {
             LOGGER.info("Cold Sweat detected! Temperature integration enabled.");
+            try {
+                NeoForge.EVENT_BUS.register(new com.crabmod.hotbath.compat.ColdSweatEventHandler());
+                LOGGER.info("Cold Sweat event handler registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register Cold Sweat event handler: {}", e.getMessage(), e);
+            }
+        }
+
+        if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {
+            LOGGER.info("Tough As Nails detected! Temperature integration enabled.");
+            event.enqueueWork(() -> {
+                try {
+                    com.crabmod.hotbath.compat.ToughAsNailsRegistration.init();
+                } catch (Exception e) {
+                    LOGGER.error("Failed to initialize Tough As Nails integration: {}", e.getMessage(), e);
+                }
+            });
         }
     }
 
