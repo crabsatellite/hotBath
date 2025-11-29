@@ -18,29 +18,28 @@ public class BathWaterEffects {
     private static final Random RANDOM = new Random();
 
     /**
-     * Hot Water Bottle Effect: Speed I for 5 seconds (weakened from 20s)
+     * Hot Water Bottle Effect: Speed I for 45 seconds
      */
     public static void hotWaterEffect(LivingEntity entity) {
-        entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 5 * 20, 0, false, false, true));
+        entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 45 * 20, 0, false, false, true));
         applyDrinkTemperatureEffects(entity);
     }
 
     public static void hotWaterSplashEffect(LivingEntity entity) {
-        entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 10 * 20, 1, false, false, true));
+        entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 30 * 20, 1, false, false, true));
         applySplashTemperatureEffects(entity);
     }
 
     /**
-     * Honey Bath Water Effect: Instant heal + Absorption I for 5 seconds (weakened from Absorption II 20s)
+     * Honey Bath Water Effect: Absorption I for 45 seconds
      */
     public static void honeyBathEffect(LivingEntity entity) {
-        entity.heal(2.0F); // Instant heal 2 hearts
-        entity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 5 * 20, 0, false, false, true));
+        entity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 45 * 20, 0, false, false, true));
         applyDrinkTemperatureEffects(entity);
     }
 
     public static void honeyBathSplashEffect(LivingEntity entity) {
-        entity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 10 * 20, 1, false, false, true));
+        entity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 30 * 20, 1, false, false, true));
         applySplashTemperatureEffects(entity);
     }
 
@@ -75,42 +74,43 @@ public class BathWaterEffects {
     }
 
     /**
-     * Herbal Bath Water Effect: Resistance I for 5 seconds (weakened from 20s)
+     * Herbal Bath Water Effect: Instant heal 3 hearts + Resistance I for 45 seconds
      */
     public static void herbalBathEffect(LivingEntity entity) {
-        entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 5 * 20, 0, false, false, true));
+        entity.heal(6.0F); // Instant heal 3 hearts
+        entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 45 * 20, 0, false, false, true));
         applyDrinkTemperatureEffects(entity);
     }
 
     public static void herbalBathSplashEffect(LivingEntity entity) {
-        entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 10 * 20, 1, false, false, true));
+        entity.heal(4.0F); // Instant heal 2 hearts
+        entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 30 * 20, 1, false, false, true));
         applySplashTemperatureEffects(entity);
     }
 
     /**
-     * Peony Bath Water Effect: Instant heal only (weakened from heal + buffs)
+     * Peony Bath Water Effect: Luck I for 45 seconds
      */
     public static void peonyBathEffect(LivingEntity entity) {
-        entity.heal(2.0F); // Instant heal 2 hearts
+        entity.addEffect(new MobEffectInstance(MobEffects.LUCK, 45 * 20, 0, false, false, true));
         applyDrinkTemperatureEffects(entity);
     }
 
     public static void peonyBathSplashEffect(LivingEntity entity) {
-        entity.addEffect(new MobEffectInstance(MobEffects.LUCK, 15 * 20, 1, false, false, true));
+        entity.addEffect(new MobEffectInstance(MobEffects.LUCK, 30 * 20, 1, false, false, true));
         applySplashTemperatureEffects(entity);
     }
 
     /**
-     * Rose Bath Water Effect: Instant heal + Strength I for 5 seconds (weakened from 20s)
+     * Rose Bath Water Effect: Strength I for 45 seconds
      */
     public static void roseBathEffect(LivingEntity entity) {
-        entity.heal(2.0F); // Instant heal 2 hearts
-        entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 5 * 20, 0, false, false, true));
+        entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 45 * 20, 0, false, false, true));
         applyDrinkTemperatureEffects(entity);
     }
 
     public static void roseBathSplashEffect(LivingEntity entity) {
-        entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 10 * 20, 1, false, false, true));
+        entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 30 * 20, 1, false, false, true));
         applySplashTemperatureEffects(entity);
     }
 
@@ -143,9 +143,9 @@ public class BathWaterEffects {
             return;
         }
         
-        // Apply ToughAsNails temperature effect (10 seconds, WARM)
+        // Apply ToughAsNails temperature effect (30 seconds, WARM)
         if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {
-            BathWaterBottleTANModifier.applyWarmEffect(player);
+            BathWaterBottleTANModifier.applySplashWarmEffect(player);
         }
         
         // Apply Cold Sweat temperature effect (10 seconds, 36°C)

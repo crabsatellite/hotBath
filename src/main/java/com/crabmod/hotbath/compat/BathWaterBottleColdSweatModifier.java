@@ -37,10 +37,10 @@ public class BathWaterBottleColdSweatModifier extends TempModifier {
     }
 
     /**
-     * Apply warm effect to player for 10 seconds (for splash potions)
+     * Apply warm effect to player for 30 seconds (for splash potions)
      */
     public static void applySplashWarmEffect(Player player) {
-        WARM_PLAYERS.put(player.getUUID(), System.currentTimeMillis() + 10_000);
+        WARM_PLAYERS.put(player.getUUID(), System.currentTimeMillis() + 30_000);
     }
 
     @Override

@@ -133,7 +133,7 @@ public class LSOApiHelper {
     }
     
     /**
-     * Apply COLD_RESISTANCE effect for splash bottle (Level 2, 10 seconds)
+     * Apply COLD_RESISTANCE effect for splash bottle (Level 2, 30 seconds)
      */
     public static void applySplashTemperatureEffect(Player player) {
         MobEffect coldResistance = MobEffectRegistry.COLD_RESISTANCE.get();
@@ -141,7 +141,7 @@ public class LSOApiHelper {
         
         MobEffectInstance effect = new MobEffectInstance(
             coldResistanceHolder,
-            200, // 10 seconds
+            600, // 30 seconds
             1, // Level 2 (Amplifier 1)
             false,
             false,

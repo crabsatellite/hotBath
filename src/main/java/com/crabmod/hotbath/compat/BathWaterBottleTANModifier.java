@@ -28,6 +28,13 @@ public class BathWaterBottleTANModifier implements IPlayerTemperatureModifier {
         WARM_PLAYERS.put(player.getUUID(), System.currentTimeMillis() + WARM_DURATION_MS);
     }
 
+    /**
+     * Apply warm effect to player for 30 seconds (for splash potions)
+     */
+    public static void applySplashWarmEffect(Player player) {
+        WARM_PLAYERS.put(player.getUUID(), System.currentTimeMillis() + 30_000);
+    }
+
     @Override
     public TemperatureLevel modify(Player player, TemperatureLevel current) {
         UUID playerUUID = player.getUUID();
