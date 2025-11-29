@@ -35,6 +35,12 @@ public class ItemGroup {
                                                 pOutput.accept(ItemRegister.HERBAL_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.PEONY_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.ROSE_BATH_BOTTLE.get());
+                                                pOutput.accept(ItemRegister.SPLASH_HOT_WATER_BOTTLE.get());
+                                                pOutput.accept(ItemRegister.SPLASH_HONEY_BATH_BOTTLE.get());
+                                                pOutput.accept(ItemRegister.SPLASH_MILK_BATH_BOTTLE.get());
+                                                pOutput.accept(ItemRegister.SPLASH_HERBAL_BATH_BOTTLE.get());
+                                                pOutput.accept(ItemRegister.SPLASH_PEONY_BATH_BOTTLE.get());
+                                                pOutput.accept(ItemRegister.SPLASH_ROSE_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.BATH_HERB.get());
                                             })
                                     .build());

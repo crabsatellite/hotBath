@@ -36,9 +36,15 @@ public class ThrownBathWater extends ThrowableItemProjectile {
     }
 
     @Override
+    protected double getDefaultGravity() {
+        return 0.05;
+    }
+
+    @Override
     protected void onHit(HitResult result) {
         super.onHit(result);
         if (!this.level().isClientSide) {
+            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), net.minecraft.sounds.SoundEvents.SPLASH_POTION_BREAK, net.minecraft.sounds.SoundSource.NEUTRAL, 1.0F, this.random.nextFloat() * 0.1F + 0.9F);
             ItemStack stack = this.getItem();
             if (stack.getItem() instanceof SplashBathWaterBottleItem splashItem) {
                 applySplash(splashItem);
