@@ -5,6 +5,8 @@ import com.crabmod.hotbath.items.BathBucketItem;
 import com.crabmod.hotbath.items.BathWaterBottleItem;
 import com.crabmod.hotbath.items.BathWaterEffects;
 import com.crabmod.hotbath.items.DescriptiveItem;
+import com.crabmod.hotbath.items.SplashBathWaterBottleItem;
+import com.crabmod.hotbath.items.ThrownBathWater;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
@@ -86,6 +88,37 @@ public class ItemRegister {
     public static final DeferredHolder<Item, Item> ROSE_BATH_BOTTLE =
             ITEMS.register("rose_bath_bottle",
                     () -> new BathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::roseBathEffect));
+
+    // Splash Bath Water Bottles
+    public static final DeferredHolder<Item, Item> SPLASH_HOT_WATER_BOTTLE =
+            ITEMS.register("splash_hot_water_bottle",
+                    () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), 
+                            BathWaterEffects::hotWaterEffect, ParticleRegister.HOT_WATER_SPLASH.get()));
+
+    public static final DeferredHolder<Item, Item> SPLASH_HONEY_BATH_BOTTLE =
+            ITEMS.register("splash_honey_bath_bottle",
+                    () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), 
+                            BathWaterEffects::honeyBathEffect, ParticleRegister.HONEY_WATER_SPLASH.get()));
+
+    public static final DeferredHolder<Item, Item> SPLASH_MILK_BATH_BOTTLE =
+            ITEMS.register("splash_milk_bath_bottle",
+                    () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), 
+                            BathWaterEffects::milkBathEffect, ParticleRegister.MILK_WATER_SPLASH.get()));
+
+    public static final DeferredHolder<Item, Item> SPLASH_HERBAL_BATH_BOTTLE =
+            ITEMS.register("splash_herbal_bath_bottle",
+                    () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), 
+                            BathWaterEffects::herbalBathEffect, ParticleRegister.HERBAL_WATER_SPLASH.get()));
+
+    public static final DeferredHolder<Item, Item> SPLASH_PEONY_BATH_BOTTLE =
+            ITEMS.register("splash_peony_bath_bottle",
+                    () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), 
+                            BathWaterEffects::peonyBathEffect, ParticleRegister.PEONY_WATER_SPLASH.get()));
+
+    public static final DeferredHolder<Item, Item> SPLASH_ROSE_BATH_BOTTLE =
+            ITEMS.register("splash_rose_bath_bottle",
+                    () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), 
+                            BathWaterEffects::roseBathEffect, ParticleRegister.ROSE_WATER_SPLASH.get()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

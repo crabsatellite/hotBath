@@ -9,6 +9,7 @@ import com.crabmod.hotbath.compat.ToughAsNailsIntegration;
 import com.crabmod.hotbath.fluid_details.HotbathFluidType;
 import com.crabmod.hotbath.item.ItemGroup;
 import com.crabmod.hotbath.registers.BlocksRegister;
+import com.crabmod.hotbath.registers.EntityRegister;
 import com.crabmod.hotbath.registers.FluidsRegister;
 import com.crabmod.hotbath.registers.ItemRegister;
 import com.crabmod.hotbath.registers.ParticleRegister;
@@ -16,6 +17,10 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -24,6 +29,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.slf4j.Logger;
@@ -42,6 +48,7 @@ public class HotBath {
         BlocksRegister.register(modEventBus);
         ItemRegister.register(modEventBus);
         ParticleRegister.register(modEventBus);
+        EntityRegister.register(modEventBus);
         HotbathFluidType.register(modEventBus);
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
@@ -53,6 +60,15 @@ public class HotBath {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         LOGGER.info("HELLO FROM COMMON SETUP");
+
+        event.enqueueWork(() -> {
+            BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemRegister.HOT_WATER_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_HOT_WATER_BOTTLE.get().getDefaultInstance());
+            BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemRegister.HONEY_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_HONEY_BATH_BOTTLE.get().getDefaultInstance());
+            BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemRegister.MILK_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_MILK_BATH_BOTTLE.get().getDefaultInstance());
+            BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemRegister.HERBAL_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_HERBAL_BATH_BOTTLE.get().getDefaultInstance());
+            BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemRegister.PEONY_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_PEONY_BATH_BOTTLE.get().getDefaultInstance());
+            BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemRegister.ROSE_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_ROSE_BATH_BOTTLE.get().getDefaultInstance());
+        });
 
         if (ColdSweatIntegration.isColdSweatLoaded()) {
             LOGGER.info("Cold Sweat detected! Temperature integration enabled.");
@@ -94,37 +110,21 @@ public class HotBath {
 
     // You can use EventBusSubscriber to automatically register all static methods in the class
     // annotated with @SubscribeEvent
-    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            // Some client setup code
-            LOGGER.info("HELLO FROM CLIENT SETUP");
-            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
-            ItemBlockRenderTypes.setRenderLayer(
-                    FluidsRegister.HOT_WATER_FLUID.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(
-                    FluidsRegister.HOT_WATER_FLOWING.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(
-                    FluidsRegister.HONEY_BATH_FLUID.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(
-                    FluidsRegister.HONEY_BATH_FLOWING.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(
-                    FluidsRegister.MILK_BATH_FLUID.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(
-                    FluidsRegister.MILK_BATH_FLOWING.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(
-                    FluidsRegister.PEONY_BATH_FLUID.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(
-                    FluidsRegister.PEONY_BATH_FLOWING.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(
-                    FluidsRegister.ROSE_BATH_FLUID.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(
-                    FluidsRegister.ROSE_BATH_FLOWING.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(
-                    FluidsRegister.HERBAL_BATH_FLUID.get(), RenderType.translucent());
-            ItemBlockRenderTypes.setRenderLayer(
-                    FluidsRegister.HERBAL_BATH_FLOWING.get(), RenderType.translucent());
+            EntityRenderers.register(EntityRegister.THROWN_BATH_WATER.get(), ThrownItemRenderer::new);
+        }
+
+        @SubscribeEvent
+        public static void registerParticles(RegisterParticleProvidersEvent event) {
+            event.registerSpriteSet(ParticleRegister.HOT_WATER_SPLASH.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HONEY_WATER_SPLASH.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.MILK_WATER_SPLASH.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HERBAL_WATER_SPLASH.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.PEONY_WATER_SPLASH.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.ROSE_WATER_SPLASH.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
         }
     }
 }
