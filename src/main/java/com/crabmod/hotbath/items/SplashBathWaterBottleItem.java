@@ -13,12 +13,13 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class SplashBathWaterBottleItem extends Item {
     private final Consumer<LivingEntity> drinkEffect;
-    private final SimpleParticleType particleType;
+    private final Supplier<SimpleParticleType> particleType;
 
-    public SplashBathWaterBottleItem(Properties properties, Consumer<LivingEntity> drinkEffect, SimpleParticleType particleType) {
+    public SplashBathWaterBottleItem(Properties properties, Consumer<LivingEntity> drinkEffect, Supplier<SimpleParticleType> particleType) {
         super(properties);
         this.drinkEffect = drinkEffect;
         this.particleType = particleType;
@@ -53,6 +54,6 @@ public class SplashBathWaterBottleItem extends Item {
     }
 
     public SimpleParticleType getParticleType() {
-        return particleType;
+        return particleType.get();
     }
 }
