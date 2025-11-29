@@ -30,20 +30,15 @@ public class ToughAsNailsDrinkHandler {
             return;
         }
         
-        // Check which type of bath the player is in and apply corresponding effects
-        // We only apply temperature effects, not the potion effects, since those are specific to our bottles
-        if (CustomFluidHandler.isPlayerInHotWaterBlock(player)) {
+        // Check if player is in any hot bath block
+        // We use the generic check since all bath blocks inherit from AbstractHotbathBlock
+        if (CustomFluidHandler.isPlayerInHotBathBlock(player)) {
             BathWaterEffects.applyTemperatureEffectsOnly(player);
-        } else if (CustomFluidHandler.isPlayerInHoneyBathBlock(player)) {
-            BathWaterEffects.applyTemperatureEffectsOnly(player);
-        } else if (CustomFluidHandler.isPlayerInMilkBathBlock(player)) {
-            BathWaterEffects.applyTemperatureEffectsOnly(player);
-        } else if (CustomFluidHandler.isPlayerInHerbalBathBlock(player)) {
-            BathWaterEffects.applyTemperatureEffectsOnly(player);
-        } else if (CustomFluidHandler.isPlayerInPeonyBathBlock(player)) {
-            BathWaterEffects.applyTemperatureEffectsOnly(player);
-        } else if (CustomFluidHandler.isPlayerInRoseBathBlock(player)) {
-            BathWaterEffects.applyTemperatureEffectsOnly(player);
+            
+            // If LSO is loaded, also restore thirst
+            if (LegendarySurvivalOverhaulIntegration.isLSOLoaded()) {
+                LSOApiHelper.addThirst(player);
+            }
         }
     }
 }
