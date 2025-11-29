@@ -1,6 +1,7 @@
 package com.crabmod.hotbath;
 
 import com.crabmod.hotbath.client.particle.CustomDripParticle;
+import com.crabmod.hotbath.client.particle.HotBathBubbleParticle;
 import com.crabmod.hotbath.compat.ColdSweatCompat;
 import com.crabmod.hotbath.compat.ColdSweatIntegration;
 import com.crabmod.hotbath.compat.LegendarySurvivalOverhaulIntegration;
@@ -146,12 +147,12 @@ public class HotBath {
             event.registerSpriteSet(ParticleRegister.ROSE_BATH_EFFECT.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
 
             // Bubbles
-            event.registerSpriteSet(ParticleRegister.HOT_WATER_BUBBLE.get(), net.minecraft.client.particle.BubbleParticle.Provider::new);
-            event.registerSpriteSet(ParticleRegister.HONEY_BATH_BUBBLE.get(), net.minecraft.client.particle.BubbleParticle.Provider::new);
-            event.registerSpriteSet(ParticleRegister.MILK_BATH_BUBBLE.get(), net.minecraft.client.particle.BubbleParticle.Provider::new);
-            event.registerSpriteSet(ParticleRegister.HERBAL_BATH_BUBBLE.get(), net.minecraft.client.particle.BubbleParticle.Provider::new);
-            event.registerSpriteSet(ParticleRegister.PEONY_BATH_BUBBLE.get(), net.minecraft.client.particle.BubbleParticle.Provider::new);
-            event.registerSpriteSet(ParticleRegister.ROSE_BATH_BUBBLE.get(), net.minecraft.client.particle.BubbleParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HOT_WATER_BUBBLE.get(), HotBathBubbleParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HONEY_BATH_BUBBLE.get(), HotBathBubbleParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.MILK_BATH_BUBBLE.get(), HotBathBubbleParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HERBAL_BATH_BUBBLE.get(), HotBathBubbleParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.PEONY_BATH_BUBBLE.get(), HotBathBubbleParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.ROSE_BATH_BUBBLE.get(), HotBathBubbleParticle.Provider::new);
 
             // Dripping (Hanging)
             event.registerSpriteSet(ParticleRegister.DRIPPING_HOT_WATER.get(), 

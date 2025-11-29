@@ -33,6 +33,7 @@ public class HotbathFluidType {
             ResourceLocation FLOWING_RL_TEXTURE,
             Supplier<? extends ParticleOptions> dripParticle,
             Supplier<? extends ParticleOptions> bubbleParticle,
+            Supplier<? extends ParticleOptions> splashParticle,
             Supplier<? extends Fluid> fluidSupplier) {
         return register(
                 name,
@@ -54,6 +55,7 @@ public class HotbathFluidType {
                 FLOWING_RL_TEXTURE,
                 dripParticle,
                 bubbleParticle,
+                splashParticle,
                 (Supplier<Fluid>) fluidSupplier);
     }
 
@@ -65,6 +67,7 @@ public class HotbathFluidType {
             ResourceLocation FLOWING_RL_TEXTURE,
             Supplier<? extends ParticleOptions> dripParticle,
             Supplier<? extends ParticleOptions> bubbleParticle,
+            Supplier<? extends ParticleOptions> splashParticle,
             Supplier<Fluid> fluidSupplier) {
         return FLUID_TYPES.register(
                 name,
@@ -78,6 +81,7 @@ public class HotbathFluidType {
                                 properties,
                                 dripParticle,
                                 bubbleParticle,
+                                splashParticle,
                                 fluidSupplier));
     }
 

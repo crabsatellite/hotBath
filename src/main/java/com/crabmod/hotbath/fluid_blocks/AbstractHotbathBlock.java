@@ -142,11 +142,85 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
                 SoundHandler.playEnterWaterSound(player, rand); // Play entry sound
                 playerData.putBoolean(
                         HOTBATH_ENTER_WATER_STATE, true); // Set the player as having entered water
+                spawnSplashParticles(player, player.level(), rand);
             }
         } else {
             // If the player has exited the water, reset the state to allow entry sound to play again
             if (playerData.getBoolean(HOTBATH_ENTER_WATER_STATE)) {
                 playerData.putBoolean(HOTBATH_ENTER_WATER_STATE, false); // Reset the entry state
+            }
+        }
+    }
+
+    private void spawnSplashParticles(Player player, Level level, RandomSource rand) {
+        BlockPos pos = player.blockPosition();
+        // Find the actual surface level
+        BlockPos surfacePos = pos;
+        while (level.getBlockState(surfacePos.above()).getBlock() instanceof AbstractHotbathBlock && surfacePos.getY() < level.getMaxBuildHeight()) {
+            surfacePos = surfacePos.above();
+        }
+        
+        BlockState state = level.getBlockState(surfacePos);
+        FluidType fluidType = state.getFluidState().getFluidType();
+
+        if (fluidType instanceof BaseFluidType baseFluidType) {
+            ParticleOptions bubble = baseFluidType.getBubbleParticle();
+            if (bubble != null) {
+                float width = player.getBbWidth();
+                // Calculate max count based on player width
+                int maxCount = (int) (20.0F + width * 10.0F);
+                
+                // Scale particle count based on fall distance (entry height)
+                // Max count is reached at 3.0 blocks fall distance
+                float factor = net.minecraft.util.Mth.clamp(player.fallDistance / 3.0F, 0.0F, 1.0F);
+                int count = (int) (maxCount * factor);
+                
+                if (count <= 0) return;
+
+                float fluidHeight = state.getFluidState().getHeight(level, surfacePos);
+                // Spawn slightly below surface to ensure they are in fluid
+                double surfaceY = surfacePos.getY() + fluidHeight - 0.05D;
+
+                for (int i = 0; i < count; i++) {
+                    // Random position within player width
+                    double r = width * (0.5D + rand.nextDouble() * 0.5D); // 0.5 to 1.0 times width
+                    double angle = rand.nextDouble() * 2.0D * Math.PI;
+                    
+                    double offsetX = Math.cos(angle) * r;
+                    double offsetZ = Math.sin(angle) * r;
+                    
+                    double x = player.getX() + offsetX;
+                    double z = player.getZ() + offsetZ;
+
+                    // Velocity:
+                    // Outward horizontal velocity to simulate scattering
+                    double speed = 0.02D + rand.nextDouble() * 0.08D;
+                    double vx = Math.cos(angle) * speed;
+                    double vz = Math.sin(angle) * speed;
+                    
+                    // Downward vertical velocity to simulate air being pushed down
+                    // This allows bubbles to travel down then float up
+                    double vy = -0.05D - rand.nextDouble() * 0.1D;
+
+                    // Add player's momentum
+                    vx += player.getDeltaMovement().x * 0.2D;
+                    vz += player.getDeltaMovement().z * 0.2D;
+
+                    // Note: We multiply by 5.0 because HotBathBubbleParticle multiplies by 0.2
+                    level.addParticle(bubble, x, surfaceY, z, vx * 5.0D, vy * 5.0D, vz * 5.0D);
+                }
+                
+                // Add some center turbulence
+                int turbulenceCount = (int) (10 * factor);
+                for (int i = 0; i < turbulenceCount; i++) {
+                     double x = player.getX() + (rand.nextDouble() - 0.5D) * width;
+                     double z = player.getZ() + (rand.nextDouble() - 0.5D) * width;
+                     double vy = -0.1D - rand.nextDouble() * 0.2D;
+                     level.addParticle(bubble, x, surfaceY, z, 
+                        (rand.nextDouble() - 0.5D) * 0.2D, 
+                        vy * 5.0D, 
+                        (rand.nextDouble() - 0.5D) * 0.2D);
+                }
             }
         }
     }

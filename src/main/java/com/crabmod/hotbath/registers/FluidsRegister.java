@@ -63,6 +63,7 @@ public class FluidsRegister {
                             HOT_WATER_FLOWING_TEXTURE,
                             ParticleRegister.DRIPPING_HOT_WATER,
                             ParticleRegister.HOT_WATER_BUBBLE,
+                            ParticleRegister.HOT_WATER_SPLASH,
                             () -> HOT_WATER_FLUID.get()),
                     HOT_WATER_FLUID,
                     HOT_WATER_FLOWING)
@@ -101,6 +102,7 @@ public class FluidsRegister {
                             HONEY_BATH_FLOWING_TEXTURE,
                             ParticleRegister.DRIPPING_HONEY_BATH,
                             ParticleRegister.HONEY_BATH_BUBBLE,
+                            ParticleRegister.HONEY_WATER_SPLASH,
                             () -> HONEY_BATH_FLUID.get()),
                     HONEY_BATH_FLUID,
                     HONEY_BATH_FLOWING)
@@ -138,6 +140,7 @@ public class FluidsRegister {
                             MILK_BATH_FLOWING_TEXTURE,
                             ParticleRegister.DRIPPING_MILK_BATH,
                             ParticleRegister.MILK_BATH_BUBBLE,
+                            ParticleRegister.MILK_WATER_SPLASH,
                             () -> MILK_BATH_FLUID.get()),
                     MILK_BATH_FLUID,
                     MILK_BATH_FLOWING)
@@ -175,6 +178,7 @@ public class FluidsRegister {
                             HERBAL_BATH_FLOWING_TEXTURE,
                             ParticleRegister.DRIPPING_HERBAL_BATH,
                             ParticleRegister.HERBAL_BATH_BUBBLE,
+                            ParticleRegister.HERBAL_WATER_SPLASH,
                             () -> HERBAL_BATH_FLUID.get()),
                     HERBAL_BATH_FLUID,
                     HERBAL_BATH_FLOWING)
@@ -213,6 +217,7 @@ public class FluidsRegister {
                             PEONY_BATH_FLOWING_TEXTURE,
                             ParticleRegister.DRIPPING_PEONY_BATH,
                             ParticleRegister.PEONY_BATH_BUBBLE,
+                            ParticleRegister.PEONY_WATER_SPLASH,
                             () -> PEONY_BATH_FLUID.get()),
                     PEONY_BATH_FLUID,
                     PEONY_BATH_FLOWING)
@@ -251,6 +256,7 @@ public class FluidsRegister {
                             ROSE_BATH_FLOWING_TEXTURE,
                             ParticleRegister.DRIPPING_ROSE_BATH,
                             ParticleRegister.ROSE_BATH_BUBBLE,
+                            ParticleRegister.ROSE_WATER_SPLASH,
                             () -> ROSE_BATH_FLUID.get()),
                     ROSE_BATH_FLUID,
                     ROSE_BATH_FLOWING)

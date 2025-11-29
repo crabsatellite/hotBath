@@ -24,6 +24,7 @@ public class BaseFluidType extends FluidType {
     private final Vector3f fogColor;
     private final Supplier<? extends ParticleOptions> dripParticle;
     private final Supplier<? extends ParticleOptions> bubbleParticle;
+    private final Supplier<? extends ParticleOptions> splashParticle;
     private final Supplier<Fluid> fluidSupplier;
 
     public BaseFluidType(
@@ -35,6 +36,7 @@ public class BaseFluidType extends FluidType {
             final Properties properties,
             final Supplier<? extends ParticleOptions> dripParticle,
             final Supplier<? extends ParticleOptions> bubbleParticle,
+            final Supplier<? extends ParticleOptions> splashParticle,
             final Supplier<Fluid> fluidSupplier) {
         super(properties);
         this.stillTexture = stillTexture;
@@ -44,11 +46,16 @@ public class BaseFluidType extends FluidType {
         this.fogColor = fogColor;
         this.dripParticle = dripParticle;
         this.bubbleParticle = bubbleParticle;
+        this.splashParticle = splashParticle;
         this.fluidSupplier = fluidSupplier;
     }
 
     public ParticleOptions getBubbleParticle() {
         return bubbleParticle != null ? bubbleParticle.get() : null;
+    }
+
+    public ParticleOptions getSplashParticle() {
+        return splashParticle != null ? splashParticle.get() : null;
     }
 
     public ResourceLocation getStillTexture() {
