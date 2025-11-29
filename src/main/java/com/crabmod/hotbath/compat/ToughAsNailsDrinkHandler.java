@@ -5,14 +5,12 @@ import com.crabmod.hotbath.items.BathWaterEffects;
 import com.crabmod.hotbath.util.CustomFluidHandler;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 
 /**
  * Handler for ToughAsNails drinking integration.
  * Applies our bath water effects when players drink from our bath water sources.
  */
-@EventBusSubscriber(modid = HotBath.MOD_ID)
 public class ToughAsNailsDrinkHandler {
 
     /**
@@ -32,11 +30,6 @@ public class ToughAsNailsDrinkHandler {
             return;
         }
         
-        // Only apply effects if ToughAsNails is loaded
-        if (!ToughAsNailsIntegration.isToughAsNailsLoaded()) {
-            return;
-        }
-
         // Check which type of bath the player is in and apply corresponding effects
         // We only apply temperature effects, not the potion effects, since those are specific to our bottles
         if (CustomFluidHandler.isPlayerInHotWaterBlock(player)) {

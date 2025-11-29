@@ -1,6 +1,10 @@
 package com.crabmod.hotbath;
 
+import com.crabmod.hotbath.compat.ColdSweatCompat;
 import com.crabmod.hotbath.compat.ColdSweatIntegration;
+import com.crabmod.hotbath.compat.LegendarySurvivalOverhaulIntegration;
+import com.crabmod.hotbath.compat.LSOCompat;
+import com.crabmod.hotbath.compat.ToughAsNailsCompat;
 import com.crabmod.hotbath.compat.ToughAsNailsIntegration;
 import com.crabmod.hotbath.fluid_details.HotbathFluidType;
 import com.crabmod.hotbath.item.ItemGroup;
@@ -53,7 +57,7 @@ public class HotBath {
         if (ColdSweatIntegration.isColdSweatLoaded()) {
             LOGGER.info("Cold Sweat detected! Temperature integration enabled.");
             try {
-                NeoForge.EVENT_BUS.register(new com.crabmod.hotbath.compat.ColdSweatEventHandler());
+                ColdSweatCompat.init();
                 LOGGER.info("Cold Sweat event handler registered successfully.");
             } catch (Exception e) {
                 LOGGER.error("Failed to register Cold Sweat event handler: {}", e.getMessage(), e);
@@ -62,28 +66,24 @@ public class HotBath {
 
         if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {
             LOGGER.info("Tough As Nails detected! Temperature integration enabled.");
-            event.enqueueWork(() -> {
-                try {
-                    com.crabmod.hotbath.compat.ToughAsNailsRegistration.init();
-                } catch (Exception e) {
-                    LOGGER.error("Failed to initialize Tough As Nails integration: {}", e.getMessage(), e);
-                }
-            });
+            try {
+                ToughAsNailsCompat.init();
+                LOGGER.info("Tough As Nails integration registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to initialize Tough As Nails integration: {}", e.getMessage(), e);
+            }
+        }
+
+        if (LegendarySurvivalOverhaulIntegration.isLSOLoaded()) {
+            LOGGER.info("Legendary Survival Overhaul detected! Integration enabled.");
+            try {
+                LSOCompat.init();
+                LOGGER.info("LSO integration registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register LSO integration: {}", e.getMessage(), e);
+            }
         }
     }
-
-//  Duplicated register
-//  private void addCreative(BuildCreativeModeTabContentsEvent event) {
-//    if (event.getTab() == ItemGroup.HOT_BATH_TAB.get()) {
-//      event.accept(ItemRegister.HERBAL_BATH_BUCKET.get());
-//      event.accept(ItemRegister.HONEY_BATH_BUCKET.get());
-//      event.accept(ItemRegister.HOT_WATER_BUCKET.get());
-//      event.accept(ItemRegister.MILK_BATH_BUCKET.get());
-//      event.accept(ItemRegister.PEONY_BATH_BUCKET.get());
-//      event.accept(ItemRegister.ROSE_BATH_BUCKET.get());
-//      event.accept(ItemRegister.BATH_HERB.get());
-//    }
-//  }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
@@ -127,23 +127,4 @@ public class HotBath {
                     FluidsRegister.HERBAL_BATH_FLOWING.get(), RenderType.translucent());
         }
     }
-
-//  // Register the setup method for modloading
-//  @ObjectHolder(registryName = "minecraft:block", value = "hotbath:hot_water_block")
-//  public static final HotWaterBlock HOT_WATER_BLOCK = null;
-//
-//  @ObjectHolder(registryName = "minecraft:block", value = "hotbath:herbal_bath_block")
-//  public static final HerbalBathBlock HERBAL_BATH_BLOCK = null;
-//
-//  @ObjectHolder(registryName = "minecraft:block", value = "hotbath:honey_bath_block")
-//  public static final HoneyBathBlock HONEY_BATH_BLOCK = null;
-//
-//  @ObjectHolder(registryName = "minecraft:block", value = "hotbath:milk_bath_block")
-//  public static final MilkBathBlock MILK_BATH_BLOCK = null;
-//
-//  @ObjectHolder(registryName = "minecraft:block", value = "hotbath:peony_bath_block")
-//  public static final PeonyBathBlock PEONY_BATH_BLOCK = null;
-//
-//  @ObjectHolder(registryName = "minecraft:block", value = "hotbath:rose_bath_block")
-//  public static final RoseBathBlock ROSE_BATH_BLOCK = null;
 }
