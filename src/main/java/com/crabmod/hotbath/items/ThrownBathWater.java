@@ -128,11 +128,11 @@ public class ThrownBathWater extends ThrowableItemProjectile {
                 for(int i = 0; i < 16; ++i) {
                     double d0 = (this.random.nextDouble() * 2.0D - 1.0D) * 0.5D;
                     double d1 = (this.random.nextDouble() * 2.0D - 1.0D) * 0.5D;
-                    this.level().addParticle(particleType, this.getX() + d0, this.getY(), this.getZ() + d1, d0, 0.2D, d1);
+                    this.level().addParticle(particleType, this.getX() + d0, this.getY() + 0.2D, this.getZ() + d1, d0, 0.2D, d1);
                 }
             } else {
                 for(int i = 0; i < 8; ++i) {
-                    this.level().addParticle(particleType, this.getX(), this.getY(), this.getZ(), 
+                    this.level().addParticle(particleType, this.getX(), this.getY() + 0.2D, this.getZ(), 
                         ((double)this.random.nextFloat() - 0.5D) * 0.08D, 
                         ((double)this.random.nextFloat() - 0.5D) * 0.08D, 
                         ((double)this.random.nextFloat() - 0.5D) * 0.08D);
@@ -141,7 +141,7 @@ public class ThrownBathWater extends ThrowableItemProjectile {
 
             if (bubbleParticleType != null) {
                 for(int i = 0; i < 8; ++i) {
-                    this.level().addParticle(bubbleParticleType, this.getX(), this.getY(), this.getZ(), 
+                    this.level().addParticle(bubbleParticleType, this.getX(), this.getY() + 0.2D, this.getZ(), 
                         ((double)this.random.nextFloat() - 0.5D) * 0.08D, 
                         ((double)this.random.nextFloat() - 0.5D) * 0.08D, 
                         ((double)this.random.nextFloat() - 0.5D) * 0.08D);
@@ -150,7 +150,7 @@ public class ThrownBathWater extends ThrowableItemProjectile {
             
             // Also add item break particles
             for(int j = 0; j < 8; ++j) {
-                 this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), this.getX(), this.getY(), this.getZ(), ((double)this.random.nextFloat() - 0.5D) * 0.15D, 0.15D, ((double)this.random.nextFloat() - 0.5D) * 0.15D);
+                 this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), this.getX(), this.getY() + 0.2D, this.getZ(), ((double)this.random.nextFloat() - 0.5D) * 0.15D, 0.15D, ((double)this.random.nextFloat() - 0.5D) * 0.15D);
             }
         }
     }
