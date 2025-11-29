@@ -132,12 +132,18 @@ public class HotBath {
 
         @SubscribeEvent
         public static void registerParticles(RegisterParticleProvidersEvent event) {
-            event.registerSpriteSet(ParticleRegister.HOT_WATER_SPLASH.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
-            event.registerSpriteSet(ParticleRegister.HONEY_WATER_SPLASH.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
-            event.registerSpriteSet(ParticleRegister.MILK_WATER_SPLASH.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
-            event.registerSpriteSet(ParticleRegister.HERBAL_WATER_SPLASH.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
-            event.registerSpriteSet(ParticleRegister.PEONY_WATER_SPLASH.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
-            event.registerSpriteSet(ParticleRegister.ROSE_WATER_SPLASH.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HOT_WATER_SPLASH.get(), net.minecraft.client.particle.SplashParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HONEY_WATER_SPLASH.get(), net.minecraft.client.particle.SplashParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.MILK_WATER_SPLASH.get(), net.minecraft.client.particle.SplashParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HERBAL_WATER_SPLASH.get(), net.minecraft.client.particle.SplashParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.PEONY_WATER_SPLASH.get(), net.minecraft.client.particle.SplashParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.ROSE_WATER_SPLASH.get(), net.minecraft.client.particle.SplashParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HOT_WATER_EFFECT.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HONEY_BATH_EFFECT.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.MILK_BATH_EFFECT.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HERBAL_BATH_EFFECT.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.PEONY_BATH_EFFECT.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.ROSE_BATH_EFFECT.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
 
             // Bubbles
             event.registerSpriteSet(ParticleRegister.HOT_WATER_BUBBLE.get(), net.minecraft.client.particle.BubbleParticle.Provider::new);

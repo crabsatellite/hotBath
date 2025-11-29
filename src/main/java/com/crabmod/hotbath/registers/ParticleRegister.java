@@ -33,6 +33,24 @@ public class ParticleRegister {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> ROSE_WATER_SPLASH =
             PARTICLE_TYPES.register("rose_water_splash", () -> new SimpleParticleType(true));
 
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HOT_WATER_EFFECT =
+            PARTICLE_TYPES.register("hot_water_effect", () -> new SimpleParticleType(true));
+
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HONEY_BATH_EFFECT =
+            PARTICLE_TYPES.register("honey_bath_effect", () -> new SimpleParticleType(true));
+
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> MILK_BATH_EFFECT =
+            PARTICLE_TYPES.register("milk_bath_effect", () -> new SimpleParticleType(true));
+
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HERBAL_BATH_EFFECT =
+            PARTICLE_TYPES.register("herbal_bath_effect", () -> new SimpleParticleType(true));
+
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> PEONY_BATH_EFFECT =
+            PARTICLE_TYPES.register("peony_bath_effect", () -> new SimpleParticleType(true));
+
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> ROSE_BATH_EFFECT =
+            PARTICLE_TYPES.register("rose_bath_effect", () -> new SimpleParticleType(true));
+
     // Bubbles
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HOT_WATER_BUBBLE =
             PARTICLE_TYPES.register("hot_water_bubble", () -> new SimpleParticleType(false));

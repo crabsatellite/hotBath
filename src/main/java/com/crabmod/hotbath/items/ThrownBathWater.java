@@ -80,13 +80,34 @@ public class ThrownBathWater extends ThrowableItemProjectile {
             if (stack.getItem() instanceof SplashBathWaterBottleItem splashItem) {
                 particleType = splashItem.getParticleType();
                 bubbleParticleType = splashItem.getBubbleParticleType();
-            }
 
-            for(int i = 0; i < 8; ++i) {
-                this.level().addParticle(particleType, this.getX(), this.getY(), this.getZ(), 
-                    ((double)this.random.nextFloat() - 0.5D) * 0.08D, 
-                    ((double)this.random.nextFloat() - 0.5D) * 0.08D, 
-                    ((double)this.random.nextFloat() - 0.5D) * 0.08D);
+                int color = splashItem.getColor();
+                double r = ((color >> 16) & 0xFF) / 255.0;
+                double g = ((color >> 8) & 0xFF) / 255.0;
+                double b = (color & 0xFF) / 255.0;
+
+                SimpleParticleType effectParticle = splashItem.getEffectParticleType();
+                for(int k = 0; k < 100; ++k) {
+                    double d3 = this.random.nextDouble() * 4.0D;
+                    double d4 = this.random.nextDouble() * Math.PI * 2.0D;
+                    double d5 = Math.cos(d4) * d3;
+                    double d6 = 0.01D + this.random.nextDouble() * 0.5D;
+                    double d7 = Math.sin(d4) * d3;
+                    this.level().addParticle(effectParticle, this.getX() + d5 * 0.1D, this.getY() + 0.3D, this.getZ() + d7 * 0.1D, r, g, b);
+                }
+
+                for(int i = 0; i < 16; ++i) {
+                    double d0 = (this.random.nextDouble() * 2.0D - 1.0D) * 0.5D;
+                    double d1 = (this.random.nextDouble() * 2.0D - 1.0D) * 0.5D;
+                    this.level().addParticle(particleType, this.getX() + d0, this.getY(), this.getZ() + d1, d0, 0.2D, d1);
+                }
+            } else {
+                for(int i = 0; i < 8; ++i) {
+                    this.level().addParticle(particleType, this.getX(), this.getY(), this.getZ(), 
+                        ((double)this.random.nextFloat() - 0.5D) * 0.08D, 
+                        ((double)this.random.nextFloat() - 0.5D) * 0.08D, 
+                        ((double)this.random.nextFloat() - 0.5D) * 0.08D);
+                }
             }
 
             if (bubbleParticleType != null) {
