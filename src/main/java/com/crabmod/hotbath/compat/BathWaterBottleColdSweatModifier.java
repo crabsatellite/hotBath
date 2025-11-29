@@ -36,6 +36,13 @@ public class BathWaterBottleColdSweatModifier extends TempModifier {
         WARM_PLAYERS.put(player.getUUID(), System.currentTimeMillis() + WARM_DURATION_MS);
     }
 
+    /**
+     * Apply warm effect to player for 10 seconds (for splash potions)
+     */
+    public static void applySplashWarmEffect(Player player) {
+        WARM_PLAYERS.put(player.getUUID(), System.currentTimeMillis() + 10_000);
+    }
+
     @Override
     protected Function<Double, Double> calculate(LivingEntity entity, Temperature.Trait trait) {
         // We only modify the WORLD temperature trait

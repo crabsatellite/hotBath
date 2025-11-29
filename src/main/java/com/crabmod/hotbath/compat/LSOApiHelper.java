@@ -131,4 +131,22 @@ public class LSOApiHelper {
     public static float getSaturation() {
         return SATURATION;
     }
+    
+    /**
+     * Apply COLD_RESISTANCE effect for splash bottle (Level 2, 10 seconds)
+     */
+    public static void applySplashTemperatureEffect(Player player) {
+        MobEffect coldResistance = MobEffectRegistry.COLD_RESISTANCE.get();
+        Holder<MobEffect> coldResistanceHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(coldResistance);
+        
+        MobEffectInstance effect = new MobEffectInstance(
+            coldResistanceHolder,
+            200, // 10 seconds
+            1, // Level 2 (Amplifier 1)
+            false,
+            false,
+            true
+        );
+        player.addEffect(effect);
+    }
 }

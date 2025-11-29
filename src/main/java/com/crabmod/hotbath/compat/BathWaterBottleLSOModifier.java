@@ -22,4 +22,11 @@ public class BathWaterBottleLSOModifier {
         
         LSOApiHelper.applyBottleTemperatureEffect(player, isBathing);
     }
+
+    /**
+     * Apply warm effect to player for 10 seconds (for splash potions)
+     */
+    public static void applySplashWarmEffect(Player player) {
+        LSOApiHelper.applySplashTemperatureEffect(player);
+    }
 }
