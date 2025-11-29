@@ -93,32 +93,32 @@ public class ItemRegister {
     public static final DeferredHolder<Item, Item> SPLASH_HOT_WATER_BOTTLE =
             ITEMS.register("splash_hot_water_bottle",
                     () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), 
-                            BathWaterEffects::hotWaterEffect, ParticleRegister.HOT_WATER_SPLASH));
+                            BathWaterEffects::hotWaterEffect, ParticleRegister.HOT_WATER_SPLASH, ParticleRegister.HOT_WATER_BUBBLE));
 
     public static final DeferredHolder<Item, Item> SPLASH_HONEY_BATH_BOTTLE =
             ITEMS.register("splash_honey_bath_bottle",
                     () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), 
-                            BathWaterEffects::honeyBathEffect, ParticleRegister.HONEY_WATER_SPLASH));
+                            BathWaterEffects::honeyBathEffect, ParticleRegister.HONEY_WATER_SPLASH, ParticleRegister.HONEY_BATH_BUBBLE));
 
     public static final DeferredHolder<Item, Item> SPLASH_MILK_BATH_BOTTLE =
             ITEMS.register("splash_milk_bath_bottle",
                     () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), 
-                            BathWaterEffects::milkBathEffect, ParticleRegister.MILK_WATER_SPLASH));
+                            BathWaterEffects::milkBathEffect, ParticleRegister.MILK_WATER_SPLASH, ParticleRegister.MILK_BATH_BUBBLE));
 
     public static final DeferredHolder<Item, Item> SPLASH_HERBAL_BATH_BOTTLE =
             ITEMS.register("splash_herbal_bath_bottle",
                     () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), 
-                            BathWaterEffects::herbalBathEffect, ParticleRegister.HERBAL_WATER_SPLASH));
+                            BathWaterEffects::herbalBathEffect, ParticleRegister.HERBAL_WATER_SPLASH, ParticleRegister.HERBAL_BATH_BUBBLE));
 
     public static final DeferredHolder<Item, Item> SPLASH_PEONY_BATH_BOTTLE =
             ITEMS.register("splash_peony_bath_bottle",
                     () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), 
-                            BathWaterEffects::peonyBathEffect, ParticleRegister.PEONY_WATER_SPLASH));
+                            BathWaterEffects::peonyBathEffect, ParticleRegister.PEONY_WATER_SPLASH, ParticleRegister.PEONY_BATH_BUBBLE));
 
     public static final DeferredHolder<Item, Item> SPLASH_ROSE_BATH_BOTTLE =
             ITEMS.register("splash_rose_bath_bottle",
                     () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), 
-                            BathWaterEffects::roseBathEffect, ParticleRegister.ROSE_WATER_SPLASH));
+                            BathWaterEffects::roseBathEffect, ParticleRegister.ROSE_WATER_SPLASH, ParticleRegister.ROSE_BATH_BUBBLE));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

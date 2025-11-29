@@ -56,6 +56,7 @@ public class HotBath {
         HotbathFluidType.register(modEventBus);
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::onBrewingRecipeRegister);
 
         // Register ourselves for server and other game events we are interested in
         NeoForge.EVENT_BUS.register(this);
@@ -110,7 +111,9 @@ public class HotBath {
 
     // You can use EventBusSubscriber to automatically register all static methods in the class
     // annotated with @SubscribeEvent
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ClientModEvents {
+        @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(EntityRegister.THROWN_BATH_WATER.get(), ThrownItemRenderer::new);
 
@@ -128,6 +131,7 @@ public class HotBath {
             ItemBlockRenderTypes.setRenderLayer(FluidsRegister.ROSE_BATH_FLOWING.get(), RenderType.translucent());
         }
 
+        @SubscribeEvent
         public static void registerParticles(RegisterParticleProvidersEvent event) {
             event.registerSpriteSet(ParticleRegister.HOT_WATER_SPLASH.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
             event.registerSpriteSet(ParticleRegister.HONEY_WATER_SPLASH.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
@@ -188,7 +192,6 @@ public class HotBath {
         }
     }
 
-    @SubscribeEvent
     public void onBrewingRecipeRegister(net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent event) {
         event.getBuilder().addRecipe(Ingredient.of(ItemRegister.HOT_WATER_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_HOT_WATER_BOTTLE.get().getDefaultInstance());
         event.getBuilder().addRecipe(Ingredient.of(ItemRegister.HONEY_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_HONEY_BATH_BOTTLE.get().getDefaultInstance());

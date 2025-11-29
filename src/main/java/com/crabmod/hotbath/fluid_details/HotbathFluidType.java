@@ -1,6 +1,7 @@
 package com.crabmod.hotbath.fluid_details;
 
 import com.crabmod.hotbath.HotBath;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.neoforged.bus.api.IEventBus;
@@ -26,7 +27,8 @@ public class HotbathFluidType {
             String name,
             int color,
             ResourceLocation STILL_RL_TEXTURE,
-            ResourceLocation FLOWING_RL_TEXTURE) {
+            ResourceLocation FLOWING_RL_TEXTURE,
+            Supplier<? extends ParticleOptions> dripParticle) {
         return register(
                 name,
                 FluidType.Properties.create()
@@ -44,7 +46,8 @@ public class HotbathFluidType {
                         .canHydrate(true),
                 color,
                 STILL_RL_TEXTURE,
-                FLOWING_RL_TEXTURE);
+                FLOWING_RL_TEXTURE,
+                dripParticle);
     }
 
     private static DeferredHolder<FluidType, FluidType> register(
@@ -52,7 +55,8 @@ public class HotbathFluidType {
             FluidType.Properties properties,
             int FLUID_COLOR,
             ResourceLocation STILL_RL_TEXTURE,
-            ResourceLocation FLOWING_RL_TEXTURE) {
+            ResourceLocation FLOWING_RL_TEXTURE,
+            Supplier<? extends ParticleOptions> dripParticle) {
         return FLUID_TYPES.register(
                 name,
                 () ->
@@ -62,7 +66,8 @@ public class HotbathFluidType {
                                 WATER_OVERLAY_RL,
                                 FLUID_COLOR,
                                 DEFAULT_FOG_COLOR,
-                                properties));
+                                properties,
+                                dripParticle));
     }
 
     public static void register(IEventBus eventBus) {

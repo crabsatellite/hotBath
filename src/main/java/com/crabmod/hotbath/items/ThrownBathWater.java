@@ -69,9 +69,11 @@ public class ThrownBathWater extends ThrowableItemProjectile {
         if (id == 3) {
             ItemStack stack = this.getItem();
             SimpleParticleType particleType = ParticleTypes.SPLASH; // Default
-            
+            SimpleParticleType bubbleParticleType = null;
+
             if (stack.getItem() instanceof SplashBathWaterBottleItem splashItem) {
                 particleType = splashItem.getParticleType();
+                bubbleParticleType = splashItem.getBubbleParticleType();
             }
 
             for(int i = 0; i < 8; ++i) {
@@ -79,6 +81,15 @@ public class ThrownBathWater extends ThrowableItemProjectile {
                     ((double)this.random.nextFloat() - 0.5D) * 0.08D, 
                     ((double)this.random.nextFloat() - 0.5D) * 0.08D, 
                     ((double)this.random.nextFloat() - 0.5D) * 0.08D);
+            }
+
+            if (bubbleParticleType != null) {
+                for(int i = 0; i < 8; ++i) {
+                    this.level().addParticle(bubbleParticleType, this.getX(), this.getY(), this.getZ(), 
+                        ((double)this.random.nextFloat() - 0.5D) * 0.08D, 
+                        ((double)this.random.nextFloat() - 0.5D) * 0.08D, 
+                        ((double)this.random.nextFloat() - 0.5D) * 0.08D);
+                }
             }
             
             // Also add item break particles

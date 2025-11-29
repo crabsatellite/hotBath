@@ -60,7 +60,8 @@ public class FluidsRegister {
                             "hot_water_fluid_type",
                             HOT_WATER_COLOR,
                             HOT_WATER_STILL_TEXTURE,
-                            HOT_WATER_FLOWING_TEXTURE),
+                            HOT_WATER_FLOWING_TEXTURE,
+                            ParticleRegister.DRIPPING_HOT_WATER),
                     HOT_WATER_FLUID,
                     HOT_WATER_FLOWING)
                     .slopeFindDistance(2)
@@ -95,7 +96,8 @@ public class FluidsRegister {
                             "honey_bath_fluid_type",
                             HONEY_BATH_COLOR,
                             HONEY_BATH_STILL_TEXTURE,
-                            HONEY_BATH_FLOWING_TEXTURE),
+                            HONEY_BATH_FLOWING_TEXTURE,
+                            ParticleRegister.DRIPPING_HONEY_BATH),
                     HONEY_BATH_FLUID,
                     HONEY_BATH_FLOWING)
                     .slopeFindDistance(2)
@@ -129,13 +131,49 @@ public class FluidsRegister {
                             "milk_bath_fluid_type",
                             MILK_BATH_COLOR,
                             MILK_BATH_STILL_TEXTURE,
-                            MILK_BATH_FLOWING_TEXTURE),
+                            MILK_BATH_FLOWING_TEXTURE,
+                            ParticleRegister.DRIPPING_MILK_BATH),
                     MILK_BATH_FLUID,
                     MILK_BATH_FLOWING)
                     .slopeFindDistance(2)
                     .levelDecreasePerBlock(2)
                     .block(MILK_BATH_BLOCK)
                     .bucket(ItemRegister.MILK_BATH_BUCKET);
+
+    public static final DeferredHolder<Fluid, FlowingFluid> HERBAL_BATH_FLUID =
+            FLUIDS.register(
+                    "herbal_bath_fluid",
+                    () -> new BaseFlowingFluid.Source(FluidsRegister.HERBAL_BATH_PROPERTIES));
+
+    public static final DeferredHolder<Fluid, FlowingFluid> HERBAL_BATH_FLOWING =
+            FLUIDS.register(
+                    "herbal_bath_flowing",
+                    () -> new BaseFlowingFluid.Flowing(FluidsRegister.HERBAL_BATH_PROPERTIES));
+    public static final DeferredHolder<Block, LiquidBlock> HERBAL_BATH_BLOCK =
+            BlocksRegister.BLOCKS.register(
+                    "herbal_bath_block",
+                    () ->
+                            new HerbalBathBlock(
+                                    HERBAL_BATH_FLUID,
+                                    Block.Properties.ofFullCopy(Blocks.WATER)
+                                            .noCollission()
+                                            .strength(1000.0F)
+                                            .noOcclusion()));
+
+    public static final BaseFlowingFluid.Properties HERBAL_BATH_PROPERTIES =
+            new BaseFlowingFluid.Properties(
+                    getHotBathFluidType(
+                            "herbal_bath_fluid_type",
+                            HERBAL_BATH_COLOR,
+                            HERBAL_BATH_STILL_TEXTURE,
+                            HERBAL_BATH_FLOWING_TEXTURE,
+                            ParticleRegister.DRIPPING_HERBAL_BATH),
+                    HERBAL_BATH_FLUID,
+                    HERBAL_BATH_FLOWING)
+                    .slopeFindDistance(2)
+                    .levelDecreasePerBlock(2)
+                    .block(HERBAL_BATH_BLOCK)
+                    .bucket(ItemRegister.HERBAL_BATH_BUCKET);
 
     public static final DeferredHolder<Fluid, FlowingFluid> PEONY_BATH_FLUID =
             FLUIDS.register(
@@ -164,7 +202,8 @@ public class FluidsRegister {
                             "peony_bath_fluid_type",
                             PEONY_BATH_COLOR,
                             PEONY_BATH_STILL_TEXTURE,
-                            PEONY_BATH_FLOWING_TEXTURE),
+                            PEONY_BATH_FLOWING_TEXTURE,
+                            ParticleRegister.DRIPPING_PEONY_BATH),
                     PEONY_BATH_FLUID,
                     PEONY_BATH_FLOWING)
                     .slopeFindDistance(2)
@@ -199,47 +238,14 @@ public class FluidsRegister {
                             "rose_bath_fluid_type",
                             ROSE_BATH_COLOR,
                             ROSE_BATH_STILL_TEXTURE,
-                            ROSE_BATH_FLOWING_TEXTURE),
+                            ROSE_BATH_FLOWING_TEXTURE,
+                            ParticleRegister.DRIPPING_ROSE_BATH),
                     ROSE_BATH_FLUID,
                     ROSE_BATH_FLOWING)
                     .slopeFindDistance(2)
                     .levelDecreasePerBlock(2)
                     .block(ROSE_BATH_BLOCK)
                     .bucket(ItemRegister.ROSE_BATH_BUCKET);
-
-    public static final DeferredHolder<Fluid, FlowingFluid> HERBAL_BATH_FLUID =
-            FLUIDS.register(
-                    "herbal_bath_fluid",
-                    () -> new BaseFlowingFluid.Source(FluidsRegister.HERBAL_BATH_PROPERTIES));
-
-    public static final DeferredHolder<Fluid, FlowingFluid> HERBAL_BATH_FLOWING =
-            FLUIDS.register(
-                    "herbal_bath_flowing",
-                    () -> new BaseFlowingFluid.Flowing(FluidsRegister.HERBAL_BATH_PROPERTIES));
-    public static final DeferredHolder<Block, LiquidBlock> HERBAL_BATH_BLOCK =
-            BlocksRegister.BLOCKS.register(
-                    "herbal_bath_block",
-                    () ->
-                            new HerbalBathBlock(
-                                    HERBAL_BATH_FLUID,
-                                    Block.Properties.ofFullCopy(Blocks.WATER)
-                                            .noCollission()
-                                            .strength(1000.0F)
-                                            .noOcclusion()));
-
-    public static final BaseFlowingFluid.Properties HERBAL_BATH_PROPERTIES =
-            new BaseFlowingFluid.Properties(
-                    getHotBathFluidType(
-                            "herbal_bath_fluid_type",
-                            HERBAL_BATH_COLOR,
-                            HERBAL_BATH_STILL_TEXTURE,
-                            HERBAL_BATH_FLOWING_TEXTURE),
-                    HERBAL_BATH_FLUID,
-                    HERBAL_BATH_FLOWING)
-                    .slopeFindDistance(2)
-                    .levelDecreasePerBlock(2)
-                    .block(HERBAL_BATH_BLOCK)
-                    .bucket(ItemRegister.HERBAL_BATH_BUCKET);
 
     public static void register(IEventBus eventBus) {
         FLUIDS.register(eventBus);

@@ -18,11 +18,13 @@ import java.util.function.Supplier;
 public class SplashBathWaterBottleItem extends Item {
     private final Consumer<LivingEntity> drinkEffect;
     private final Supplier<SimpleParticleType> particleType;
+    private final Supplier<SimpleParticleType> bubbleParticleType;
 
-    public SplashBathWaterBottleItem(Properties properties, Consumer<LivingEntity> drinkEffect, Supplier<SimpleParticleType> particleType) {
+    public SplashBathWaterBottleItem(Properties properties, Consumer<LivingEntity> drinkEffect, Supplier<SimpleParticleType> particleType, Supplier<SimpleParticleType> bubbleParticleType) {
         super(properties);
         this.drinkEffect = drinkEffect;
         this.particleType = particleType;
+        this.bubbleParticleType = bubbleParticleType;
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
@@ -55,5 +57,9 @@ public class SplashBathWaterBottleItem extends Item {
 
     public SimpleParticleType getParticleType() {
         return particleType.get();
+    }
+
+    public SimpleParticleType getBubbleParticleType() {
+        return bubbleParticleType.get();
     }
 }

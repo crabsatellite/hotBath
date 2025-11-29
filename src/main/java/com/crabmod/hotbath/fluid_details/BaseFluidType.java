@@ -2,13 +2,16 @@ package com.crabmod.hotbath.fluid_details;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class BaseFluidType extends FluidType {
     private final ResourceLocation stillTexture;
@@ -16,6 +19,7 @@ public class BaseFluidType extends FluidType {
     private final ResourceLocation overlayTexture;
     private final int tintColor;
     private final Vector3f fogColor;
+    private final Supplier<? extends ParticleOptions> dripParticle;
 
     public BaseFluidType(
             final ResourceLocation stillTexture,
@@ -23,13 +27,15 @@ public class BaseFluidType extends FluidType {
             final ResourceLocation overlayTexture,
             final int tintColor,
             final Vector3f fogColor,
-            final Properties properties) {
+            final Properties properties,
+            final Supplier<? extends ParticleOptions> dripParticle) {
         super(properties);
         this.stillTexture = stillTexture;
         this.flowingTexture = flowingTexture;
         this.overlayTexture = overlayTexture;
         this.tintColor = tintColor;
         this.fogColor = fogColor;
+        this.dripParticle = dripParticle;
     }
 
     public ResourceLocation getStillTexture() {
@@ -75,6 +81,11 @@ public class BaseFluidType extends FluidType {
                     @Override
                     public int getTintColor() {
                         return tintColor;
+                    }
+
+                    @Override
+                    public @Nullable ParticleOptions getDripParticle() {
+                        return dripParticle != null ? dripParticle.get() : super.getDripParticle();
                     }
 
                     @Override
