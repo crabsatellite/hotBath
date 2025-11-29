@@ -4,6 +4,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -22,6 +23,7 @@ public class BaseFluidType extends FluidType {
     private final int tintColor;
     private final Vector3f fogColor;
     private final Supplier<? extends ParticleOptions> dripParticle;
+    private final Supplier<? extends ParticleOptions> bubbleParticle;
     private final Supplier<Fluid> fluidSupplier;
 
     public BaseFluidType(
@@ -32,6 +34,7 @@ public class BaseFluidType extends FluidType {
             final Vector3f fogColor,
             final Properties properties,
             final Supplier<? extends ParticleOptions> dripParticle,
+            final Supplier<? extends ParticleOptions> bubbleParticle,
             final Supplier<Fluid> fluidSupplier) {
         super(properties);
         this.stillTexture = stillTexture;
@@ -40,7 +43,12 @@ public class BaseFluidType extends FluidType {
         this.tintColor = tintColor;
         this.fogColor = fogColor;
         this.dripParticle = dripParticle;
+        this.bubbleParticle = bubbleParticle;
         this.fluidSupplier = fluidSupplier;
+    }
+
+    public ParticleOptions getBubbleParticle() {
+        return bubbleParticle != null ? bubbleParticle.get() : null;
     }
 
     public ResourceLocation getStillTexture() {
@@ -68,7 +76,7 @@ public class BaseFluidType extends FluidType {
         // Default chance is 0.17578125F (same as water)
         // We return our custom particle and fluid
         if (dripParticle != null) {
-            return new FluidType.DripstoneDripInfo(0.17578125F, dripParticle.get(), fluidSupplier != null ? fluidSupplier.get() : null);
+            return new FluidType.DripstoneDripInfo(0.17578125F, dripParticle.get(), fluidSupplier != null ? fluidSupplier.get().defaultFluidState().createLegacyBlock().getBlock() : null);
         }
         return super.getDripInfo();
     }

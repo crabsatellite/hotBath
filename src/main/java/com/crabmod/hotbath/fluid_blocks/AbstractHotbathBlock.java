@@ -5,10 +5,15 @@ import com.crabmod.hotbath.util.ParticleGenerator;
 import com.crabmod.hotbath.util.SoundHandler;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -18,12 +23,49 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
+import com.crabmod.hotbath.fluid_details.BaseFluidType;
+import net.neoforged.neoforge.fluids.FluidType;
+
 public abstract class AbstractHotbathBlock extends LiquidBlock {
     private static final String HOTBATH_UNDERWATER_STATE = "HotbathUnderwaterState";
     private static final String HOTBATH_ENTER_WATER_STATE = "HotbathEnterWaterState";
 
     protected AbstractHotbathBlock(Supplier<? extends FlowingFluid> supplier, Properties properties) {
         super(supplier.get(), properties);
+    }
+
+    @Override
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        super.entityInside(state, level, pos, entity);
+        
+        // Bubble column physics
+        int direction = getBubbleColumnDirection(level, pos);
+        if (direction != 0) {
+            boolean dragDown = direction < 0;
+            BlockState stateAbove = level.getBlockState(pos.above());
+            if (stateAbove.isAir()) {
+                entity.onAboveBubbleCol(dragDown);
+            } else {
+                entity.onInsideBubbleColumn(dragDown);
+            }
+        }
+    }
+
+    private int getBubbleColumnDirection(Level level, BlockPos pos) {
+        BlockPos.MutableBlockPos mutablePos = pos.mutable();
+        FluidType currentFluidType = level.getFluidState(pos).getFluidType();
+        
+        // Limit scan to avoid lag, but allow deep oceans
+        for (int i = 0; i < 384; i++) {
+            mutablePos.move(Direction.DOWN);
+            BlockState state = level.getBlockState(mutablePos);
+            if (state.is(Blocks.SOUL_SAND)) return 1;
+            if (state.is(Blocks.MAGMA_BLOCK)) return -1;
+            
+            // Stop if we hit a solid block or a different fluid
+            if (!state.is(this) && state.getFluidState().getFluidType() != currentFluidType) return 0;
+        }
+        return 0;
     }
 
     @Override
@@ -36,6 +78,29 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
 
         // Generate steam particles at random adjacent air blocks
         generateSteamParticles(worldIn, pos, rand);
+
+        // Bubble column particles
+        int direction = getBubbleColumnDirection(worldIn, pos);
+        if (direction != 0) {
+            if (direction > 0) {
+                 ParticleOptions bubbleParticle = null;
+                 FluidType fluidType = stateIn.getFluidState().getFluidType();
+                 if (fluidType instanceof BaseFluidType baseFluidType) {
+                     bubbleParticle = baseFluidType.getBubbleParticle();
+                 }
+                 if (bubbleParticle == null) bubbleParticle = ParticleTypes.BUBBLE_COLUMN_UP;
+
+                 worldIn.addParticle(bubbleParticle, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0D, 0.04D, 0.0D);
+                 if (rand.nextInt(200) == 0) {
+                     worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), net.minecraft.sounds.SoundEvents.BUBBLE_COLUMN_UPWARDS_AMBIENT, net.minecraft.sounds.SoundSource.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
+                 }
+            } else {
+                 worldIn.addParticle(ParticleTypes.CURRENT_DOWN, pos.getX() + 0.5D, pos.getY() + 0.8D, pos.getZ() + 0.5D, 0.0D, -0.04D, 0.0D);
+                 if (rand.nextInt(200) == 0) {
+                     worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), net.minecraft.sounds.SoundEvents.BUBBLE_COLUMN_WHIRLPOOL_AMBIENT, net.minecraft.sounds.SoundSource.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
+                 }
+            }
+        }
 
         // Set the maximum distance in squared units to avoid unnecessary checks
         final double maxDistanceSqr = 3.0 * 3.0;

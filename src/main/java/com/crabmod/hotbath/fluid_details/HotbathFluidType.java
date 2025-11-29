@@ -32,7 +32,8 @@ public class HotbathFluidType {
             ResourceLocation STILL_RL_TEXTURE,
             ResourceLocation FLOWING_RL_TEXTURE,
             Supplier<? extends ParticleOptions> dripParticle,
-            Supplier<Fluid> fluidSupplier) {
+            Supplier<? extends ParticleOptions> bubbleParticle,
+            Supplier<? extends Fluid> fluidSupplier) {
         return register(
                 name,
                 FluidType.Properties.create()
@@ -52,7 +53,8 @@ public class HotbathFluidType {
                 STILL_RL_TEXTURE,
                 FLOWING_RL_TEXTURE,
                 dripParticle,
-                fluidSupplier);
+                bubbleParticle,
+                (Supplier<Fluid>) fluidSupplier);
     }
 
     private static DeferredHolder<FluidType, FluidType> register(
@@ -62,6 +64,7 @@ public class HotbathFluidType {
             ResourceLocation STILL_RL_TEXTURE,
             ResourceLocation FLOWING_RL_TEXTURE,
             Supplier<? extends ParticleOptions> dripParticle,
+            Supplier<? extends ParticleOptions> bubbleParticle,
             Supplier<Fluid> fluidSupplier) {
         return FLUID_TYPES.register(
                 name,
@@ -74,6 +77,7 @@ public class HotbathFluidType {
                                 DEFAULT_FOG_COLOR,
                                 properties,
                                 dripParticle,
+                                bubbleParticle,
                                 fluidSupplier));
     }
 
