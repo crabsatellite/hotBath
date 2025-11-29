@@ -1,12 +1,12 @@
 {
   "textures": [
-    "hotbath:herbal_bath_effect_0",
-    "hotbath:herbal_bath_effect_1",
-    "hotbath:herbal_bath_effect_2",
-    "hotbath:herbal_bath_effect_3",
-    "hotbath:herbal_bath_effect_4",
-    "hotbath:herbal_bath_effect_5",
-    "hotbath:herbal_bath_effect_6",
-    "hotbath:herbal_bath_effect_7"
+    "hotbath:effect/herbal_water_effect_0",
+    "hotbath:effect/herbal_water_effect_1",
+    "hotbath:effect/herbal_water_effect_2",
+    "hotbath:effect/herbal_water_effect_3",
+    "hotbath:effect/herbal_water_effect_4",
+    "hotbath:effect/herbal_water_effect_5",
+    "hotbath:effect/herbal_water_effect_6",
+    "hotbath:effect/herbal_water_effect_7"
   ]
 }

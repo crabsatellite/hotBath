@@ -1,12 +1,12 @@
 {
   "textures": [
-    "hotbath:honey_bath_effect_0",
-    "hotbath:honey_bath_effect_1",
-    "hotbath:honey_bath_effect_2",
-    "hotbath:honey_bath_effect_3",
-    "hotbath:honey_bath_effect_4",
-    "hotbath:honey_bath_effect_5",
-    "hotbath:honey_bath_effect_6",
-    "hotbath:honey_bath_effect_7"
+    "hotbath:effect/honey_water_effect_0",
+    "hotbath:effect/honey_water_effect_1",
+    "hotbath:effect/honey_water_effect_2",
+    "hotbath:effect/honey_water_effect_3",
+    "hotbath:effect/honey_water_effect_4",
+    "hotbath:effect/honey_water_effect_5",
+    "hotbath:effect/honey_water_effect_6",
+    "hotbath:effect/honey_water_effect_7"
   ]
 }
