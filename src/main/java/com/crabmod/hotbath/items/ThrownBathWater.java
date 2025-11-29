@@ -2,6 +2,7 @@ package com.crabmod.hotbath.items;
 
 import com.crabmod.hotbath.registers.EntityRegister;
 import com.crabmod.hotbath.registers.ItemRegister;
+import com.crabmod.hotbath.registers.ParticleRegister;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -87,13 +88,41 @@ public class ThrownBathWater extends ThrowableItemProjectile {
                 double b = (color & 0xFF) / 255.0;
 
                 SimpleParticleType effectParticle = splashItem.getEffectParticleType();
-                for(int k = 0; k < 100; ++k) {
-                    double d3 = this.random.nextDouble() * 4.0D;
+                // Effect particles (reduced count)
+                for(int k = 0; k < 20; ++k) {
+                    double d3 = this.random.nextDouble() * 2.0D;
                     double d4 = this.random.nextDouble() * Math.PI * 2.0D;
                     double d5 = Math.cos(d4) * d3;
-                    double d6 = 0.01D + this.random.nextDouble() * 0.5D;
                     double d7 = Math.sin(d4) * d3;
                     this.level().addParticle(effectParticle, this.getX() + d5 * 0.1D, this.getY() + 0.3D, this.getZ() + d7 * 0.1D, r, g, b);
+                }
+
+                // Steam particles - Concentrated Center (Rising faster)
+                for(int k = 0; k < 10; ++k) {
+                    double radius = this.random.nextDouble() * 0.5D;
+                    double angle = this.random.nextDouble() * Math.PI * 2.0D;
+                    double offsetX = Math.cos(angle) * radius;
+                    double offsetZ = Math.sin(angle) * radius;
+
+                    this.level().addParticle(ParticleRegister.STEAM_PARTICLE.get(), 
+                        this.getX() + offsetX, 
+                        this.getY() + 0.2D, 
+                        this.getZ() + offsetZ, 
+                        0.0D, 0.1D + this.random.nextDouble() * 0.05D, 0.0D);
+                }
+
+                // Steam particles - Dispersed Surroundings (Rising slower)
+                for(int k = 0; k < 15; ++k) {
+                    double radius = 0.5D + this.random.nextDouble() * 2.0D;
+                    double angle = this.random.nextDouble() * Math.PI * 2.0D;
+                    double offsetX = Math.cos(angle) * radius;
+                    double offsetZ = Math.sin(angle) * radius;
+
+                    this.level().addParticle(ParticleRegister.STEAM_PARTICLE.get(), 
+                        this.getX() + offsetX, 
+                        this.getY() + 0.1D, 
+                        this.getZ() + offsetZ, 
+                        0.0D, 0.02D + this.random.nextDouble() * 0.03D, 0.0D);
                 }
 
                 for(int i = 0; i < 16; ++i) {
