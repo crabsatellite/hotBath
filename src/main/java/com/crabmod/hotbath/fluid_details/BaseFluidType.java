@@ -61,11 +61,12 @@ public class BaseFluidType extends FluidType {
 
     @Override
     public @Nullable FluidType.DripstoneDripInfo getDripInfo() {
-        FluidType.DripstoneDripInfo info = super.getDripInfo();
-        if (dripParticle != null && info != null) {
-            return new FluidType.DripstoneDripInfo(info.chance(), dripParticle.get(), info.filledCauldron());
+        // Default chance is 0.17578125F (same as water)
+        // We return our custom particle
+        if (dripParticle != null) {
+            return new FluidType.DripstoneDripInfo(0.17578125F, dripParticle.get(), null);
         }
-        return info;
+        return super.getDripInfo();
     }
 
     @SuppressWarnings("removal")

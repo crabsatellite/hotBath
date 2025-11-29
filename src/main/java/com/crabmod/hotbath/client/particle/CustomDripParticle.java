@@ -67,19 +67,16 @@ public class CustomDripParticle extends DripParticle {
             }
             
             // Basic movement
-            this.yd -= (double)this.gravity;
-            this.move(this.xd, this.yd, this.zd);
-            this.xd *= (double)0.98F;
-            this.yd *= (double)0.98F;
-            this.zd *= (double)0.98F;
-
-            if (this.fallParticle == null && this.landParticle == null) {
-                 // This is a falling or landing particle, just standard physics
-            } else {
-                // This is a hanging particle
+            if (this.fallParticle != null) {
                 this.xd *= 0.0D;
                 this.yd *= 0.0D;
                 this.zd *= 0.0D;
+            } else {
+                this.yd -= (double)this.gravity;
+                this.move(this.xd, this.yd, this.zd);
+                this.xd *= (double)0.98F;
+                this.yd *= (double)0.98F;
+                this.zd *= (double)0.98F;
             }
         }
     }
