@@ -4,6 +4,7 @@ import com.crabmod.hotbath.HotBath;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -30,7 +31,8 @@ public class HotbathFluidType {
             int color,
             ResourceLocation STILL_RL_TEXTURE,
             ResourceLocation FLOWING_RL_TEXTURE,
-            Supplier<? extends ParticleOptions> dripParticle) {
+            Supplier<? extends ParticleOptions> dripParticle,
+            Supplier<Fluid> fluidSupplier) {
         return register(
                 name,
                 FluidType.Properties.create()
@@ -49,7 +51,8 @@ public class HotbathFluidType {
                 color,
                 STILL_RL_TEXTURE,
                 FLOWING_RL_TEXTURE,
-                dripParticle);
+                dripParticle,
+                fluidSupplier);
     }
 
     private static DeferredHolder<FluidType, FluidType> register(
@@ -58,7 +61,8 @@ public class HotbathFluidType {
             int FLUID_COLOR,
             ResourceLocation STILL_RL_TEXTURE,
             ResourceLocation FLOWING_RL_TEXTURE,
-            Supplier<? extends ParticleOptions> dripParticle) {
+            Supplier<? extends ParticleOptions> dripParticle,
+            Supplier<Fluid> fluidSupplier) {
         return FLUID_TYPES.register(
                 name,
                 () ->
@@ -69,7 +73,8 @@ public class HotbathFluidType {
                                 FLUID_COLOR,
                                 DEFAULT_FOG_COLOR,
                                 properties,
-                                dripParticle));
+                                dripParticle,
+                                fluidSupplier));
     }
 
     public static void register(IEventBus eventBus) {

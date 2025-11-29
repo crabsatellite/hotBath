@@ -4,6 +4,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -21,6 +22,7 @@ public class BaseFluidType extends FluidType {
     private final int tintColor;
     private final Vector3f fogColor;
     private final Supplier<? extends ParticleOptions> dripParticle;
+    private final Supplier<Fluid> fluidSupplier;
 
     public BaseFluidType(
             final ResourceLocation stillTexture,
@@ -29,7 +31,8 @@ public class BaseFluidType extends FluidType {
             final int tintColor,
             final Vector3f fogColor,
             final Properties properties,
-            final Supplier<? extends ParticleOptions> dripParticle) {
+            final Supplier<? extends ParticleOptions> dripParticle,
+            final Supplier<Fluid> fluidSupplier) {
         super(properties);
         this.stillTexture = stillTexture;
         this.flowingTexture = flowingTexture;
@@ -37,6 +40,7 @@ public class BaseFluidType extends FluidType {
         this.tintColor = tintColor;
         this.fogColor = fogColor;
         this.dripParticle = dripParticle;
+        this.fluidSupplier = fluidSupplier;
     }
 
     public ResourceLocation getStillTexture() {
@@ -62,9 +66,9 @@ public class BaseFluidType extends FluidType {
     @Override
     public @Nullable FluidType.DripstoneDripInfo getDripInfo() {
         // Default chance is 0.17578125F (same as water)
-        // We return our custom particle
+        // We return our custom particle and fluid
         if (dripParticle != null) {
-            return new FluidType.DripstoneDripInfo(0.17578125F, dripParticle.get(), null);
+            return new FluidType.DripstoneDripInfo(0.17578125F, dripParticle.get(), fluidSupplier != null ? fluidSupplier.get() : null);
         }
         return super.getDripInfo();
     }
