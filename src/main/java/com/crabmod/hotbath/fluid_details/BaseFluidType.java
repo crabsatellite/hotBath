@@ -4,6 +4,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
@@ -58,6 +59,15 @@ public class BaseFluidType extends FluidType {
         return fogColor;
     }
 
+    @Override
+    public @Nullable FluidType.DripstoneDripInfo getDripInfo() {
+        FluidType.DripstoneDripInfo info = super.getDripInfo();
+        if (dripParticle != null && info != null) {
+            return new FluidType.DripstoneDripInfo(info.chance(), dripParticle.get(), info.filledCauldron());
+        }
+        return info;
+    }
+
     @SuppressWarnings("removal")
     @Override
     public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
@@ -81,11 +91,6 @@ public class BaseFluidType extends FluidType {
                     @Override
                     public int getTintColor() {
                         return tintColor;
-                    }
-
-                    @Override
-                    public @Nullable ParticleOptions getDripParticle() {
-                        return dripParticle != null ? dripParticle.get() : super.getDripParticle();
                     }
 
                     @Override

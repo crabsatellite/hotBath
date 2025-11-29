@@ -11,6 +11,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
+import java.util.function.Supplier;
+
 import static com.crabmod.hotbath.fluid_details.FluidsColor.DEFAULT_FOG_COLOR;
 
 public class HotbathFluidType {
