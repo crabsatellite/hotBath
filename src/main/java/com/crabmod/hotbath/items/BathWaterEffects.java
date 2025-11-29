@@ -1,9 +1,6 @@
 package com.crabmod.hotbath.items;
 
-import com.crabmod.hotbath.compat.BathWaterBottleColdSweatModifier;
-import com.crabmod.hotbath.compat.BathWaterBottleTANModifier;
-import com.crabmod.hotbath.compat.ColdSweatIntegration;
-import com.crabmod.hotbath.compat.ToughAsNailsIntegration;
+import com.crabmod.hotbath.compat.*;
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -83,7 +80,7 @@ public class BathWaterEffects {
     }
 
     /**
-     * Apply temperature effects for both ToughAsNails and Cold Sweat if mods are loaded
+     * Apply temperature effects for ToughAsNails, Cold Sweat, and Legendary Survival Overhaul if mods are loaded
      */
     private static void applyTemperatureEffects(LivingEntity entity) {
         if (!(entity instanceof net.minecraft.world.entity.player.Player player)) {
@@ -98,6 +95,11 @@ public class BathWaterEffects {
         // Apply Cold Sweat temperature effect (5 seconds, 36°C)
         if (ColdSweatIntegration.isColdSweatLoaded()) {
             BathWaterBottleColdSweatModifier.applyWarmEffect(player);
+        }
+        
+        // Apply Legendary Survival Overhaul temperature effect (5 seconds, 20.0)
+        if (LegendarySurvivalOverhaulIntegration.isLSOLoaded()) {
+            BathWaterBottleLSOModifier.applyWarmEffect(player);
         }
     }
 
@@ -115,24 +117,22 @@ public class BathWaterEffects {
         if (ColdSweatIntegration.isColdSweatLoaded()) {
             BathWaterBottleColdSweatModifier.applyWarmEffect(player);
         }
+        
+        // Apply Legendary Survival Overhaul temperature effect (5 seconds, 20.0)
+        if (LegendarySurvivalOverhaulIntegration.isLSOLoaded()) {
+            BathWaterBottleLSOModifier.applyWarmEffect(player);
+        }
     }
 
     /**
-     * Check if effect is harmful
+     * Check if effect is harmful.
+     * Uses the effect's category to determine if it's beneficial or harmful,
+     * which provides better compatibility with modded effects.
      */
-    private static boolean isHarmfulEffect(Holder<MobEffect> effect) {
-        return effect == MobEffects.POISON
-                || effect == MobEffects.WITHER
-                || effect == MobEffects.BLINDNESS
-                || effect == MobEffects.MOVEMENT_SLOWDOWN
-                || effect == MobEffects.WEAKNESS
-                || effect == MobEffects.HUNGER
-                || effect == MobEffects.BAD_OMEN
-                || effect == MobEffects.DARKNESS
-                || effect == MobEffects.GLOWING
-                || effect == MobEffects.HARM
-                || effect == MobEffects.LEVITATION
-                || effect == MobEffects.DIG_SLOWDOWN
-                || effect == MobEffects.CONFUSION;
+    private static boolean isHarmfulEffect(Holder<MobEffect> effectHolder) {
+        MobEffect effect = effectHolder.value();
+        // Use the effect's category - HARMFUL effects are negative effects
+        // This automatically supports modded effects that properly set their category
+        return !effect.isBeneficial() && effectHolder != MobEffects.UNLUCK;
     }
 }

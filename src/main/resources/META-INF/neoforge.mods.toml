@@ -82,6 +82,18 @@ description='''${mod_description}'''
     ordering="NONE"
     side="BOTH"
 
+# Optional dependency for Legendary Survival Overhaul
+[[dependencies.${mod_id}]]
+    modId="legendarysurvivaloverhaul"
+    type="optional"
+    versionRange="[1.21.1-2.3.24.5,)"
+    ordering="NONE"
+    side="BOTH"
+
+# Mixin configuration
+[modproperties.${mod_id}]
+    mixins="hotbath.mixins.json"
+
 # Features are specific properties of the game environment, that you may want to declare you require. This example declares
 # that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't
 # stop your mod loading on the server for example.
