@@ -107,13 +107,13 @@ dependencies {
     // GlitchCore - Library mod required by ToughAsNails
     // Project ID: 955399, File ID 5660740 corresponds to GlitchCore-neoforge-1.21.1-2.1.0.0.jar
     // runtimeOnly because it's a library dependency needed at runtime
-    // runtimeOnly "curse.maven:glitchcore-955399:5660740"
+    runtimeOnly "curse.maven:glitchcore-955399:5660740"
 
     // ToughAsNails - Temperature and thirst mod (optional dependency)
     // Project ID: 246391, File ID 5766204 corresponds to ToughAsNails-neoforge-1.21.1-10.1.0.11.jar
     // compileOnly for API access, runtimeOnly to have it in dev environment
     compileOnly "curse.maven:tough-as-nails-246391:5766204"
-    // runtimeOnly "curse.maven:tough-as-nails-246391:5766204"
+    runtimeOnly "curse.maven:tough-as-nails-246391:5766204"
 
     // Legendary Survival Overhaul - Temperature and survival overhaul mod (optional dependency)
     // Project ID: 840254, File ID 7254309 corresponds to legendarysurvivaloverhaul-1.21.1-2.3.24.5.jar
