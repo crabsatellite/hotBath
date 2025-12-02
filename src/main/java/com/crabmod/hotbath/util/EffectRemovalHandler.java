@@ -3,6 +3,7 @@ package com.crabmod.hotbath.util;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 
@@ -23,20 +24,7 @@ public class EffectRemovalHandler {
     }
 
     private static boolean isHarmfulEffect(Holder<MobEffect> effect) {
-        // Add all known harmful effects here
-        return effect == MobEffects.POISON
-                || effect == MobEffects.WITHER
-                || effect == MobEffects.BLINDNESS
-                || effect == MobEffects.MOVEMENT_SLOWDOWN
-                || effect == MobEffects.WEAKNESS
-                || effect == MobEffects.HUNGER
-                || effect == MobEffects.BAD_OMEN
-                || effect == MobEffects.DARKNESS
-                || effect == MobEffects.GLOWING
-                || effect == MobEffects.HARM
-                || effect == MobEffects.LEVITATION
-                || effect == MobEffects.DIG_SLOWDOWN
-                || effect == MobEffects.CONFUSION;
+        return effect.value().getCategory() == MobEffectCategory.HARMFUL && effect != MobEffects.BAD_OMEN;
     }
 
     public static void removeNegativeEffectsExceptSlowAndUnluck(ServerPlayer player) {
