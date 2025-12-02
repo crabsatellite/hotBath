@@ -15,22 +15,22 @@ import java.util.function.Function;
 
 /**
  * Temperature modifier for bath water bottle effects in Cold Sweat.
- * When a player drinks a bath water bottle, they temporarily get warm temperature (36°C) for 5 seconds.
+ * When a player drinks a bath water bottle, they temporarily get warm temperature (36°C) for 20 seconds.
  */
 public class BathWaterBottleColdSweatModifier extends TempModifier {
     
     // Track players who have drunk bath water and when the effect expires
     private static final Map<UUID, Long> WARM_PLAYERS = new ConcurrentHashMap<>();
     
-    // Duration of the warm effect in milliseconds (5 seconds)
-    private static final long WARM_DURATION_MS = 5_000;
+    // Duration of the warm effect in milliseconds (20 seconds)
+    private static final long WARM_DURATION_MS = 20_000;
     
     // Target temperature in Celsius
     private static final double TARGET_TEMP_C = 36.0;
 
     /**
-     * Apply warm effect to player for 5 seconds
-     * If already active, reset to 5 seconds (not stacking, just resetting duration)
+     * Apply warm effect to player for 20 seconds
+     * If already active, reset to 20 seconds (not stacking, just resetting duration)
      */
     public static void applyWarmEffect(Player player) {
         WARM_PLAYERS.put(player.getUUID(), System.currentTimeMillis() + WARM_DURATION_MS);
