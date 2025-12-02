@@ -143,11 +143,11 @@ _仅在安装 Legendary Survival Overhaul mod 时测试_
 ### 4.1 浴水瓶效果
 
 - [ ] 饮用后恢复口渴值 (5 Hydration, 0.5 Saturation)
-- [ ] 饮用后获得 HOT_DRINK 效果 (Level 1, 5 秒)
+- [ ] 饮用后获得 HOT_DRINK 效果 (Level 1, 15 秒)
 - [ ] 浴水瓶显示口渴值 Tooltip (水滴图标)
 - [ ] 正常状态下饮用：获得 HOT_DRINK Level 1
 - [ ] 在 HotBath 方块中饮用：获得 HOT_DRINK Level 3 (Amplifier 2)
-- [ ] 离开 HotBath 方块后，HOT_DRINK 效果继续生效 5 秒
+- [ ] 离开 HotBath 方块后，HOT_DRINK 效果继续生效 15 秒
 - [ ] [与 TAN 共存] 右键喝水也能获得 HOT_DRINK 效果并恢复 LSO 口渴值
 
 ### 4.2 HotBath 方块环境效果

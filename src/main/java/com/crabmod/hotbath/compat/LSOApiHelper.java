@@ -17,7 +17,7 @@ import java.util.UUID;
 public class LSOApiHelper {
     
     // Bottle effect: HOT_DRINK potion (suitable for drinking)
-    private static final int HOT_DRINK_BOTTLE_DURATION = 100; // 5 seconds
+    private static final int HOT_DRINK_BOTTLE_DURATION = 300; // 15 seconds
     private static final int HOT_DRINK_BOTTLE_AMPLIFIER = 0; // Level 1 (normal)
     private static final int HOT_DRINK_BOTTLE_AMPLIFIER_BOOSTED = 2; // Level 3 (when bathing)
     
@@ -33,7 +33,7 @@ public class LSOApiHelper {
     private static final float SATURATION = 0.5f;
     
     /**
-     * Apply HOT_DRINK effect for bottle (Level 1 or Level 3 if bathing, 5 seconds)
+     * Apply HOT_DRINK effect for bottle (Level 1 or Level 3 if bathing, 15 seconds)
      * @param isBathing Whether player is currently in hot bath (for boosted effect)
      */
     public static void applyBottleTemperatureEffect(Player player, boolean isBathing) {
