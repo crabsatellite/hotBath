@@ -29,34 +29,34 @@ Welcome to **Hot Bath Mod**! Take a break from your adventures and soak in a rel
 
 **Drinkable Bottles:**
 
-- **Hot Water Bottle**:
+- **Hot Water Bottle** ![Hot Water Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/hot_water_bottle.png):
   Speed![Speed.png](https://s2.loli.net/2023/04/08/DpA421zYdlVkoPr.png) I (45s)
-- **Honey Bath Water Bottle**:
+- **Honey Bath Water Bottle** ![Honey Bath Water Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/honey_bottle.png):
   Absorption![Absorption.png](https://s2.loli.net/2023/04/08/ZMf6zspPLeu3DXO.png) I (45s)
-- **Milk Bath Water Bottle**:
+- **Milk Bath Water Bottle** ![Milk Bath Water Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/milk_bottle.png):
   Randomly remove 1 negative effect
-- **Herbal Bath Water Bottle**:
+- **Herbal Bath Water Bottle** ![Herbal Bath Water Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/herbal_bottle.png):
   Heal 3 hearts![Health.png](https://s2.loli.net/2023/04/08/sPVrSKa8mWkHRUF.png) + Resistance![Resistance.png](https://s2.loli.net/2023/04/08/NSvw8udpAltyPM4.png) I (45s)
-- **Peony Bath Water Bottle**:
+- **Peony Bath Water Bottle** ![Peony Bath Water Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/peony_bottle.png):
   Luck![Luck.png](https://s2.loli.net/2023/04/08/9vfrMjAsBULpX5E.png) I (45s)
-- **Rose Bath Water Bottle**:
+- **Rose Bath Water Bottle** ![Rose Bath Water Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/rose_bottle.png):
   Strength![Strength.png](https://s2.loli.net/2023/04/08/CgmeXzsn8TVFbN9.png) I (45s)
 
 **Splash Bath Water Bottles:**
 
 - **Effect**:
-  Thrown like a splash potion. Upon impact, it grants a **Level 2 "Cold Resistance" buff (30s)** to players hit.
-- **Hot Water**:
+  Thrown like a splash potion. Upon impact, it grants a **Level 2 "Cold Resistance" buff (30s)** ![Cold Resistance](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/buff/cold_resistance.png) to players hit.
+- **Hot Water** ![Splash Hot Water Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/splash_hot_water_bottle.png):
   Speed![Speed.png](https://s2.loli.net/2023/04/08/DpA421zYdlVkoPr.png) II (30s)
-- **Honey**:
+- **Honey** ![Splash Honey Bath Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/splash_honey_bath_bottle.png):
   Absorption![Absorption.png](https://s2.loli.net/2023/04/08/ZMf6zspPLeu3DXO.png) II (30s)
-- **Milk**:
+- **Milk** ![Splash Milk Bath Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/splash_milk_bath_bottle.png):
   Remove 2 negative effects
-- **Herbal**:
+- **Herbal** ![Splash Herbal Bath Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/splash_herbal_bath_bottle.png):
   Resistance![Resistance.png](https://s2.loli.net/2023/04/08/NSvw8udpAltyPM4.png) II (30s) + Heal 2 hearts![Health.png](https://s2.loli.net/2023/04/08/sPVrSKa8mWkHRUF.png)
-- **Peony**:
+- **Peony** ![Splash Peony Bath Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/splash_peony_bath_bottle.png):
   Luck![Luck.png](https://s2.loli.net/2023/04/08/9vfrMjAsBULpX5E.png) II (30s)
-- **Rose**:
+- **Rose** ![Splash Rose Bath Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/splash_rose_bath_bottle.png):
   Strength![Strength.png](https://s2.loli.net/2023/04/08/CgmeXzsn8TVFbN9.png) II (30s)
 
 ### Fluid Interactions
@@ -77,8 +77,8 @@ Welcome to **Hot Bath Mod**! Take a break from your adventures and soak in a rel
   - Bottles increase body temp to ~36°C.
   - HotBath fluids maintain body temp at ~37°C.
 - **[Legendary Survival Overhaul](https://www.curseforge.com/minecraft/mc-mods/legendary-survival-overhaul)**:
-  - Bottles restore thirst and give "Hot Drink" buff.
-  - HotBath fluids provide "Cold Resistance" and "Thermostatic" buffs.
+  - Bottles restore thirst ![Hydration](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/buff/hydration.png) and give "Hot Drink" buff ![Hot Drink](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/buff/hot_drink.png).
+  - HotBath fluids provide "Cold Resistance" ![Cold Resistance](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/buff/cold_resistance.png) and "Thermostatic" buffs ![Thermostatic](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/buff/temperature_immunity.png).
 
 ## Classic Features (Items & Recipes)
 
@@ -208,34 +208,34 @@ Welcome to **Hot Bath Mod**! Take a break from your adventures and soak in a rel
 
 **饮用型浴水瓶:**
 
-- **热水瓶**:
+- **热水瓶** ![Hot Water Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/hot_water_bottle.png):
   速度![Speed.png](https://s2.loli.net/2023/04/08/DpA421zYdlVkoPr.png) I (45 秒)
-- **蜂蜜浴水瓶**:
+- **蜂蜜浴水瓶** ![Honey Bath Water Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/honey_bottle.png):
   伤害吸收![Absorption.png](https://s2.loli.net/2023/04/08/ZMf6zspPLeu3DXO.png) I (45 秒)
-- **牛奶浴水瓶**:
+- **牛奶浴水瓶** ![Milk Bath Water Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/milk_bottle.png):
   随机移除 1 个负面效果
-- **草药浴水瓶**:
+- **草药浴水瓶** ![Herbal Bath Water Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/herbal_bottle.png):
   恢复 3 心生命值![Health.png](https://s2.loli.net/2023/04/08/sPVrSKa8mWkHRUF.png) + 抗性提升![Resistance.png](https://s2.loli.net/2023/04/08/NSvw8udpAltyPM4.png) I (45 秒)
-- **牡丹浴水瓶**:
+- **牡丹浴水瓶** ![Peony Bath Water Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/peony_bottle.png):
   幸运![Luck.png](https://s2.loli.net/2023/04/08/9vfrMjAsBULpX5E.png) I (45 秒)
-- **玫瑰浴水瓶**:
+- **玫瑰浴水瓶** ![Rose Bath Water Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/rose_bottle.png):
   力量![Strength.png](https://s2.loli.net/2023/04/08/CgmeXzsn8TVFbN9.png) I (45 秒)
 
 **喷溅型浴水瓶:**
 
 - **效果**:
-  像喷溅药水一样投掷。撞击后，给予被击中的玩家 **2 级“抗寒”buff (30 秒)**。
-- **热水**:
+  像喷溅药水一样投掷。撞击后，给予被击中的玩家 **2 级“抗寒”buff (30 秒)** ![Cold Resistance](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/buff/cold_resistance.png)。
+- **热水** ![Splash Hot Water Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/splash_hot_water_bottle.png):
   速度![Speed.png](https://s2.loli.net/2023/04/08/DpA421zYdlVkoPr.png) II (30 秒)
-- **蜂蜜**:
+- **蜂蜜** ![Splash Honey Bath Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/splash_honey_bath_bottle.png):
   伤害吸收![Absorption.png](https://s2.loli.net/2023/04/08/ZMf6zspPLeu3DXO.png) II (30 秒)
-- **牛奶**:
+- **牛奶** ![Splash Milk Bath Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/splash_milk_bath_bottle.png):
   移除 2 个负面效果
-- **草药**:
+- **草药** ![Splash Herbal Bath Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/splash_herbal_bath_bottle.png):
   抗性提升![Resistance.png](https://s2.loli.net/2023/04/08/NSvw8udpAltyPM4.png) II (30 秒) + 恢复 2 心生命值![Health.png](https://s2.loli.net/2023/04/08/sPVrSKa8mWkHRUF.png)
-- **牡丹**:
+- **牡丹** ![Splash Peony Bath Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/splash_peony_bath_bottle.png):
   幸运![Luck.png](https://s2.loli.net/2023/04/08/9vfrMjAsBULpX5E.png) II (30 秒)
-- **玫瑰**:
+- **玫瑰** ![Splash Rose Bath Bottle](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/splash_rose_bath_bottle.png):
   力量![Strength.png](https://s2.loli.net/2023/04/08/CgmeXzsn8TVFbN9.png) II (30 秒)
 
 ### 流体交互
@@ -256,8 +256,8 @@ Welcome to **Hot Bath Mod**! Take a break from your adventures and soak in a rel
   - 浴水瓶将体温升至约 36°C。
   - HotBath 流体将体温维持在约 37°C。
 - **[Legendary Survival Overhaul](https://www.curseforge.com/minecraft/mc-mods/legendary-survival-overhaul)**:
-  - 浴水瓶恢复口渴值并给予“热饮”buff。
-  - HotBath 流体提供“抗寒”和“恒温”buff。
+  - 浴水瓶恢复口渴值 ![Hydration](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/buff/hydration.png) 并给予“热饮”buff ![Hot Drink](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/buff/hot_drink.png)。
+  - HotBath 流体提供“抗寒” ![Cold Resistance](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/buff/cold_resistance.png) 和“恒温”buff ![Thermostatic](https://gitee.com/crabsatellite/hotbath_public_info/raw/master/images/buff/temperature_immunity.png)。
 
 ## 经典功能 (物品与配方)
 
