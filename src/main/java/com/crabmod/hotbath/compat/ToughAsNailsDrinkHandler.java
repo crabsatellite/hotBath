@@ -4,8 +4,8 @@ import com.crabmod.hotbath.HotBath;
 import com.crabmod.hotbath.items.BathWaterEffects;
 import com.crabmod.hotbath.util.CustomFluidHandler;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 
 /**
  * Handler for ToughAsNails drinking integration.
@@ -42,3 +42,13 @@ public class ToughAsNailsDrinkHandler {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

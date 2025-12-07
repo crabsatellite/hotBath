@@ -8,9 +8,9 @@ import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.animal.TropicalFish;
 import net.minecraft.world.level.Level;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.event.entity.living.LivingEvent;
 
 import static com.crabmod.hotbath.HotBath.MOD_ID;
 
@@ -18,7 +18,7 @@ import static com.crabmod.hotbath.HotBath.MOD_ID;
 public class AquaticMobHurtsHandler {
 
     @SubscribeEvent
-    public static void onEntityUpdate(EntityTickEvent.Pre event) {
+    public static void onEntityUpdate(LivingEvent.LivingTickEvent event) {
         Entity e = event.getEntity();
         if (e instanceof LivingEntity entity) {
             Level world = entity.level();
@@ -38,3 +38,13 @@ public class AquaticMobHurtsHandler {
                 || livingEntity instanceof Squid;
     }
 }
+
+
+
+
+
+
+
+
+
+

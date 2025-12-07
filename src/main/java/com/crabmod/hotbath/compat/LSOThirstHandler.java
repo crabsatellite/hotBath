@@ -4,8 +4,8 @@ import com.crabmod.hotbath.HotBath;
 import com.crabmod.hotbath.items.BathWaterBottleItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 
 /**
  * Handles thirst restoration when drinking bath water bottles with LSO loaded.
@@ -30,3 +30,13 @@ public class LSOThirstHandler {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

@@ -37,8 +37,8 @@ public class ThrownBathWater extends ThrowableItemProjectile {
     }
 
     @Override
-    protected double getDefaultGravity() {
-        return 0.05;
+    protected float getGravity() {
+        return 0.05F;
     }
 
     @Override
@@ -155,3 +155,13 @@ public class ThrownBathWater extends ThrowableItemProjectile {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

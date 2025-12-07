@@ -1,10 +1,20 @@
 package com.crabmod.hotbath.compat;
 
-import net.neoforged.neoforge.common.NeoForge;
+import net.minecraftforge.common.MinecraftForge;
 
 public class ToughAsNailsCompat {
     public static void init() {
-        NeoForge.EVENT_BUS.register(ToughAsNailsDrinkHandler.class);
+        MinecraftForge.EVENT_BUS.register(ToughAsNailsDrinkHandler.class);
         ToughAsNailsRegistration.init();
     }
 }
+
+
+
+
+
+
+
+
+
+

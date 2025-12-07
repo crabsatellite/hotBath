@@ -8,6 +8,17 @@ public class ToughAsNailsThirstHelper {
     public static void restoreThirst(Player player) {
         IThirst thirst = ThirstHelper.getThirst(player);
         // Restore 4 thirst (2 shanks) and 0.6 hydration
-        thirst.drink(4, 0.6F);
+        thirst.addThirst(4);
+        thirst.addHydration(0.6F);
     }
 }
+
+
+
+
+
+
+
+
+
+

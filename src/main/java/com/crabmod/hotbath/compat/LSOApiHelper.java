@@ -2,6 +2,7 @@ package com.crabmod.hotbath.compat;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -18,33 +19,30 @@ public class LSOApiHelper {
     
     // Bottle effect: HOT_DRINK potion (suitable for drinking)
     private static final int HOT_DRINK_BOTTLE_DURATION = 300; // 15 seconds
-    private static final int HOT_DRINK_BOTTLE_AMPLIFIER = 0; // Level 1 (normal)
-    private static final int HOT_DRINK_BOTTLE_AMPLIFIER_BOOSTED = 2; // Level 3 (when bathing)
+    private static final int HOT_DRINK_BOTTLE_AMPLIFIER = 0; // Level 1
+    private static final int HOT_DRINK_BOTTLE_AMPLIFIER_BOOSTED = 1; // Level 2 (when bathing)
     
-    // Immersion effect: Cold resistance for temperature comfort
-    private static final int COLD_RESISTANCE_AMPLIFIER = 2; // Level 3 for strong resistance
-    private static final int MAX_RESISTANCE_DURATION = 6000; // 5 minutes max
+    // Immersion effect: COLD_RESISTANCE (builds up over time)
+    private static final int MAX_RESISTANCE_DURATION = 6000; // 5 minutes
+    private static final int COLD_RESISTANCE_AMPLIFIER = 0; // Level 1
     
-    // Thermal comfort effect: Constant temperature in cold environments
+    // Thermal comfort: TEMPERATURE_IMMUNITY (short duration)
     private static final int THERMAL_COMFORT_DURATION = 200; // 10 seconds
-    private static final float COLD_TEMPERATURE_THRESHOLD = 16.0f; // Below NORMAL zone (16-24)
+    private static final float COLD_TEMPERATURE_THRESHOLD = 16.0f; // Below this is considered cold
     
-    private static final int HYDRATION = 5;
-    private static final float SATURATION = 0.5f;
-    
-    /**
-     * Apply HOT_DRINK effect for bottle (Level 1 or Level 3 if bathing, 15 seconds)
-     * @param isBathing Whether player is currently in hot bath (for boosted effect)
-     */
+    // Thirst values
+    private static final int HYDRATION = 4;
+    private static final float SATURATION = 0.6F;
+
     public static void applyBottleTemperatureEffect(Player player, boolean isBathing) {
-        MobEffect hotDrink = MobEffectRegistry.HOT_DRINk.get();
-        Holder<MobEffect> hotDrinkHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(hotDrink);
+        /*
+        MobEffect hotDrink = MobEffectRegistry.HOT_DRINK.get();
         
         // Use stronger effect if bathing
         int amplifier = isBathing ? HOT_DRINK_BOTTLE_AMPLIFIER_BOOSTED : HOT_DRINK_BOTTLE_AMPLIFIER;
         
         MobEffectInstance effect = new MobEffectInstance(
-            hotDrinkHolder,
+            hotDrink,
             HOT_DRINK_BOTTLE_DURATION,
             amplifier,
             false,
@@ -52,6 +50,7 @@ public class LSOApiHelper {
             true
         );
         player.addEffect(effect);
+        */
     }
     
     /**
@@ -62,12 +61,11 @@ public class LSOApiHelper {
      */
     public static void updateImmersionResistanceEffect(Player player, int durationToAdd) {
         MobEffect coldResistance = MobEffectRegistry.COLD_RESISTANCE.get();
-        Holder<MobEffect> coldResistanceHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(coldResistance);
         
         // Get current effect duration, or 0 if not present
         int currentDuration = 0;
-        if (player.hasEffect(coldResistanceHolder)) {
-            MobEffectInstance currentEffect = player.getEffect(coldResistanceHolder);
+        if (player.hasEffect(coldResistance)) {
+            MobEffectInstance currentEffect = player.getEffect(coldResistance);
             if (currentEffect != null) {
                 currentDuration = currentEffect.getDuration();
             }
@@ -77,7 +75,7 @@ public class LSOApiHelper {
         int newDuration = Math.min(currentDuration + durationToAdd, MAX_RESISTANCE_DURATION);
         
         MobEffectInstance effect = new MobEffectInstance(
-            coldResistanceHolder,
+            coldResistance,
             newDuration,
             COLD_RESISTANCE_AMPLIFIER,
             false,
@@ -90,7 +88,7 @@ public class LSOApiHelper {
     /**
      * Apply thermal comfort (temperature immunity) in cold environments
      * Provides constant temperature effect for 10 seconds
-     * Only applies if player is in cold environment (< 16°C)
+     * Only applies if player is in cold environment (< 16C)
      */
     public static void applyThermalComfortEffect(Player player) {
         float currentTemp = TemperatureUtil.getPlayerTargetTemperature(player);
@@ -101,10 +99,9 @@ public class LSOApiHelper {
         }
         
         MobEffect tempImmunity = MobEffectRegistry.TEMPERATURE_IMMUNITY.get();
-        Holder<MobEffect> tempImmunityHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(tempImmunity);
         
         MobEffectInstance effect = new MobEffectInstance(
-            tempImmunityHolder,
+            tempImmunity,
             THERMAL_COMFORT_DURATION,
             0,
             false,
@@ -137,10 +134,9 @@ public class LSOApiHelper {
      */
     public static void applySplashTemperatureEffect(Player player) {
         MobEffect coldResistance = MobEffectRegistry.COLD_RESISTANCE.get();
-        Holder<MobEffect> coldResistanceHolder = BuiltInRegistries.MOB_EFFECT.wrapAsHolder(coldResistance);
         
         MobEffectInstance effect = new MobEffectInstance(
-            coldResistanceHolder,
+            coldResistance,
             600, // 30 seconds
             1, // Level 2 (Amplifier 1)
             false,

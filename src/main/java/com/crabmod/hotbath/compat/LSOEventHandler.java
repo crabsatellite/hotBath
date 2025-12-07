@@ -2,8 +2,8 @@ package com.crabmod.hotbath.compat;
 
 import com.crabmod.hotbath.HotBath;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.TickEvent;
 
 /**
  * Event handler for Legendary Survival Overhaul integration.
@@ -12,8 +12,8 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 public class LSOEventHandler {
 
     @SubscribeEvent
-    public static void onPlayerTick(PlayerTickEvent.Post event) {
-        Player player = event.getEntity();
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        Player player = event.player;
         
         // Only process on server side
         if (player.level().isClientSide()) {
@@ -24,3 +24,13 @@ public class LSOEventHandler {
         HotBathImmersionLSOModifier.tick(player);
     }
 }
+
+
+
+
+
+
+
+
+
+

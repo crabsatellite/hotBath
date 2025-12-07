@@ -3,9 +3,9 @@ package com.crabmod.hotbath.events;
 import com.crabmod.hotbath.fluid_blocks.AbstractHotbathBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.living.MobSpawnEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 
 import static com.crabmod.hotbath.HotBath.MOD_ID;
 
@@ -22,7 +22,17 @@ public class AquaticMobSpawnPreventionHandler {
 
         // If the spawning location is a HotBath block, cancel the spawn event
         if (isHotBathBlock) {
-            event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
+            event.setResult(net.minecraftforge.eventbus.api.Event.Result.DENY);
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

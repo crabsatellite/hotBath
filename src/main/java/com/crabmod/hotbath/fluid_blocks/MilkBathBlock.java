@@ -12,3 +12,13 @@ public class MilkBathBlock extends AbstractHotbathBlock {
         super(supplier, properties);
     }
 }
+
+
+
+
+
+
+
+
+
+

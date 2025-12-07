@@ -60,7 +60,7 @@ public class BathWaterEffects {
         List<MobEffectInstance> harmfulEffects = new ArrayList<>();
         
         for (MobEffectInstance effect : entity.getActiveEffects()) {
-            Holder<MobEffect> effectHolder = effect.getEffect();
+            MobEffect effectHolder = effect.getEffect();
             if (isHarmfulEffect(effectHolder) && effectHolder != MobEffects.UNLUCK) {
                 harmfulEffects.add(effect);
             }
@@ -186,10 +186,20 @@ public class BathWaterEffects {
      * Uses the effect's category to determine if it's beneficial or harmful,
      * which provides better compatibility with modded effects.
      */
-    private static boolean isHarmfulEffect(Holder<MobEffect> effectHolder) {
-        MobEffect effect = effectHolder.value();
+    private static boolean isHarmfulEffect(MobEffect effectHolder) {
+        MobEffect effect = effectHolder;
         // Use the effect's category - HARMFUL effects are negative effects
         // This automatically supports modded effects that properly set their category
         return !effect.isBeneficial() && effectHolder != MobEffects.UNLUCK;
     }
 }
+
+
+
+
+
+
+
+
+
+

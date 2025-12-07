@@ -70,3 +70,13 @@ public class CustomFluidHandler {
         return stateAtEntityPos.getBlock() instanceof HerbalBathBlock;
     }
 }
+
+
+
+
+
+
+
+
+
+

@@ -46,9 +46,10 @@ description='''${mod_description}'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.${mod_id}]] #optional
     # the modid of the dependency
-    modId="neoforge" #mandatory
+    modId="forge" #mandatory
     # Does this dependency have to exist - if not, ordering below must be specified
     type="required" #mandatory
+    mandatory=true
     # The version range of the dependency
     versionRange="${forge_version_range}" #mandatory
     # An ordering relationship for the dependency - BEFORE or AFTER required if the dependency is not mandatory
@@ -61,6 +62,7 @@ description='''${mod_description}'''
 [[dependencies.${mod_id}]]
     modId="minecraft"
     type="required"
+    mandatory=true
     # This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="${minecraft_version_range}"
     ordering="NONE"
@@ -70,7 +72,8 @@ description='''${mod_description}'''
 [[dependencies.${mod_id}]]
     modId="cold_sweat"
     type="optional"
-    versionRange="[2.4-b01,)"
+    mandatory=false
+    versionRange="[2.4-b04a,)"
     ordering="NONE"
     side="BOTH"
 
@@ -78,7 +81,8 @@ description='''${mod_description}'''
 [[dependencies.${mod_id}]]
     modId="toughasnails"
     type="optional"
-    versionRange="[10.1.0.11,)"
+    mandatory=false
+    versionRange="[9.0.0.96,)"
     ordering="NONE"
     side="BOTH"
 
@@ -86,7 +90,8 @@ description='''${mod_description}'''
 [[dependencies.${mod_id}]]
     modId="legendarysurvivaloverhaul"
     type="optional"
-    versionRange="[1.21.1-2.3.24.5,)"
+    mandatory=false
+    versionRange="[1.20.1-1.20.1-2.3.11.2,)"
     ordering="NONE"
     side="BOTH"
 

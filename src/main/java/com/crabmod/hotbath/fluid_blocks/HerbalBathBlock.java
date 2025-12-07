@@ -13,3 +13,13 @@ public class HerbalBathBlock extends AbstractHotbathBlock {
         super(supplier, properties);
     }
 }
+
+
+
+
+
+
+
+
+
+

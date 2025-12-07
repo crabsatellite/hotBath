@@ -8,9 +8,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.event.entity.living.LivingEvent;
 
 import static com.crabmod.hotbath.util.HealthRegenHandler.regenHealth;
 
@@ -21,12 +21,12 @@ public class HoneyBathEvents {
     private static final int HONEY_BATH_STAYED_EFFECT_TRIGGER_TIME_SECONDS = 15;
 
     @SubscribeEvent
-    public static void enterHoneyBathEvents(EntityTickEvent.Pre event) {
+    public static void enterHoneyBathEvents(LivingEvent.LivingTickEvent event) {
         enterFluidEvents(event, HONEY_BATH_STAYED_EFFECT_TRIGGER_TIME_SECONDS, HONEY_BATH_STAYED_TIME);
     }
 
     public static void enterFluidEvents(
-            EntityTickEvent.Pre event, int stayedEffectTriggerTime, String honeyBathStayedTime) {
+            LivingEvent.LivingTickEvent event, int stayedEffectTriggerTime, String honeyBathStayedTime) {
         if (event.getEntity() instanceof ServerPlayer player) {
             CompoundTag playerData = player.getPersistentData();
             boolean isInHoneyBath = CustomFluidHandler.isPlayerInHoneyBathBlock(player);
@@ -54,3 +54,13 @@ public class HoneyBathEvents {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

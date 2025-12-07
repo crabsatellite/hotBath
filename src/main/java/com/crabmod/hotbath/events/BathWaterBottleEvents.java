@@ -1,4 +1,7 @@
-package com.crabmod.hotbath.events;
+
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.BlockHitResult;
 
 import com.crabmod.hotbath.HotBath;
 import com.crabmod.hotbath.fluid_blocks.*;
@@ -20,9 +23,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 /**
  * Event handler for collecting bath water with glass bottles
@@ -43,7 +46,7 @@ public class BathWaterBottleEvents {
             return;
         }
 
-        HitResult rayTraceResult = Item.getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
+        HitResult rayTraceResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
 
         // Must be hitting a block
         if (rayTraceResult.getType() != HitResult.Type.BLOCK) {
@@ -101,4 +104,32 @@ public class BathWaterBottleEvents {
             event.setCanceled(true);
         }
     }
+
+    private static HitResult getPlayerPOVHitResult(Level level, Player player, ClipContext.Fluid fluidMode) {
+        float f = player.getXRot();
+        float f1 = player.getYRot();
+        Vec3 vec3 = player.getEyePosition();
+        float f2 = net.minecraft.util.Mth.cos(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
+        float f3 = net.minecraft.util.Mth.sin(-f1 * ((float)Math.PI / 180F) - (float)Math.PI);
+        float f4 = -net.minecraft.util.Mth.cos(-f * ((float)Math.PI / 180F));
+        float f5 = net.minecraft.util.Mth.sin(-f * ((float)Math.PI / 180F));
+        float f6 = f3 * f4;
+        float f7 = f2 * f4;
+        double d0 = player.getBlockReach();
+        Vec3 vec31 = vec3.add((double)f6 * d0, (double)f5 * d0, (double)f7 * d0);
+        return level.clip(new ClipContext(vec3, vec31, ClipContext.Block.OUTLINE, fluidMode, player));
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

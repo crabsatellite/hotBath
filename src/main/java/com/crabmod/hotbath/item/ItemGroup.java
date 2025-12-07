@@ -6,15 +6,15 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
 
 public class ItemGroup {
     public static final DeferredRegister<CreativeModeTab> HOT_BATH_TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, HotBath.MOD_ID);
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> HOT_BATH_TAB =
+    public static final RegistryObject<CreativeModeTab> HOT_BATH_TAB =
             HOT_BATH_TABS.register(
                     "hotbath_tab",
                     () ->
@@ -49,3 +49,13 @@ public class ItemGroup {
         HOT_BATH_TABS.register(eventBus);
     }
 }
+
+
+
+
+
+
+
+
+
+

@@ -17,3 +17,13 @@ public class ResistanceBoostHandler {
         player.addEffect(resistanceEffect);
     }
 }
+
+
+
+
+
+
+
+
+
+

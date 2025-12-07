@@ -1,6 +1,6 @@
 package com.crabmod.hotbath.compat;
 
-import net.neoforged.fml.ModList;
+import net.minecraftforge.fml.ModList;
 
 /**
  * Integration with Cold Sweat mod
@@ -12,3 +12,13 @@ public class ColdSweatIntegration {
         return ModList.get().isLoaded(COLD_SWEAT_MOD_ID);
     }
 }
+
+
+
+
+
+
+
+
+
+

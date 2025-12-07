@@ -12,3 +12,13 @@ public class PeonyBathBlock extends AbstractHotbathBlock {
         super(supplier, properties);
     }
 }
+
+
+
+
+
+
+
+
+
+

@@ -18,3 +18,13 @@ public final class FluidsColor {
 
     public static final Vector3f DEFAULT_FOG_COLOR = new Vector3f(0.0f, 0.0f, 0.0f);
 }
+
+
+
+
+
+
+
+
+
+

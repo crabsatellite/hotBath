@@ -3,7 +3,7 @@ package com.crabmod.hotbath.compat;
 import com.mojang.logging.LogUtils;
 import com.momosoftworks.coldsweat.api.event.core.registry.TempModifierRegisterEvent;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.bus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.slf4j.Logger;
 
 /**
@@ -16,8 +16,8 @@ public class ColdSweatEventHandler {
     public static void onTempModifierRegister(TempModifierRegisterEvent event) {
         try {
             LOGGER.info("Registering Hot Bath temperature modifiers with Cold Sweat...");
-            event.register(ResourceLocation.parse("hotbath:immersion"), HotBathImmersionModifier::new);
-            event.register(ResourceLocation.parse("hotbath:bottle"), BathWaterBottleColdSweatModifier::new);
+            event.register(new ResourceLocation("hotbath:immersion"), HotBathImmersionModifier::new);
+            event.register(new ResourceLocation("hotbath:bottle"), BathWaterBottleColdSweatModifier::new);
             LOGGER.info("Successfully registered Hot Bath temperature modifiers!");
         } catch (Exception e) {
             LOGGER.error("Failed to register Hot Bath modifiers with Cold Sweat: {}", e.getMessage(), e);
@@ -41,3 +41,13 @@ public class ColdSweatEventHandler {
         );
     }
 }
+
+
+
+
+
+
+
+
+
+

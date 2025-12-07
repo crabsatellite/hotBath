@@ -7,8 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.fluids.FluidType;
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -78,6 +78,7 @@ public class BaseFluidType extends FluidType {
         return fogColor;
     }
 
+    /*
     @Override
     public @Nullable FluidType.DripstoneDripInfo getDripInfo() {
         // Default chance is 0.17578125F (same as water)
@@ -87,6 +88,7 @@ public class BaseFluidType extends FluidType {
         }
         return super.getDripInfo();
     }
+    */
 
     @SuppressWarnings("removal")
     @Override
@@ -126,3 +128,13 @@ public class BaseFluidType extends FluidType {
                 });
     }
 }
+
+
+
+
+
+
+
+
+
+

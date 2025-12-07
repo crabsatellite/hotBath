@@ -23,8 +23,8 @@ base {
     archivesName = mod_id
 }
 
-// Mojang ships Java 21 to end users in 1.20.5+, so your mod should target Java 21.
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+// Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 
@@ -81,6 +81,9 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     // Put repositories for dependencies here
+    maven {
+        url "https://maven.minecraftforge.net"
+    }
     // ForgeGradle automatically adds the Forge maven and Maven Central for you
     maven {
         url "https://cursemaven.com"
@@ -97,29 +100,29 @@ repositories {
 }
 
 dependencies {
-    implementation "net.neoforged:neoforge:${neo_version}"
+    implementation "net.minecraftforge:forge:${minecraft_version}-${neo_version}"
 
     // ColdSweat - Temperature and season mod (optional dependency)
     // compileOnly for API access, runtimeOnly to have it in dev environment
-    compileOnly "curse.maven:cold-sweat-506194:7193946"
-    // runtimeOnly "curse.maven:cold-sweat-506194:7193946"
+    compileOnly "curse.maven:cold-sweat-506194:6739794"
+    runtimeOnly "curse.maven:cold-sweat-506194:6739794"
 
     // GlitchCore - Library mod required by ToughAsNails
-    // Project ID: 955399, File ID 5660740 corresponds to GlitchCore-neoforge-1.21.1-2.1.0.0.jar
+    // Project ID: 955399, File ID 5772820 corresponds to GlitchCore-forge-1.20.1-0.0.1.1.jar
     // runtimeOnly because it's a library dependency needed at runtime
-    runtimeOnly "curse.maven:glitchcore-955399:5660740"
+    runtimeOnly "curse.maven:glitchcore-955399:5772820"
 
     // ToughAsNails - Temperature and thirst mod (optional dependency)
-    // Project ID: 246391, File ID 5766204 corresponds to ToughAsNails-neoforge-1.21.1-10.1.0.11.jar
+    // Project ID: 246391, File ID 4750298 corresponds to ToughAsNails-1.20.1-9.0.0.96.jar
     // compileOnly for API access, runtimeOnly to have it in dev environment
-    compileOnly "curse.maven:tough-as-nails-246391:5766204"
-    runtimeOnly "curse.maven:tough-as-nails-246391:5766204"
+    compileOnly "curse.maven:tough-as-nails-246391:4750298"
+    runtimeOnly "curse.maven:tough-as-nails-246391:4750298"
 
     // Legendary Survival Overhaul - Temperature and survival overhaul mod (optional dependency)
-    // Project ID: 840254, File ID 7254309 corresponds to legendarysurvivaloverhaul-1.21.1-2.3.24.5.jar
+    // Project ID: 840254, File ID 6550305 corresponds to legendarysurvivaloverhaul-1.20.1-1.1.1.1.jar
     // compileOnly for API access, runtimeOnly to have it in dev environment
-    compileOnly "curse.maven:legendary-survival-overhaul-840254:7254309"
-    runtimeOnly "curse.maven:legendary-survival-overhaul-840254:7254309"
+    compileOnly "curse.maven:legendary-survival-overhaul-840254:6550305"
+    runtimeOnly "curse.maven:legendary-survival-overhaul-840254:6550305"
 
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
@@ -137,6 +140,12 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 }
 
+minecraft {
+    accessTransformers {
+        file('src/main/resources/META-INF/accesstransformer.cfg')
+    }
+}
+
 // This block of code expands all declared replace properties in the specified resource targets.
 // A missing property will result in an error. Properties are expanded using ${} Groovy notation.
 // When "copyIdeResources" is enabled, this will also run before the game launches in IDE environments.
@@ -151,7 +160,7 @@ tasks.named('processResources', ProcessResources).configure {
     ]
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta']) {
+    filesMatching(['**/*.toml', 'pack.mcmeta']) {
         expand replaceProperties + [project: project]
     }
 }

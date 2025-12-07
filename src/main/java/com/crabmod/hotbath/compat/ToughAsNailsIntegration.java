@@ -1,6 +1,6 @@
 package com.crabmod.hotbath.compat;
 
-import net.neoforged.fml.ModList;
+import net.minecraftforge.fml.ModList;
 
 /**
  * Integration with Tough As Nails mod
@@ -12,3 +12,13 @@ public class ToughAsNailsIntegration {
         return ModList.get().isLoaded(TAN_MOD_ID);
     }
 }
+
+
+
+
+
+
+
+
+
+

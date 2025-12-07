@@ -1,19 +1,20 @@
 package com.crabmod.hotbath.registers;
 
+import net.minecraftforge.registries.ForgeRegistries;
+
 import com.crabmod.hotbath.HotBath;
 import com.crabmod.hotbath.items.ThrownBathWater;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
 
 public class EntityRegister {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
-            DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, HotBath.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, HotBath.MOD_ID);
 
-    public static final DeferredHolder<EntityType<?>, EntityType<ThrownBathWater>> THROWN_BATH_WATER =
+    public static final RegistryObject<EntityType<ThrownBathWater>> THROWN_BATH_WATER =
             ENTITY_TYPES.register("thrown_bath_water",
                     () -> EntityType.Builder.<ThrownBathWater>of(ThrownBathWater::new, MobCategory.MISC)
                             .sized(0.25F, 0.25F)

@@ -10,3 +10,13 @@ public class HoneyBathBlock extends AbstractHotbathBlock {
         super(supplier, properties);
     }
 }
+
+
+
+
+
+
+
+
+
+

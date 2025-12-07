@@ -69,3 +69,13 @@ public class HotBathImmersionLSOModifier {
         // Cold resistance effect will naturally expire
     }
 }
+
+
+
+
+
+
+
+
+
+

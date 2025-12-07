@@ -4,13 +4,13 @@ import com.crabmod.hotbath.HotBath;
 import com.crabmod.hotbath.util.CustomFluidHandler;
 import com.crabmod.hotbath.util.EffectRemovalHandler;
 import com.crabmod.hotbath.util.HungerRegenHandler;
-import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.event.entity.living.LivingEvent;
 
 import java.util.Objects;
 
@@ -28,7 +28,7 @@ public class MilkBathEvents {
 
     // enter hot water block event
     @SubscribeEvent
-    public static void enterMilkBathEvents(EntityTickEvent.Pre event) {
+    public static void enterMilkBathEvents(LivingEvent.LivingTickEvent event) {
         enterFluidEvents(
                 event,
                 MILK_BATH_ENTERED_COUNT_TRIGGER_NUMBER,
@@ -40,7 +40,7 @@ public class MilkBathEvents {
     }
 
     public static void enterFluidEvents(
-            EntityTickEvent.Pre event,
+            LivingEvent.LivingTickEvent event,
             int enteredCountTriggerNumber,
             int stayedEffectTriggerTime,
             String enteredNumberInMilkBath,
@@ -86,10 +86,10 @@ public class MilkBathEvents {
             playerData.putBoolean(hasEnteredMilkBath, true);
 
             if (enteredCount >= enteredCountTriggerNumber) {
-                AdvancementHolder advancement =
+                Advancement advancement =
                         Objects.requireNonNull(player.getServer())
                                 .getAdvancements()
-                                .get(Objects.requireNonNull(ResourceLocation.tryParse(milkBathAdvancementId)));
+                                .getAdvancement(Objects.requireNonNull(ResourceLocation.tryParse(milkBathAdvancementId)));
 
                 if (advancement != null) {
                     player.getAdvancements().award(advancement, "code_triggered");
@@ -102,3 +102,13 @@ public class MilkBathEvents {
         playerData.putInt(milkBathStayedTime, hotBathTime);
     }
 }
+
+
+
+
+
+
+
+
+
+

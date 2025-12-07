@@ -13,7 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
-public class CustomDripParticle extends DripParticle {
+public class CustomDripParticle extends com.crabmod.hotbath.client.particle.DripParticleAccess {
     private final ParticleOptions fallParticle;
     private final ParticleOptions landParticle;
     private final Fluid fluid;
@@ -114,3 +114,13 @@ public class CustomDripParticle extends DripParticle {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

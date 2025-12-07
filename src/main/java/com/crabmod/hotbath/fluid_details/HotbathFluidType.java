@@ -5,28 +5,28 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.common.SoundActions;
-import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.common.SoundActions;
+import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.Supplier;
 
 import static com.crabmod.hotbath.fluid_details.FluidsColor.DEFAULT_FOG_COLOR;
 
 public class HotbathFluidType {
-    public static final ResourceLocation WATER_STILL_RL = ResourceLocation.parse("block/water_still");
+    public static final ResourceLocation WATER_STILL_RL = new ResourceLocation("block/water_still");
     public static final ResourceLocation WATER_FLOWING_RL =
-            ResourceLocation.parse("block/water_flow");
+            new ResourceLocation("block/water_flow");
     public static final ResourceLocation WATER_OVERLAY_RL =
-            ResourceLocation.parse("block/water_overlay");
+            new ResourceLocation("block/water_overlay");
 
     public static final DeferredRegister<FluidType> FLUID_TYPES =
-            DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, HotBath.MOD_ID);
+            DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, HotBath.MOD_ID);
 
-    public static DeferredHolder<FluidType, FluidType> getHotBathFluidType(
+    public static RegistryObject<FluidType> getHotBathFluidType(
             String name,
             int color,
             ResourceLocation STILL_RL_TEXTURE,
@@ -59,7 +59,7 @@ public class HotbathFluidType {
                 (Supplier<Fluid>) fluidSupplier);
     }
 
-    private static DeferredHolder<FluidType, FluidType> register(
+    private static RegistryObject<FluidType> register(
             String name,
             FluidType.Properties properties,
             int FLUID_COLOR,
@@ -89,3 +89,13 @@ public class HotbathFluidType {
         FLUID_TYPES.register(eventBus);
     }
 }
+
+
+
+
+
+
+
+
+
+

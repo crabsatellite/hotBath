@@ -17,14 +17,14 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
 import com.crabmod.hotbath.fluid_details.BaseFluidType;
-import net.neoforged.neoforge.fluids.FluidType;
+import net.minecraftforge.fluids.FluidType;
 
 public abstract class AbstractHotbathBlock extends LiquidBlock {
     private static final String HOTBATH_UNDERWATER_STATE = "HotbathUnderwaterState";
@@ -273,3 +273,13 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

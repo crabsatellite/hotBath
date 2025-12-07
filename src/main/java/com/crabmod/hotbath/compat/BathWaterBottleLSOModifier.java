@@ -30,3 +30,13 @@ public class BathWaterBottleLSOModifier {
         LSOApiHelper.applySplashTemperatureEffect(player);
     }
 }
+
+
+
+
+
+
+
+
+
+

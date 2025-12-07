@@ -12,3 +12,13 @@ public class RoseBathBlock extends AbstractHotbathBlock {
         super(supplier, properties);
     }
 }
+
+
+
+
+
+
+
+
+
+

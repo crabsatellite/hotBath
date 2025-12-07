@@ -5,16 +5,16 @@ import com.crabmod.hotbath.util.CustomFluidHandler;
 import com.crabmod.hotbath.util.EffectRemovalHandler;
 import com.crabmod.hotbath.util.HealthRegenHandler;
 import com.crabmod.hotbath.util.ResistanceBoostHandler;
-import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.Level;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.event.entity.living.LivingEvent;
 
 import java.util.Objects;
 
@@ -30,7 +30,7 @@ public class HerbalBathEvents {
 
     // enter hot water block event
     @SubscribeEvent
-    public static void enterHerbalBathBlockEvent(EntityTickEvent.Pre event) {
+    public static void enterHerbalBathBlockEvent(LivingEvent.LivingTickEvent event) {
         enterFluidEvents(
                 event,
                 HERBAL_BATH_ENTERED_COUNT_TRIGGER_NUMBER,
@@ -42,7 +42,7 @@ public class HerbalBathEvents {
     }
 
     public static void enterFluidEvents(
-            EntityTickEvent.Pre event,
+            LivingEvent.LivingTickEvent event,
             int enteredCountTriggerNumber,
             int stayedEffectTriggerTime,
             String enteredNumberInHerbalBath,
@@ -80,10 +80,10 @@ public class HerbalBathEvents {
                     playerData.putBoolean(hasEnteredHerbalBath, true);
 
                     if (enteredCount >= enteredCountTriggerNumber) {
-                        AdvancementHolder advancement =
+                        Advancement advancement =
                                 Objects.requireNonNull(player.getServer())
                                         .getAdvancements()
-                                        .get(
+                                        .getAdvancement(
                                                 Objects.requireNonNull(ResourceLocation.tryParse(herbalBathAdvancementId)));
 
                         if (advancement != null) {
@@ -113,3 +113,13 @@ public class HerbalBathEvents {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+

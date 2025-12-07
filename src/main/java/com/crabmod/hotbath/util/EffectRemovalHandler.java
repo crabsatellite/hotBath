@@ -15,7 +15,7 @@ public class EffectRemovalHandler {
         List<MobEffectInstance> activeEffects = new ArrayList<>(player.getActiveEffects());
 
         for (MobEffectInstance effectInstance : activeEffects) {
-            Holder<MobEffect> effectHolder = effectInstance.getEffect();
+            MobEffect effectHolder = effectInstance.getEffect();
 
             if (isHarmfulEffect(effectHolder) && effectHolder != MobEffects.UNLUCK) {
                 player.removeEffect(effectHolder);
@@ -23,15 +23,15 @@ public class EffectRemovalHandler {
         }
     }
 
-    private static boolean isHarmfulEffect(Holder<MobEffect> effect) {
-        return effect.value().getCategory() == MobEffectCategory.HARMFUL && effect != MobEffects.BAD_OMEN;
+    private static boolean isHarmfulEffect(MobEffect effect) {
+        return effect.getCategory() == MobEffectCategory.HARMFUL && effect != MobEffects.BAD_OMEN;
     }
 
     public static void removeNegativeEffectsExceptSlowAndUnluck(ServerPlayer player) {
         List<MobEffectInstance> activeEffects = new ArrayList<>(player.getActiveEffects());
 
         for (MobEffectInstance effectInstance : activeEffects) {
-            Holder<MobEffect> effectHolder = effectInstance.getEffect();
+            MobEffect effectHolder = effectInstance.getEffect();
 
             if (isHarmfulEffect(effectHolder)
                     && effectHolder != MobEffects.UNLUCK
@@ -45,7 +45,7 @@ public class EffectRemovalHandler {
         List<MobEffectInstance> activeEffects = new ArrayList<>(player.getActiveEffects());
 
         for (MobEffectInstance effectInstance : activeEffects) {
-            Holder<MobEffect> effectHolder = effectInstance.getEffect();
+            MobEffect effectHolder = effectInstance.getEffect();
 
             if (isHarmfulEffect(effectHolder)) {
                 player.removeEffect(effectInstance.getEffect());
@@ -57,3 +57,13 @@ public class EffectRemovalHandler {
         player.removeEffect(MobEffects.BAD_OMEN);
     }
 }
+
+
+
+
+
+
+
+
+
+

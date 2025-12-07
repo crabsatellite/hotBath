@@ -25,3 +25,13 @@ public class HotBathTANPlayerModifier implements IPlayerTemperatureModifier {
         return current;
     }
 }
+
+
+
+
+
+
+
+
+
+
