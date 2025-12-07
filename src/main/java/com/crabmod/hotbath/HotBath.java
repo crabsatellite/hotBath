@@ -1,136 +1,210 @@
 package com.crabmod.hotbath;
 
-import com.crabmod.hotbath.fluid_blocks.*;
+import com.crabmod.hotbath.client.particle.CustomDripParticle;
+import com.crabmod.hotbath.client.particle.HotBathBubbleParticle;
+import com.crabmod.hotbath.compat.ColdSweatCompat;
+import com.crabmod.hotbath.compat.ColdSweatIntegration;
+import com.crabmod.hotbath.compat.LegendarySurvivalOverhaulIntegration;
+import com.crabmod.hotbath.compat.LSOCompat;
+import com.crabmod.hotbath.compat.ToughAsNailsCompat;
+import com.crabmod.hotbath.compat.ToughAsNailsIntegration;
 import com.crabmod.hotbath.fluid_details.HotbathFluidType;
 import com.crabmod.hotbath.item.ItemGroup;
 import com.crabmod.hotbath.registers.BlocksRegister;
+import com.crabmod.hotbath.registers.EntityRegister;
 import com.crabmod.hotbath.registers.FluidsRegister;
 import com.crabmod.hotbath.registers.ItemRegister;
 import com.crabmod.hotbath.registers.ParticleRegister;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.BubbleParticle;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.brewing.BrewingRecipeRegistry;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(HotBath.MOD_ID)
 public class HotBath {
-  // Define mod id in a common place for everything to reference
-  public static final String MOD_ID = "hotbath";
-  // Directly reference a slf4j logger
-  private static final Logger LOGGER = LogUtils.getLogger();
+    // Define mod id in a common place for everything to reference
+    public static final String MOD_ID = "hotbath";
+    // Directly reference a slf4j logger
+    public static final Logger LOGGER = LogUtils.getLogger();
 
-  // Create a Deferred Register to hold Blocks which will all be registered under the "hotbath"
-  // namespace
+    public HotBath(ModContainer modContainer, IEventBus modEventBus) {
+        ItemGroup.register(modEventBus);
+        FluidsRegister.register(modEventBus);
+        BlocksRegister.register(modEventBus);
+        ItemRegister.register(modEventBus);
+        ParticleRegister.register(modEventBus);
+        EntityRegister.register(modEventBus);
+        HotbathFluidType.register(modEventBus);
+        // Register the commonSetup method for modloading
+        modEventBus.addListener(this::commonSetup);
 
-  public HotBath() {
-    IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        // Register ourselves for server and other game events we are interested in
+        NeoForge.EVENT_BUS.register(this);
+//    modEventBus.addListener(this::addCreative);
 
-    // Register the commonSetup method for modloading
-    modEventBus.addListener(this::commonSetup);
-    ItemGroup.register(modEventBus);
-    FluidsRegister.register(modEventBus);
-    BlocksRegister.register(modEventBus);
-    ItemRegister.register(modEventBus);
-    ParticleRegister.register(modEventBus);
-    HotbathFluidType.register(modEventBus);
-    // Register ourselves for server and other game events we are interested in
-    MinecraftForge.EVENT_BUS.register(this);
-
-    // Register the item to a creative tab
-    modEventBus.addListener(this::addCreative);
-  }
-
-  private void commonSetup(final FMLCommonSetupEvent event) {
-    // Some common setup code
-    LOGGER.info("HELLO FROM COMMON SETUP");
-  }
-
-  // Add the example block item to the building blocks tab
-  private void addCreative(BuildCreativeModeTabContentsEvent event) {
-    if (event.getTab() == ItemGroup.HOT_BATH_TAB.get()) {
-      event.accept(ItemRegister.HERBAL_BATH_BUCKET);
-      event.accept(ItemRegister.HONEY_BATH_BUCKET);
-      event.accept(ItemRegister.HOT_WATER_BUCKET);
-      event.accept(ItemRegister.MILK_BATH_BUCKET);
-      event.accept(ItemRegister.PEONY_BATH_BUCKET);
-      event.accept(ItemRegister.ROSE_BATH_BUCKET);
-      event.accept(ItemRegister.BATH_HERB);
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            modEventBus.addListener(ClientModEvents::onClientSetup);
+            modEventBus.addListener(ClientModEvents::registerParticles);
+        }
     }
-  }
 
-  // You can use SubscribeEvent and let the Event Bus discover methods to call
-  @SubscribeEvent
-  public void onServerStarting(ServerStartingEvent event) {
-    // Do something when the server starts
-    LOGGER.info("HELLO from server starting");
-  }
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        LOGGER.info("HELLO FROM COMMON SETUP");
 
-  // You can use EventBusSubscriber to automatically register all static methods in the class
-  // annotated with @SubscribeEvent
-  @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-  public static class ClientModEvents {
+        if (ColdSweatIntegration.isColdSweatLoaded()) {
+            LOGGER.info("Cold Sweat detected! Temperature integration enabled.");
+            try {
+                ColdSweatCompat.init();
+                LOGGER.info("Cold Sweat event handler registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register Cold Sweat event handler: {}", e.getMessage(), e);
+            }
+        }
+
+        if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {
+            LOGGER.info("Tough As Nails detected! Temperature integration enabled.");
+            try {
+                ToughAsNailsCompat.init();
+                LOGGER.info("Tough As Nails integration registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to initialize Tough As Nails integration: {}", e.getMessage(), e);
+            }
+        }
+
+        if (LegendarySurvivalOverhaulIntegration.isLSOLoaded()) {
+            LOGGER.info("Legendary Survival Overhaul detected! Integration enabled.");
+            try {
+                LSOCompat.init();
+                LOGGER.info("LSO integration registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register LSO integration: {}", e.getMessage(), e);
+            }
+        }
+    }
+
+    // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
-    public static void onClientSetup(FMLClientSetupEvent event) {
-      // Some client setup code
-      LOGGER.info("HELLO FROM CLIENT SETUP");
-      LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
-      ItemBlockRenderTypes.setRenderLayer(
-          FluidsRegister.HOT_WATER_FLUID.get(), RenderType.translucent());
-      ItemBlockRenderTypes.setRenderLayer(
-          FluidsRegister.HOT_WATER_FLOWING.get(), RenderType.translucent());
-      ItemBlockRenderTypes.setRenderLayer(
-          FluidsRegister.HONEY_BATH_FLUID.get(), RenderType.translucent());
-      ItemBlockRenderTypes.setRenderLayer(
-          FluidsRegister.HONEY_BATH_FLOWING.get(), RenderType.translucent());
-      ItemBlockRenderTypes.setRenderLayer(
-          FluidsRegister.MILK_BATH_FLUID.get(), RenderType.translucent());
-      ItemBlockRenderTypes.setRenderLayer(
-          FluidsRegister.MILK_BATH_FLOWING.get(), RenderType.translucent());
-      ItemBlockRenderTypes.setRenderLayer(
-          FluidsRegister.PEONY_BATH_FLUID.get(), RenderType.translucent());
-      ItemBlockRenderTypes.setRenderLayer(
-          FluidsRegister.PEONY_BATH_FLOWING.get(), RenderType.translucent());
-      ItemBlockRenderTypes.setRenderLayer(
-          FluidsRegister.ROSE_BATH_FLUID.get(), RenderType.translucent());
-      ItemBlockRenderTypes.setRenderLayer(
-          FluidsRegister.ROSE_BATH_FLOWING.get(), RenderType.translucent());
-      ItemBlockRenderTypes.setRenderLayer(
-          FluidsRegister.HERBAL_BATH_FLUID.get(), RenderType.translucent());
-      ItemBlockRenderTypes.setRenderLayer(
-          FluidsRegister.HERBAL_BATH_FLOWING.get(), RenderType.translucent());
+    public void onServerStarting(ServerStartingEvent event) {
+        // Do something when the server starts
+        LOGGER.info("HELLO from server starting");
     }
-  }
 
-  // Register the setup method for modloading
-  @ObjectHolder(registryName = "minecraft:block", value = "hotbath:hot_water_block")
-  public static final HotWaterBlock HOT_WATER_BLOCK = null;
+    // You can use EventBusSubscriber to automatically register all static methods in the class
+    // annotated with @SubscribeEvent
+    public static class ClientModEvents {
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event) {
+            EntityRenderers.register(EntityRegister.THROWN_BATH_WATER.get(), ThrownItemRenderer::new);
 
-  @ObjectHolder(registryName = "minecraft:block", value = "hotbath:herbal_bath_block")
-  public static final HerbalBathBlock HERBAL_BATH_BLOCK = null;
+            ItemBlockRenderTypes.setRenderLayer(FluidsRegister.HOT_WATER_FLUID.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(FluidsRegister.HOT_WATER_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(FluidsRegister.HONEY_BATH_FLUID.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(FluidsRegister.HONEY_BATH_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(FluidsRegister.MILK_BATH_FLUID.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(FluidsRegister.MILK_BATH_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(FluidsRegister.HERBAL_BATH_FLUID.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(FluidsRegister.HERBAL_BATH_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(FluidsRegister.PEONY_BATH_FLUID.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(FluidsRegister.PEONY_BATH_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(FluidsRegister.ROSE_BATH_FLUID.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(FluidsRegister.ROSE_BATH_FLOWING.get(), RenderType.translucent());
+        }
 
-  @ObjectHolder(registryName = "minecraft:block", value = "hotbath:honey_bath_block")
-  public static final HoneyBathBlock HONEY_BATH_BLOCK = null;
+        @SubscribeEvent
+        public static void registerParticles(RegisterParticleProvidersEvent event) {
+            event.registerSpriteSet(ParticleRegister.HOT_WATER_SPLASH.get(), net.minecraft.client.particle.SplashParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HONEY_WATER_SPLASH.get(), net.minecraft.client.particle.SplashParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.MILK_WATER_SPLASH.get(), net.minecraft.client.particle.SplashParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HERBAL_WATER_SPLASH.get(), net.minecraft.client.particle.SplashParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.PEONY_WATER_SPLASH.get(), net.minecraft.client.particle.SplashParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.ROSE_WATER_SPLASH.get(), net.minecraft.client.particle.SplashParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HOT_WATER_EFFECT.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HONEY_BATH_EFFECT.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.MILK_BATH_EFFECT.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HERBAL_BATH_EFFECT.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.PEONY_BATH_EFFECT.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.ROSE_BATH_EFFECT.get(), net.minecraft.client.particle.SpellParticle.Provider::new);
 
-  @ObjectHolder(registryName = "minecraft:block", value = "hotbath:milk_bath_block")
-  public static final MilkBathBlock MILK_BATH_BLOCK = null;
+            // Bubbles
+            event.registerSpriteSet(ParticleRegister.HOT_WATER_BUBBLE.get(), HotBathBubbleParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HONEY_BATH_BUBBLE.get(), HotBathBubbleParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.MILK_BATH_BUBBLE.get(), HotBathBubbleParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.HERBAL_BATH_BUBBLE.get(), HotBathBubbleParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.PEONY_BATH_BUBBLE.get(), HotBathBubbleParticle.Provider::new);
+            event.registerSpriteSet(ParticleRegister.ROSE_BATH_BUBBLE.get(), HotBathBubbleParticle.Provider::new);
 
-  @ObjectHolder(registryName = "minecraft:block", value = "hotbath:peony_bath_block")
-  public static final PeonyBathBlock PEONY_BATH_BLOCK = null;
+            // Dripping (Hanging)
+            event.registerSpriteSet(ParticleRegister.DRIPPING_HOT_WATER.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, ParticleRegister.FALLING_HOT_WATER.get(), ParticleRegister.LANDING_HOT_WATER.get()));
+            event.registerSpriteSet(ParticleRegister.DRIPPING_HONEY_BATH.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, ParticleRegister.FALLING_HONEY_BATH.get(), ParticleRegister.LANDING_HONEY_BATH.get()));
+            event.registerSpriteSet(ParticleRegister.DRIPPING_MILK_BATH.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, ParticleRegister.FALLING_MILK_BATH.get(), ParticleRegister.LANDING_MILK_BATH.get()));
+            event.registerSpriteSet(ParticleRegister.DRIPPING_HERBAL_BATH.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, ParticleRegister.FALLING_HERBAL_BATH.get(), ParticleRegister.LANDING_HERBAL_BATH.get()));
+            event.registerSpriteSet(ParticleRegister.DRIPPING_PEONY_BATH.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, ParticleRegister.FALLING_PEONY_BATH.get(), ParticleRegister.LANDING_PEONY_BATH.get()));
+            event.registerSpriteSet(ParticleRegister.DRIPPING_ROSE_BATH.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, ParticleRegister.FALLING_ROSE_BATH.get(), ParticleRegister.LANDING_ROSE_BATH.get()));
 
-  @ObjectHolder(registryName = "minecraft:block", value = "hotbath:rose_bath_block")
-  public static final RoseBathBlock ROSE_BATH_BLOCK = null;
+            // Falling
+            event.registerSpriteSet(ParticleRegister.FALLING_HOT_WATER.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, null, ParticleRegister.LANDING_HOT_WATER.get()));
+            event.registerSpriteSet(ParticleRegister.FALLING_HONEY_BATH.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, null, ParticleRegister.LANDING_HONEY_BATH.get()));
+            event.registerSpriteSet(ParticleRegister.FALLING_MILK_BATH.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, null, ParticleRegister.LANDING_MILK_BATH.get()));
+            event.registerSpriteSet(ParticleRegister.FALLING_HERBAL_BATH.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, null, ParticleRegister.LANDING_HERBAL_BATH.get()));
+            event.registerSpriteSet(ParticleRegister.FALLING_PEONY_BATH.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, null, ParticleRegister.LANDING_PEONY_BATH.get()));
+            event.registerSpriteSet(ParticleRegister.FALLING_ROSE_BATH.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, null, ParticleRegister.LANDING_ROSE_BATH.get()));
+
+            // Landing
+            event.registerSpriteSet(ParticleRegister.LANDING_HOT_WATER.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, null, null));
+            event.registerSpriteSet(ParticleRegister.LANDING_HONEY_BATH.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, null, null));
+            event.registerSpriteSet(ParticleRegister.LANDING_MILK_BATH.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, null, null));
+            event.registerSpriteSet(ParticleRegister.LANDING_HERBAL_BATH.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, null, null));
+            event.registerSpriteSet(ParticleRegister.LANDING_PEONY_BATH.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, null, null));
+            event.registerSpriteSet(ParticleRegister.LANDING_ROSE_BATH.get(), 
+                sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, null, null));
+        }
+    }
+
+    @SubscribeEvent
+    public void onBrewingRecipeRegister(net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent event) {
+        event.getBuilder().addRecipe(Ingredient.of(ItemRegister.HOT_WATER_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_HOT_WATER_BOTTLE.get().getDefaultInstance());
+        event.getBuilder().addRecipe(Ingredient.of(ItemRegister.HONEY_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_HONEY_BATH_BOTTLE.get().getDefaultInstance());
+        event.getBuilder().addRecipe(Ingredient.of(ItemRegister.MILK_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_MILK_BATH_BOTTLE.get().getDefaultInstance());
+        event.getBuilder().addRecipe(Ingredient.of(ItemRegister.HERBAL_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_HERBAL_BATH_BOTTLE.get().getDefaultInstance());
+        event.getBuilder().addRecipe(Ingredient.of(ItemRegister.PEONY_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_PEONY_BATH_BOTTLE.get().getDefaultInstance());
+        event.getBuilder().addRecipe(Ingredient.of(ItemRegister.ROSE_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_ROSE_BATH_BOTTLE.get().getDefaultInstance());
+    }
 }

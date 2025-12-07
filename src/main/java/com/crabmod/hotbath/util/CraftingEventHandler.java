@@ -1,52 +1,41 @@
 package com.crabmod.hotbath.util;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.event.entity.player.PlayerEvent.ItemCraftedEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent.ItemCraftedEvent;
+
 import static com.crabmod.hotbath.registers.ItemRegister.HOT_WATER_BUCKET;
 
-@Mod.EventBusSubscriber(modid = "hotbath")
+@EventBusSubscriber(modid = "hotbath")
 public class CraftingEventHandler {
 
-  @SubscribeEvent
-  public static void onItemCrafted(ItemCraftedEvent event) {
-    if (event.getInventory() instanceof CraftingContainer craftingInventory) {
-      boolean foundHotWaterBucket = false;
-      boolean foundMilkBucket = false;
+    @SubscribeEvent
+    public static void onItemCrafted(ItemCraftedEvent event) {
+        if (event.getInventory() instanceof CraftingContainer craftingInventory) {
+            boolean foundHotWaterBucket = false;
 
-      // Iterate through all items in the crafting grid
-      for (int i = 0; i < craftingInventory.getContainerSize(); i++) {
-        ItemStack itemStack = craftingInventory.getItem(i);
-        Item item = itemStack.getItem();
+            // Check if hot water bucket was used in the recipe
+            for (int i = 0; i < craftingInventory.getContainerSize(); i++) {
+                ItemStack itemStack = craftingInventory.getItem(i);
+                if (itemStack.getItem() == HOT_WATER_BUCKET.get()) {
+                    foundHotWaterBucket = true;
+                    break;
+                }
+            }
 
-        // Check if the item is the custom hot water bucket
-        if (item == HOT_WATER_BUCKET.get()) {
-          foundHotWaterBucket = true;
-          // Remove the hot water bucket from the crafting grid
-          itemStack.shrink(1);
+            // If hot water bucket was used, give back an empty bucket to the player
+            if (foundHotWaterBucket) {
+                if (event.getEntity() instanceof Player player) {
+                    ItemStack emptyBucket = new ItemStack(Items.BUCKET);
+                    if (!player.getInventory().add(emptyBucket)) {
+                        player.drop(emptyBucket, false);
+                    }
+                }
+            }
         }
-
-        // Check if the item is a milk bucket
-        if (item == Items.MILK_BUCKET) {
-          foundMilkBucket = true;
-        }
-      }
-
-      // If the recipe contains both the hot water bucket and milk bucket, add an empty bucket
-      if (foundHotWaterBucket && foundMilkBucket) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-          ItemStack emptyBucket = new ItemStack(Items.BUCKET);
-          if (!player.getInventory().add(emptyBucket)) {
-            player.drop(emptyBucket, false);
-          }
-        }
-      }
     }
-  }
 }

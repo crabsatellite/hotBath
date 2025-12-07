@@ -1,24 +1,14 @@
 package com.crabmod.hotbath.fluid_blocks;
 
-import com.crabmod.hotbath.registers.FluidsRegister;
-import com.crabmod.hotbath.util.ParticleGenerator;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-/** Milk Bath Block */
+/**
+ * Milk Bath Block
+ */
 public class MilkBathBlock extends AbstractHotbathBlock {
-  public MilkBathBlock(Supplier<? extends FlowingFluid> supplier, Properties properties) {
-    super(supplier, properties);
-  }
+    public MilkBathBlock(Supplier<? extends FlowingFluid> supplier, Properties properties) {
+        super(supplier, properties);
+    }
 }
