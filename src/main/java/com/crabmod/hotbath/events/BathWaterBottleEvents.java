@@ -1,3 +1,4 @@
+package com.crabmod.hotbath.events;
 
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.HitResult;

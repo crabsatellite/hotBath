@@ -35,9 +35,9 @@ public class PeonyBathEvents {
     private static final int LUCK_THRESHOLD = 50;
 
     private static final ResourceLocation ATTACK_SPEED_MODIFIER_NAME =
-            new ResourceLocation(HotBath.MOD_ID, "peony_bath_attack_speed_modifier");
+            ResourceLocation.fromNamespaceAndPath(HotBath.MOD_ID, "peony_bath_attack_speed_modifier");
     private static final ResourceLocation KNOCKBACK_RESISTANCE_MODIFIER_NAME =
-            new ResourceLocation(
+            ResourceLocation.fromNamespaceAndPath(
                     HotBath.MOD_ID, "peony_bath_knockback_resistance_modifier");
 
     @SubscribeEvent

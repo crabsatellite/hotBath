@@ -33,6 +33,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -48,7 +49,8 @@ public class HotBath {
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public HotBath(ModContainer modContainer, IEventBus modEventBus) {
+    public HotBath(FMLJavaModLoadingContext context) {
+        IEventBus modEventBus = context.getModEventBus();
         ItemGroup.register(modEventBus);
         FluidsRegister.register(modEventBus);
         BlocksRegister.register(modEventBus);

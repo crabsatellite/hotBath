@@ -16,12 +16,13 @@ import java.util.function.Supplier;
 
 import static com.crabmod.hotbath.fluid_details.FluidsColor.DEFAULT_FOG_COLOR;
 
+@SuppressWarnings("deprecation")
 public class HotbathFluidType {
-    public static final ResourceLocation WATER_STILL_RL = new ResourceLocation("block/water_still");
+    public static final ResourceLocation WATER_STILL_RL = ResourceLocation.parse("block/water_still");
     public static final ResourceLocation WATER_FLOWING_RL =
-            new ResourceLocation("block/water_flow");
+            ResourceLocation.parse("block/water_flow");
     public static final ResourceLocation WATER_OVERLAY_RL =
-            new ResourceLocation("block/water_overlay");
+            ResourceLocation.parse("block/water_overlay");
 
     public static final DeferredRegister<FluidType> FLUID_TYPES =
             DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, HotBath.MOD_ID);
