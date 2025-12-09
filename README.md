@@ -68,7 +68,7 @@ Welcome to **Hot Bath Mod**! Take a break from your adventures and soak in a rel
 
 ### Mod Integrations
 
-> **Note**: These three mods all provide temperature mechanics. It is **not recommended** to install them simultaneously as they may conflict or provide redundant features.
+> **Note**: These three mods all introduce temperature mechanics. To avoid conflicts or redundant features, it is **recommended to install only one** of them at a time.
 
 - **[Tough As Nails](https://www.curseforge.com/minecraft/mc-mods/tough-as-nails)**:
   - Bottles provide warming effect.
@@ -247,7 +247,7 @@ Welcome to **Hot Bath Mod**! Take a break from your adventures and soak in a rel
 
 ### 模组联动
 
-> **注意**: 这三个模组都提供了温度机制。**不推荐**同时安装它们，因为可能会产生冲突或功能冗余。
+> **注意**: 这三个模组都引入了温度机制。为了避免冲突或功能冗余，**建议每次只安装其中一个**。
 
 - **[Tough As Nails](https://www.curseforge.com/minecraft/mc-mods/tough-as-nails)**:
   - 浴水瓶提供升温效果。
