@@ -2,6 +2,7 @@ package com.crabmod.hotbath;
 
 import com.crabmod.hotbath.client.particle.CustomDripParticle;
 import com.crabmod.hotbath.client.particle.HotBathBubbleParticle;
+import com.crabmod.hotbath.particles.SteamParticle;
 import com.crabmod.hotbath.compat.ColdSweatCompat;
 import com.crabmod.hotbath.compat.ColdSweatIntegration;
 import com.crabmod.hotbath.compat.LegendarySurvivalOverhaulIntegration;
@@ -123,6 +124,7 @@ public class HotBath {
 
     // You can use EventBusSubscriber to automatically register all static methods in the class
     // annotated with @SubscribeEvent
+    @EventBusSubscriber(modid = HotBath.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
@@ -144,6 +146,7 @@ public class HotBath {
 
         @SubscribeEvent
         public static void registerParticles(RegisterParticleProvidersEvent event) {
+            event.registerSpriteSet(ParticleRegister.STEAM_PARTICLE.get(), SteamParticle.CozySmokeFactory::new);
             event.registerSpriteSet(ParticleRegister.HOT_WATER_SPLASH.get(), net.minecraft.client.particle.SplashParticle.Provider::new);
             event.registerSpriteSet(ParticleRegister.HONEY_WATER_SPLASH.get(), net.minecraft.client.particle.SplashParticle.Provider::new);
             event.registerSpriteSet(ParticleRegister.MILK_WATER_SPLASH.get(), net.minecraft.client.particle.SplashParticle.Provider::new);
