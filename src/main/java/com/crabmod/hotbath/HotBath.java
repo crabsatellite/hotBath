@@ -2,12 +2,12 @@ package com.crabmod.hotbath;
 
 import com.crabmod.hotbath.client.particle.CustomDripParticle;
 import com.crabmod.hotbath.client.particle.HotBathBubbleParticle;
-// import com.crabmod.hotbath.compat.ColdSweatCompat;
-// import com.crabmod.hotbath.compat.ColdSweatIntegration;
-// import com.crabmod.hotbath.compat.LegendarySurvivalOverhaulIntegration;
-// import com.crabmod.hotbath.compat.LSOCompat;
-// import com.crabmod.hotbath.compat.ToughAsNailsCompat;
-// import com.crabmod.hotbath.compat.ToughAsNailsIntegration;
+import com.crabmod.hotbath.compat.ColdSweatCompat;
+import com.crabmod.hotbath.compat.ColdSweatIntegration;
+import com.crabmod.hotbath.compat.LegendarySurvivalOverhaulIntegration;
+import com.crabmod.hotbath.compat.LSOCompat;
+import com.crabmod.hotbath.compat.ToughAsNailsCompat;
+import com.crabmod.hotbath.compat.ToughAsNailsIntegration;
 import com.crabmod.hotbath.fluid_details.HotbathFluidType;
 import com.crabmod.hotbath.item.ItemGroup;
 import com.crabmod.hotbath.registers.BlocksRegister;
@@ -74,7 +74,6 @@ public class HotBath {
     private void commonSetup(final FMLCommonSetupEvent event) {
         LOGGER.info("HELLO FROM COMMON SETUP");
 
-        /*
         if (ColdSweatIntegration.isColdSweatLoaded()) {
             LOGGER.info("Cold Sweat detected! Temperature integration enabled.");
             try {
@@ -104,7 +103,6 @@ public class HotBath {
                 LOGGER.error("Failed to register LSO integration: {}", e.getMessage(), e);
             }
         }
-        */
         
         event.enqueueWork(() -> {
             BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemRegister.HOT_WATER_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_HOT_WATER_BOTTLE.get().getDefaultInstance());
