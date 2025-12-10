@@ -13,6 +13,7 @@ public class ColdSweatEventHandler {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     @SubscribeEvent
+    @SuppressWarnings("removal")
     public static void onTempModifierRegister(TempModifierRegisterEvent event) {
         try {
             LOGGER.info("Registering Hot Bath temperature modifiers with Cold Sweat...");
