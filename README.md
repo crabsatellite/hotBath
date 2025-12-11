@@ -59,6 +59,12 @@ Welcome to **Hot Bath Mod**! Take a break from your adventures and soak in a rel
 - **Rose** ![Splash Rose Bath Bottle](https://s2.loli.net/2025/12/07/6nmwBWHXQTJGMYO.png):
   Strength![Strength.png](https://s2.loli.net/2023/04/08/CgmeXzsn8TVFbN9.png) II (30s)
 
+### Splash Bath Water Brewing Recipes
+
+Add **Gunpowder** to any Bath Water Bottle to create its splash version.
+
+![splash_hot_water_bottle_composite_eng.png](https://s2.loli.net/2025/12/11/IEuCqy2rO1x7voK.png)
+
 ### Fluid Interactions
 
 - **Bubble Columns**:
@@ -237,6 +243,12 @@ Welcome to **Hot Bath Mod**! Take a break from your adventures and soak in a rel
   幸运![Luck.png](https://s2.loli.net/2023/04/08/9vfrMjAsBULpX5E.png) II (30 秒)
 - **玫瑰** ![Splash Rose Bath Bottle](https://s2.loli.net/2025/12/07/6nmwBWHXQTJGMYO.png):
   力量![Strength.png](https://s2.loli.net/2023/04/08/CgmeXzsn8TVFbN9.png) II (30 秒)
+
+### 喷溅药水酿造配方
+
+所有种类的浴水瓶加入 **火药** 即可酿造为喷溅型浴水瓶。
+
+![splash_hot_water_bottle_composite_chn.png](https://s2.loli.net/2025/12/11/FBXqQyTa6C9iM5I.png)
 
 ### 流体交互
 
