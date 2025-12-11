@@ -1,6 +1,8 @@
 package com.crabmod.hotbath.compat;
 
+import com.mojang.logging.LogUtils;
 import net.minecraft.world.entity.player.Player;
+import org.slf4j.Logger;
 import toughasnails.api.temperature.IPlayerTemperatureModifier;
 import toughasnails.api.temperature.TemperatureLevel;
 
@@ -13,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * When a player drinks a bath water bottle, they temporarily get WARM temperature.
  */
 public class BathWaterBottleTANModifier implements IPlayerTemperatureModifier {
+    private static final Logger LOGGER = LogUtils.getLogger();
     
     // Track players who have drunk bath water and when the effect expires
     private static final Map<UUID, Long> WARM_PLAYERS = new ConcurrentHashMap<>();
@@ -25,6 +28,7 @@ public class BathWaterBottleTANModifier implements IPlayerTemperatureModifier {
      * If already active, reset to 10 seconds (not stacking, just resetting duration)
      */
     public static void applyWarmEffect(Player player) {
+        LOGGER.info("Applying bath water bottle warm effect to player {}", player.getName().getString());
         WARM_PLAYERS.put(player.getUUID(), System.currentTimeMillis() + WARM_DURATION_MS);
     }
 
@@ -32,7 +36,12 @@ public class BathWaterBottleTANModifier implements IPlayerTemperatureModifier {
      * Apply warm effect to player for 30 seconds (for splash potions)
      */
     public static void applySplashWarmEffect(Player player) {
+        LOGGER.info("Applying splash bath water bottle warm effect to player {}", player.getName().getString());
         WARM_PLAYERS.put(player.getUUID(), System.currentTimeMillis() + 30_000);
+    }
+
+    public static void cleanup(Player player) {
+        WARM_PLAYERS.remove(player.getUUID());
     }
 
     @Override
@@ -46,6 +55,7 @@ public class BathWaterBottleTANModifier implements IPlayerTemperatureModifier {
             // Check if effect has expired
             if (currentTime > expireTime) {
                 WARM_PLAYERS.remove(playerUUID);
+                LOGGER.info("Bath water bottle warm effect expired for player {}", player.getName().getString());
                 return current;
             }
             

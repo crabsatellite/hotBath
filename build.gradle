@@ -143,7 +143,7 @@ dependencies {
     // ColdSweat - Temperature and season mod (optional dependency)
     // compileOnly for API access, runtimeOnly to have it in dev environment
     compileOnly fg.deobf("curse.maven:cold-sweat-506194:7299012")
-    runtimeOnly fg.deobf("curse.maven:cold-sweat-506194:7299012")
+    // runtimeOnly fg.deobf("curse.maven:cold-sweat-506194:7299012")
 
     // GlitchCore - Library mod required by ToughAsNails
     // Project ID: 955399, File ID 5772820 corresponds to GlitchCore-forge-1.20.1-0.0.1.1.jar
@@ -161,7 +161,7 @@ dependencies {
     // Project ID: 840254, File ID 6550305 corresponds to legendarysurvivaloverhaul-1.20.1-1.1.1.1.jar
     // compileOnly for API access, runtimeOnly to have it in dev environment
     compileOnly fg.deobf("curse.maven:legendary-survival-overhaul-840254:6550305")
-    // runtimeOnly fg.deobf("curse.maven:legendary-survival-overhaul-840254:6550305")
+    runtimeOnly fg.deobf("curse.maven:legendary-survival-overhaul-840254:6550305")
 
     // Missing dependencies for Cold Sweat data validation
     // Create

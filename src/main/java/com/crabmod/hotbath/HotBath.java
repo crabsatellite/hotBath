@@ -34,6 +34,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -61,6 +62,7 @@ public class HotBath {
         HotbathFluidType.register(modEventBus);
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::enqueueIMC);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -85,16 +87,6 @@ public class HotBath {
             }
         }
 
-        if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {
-            LOGGER.info("Tough As Nails detected! Temperature integration enabled.");
-            try {
-                ToughAsNailsCompat.init();
-                LOGGER.info("Tough As Nails integration registered successfully.");
-            } catch (Exception e) {
-                LOGGER.error("Failed to initialize Tough As Nails integration: {}", e.getMessage(), e);
-            }
-        }
-
         if (LegendarySurvivalOverhaulIntegration.isLSOLoaded()) {
             LOGGER.info("Legendary Survival Overhaul detected! Integration enabled.");
             try {
@@ -113,6 +105,18 @@ public class HotBath {
             BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemRegister.PEONY_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_PEONY_BATH_BOTTLE.get().getDefaultInstance());
             BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemRegister.ROSE_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_ROSE_BATH_BOTTLE.get().getDefaultInstance());
         });
+    }
+
+    private void enqueueIMC(final InterModEnqueueEvent event) {
+        if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {
+            LOGGER.info("Tough As Nails detected! Temperature integration enabled.");
+            try {
+                ToughAsNailsCompat.init();
+                LOGGER.info("Tough As Nails integration registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to initialize Tough As Nails integration: {}", e.getMessage(), e);
+            }
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
