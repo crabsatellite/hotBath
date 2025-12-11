@@ -15,8 +15,8 @@ Hotbath 的成长离不开社区每一位朋友的热情支持与贡献。在此
 
 感谢你们的辛勤付出，让模组焕发新的活力。
 
-- **IceLitty** ([GitHub](https://github.com/IceLitty) | [MCMod](https://www.mcmod.cn/class/16495.html))
-  - 提供了 Hotbath 非官方 1.21.1 NeoForge 版本更新。
+- **IceLitty** ([GitHub](https://github.com/IceLitty) | [MC 百科](https://www.mcmod.cn/class/16495.html))
+  - （在程序员摸鱼的时候）提供了 Hotbath 非官方 1.21.1 NeoForge 版本更新。
 
 ## 💡 兼容性建议
 
