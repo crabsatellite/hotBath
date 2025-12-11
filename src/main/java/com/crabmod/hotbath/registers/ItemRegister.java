@@ -60,27 +60,27 @@ public class ItemRegister {
             () -> new BathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::roseBathEffect));
 
     public static final RegistryObject<Item> SPLASH_HOT_WATER_BOTTLE = ITEMS.register("splash_hot_water_bottle",
-            () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::hotWaterEffect,
+            () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::hotWaterSplashEffect,
                     ParticleRegister.HOT_WATER_SPLASH, ParticleRegister.HOT_WATER_BUBBLE, ParticleRegister.HOT_WATER_EFFECT, FluidsColor.HOT_WATER_COLOR));
 
     public static final RegistryObject<Item> SPLASH_HONEY_BATH_BOTTLE = ITEMS.register("splash_honey_bath_bottle",
-            () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::honeyBathEffect,
+            () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::honeyBathSplashEffect,
                     ParticleRegister.HONEY_WATER_SPLASH, ParticleRegister.HONEY_BATH_BUBBLE, ParticleRegister.HONEY_BATH_EFFECT, FluidsColor.HONEY_BATH_COLOR));
 
     public static final RegistryObject<Item> SPLASH_MILK_BATH_BOTTLE = ITEMS.register("splash_milk_bath_bottle",
-            () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::milkBathEffect,
+            () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::milkBathSplashEffect,
                     ParticleRegister.MILK_WATER_SPLASH, ParticleRegister.MILK_BATH_BUBBLE, ParticleRegister.MILK_BATH_EFFECT, FluidsColor.MILK_BATH_COLOR));
 
     public static final RegistryObject<Item> SPLASH_HERBAL_BATH_BOTTLE = ITEMS.register("splash_herbal_bath_bottle",
-            () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::herbalBathEffect,
+            () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::herbalBathSplashEffect,
                     ParticleRegister.HERBAL_WATER_SPLASH, ParticleRegister.HERBAL_BATH_BUBBLE, ParticleRegister.HERBAL_BATH_EFFECT, FluidsColor.HERBAL_BATH_COLOR));
 
     public static final RegistryObject<Item> SPLASH_PEONY_BATH_BOTTLE = ITEMS.register("splash_peony_bath_bottle",
-            () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::peonyBathEffect,
+            () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::peonyBathSplashEffect,
                     ParticleRegister.PEONY_WATER_SPLASH, ParticleRegister.PEONY_BATH_BUBBLE, ParticleRegister.PEONY_BATH_EFFECT, FluidsColor.PEONY_BATH_COLOR));
 
     public static final RegistryObject<Item> SPLASH_ROSE_BATH_BOTTLE = ITEMS.register("splash_rose_bath_bottle",
-            () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::roseBathEffect,
+            () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), BathWaterEffects::roseBathSplashEffect,
                     ParticleRegister.ROSE_WATER_SPLASH, ParticleRegister.ROSE_BATH_BUBBLE, ParticleRegister.ROSE_BATH_EFFECT, FluidsColor.ROSE_BATH_COLOR));
 
     public static void register(IEventBus eventBus) {
