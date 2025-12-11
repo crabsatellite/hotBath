@@ -20,6 +20,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 
 import static com.crabmod.hotbath.util.HealthRegenHandler.regenHealth;
 
+@SuppressWarnings("deprecation")
 @EventBusSubscriber(modid = HotBath.MOD_ID)
 public class PeonyBathEvents {
     static final String PEONY_BATH_ENTERED_NUMBER = "PeonyBathEnteredNumber";
@@ -33,9 +34,10 @@ public class PeonyBathEvents {
     private static final int ATTACK_SPEED_DURATION = 15 * TICK_NUMBER;
     private static final int LUCK_DURATION = 45 * TICK_NUMBER;
     private static final int LUCK_THRESHOLD = 50;
-
+    @SuppressWarnings("removal")
     private static final ResourceLocation ATTACK_SPEED_MODIFIER_NAME =
             new ResourceLocation(HotBath.MOD_ID, "peony_bath_attack_speed_modifier");
+    @SuppressWarnings("removal")
     private static final ResourceLocation KNOCKBACK_RESISTANCE_MODIFIER_NAME =
             new ResourceLocation(
                     HotBath.MOD_ID, "peony_bath_knockback_resistance_modifier");

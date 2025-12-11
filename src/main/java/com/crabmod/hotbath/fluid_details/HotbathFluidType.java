@@ -5,6 +5,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidType;
@@ -16,13 +17,13 @@ import java.util.function.Supplier;
 
 import static com.crabmod.hotbath.fluid_details.FluidsColor.DEFAULT_FOG_COLOR;
 
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "removal"})
 public class HotbathFluidType {
-    public static final ResourceLocation WATER_STILL_RL = ResourceLocation.parse("block/water_still");
+    public static final ResourceLocation WATER_STILL_RL = new ResourceLocation("minecraft", "block/water_still");
     public static final ResourceLocation WATER_FLOWING_RL =
-            ResourceLocation.parse("block/water_flow");
+            new ResourceLocation("minecraft", "block/water_flow");
     public static final ResourceLocation WATER_OVERLAY_RL =
-            ResourceLocation.parse("block/water_overlay");
+            new ResourceLocation("minecraft", "block/water_overlay");
 
     public static final DeferredRegister<FluidType> FLUID_TYPES =
             DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, HotBath.MOD_ID);
@@ -36,6 +37,15 @@ public class HotbathFluidType {
             Supplier<? extends ParticleOptions> bubbleParticle,
             Supplier<? extends ParticleOptions> splashParticle,
             Supplier<? extends Fluid> fluidSupplier) {
+        if (STILL_RL_TEXTURE == null) {
+            HotBath.LOGGER.error("STILL_RL_TEXTURE is null for fluid: " + name);
+        }
+        if (FLOWING_RL_TEXTURE == null) {
+            HotBath.LOGGER.error("FLOWING_RL_TEXTURE is null for fluid: " + name);
+        }
+        if (WATER_OVERLAY_RL == null) {
+            HotBath.LOGGER.error("WATER_OVERLAY_RL is null for fluid: " + name);
+        }
         return register(
                 name,
                 FluidType.Properties.create()
@@ -47,6 +57,8 @@ public class HotbathFluidType {
                         .fallDistanceModifier(0.0F)
                         .canDrown(true)
                         .canSwim(true)
+                        .pathType(BlockPathTypes.WATER)
+                        .adjacentPathType(BlockPathTypes.WATER_BORDER)
                         .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
                         .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
                         .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)
@@ -57,7 +69,7 @@ public class HotbathFluidType {
                 dripParticle,
                 bubbleParticle,
                 splashParticle,
-                (Supplier<Fluid>) fluidSupplier);
+                fluidSupplier);
     }
 
     private static RegistryObject<FluidType> register(
@@ -69,7 +81,7 @@ public class HotbathFluidType {
             Supplier<? extends ParticleOptions> dripParticle,
             Supplier<? extends ParticleOptions> bubbleParticle,
             Supplier<? extends ParticleOptions> splashParticle,
-            Supplier<Fluid> fluidSupplier) {
+            Supplier<? extends Fluid> fluidSupplier) {
         return FLUID_TYPES.register(
                 name,
                 () ->

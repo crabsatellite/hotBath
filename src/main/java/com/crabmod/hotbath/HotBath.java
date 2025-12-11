@@ -25,6 +25,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraft.client.Minecraft;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -108,6 +113,39 @@ public class HotBath {
     public void onServerStarting(ServerStartingEvent event) {
         // Do something when the server starts
         LOGGER.info("HELLO from server starting");
+    }
+
+    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class ClientModEvents {
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event) {
+            LOGGER.info("HELLO FROM CLIENT SETUP");
+            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+            ItemBlockRenderTypes.setRenderLayer(
+                    FluidsRegister.HOT_WATER_FLUID.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(
+                    FluidsRegister.HOT_WATER_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(
+                    FluidsRegister.HONEY_BATH_FLUID.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(
+                    FluidsRegister.HONEY_BATH_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(
+                    FluidsRegister.MILK_BATH_FLUID.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(
+                    FluidsRegister.MILK_BATH_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(
+                    FluidsRegister.PEONY_BATH_FLUID.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(
+                    FluidsRegister.PEONY_BATH_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(
+                    FluidsRegister.ROSE_BATH_FLUID.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(
+                    FluidsRegister.ROSE_BATH_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(
+                    FluidsRegister.HERBAL_BATH_FLUID.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(
+                    FluidsRegister.HERBAL_BATH_FLOWING.get(), RenderType.translucent());
+        }
     }
 
     /*

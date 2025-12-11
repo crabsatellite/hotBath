@@ -1,12 +1,13 @@
 package com.crabmod.hotbath.fluid_details;
 
+import com.crabmod.hotbath.HotBath;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
-
+@SuppressWarnings("removal")
 public class HotBathFluidClientExtensions implements IClientFluidTypeExtensions {
     private final ResourceLocation stillTexture;
     private final ResourceLocation flowingTexture;
@@ -24,16 +25,28 @@ public class HotBathFluidClientExtensions implements IClientFluidTypeExtensions 
 
     @Override
     public ResourceLocation getStillTexture() {
+        if (stillTexture == null) {
+            HotBath.LOGGER.warn("Still texture is null! Defaulting to water.");
+            return new ResourceLocation("minecraft", "block/water_still");
+        }
         return stillTexture;
     }
 
     @Override
     public ResourceLocation getFlowingTexture() {
+        if (flowingTexture == null) {
+            HotBath.LOGGER.warn("Flowing texture is null! Defaulting to water.");
+            return new ResourceLocation("minecraft", "block/water_flow");
+        }
         return flowingTexture;
     }
 
     @Override
     public ResourceLocation getOverlayTexture() {
+        if (overlayTexture == null) {
+            HotBath.LOGGER.warn("Overlay texture is null! Defaulting to water overlay.");
+            return new ResourceLocation("minecraft", "block/water_overlay");
+        }
         return overlayTexture;
     }
 
@@ -44,6 +57,13 @@ public class HotBathFluidClientExtensions implements IClientFluidTypeExtensions 
 
     @Override
     public @NotNull Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
-        return fogColor;
+        Vector3f color = fogColor;
+        if (color == null) {
+            color = fluidFogColor;
+        }
+        if (color == null) {
+            color = new Vector3f(1f, 1f, 1f);
+        }
+        return color;
     }
 }

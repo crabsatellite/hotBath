@@ -1,10 +1,13 @@
 package com.crabmod.hotbath.fluid_details;
 
+import net.minecraft.client.Camera;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidType;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 import java.util.function.Consumer;
@@ -20,7 +23,7 @@ public class BaseFluidType extends FluidType {
     private final Supplier<? extends ParticleOptions> dripParticle;
     private final Supplier<? extends ParticleOptions> bubbleParticle;
     private final Supplier<? extends ParticleOptions> splashParticle;
-    private final Supplier<Fluid> fluidSupplier;
+    private final Supplier<? extends Fluid> fluidSupplier;
 
     public BaseFluidType(
             final ResourceLocation stillTexture,
@@ -32,7 +35,7 @@ public class BaseFluidType extends FluidType {
             final Supplier<? extends ParticleOptions> dripParticle,
             final Supplier<? extends ParticleOptions> bubbleParticle,
             final Supplier<? extends ParticleOptions> splashParticle,
-            final Supplier<Fluid> fluidSupplier) {
+            final Supplier<? extends Fluid> fluidSupplier) {
         super(properties);
         this.stillTexture = stillTexture;
         this.flowingTexture = flowingTexture;
@@ -87,7 +90,32 @@ public class BaseFluidType extends FluidType {
 
     @Override
     public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
-        consumer.accept(new HotBathFluidClientExtensions(stillTexture, flowingTexture, overlayTexture, tintColor, fogColor));
+        consumer.accept(new IClientFluidTypeExtensions() {
+            @Override
+            public ResourceLocation getStillTexture() {
+                return stillTexture;
+            }
+
+            @Override
+            public ResourceLocation getFlowingTexture() {
+                return flowingTexture;
+            }
+
+            @Override
+            public ResourceLocation getOverlayTexture() {
+                return overlayTexture;
+            }
+
+            @Override
+            public int getTintColor() {
+                return tintColor;
+            }
+
+            @Override
+            public @NotNull Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
+                return fogColor;
+            }
+        });
     }
 }
 

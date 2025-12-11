@@ -8,6 +8,7 @@ import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
+@SuppressWarnings("removal")
 public class AdvancementTrigger extends SimpleCriterionTrigger<AdvancementTrigger.Instance> {
     private final ResourceLocation id;
 
