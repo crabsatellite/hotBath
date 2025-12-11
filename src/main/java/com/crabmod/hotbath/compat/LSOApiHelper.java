@@ -20,7 +20,7 @@ public class LSOApiHelper {
     // Bottle effect: HOT_DRINK potion (suitable for drinking)
     private static final int HOT_DRINK_BOTTLE_DURATION = 300; // 15 seconds
     private static final int HOT_DRINK_BOTTLE_AMPLIFIER = 0; // Level 1
-    private static final int HOT_DRINK_BOTTLE_AMPLIFIER_BOOSTED = 1; // Level 2 (when bathing)
+    private static final int HOT_DRINK_BOTTLE_AMPLIFIER_BOOSTED = 2; // Level 3 (when bathing)
     
     // Immersion effect: COLD_RESISTANCE (builds up over time)
     private static final int MAX_RESISTANCE_DURATION = 6000; // 5 minutes
@@ -35,8 +35,7 @@ public class LSOApiHelper {
     private static final float SATURATION = 0.6F;
 
     public static void applyBottleTemperatureEffect(Player player, boolean isBathing) {
-        /*
-        MobEffect hotDrink = MobEffectRegistry.HOT_DRINK.get();
+        MobEffect hotDrink = MobEffectRegistry.HOT_DRINk.get();
         
         // Use stronger effect if bathing
         int amplifier = isBathing ? HOT_DRINK_BOTTLE_AMPLIFIER_BOOSTED : HOT_DRINK_BOTTLE_AMPLIFIER;
@@ -50,7 +49,6 @@ public class LSOApiHelper {
             true
         );
         player.addEffect(effect);
-        */
     }
     
     /**
