@@ -12,7 +12,7 @@ public class AdvancementTrigger extends SimpleCriterionTrigger<AdvancementTrigge
     private final ResourceLocation id;
 
     public AdvancementTrigger(String modName, String advancementName) {
-        this.id = ResourceLocation.fromNamespaceAndPath(modName, advancementName);
+        this.id = new ResourceLocation(modName, advancementName);
     }
 
     @Override
