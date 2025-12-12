@@ -26,7 +26,7 @@ public class FluidsRegister {
     public static final DeferredRegister<Fluid> FLUIDS =
             DeferredRegister.create(ForgeRegistries.FLUIDS, HotBath.MOD_ID);
 
-    public static final RegistryObject<FlowingFluid> HOT_WATER_FLUID = FLUIDS.register("hot_water",
+    public static final RegistryObject<FlowingFluid> HOT_WATER_FLUID = FLUIDS.register("hot_water_fluid",
             () -> new ForgeFlowingFluid.Source(FluidsRegister.HOT_WATER_PROPERTIES));
     public static final RegistryObject<FlowingFluid> HOT_WATER_FLOWING = FLUIDS.register("hot_water_flowing",
             () -> new ForgeFlowingFluid.Flowing(FluidsRegister.HOT_WATER_PROPERTIES));
@@ -42,7 +42,7 @@ public class FluidsRegister {
             .slopeFindDistance(2).levelDecreasePerBlock(2).block(HOT_WATER_BLOCK).bucket(ItemRegister.HOT_WATER_BUCKET);
 
 
-    public static final RegistryObject<FlowingFluid> HONEY_BATH_FLUID = FLUIDS.register("honey_bath",
+    public static final RegistryObject<FlowingFluid> HONEY_BATH_FLUID = FLUIDS.register("honey_bath_fluid",
             () -> new ForgeFlowingFluid.Source(FluidsRegister.HONEY_BATH_PROPERTIES));
     public static final RegistryObject<FlowingFluid> HONEY_BATH_FLOWING = FLUIDS.register("honey_bath_flowing",
             () -> new ForgeFlowingFluid.Flowing(FluidsRegister.HONEY_BATH_PROPERTIES));
@@ -58,7 +58,7 @@ public class FluidsRegister {
             .slopeFindDistance(2).levelDecreasePerBlock(2).block(HONEY_BATH_BLOCK).bucket(ItemRegister.HONEY_BATH_BUCKET);
 
 
-    public static final RegistryObject<FlowingFluid> MILK_BATH_FLUID = FLUIDS.register("milk_bath",
+    public static final RegistryObject<FlowingFluid> MILK_BATH_FLUID = FLUIDS.register("milk_bath_fluid",
             () -> new ForgeFlowingFluid.Source(FluidsRegister.MILK_BATH_PROPERTIES));
     public static final RegistryObject<FlowingFluid> MILK_BATH_FLOWING = FLUIDS.register("milk_bath_flowing",
             () -> new ForgeFlowingFluid.Flowing(FluidsRegister.MILK_BATH_PROPERTIES));
@@ -74,7 +74,7 @@ public class FluidsRegister {
             .slopeFindDistance(2).levelDecreasePerBlock(2).block(MILK_BATH_BLOCK).bucket(ItemRegister.MILK_BATH_BUCKET);
 
 
-    public static final RegistryObject<FlowingFluid> HERBAL_BATH_FLUID = FLUIDS.register("herbal_bath",
+    public static final RegistryObject<FlowingFluid> HERBAL_BATH_FLUID = FLUIDS.register("herbal_bath_fluid",
             () -> new ForgeFlowingFluid.Source(FluidsRegister.HERBAL_BATH_PROPERTIES));
     public static final RegistryObject<FlowingFluid> HERBAL_BATH_FLOWING = FLUIDS.register("herbal_bath_flowing",
             () -> new ForgeFlowingFluid.Flowing(FluidsRegister.HERBAL_BATH_PROPERTIES));
@@ -90,7 +90,7 @@ public class FluidsRegister {
             .slopeFindDistance(2).levelDecreasePerBlock(2).block(HERBAL_BATH_BLOCK).bucket(ItemRegister.HERBAL_BATH_BUCKET);
 
 
-    public static final RegistryObject<FlowingFluid> PEONY_BATH_FLUID = FLUIDS.register("peony_bath",
+    public static final RegistryObject<FlowingFluid> PEONY_BATH_FLUID = FLUIDS.register("peony_bath_fluid",
             () -> new ForgeFlowingFluid.Source(FluidsRegister.PEONY_BATH_PROPERTIES));
     public static final RegistryObject<FlowingFluid> PEONY_BATH_FLOWING = FLUIDS.register("peony_bath_flowing",
             () -> new ForgeFlowingFluid.Flowing(FluidsRegister.PEONY_BATH_PROPERTIES));
@@ -106,7 +106,7 @@ public class FluidsRegister {
             .slopeFindDistance(2).levelDecreasePerBlock(2).block(PEONY_BATH_BLOCK).bucket(ItemRegister.PEONY_BATH_BUCKET);
 
 
-    public static final RegistryObject<FlowingFluid> ROSE_BATH_FLUID = FLUIDS.register("rose_bath",
+    public static final RegistryObject<FlowingFluid> ROSE_BATH_FLUID = FLUIDS.register("rose_bath_fluid",
             () -> new ForgeFlowingFluid.Source(FluidsRegister.ROSE_BATH_PROPERTIES));
     public static final RegistryObject<FlowingFluid> ROSE_BATH_FLOWING = FLUIDS.register("rose_bath_flowing",
             () -> new ForgeFlowingFluid.Flowing(FluidsRegister.ROSE_BATH_PROPERTIES));
