@@ -16,7 +16,7 @@ import java.util.function.Supplier;
  */
 public class BathBucketItem extends BucketItem {
     public BathBucketItem(Supplier<? extends Fluid> supplier, Properties properties) {
-        super(supplier.get(), properties);
+        super(supplier, properties);
     }
 
     @Override
