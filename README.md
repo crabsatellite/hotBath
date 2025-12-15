@@ -14,6 +14,9 @@ Welcome to **Hot Bath Mod**! Take a break from your adventures and soak in a rel
 
 ## Recommended Mods
 
+- **🛁 Official Extension | [ShowerCore](https://www.curseforge.com/minecraft/mc-mods/showercore) 🛁**
+  Ready to take your hygiene to the next level? 🚿✨ Introducing **ShowerCore**, the _official_ HotBath extension that brings the splash! We're talking fully functional **Bathtubs**, refreshing **Showers**, and the absolute necessity—**Rubber Ducks**! 🦆💦 Don't just bathe, _celebrate_ cleanliness!
+
 - **🌟 Highly Recommended | Fluidlogged 🌟**  
   [Modrinth Link](https://modrinth.com/mod/fluidlogged/versions)  
   Fluidlogged enables custom fluid blocks to have a waterlogged effect with blocks like stairs, slabs, and more, allowing hotbath fluids to integrate naturally into various structures.
@@ -198,6 +201,9 @@ Add **Gunpowder** to any Bath Water Bottle to create its splash version.
 欢迎来到 **Hot Bath Mod (热浴模组)**！在紧张的冒险之余，来泡个舒服的热水澡吧。这不仅仅是为了清洁，更是为了获得增益、治疗和神奇的效果！无论你是需要恢复生命、移除负面效果，还是仅仅想暖暖身子，我们都有适合你的浴汤。
 
 ## 推荐模组
+
+- **🛁 官方扩展 | [洗浴核心 (ShowerCore)](https://www.curseforge.com/minecraft/mc-mods/showercore) 🛁**
+  准备好让你的洗浴体验焕然一新了吗？🚿✨ 隆重推出 **洗浴核心 (ShowerCore)** —— HotBath 的 _官方_ 延伸模组，带你嗨翻浴室！这里有功能齐全的 **浴缸**、清爽无比的 **淋浴**，还有绝对不能少的灵魂伴侣——**小黄鸭**！🦆💦 别只是洗澡，要 _享受_ 洗澡！
 
 - **🌟 强烈推荐 | Fluidlogged 🌟**  
   [Modrinth 链接](https://modrinth.com/mod/fluidlogged/versions)  
