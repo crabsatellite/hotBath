@@ -62,7 +62,7 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
             }
         }
     }
-    
+
     private int getBubbleColumnDirection(Level level, BlockPos pos) {
         BlockPos.MutableBlockPos mutablePos = pos.mutable();
         FluidType currentFluidType = level.getFluidState(pos).getFluidType();

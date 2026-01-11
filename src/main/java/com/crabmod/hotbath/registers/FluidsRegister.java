@@ -52,6 +52,7 @@ public class FluidsRegister {
                                     Block.Properties.ofFullCopy(Blocks.WATER)
                                             .noCollission()
                                             .strength(1000.0F)
+                                            .isValidSpawn((state, level, pos, entityType) -> false)
                                             .noOcclusion()));
 
     public static final BaseFlowingFluid.Properties HOT_WATER_PROPERTIES =
@@ -130,6 +131,7 @@ public class FluidsRegister {
                                     Block.Properties.ofFullCopy(Blocks.WATER)
                                             .noCollission()
                                             .strength(1000.0F)
+                                            .isValidSpawn((state, level, pos, entityType) -> false)
                                             .noOcclusion()));
     public static final BaseFlowingFluid.Properties MILK_BATH_PROPERTIES =
             new BaseFlowingFluid.Properties(
@@ -167,6 +169,7 @@ public class FluidsRegister {
                                     Block.Properties.ofFullCopy(Blocks.WATER)
                                             .noCollission()
                                             .strength(1000.0F)
+                                            .isValidSpawn((state, level, pos, entityType) -> false)
                                             .noOcclusion()));
 
     public static final BaseFlowingFluid.Properties HERBAL_BATH_PROPERTIES =
@@ -206,6 +209,7 @@ public class FluidsRegister {
                                     Block.Properties.ofFullCopy(Blocks.WATER)
                                             .noCollission()
                                             .strength(1000.0F)
+                                            .isValidSpawn((state, level, pos, entityType) -> false)
                                             .noOcclusion()));
 
     public static final BaseFlowingFluid.Properties PEONY_BATH_PROPERTIES =
@@ -245,6 +249,7 @@ public class FluidsRegister {
                                     Block.Properties.ofFullCopy(Blocks.WATER)
                                             .noCollission()
                                             .strength(1000.0F)
+                                            .isValidSpawn((state, level, pos, entityType) -> false)
                                             .noOcclusion()));
 
     public static final BaseFlowingFluid.Properties ROSE_BATH_PROPERTIES =
