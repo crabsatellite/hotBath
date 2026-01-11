@@ -31,11 +31,11 @@ public class PeonyBathBlock extends AbstractHotbathBlock implements IInsideAreaT
 
     private static final int TICK_NUMBER = 20;
     private static final int LUCK_THRESHOLD = 50;
-    private static final ResourceLocation ATTACK_SPEED_MODIFIER_NAME =
+    public static final ResourceLocation ATTACK_SPEED_MODIFIER_NAME =
             ResourceLocation.fromNamespaceAndPath(
                     HotBath.MOD_ID, "peony_bath_attack_speed_modifier");
 
-    private static final ResourceLocation KNOCKBACK_RESISTANCE_MODIFIER_NAME =
+    public static final ResourceLocation KNOCKBACK_RESISTANCE_MODIFIER_NAME =
             ResourceLocation.fromNamespaceAndPath(
                     HotBath.MOD_ID, "peony_bath_knockback_resistance_modifier");
 

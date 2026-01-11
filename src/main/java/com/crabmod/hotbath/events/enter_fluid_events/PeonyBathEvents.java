@@ -27,11 +27,6 @@ import static com.crabmod.hotbath.util.HealthRegenHandler.regenHealth;
 @EventBusSubscriber(modid = HotBath.MOD_ID)
 public class PeonyBathEvents {
     private static final int TICK_NUMBER = 20;
-    private static final ResourceLocation ATTACK_SPEED_MODIFIER_NAME =
-            ResourceLocation.fromNamespaceAndPath(HotBath.MOD_ID, "peony_bath_attack_speed_modifier");
-    private static final ResourceLocation KNOCKBACK_RESISTANCE_MODIFIER_NAME =
-            ResourceLocation.fromNamespaceAndPath(
-                    HotBath.MOD_ID, "peony_bath_knockback_resistance_modifier");
 
     // Method to reset invalid attributes
     private static void resetInvalidAttributes(ServerPlayer player) {
@@ -70,7 +65,7 @@ public class PeonyBathEvents {
                     serverPlayer,
                     Attributes.ATTACK_SPEED,
                     0.10,
-                    ATTACK_SPEED_MODIFIER_NAME,
+                    PeonyBathBlock.ATTACK_SPEED_MODIFIER_NAME,
                     false,
                     AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
         }
@@ -80,7 +75,7 @@ public class PeonyBathEvents {
                     serverPlayer,
                     Attributes.KNOCKBACK_RESISTANCE,
                     0.05,
-                    KNOCKBACK_RESISTANCE_MODIFIER_NAME,
+                    PeonyBathBlock.KNOCKBACK_RESISTANCE_MODIFIER_NAME,
                     false,
                     AttributeModifier.Operation.ADD_VALUE);
         }
