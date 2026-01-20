@@ -11,6 +11,10 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.animal.Squid;
+import net.minecraft.world.entity.animal.TropicalFish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -34,10 +38,18 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
         super(supplier.get(), properties);
     }
 
+    private static boolean isNonTropicalAquatic(Entity entity) {
+        return (entity instanceof AbstractFish && !(entity instanceof TropicalFish)) || entity instanceof Squid;
+    }
+
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         super.entityInside(state, level, pos, entity);
-        
+
+        if (isNonTropicalAquatic(entity)) {
+            entity.hurt(level.damageSources().magic(), 1.0F);
+        }
+
         // Bubble column physics
         int direction = getBubbleColumnDirection(level, pos);
         if (direction != 0) {
@@ -54,14 +66,14 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
     private int getBubbleColumnDirection(Level level, BlockPos pos) {
         BlockPos.MutableBlockPos mutablePos = pos.mutable();
         FluidType currentFluidType = level.getFluidState(pos).getFluidType();
-        
+
         // Limit scan to avoid lag, but allow deep oceans
         for (int i = 0; i < 384; i++) {
             mutablePos.move(Direction.DOWN);
             BlockState state = level.getBlockState(mutablePos);
             if (state.is(Blocks.SOUL_SAND)) return 1;
             if (state.is(Blocks.MAGMA_BLOCK)) return -1;
-            
+
             // Stop if we hit a solid block or a different fluid
             if (!state.is(this) && state.getFluidState().getFluidType() != currentFluidType) return 0;
         }
@@ -97,7 +109,7 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
                  }
             } else {
                  if (bubbleParticle == null) bubbleParticle = ParticleTypes.CURRENT_DOWN;
-                 
+
                  worldIn.addParticle(bubbleParticle, pos.getX() + 0.5D, pos.getY() + 0.8D, pos.getZ() + 0.5D, 0.0D, -0.04D, 0.0D);
                  if (rand.nextInt(200) == 0) {
                      worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), net.minecraft.sounds.SoundEvents.BUBBLE_COLUMN_WHIRLPOOL_AMBIENT, net.minecraft.sounds.SoundSource.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
@@ -159,7 +171,7 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
         while (level.getBlockState(surfacePos.above()).getBlock() instanceof AbstractHotbathBlock && surfacePos.getY() < level.getMaxBuildHeight()) {
             surfacePos = surfacePos.above();
         }
-        
+
         BlockState state = level.getBlockState(surfacePos);
         FluidType fluidType = state.getFluidState().getFluidType();
 
@@ -169,12 +181,12 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
                 float width = player.getBbWidth();
                 // Calculate max count based on player width
                 int maxCount = (int) (20.0F + width * 10.0F);
-                
+
                 // Scale particle count based on fall distance (entry height)
                 // Max count is reached at 3.0 blocks fall distance
                 float factor = net.minecraft.util.Mth.clamp(player.fallDistance / 3.0F, 0.0F, 1.0F);
                 int count = (int) (maxCount * factor);
-                
+
                 if (count <= 0) return;
 
                 float fluidHeight = state.getFluidState().getHeight(level, surfacePos);
@@ -185,10 +197,10 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
                     // Random position within player width
                     double r = width * (0.5D + rand.nextDouble() * 0.5D); // 0.5 to 1.0 times width
                     double angle = rand.nextDouble() * 2.0D * Math.PI;
-                    
+
                     double offsetX = Math.cos(angle) * r;
                     double offsetZ = Math.sin(angle) * r;
-                    
+
                     double x = player.getX() + offsetX;
                     double z = player.getZ() + offsetZ;
 
@@ -197,7 +209,7 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
                     double speed = 0.02D + rand.nextDouble() * 0.08D;
                     double vx = Math.cos(angle) * speed;
                     double vz = Math.sin(angle) * speed;
-                    
+
                     // Downward vertical velocity to simulate air being pushed down
                     // This allows bubbles to travel down then float up
                     double vy = -0.05D - rand.nextDouble() * 0.1D;
@@ -209,16 +221,16 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
                     // Note: We multiply by 5.0 because HotBathBubbleParticle multiplies by 0.2
                     level.addParticle(bubble, x, surfaceY, z, vx * 5.0D, vy * 5.0D, vz * 5.0D);
                 }
-                
+
                 // Add some center turbulence
                 int turbulenceCount = (int) (10 * factor);
                 for (int i = 0; i < turbulenceCount; i++) {
                      double x = player.getX() + (rand.nextDouble() - 0.5D) * width;
                      double z = player.getZ() + (rand.nextDouble() - 0.5D) * width;
                      double vy = -0.1D - rand.nextDouble() * 0.2D;
-                     level.addParticle(bubble, x, surfaceY, z, 
-                        (rand.nextDouble() - 0.5D) * 0.2D, 
-                        vy * 5.0D, 
+                     level.addParticle(bubble, x, surfaceY, z,
+                        (rand.nextDouble() - 0.5D) * 0.2D,
+                        vy * 5.0D,
                         (rand.nextDouble() - 0.5D) * 0.2D);
                 }
             }
