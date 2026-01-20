@@ -32,7 +32,7 @@ public class FluidsRegister {
             () -> new ForgeFlowingFluid.Flowing(FluidsRegister.HOT_WATER_PROPERTIES));
 
     public static final RegistryObject<LiquidBlock> HOT_WATER_BLOCK = BlocksRegister.BLOCKS.register("hot_water_block",
-            () -> new HotWaterBlock(HOT_WATER_FLUID, Block.Properties.copy(Blocks.WATER).noCollission().strength(1000.0F).noOcclusion()));
+            () -> new HotWaterBlock(HOT_WATER_FLUID, Block.Properties.copy(Blocks.WATER).noCollission().strength(1000.0F).isValidSpawn((state, level, pos, entityType) -> false).noOcclusion()));
 
     public static final ForgeFlowingFluid.Properties HOT_WATER_PROPERTIES = new ForgeFlowingFluid.Properties(
             getHotBathFluidType("hot_water_fluid_type", HOT_WATER_COLOR, HOT_WATER_STILL_TEXTURE, HOT_WATER_FLOWING_TEXTURE,
@@ -48,7 +48,7 @@ public class FluidsRegister {
             () -> new ForgeFlowingFluid.Flowing(FluidsRegister.HONEY_BATH_PROPERTIES));
 
     public static final RegistryObject<LiquidBlock> HONEY_BATH_BLOCK = BlocksRegister.BLOCKS.register("honey_bath_block",
-            () -> new HoneyBathBlock(HONEY_BATH_FLUID, Block.Properties.copy(Blocks.WATER).noCollission().strength(1000.0F).noOcclusion()));
+            () -> new HoneyBathBlock(HONEY_BATH_FLUID, Block.Properties.copy(Blocks.WATER).noCollission().strength(1000.0F).isValidSpawn((state, level, pos, entityType) -> false).noOcclusion()));
 
     public static final ForgeFlowingFluid.Properties HONEY_BATH_PROPERTIES = new ForgeFlowingFluid.Properties(
             getHotBathFluidType("honey_bath_fluid_type", HONEY_BATH_COLOR, HONEY_BATH_STILL_TEXTURE, HONEY_BATH_FLOWING_TEXTURE,
@@ -64,7 +64,7 @@ public class FluidsRegister {
             () -> new ForgeFlowingFluid.Flowing(FluidsRegister.MILK_BATH_PROPERTIES));
 
     public static final RegistryObject<LiquidBlock> MILK_BATH_BLOCK = BlocksRegister.BLOCKS.register("milk_bath_block",
-            () -> new MilkBathBlock(MILK_BATH_FLUID, Block.Properties.copy(Blocks.WATER).noCollission().strength(1000.0F).noOcclusion()));
+            () -> new MilkBathBlock(MILK_BATH_FLUID, Block.Properties.copy(Blocks.WATER).noCollission().strength(1000.0F).isValidSpawn((state, level, pos, entityType) -> false).noOcclusion()));
 
     public static final ForgeFlowingFluid.Properties MILK_BATH_PROPERTIES = new ForgeFlowingFluid.Properties(
             getHotBathFluidType("milk_bath_fluid_type", MILK_BATH_COLOR, MILK_BATH_STILL_TEXTURE, MILK_BATH_FLOWING_TEXTURE,
@@ -80,7 +80,7 @@ public class FluidsRegister {
             () -> new ForgeFlowingFluid.Flowing(FluidsRegister.HERBAL_BATH_PROPERTIES));
 
     public static final RegistryObject<LiquidBlock> HERBAL_BATH_BLOCK = BlocksRegister.BLOCKS.register("herbal_bath_block",
-            () -> new HerbalBathBlock(HERBAL_BATH_FLUID, Block.Properties.copy(Blocks.WATER).noCollission().strength(1000.0F).noOcclusion()));
+            () -> new HerbalBathBlock(HERBAL_BATH_FLUID, Block.Properties.copy(Blocks.WATER).noCollission().strength(1000.0F).isValidSpawn((state, level, pos, entityType) -> false).noOcclusion()));
 
     public static final ForgeFlowingFluid.Properties HERBAL_BATH_PROPERTIES = new ForgeFlowingFluid.Properties(
             getHotBathFluidType("herbal_bath_fluid_type", HERBAL_BATH_COLOR, HERBAL_BATH_STILL_TEXTURE, HERBAL_BATH_FLOWING_TEXTURE,
@@ -96,7 +96,7 @@ public class FluidsRegister {
             () -> new ForgeFlowingFluid.Flowing(FluidsRegister.PEONY_BATH_PROPERTIES));
 
     public static final RegistryObject<LiquidBlock> PEONY_BATH_BLOCK = BlocksRegister.BLOCKS.register("peony_bath_block",
-            () -> new PeonyBathBlock(PEONY_BATH_FLUID, Block.Properties.copy(Blocks.WATER).noCollission().strength(1000.0F).noOcclusion()));
+            () -> new PeonyBathBlock(PEONY_BATH_FLUID, Block.Properties.copy(Blocks.WATER).noCollission().strength(1000.0F).isValidSpawn((state, level, pos, entityType) -> false).noOcclusion()));
 
     public static final ForgeFlowingFluid.Properties PEONY_BATH_PROPERTIES = new ForgeFlowingFluid.Properties(
             getHotBathFluidType("peony_bath_fluid_type", PEONY_BATH_COLOR, PEONY_BATH_STILL_TEXTURE, PEONY_BATH_FLOWING_TEXTURE,
@@ -112,7 +112,7 @@ public class FluidsRegister {
             () -> new ForgeFlowingFluid.Flowing(FluidsRegister.ROSE_BATH_PROPERTIES));
 
     public static final RegistryObject<LiquidBlock> ROSE_BATH_BLOCK = BlocksRegister.BLOCKS.register("rose_bath_block",
-            () -> new RoseBathBlock(ROSE_BATH_FLUID, Block.Properties.copy(Blocks.WATER).noCollission().strength(1000.0F).noOcclusion()));
+            () -> new RoseBathBlock(ROSE_BATH_FLUID, Block.Properties.copy(Blocks.WATER).noCollission().strength(1000.0F).isValidSpawn((state, level, pos, entityType) -> false).noOcclusion()));
 
     public static final ForgeFlowingFluid.Properties ROSE_BATH_PROPERTIES = new ForgeFlowingFluid.Properties(
             getHotBathFluidType("rose_bath_fluid_type", ROSE_BATH_COLOR, ROSE_BATH_STILL_TEXTURE, ROSE_BATH_FLOWING_TEXTURE,

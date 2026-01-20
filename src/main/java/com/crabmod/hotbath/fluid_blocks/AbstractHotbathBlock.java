@@ -11,6 +11,10 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.animal.Squid;
+import net.minecraft.world.entity.animal.TropicalFish;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -34,10 +38,18 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
         super(supplier.get(), properties);
     }
 
+    private static boolean isNonTropicalAquatic(Entity entity) {
+        return (entity instanceof AbstractFish && !(entity instanceof TropicalFish)) || entity instanceof Squid;
+    }
+
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         super.entityInside(state, level, pos, entity);
-        
+
+        if (isNonTropicalAquatic(entity)) {
+            entity.hurt(level.damageSources().magic(), 1.0F);
+        }
+
         // Bubble column physics
         int direction = getBubbleColumnDirection(level, pos);
         if (direction != 0) {
