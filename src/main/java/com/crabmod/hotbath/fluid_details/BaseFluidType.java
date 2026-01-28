@@ -7,6 +7,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -80,6 +81,20 @@ public class BaseFluidType extends FluidType {
 
     public Vector3f getFogColor() {
         return fogColor;
+    }
+
+    /**
+     * Override to allow water-breathing entities (like tropical fish) to survive in hotBath fluids.
+     * Entities that can breathe underwater won't drown in our fluid.
+     */
+    @Override
+    public boolean canDrownIn(LivingEntity entity) {
+        // If the entity can breathe underwater (like fish), it won't drown in our fluid
+        if (entity.canBreatheUnderwater()) {
+            return false;
+        }
+        // Otherwise, use the default behavior (canDrown property)
+        return super.canDrownIn(entity);
     }
 
     @Override
