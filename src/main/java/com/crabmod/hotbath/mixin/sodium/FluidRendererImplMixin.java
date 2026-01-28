@@ -1,6 +1,10 @@
 package com.crabmod.hotbath.mixin.sodium;
 
 import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
+import net.caffeinemc.mods.sodium.client.render.chunk.compile.ChunkBuildBuffers;
+import net.caffeinemc.mods.sodium.client.render.chunk.translucent_sorting.TranslucentGeometryCollector;
+import net.caffeinemc.mods.sodium.client.world.LevelSlice;
+import net.caffeinemc.mods.sodium.neoforge.render.FluidRendererImpl;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -8,9 +12,9 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import org.spongepowered.asm.mixin.injection.Coerce;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,80 +26,83 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * Mixin for Sodium's FluidRendererImpl to intercept fluid state during rendering.
  * 
  * <p>Sodium bypasses vanilla's BlockRenderDispatcher.renderLiquid() and uses its own
- * optimized fluid rendering pipeline. This mixin intercepts the render method and
- * replaces the fluidState with our hotBath fluid when appropriate.</p>
+ * optimized fluid rendering pipeline. This mixin intercepts all uses of fluidState
+ * in the render method to use our hotBath fluid when appropriate.</p>
  * 
- * <p>We need to replace fluidState in multiple places:
- * <ul>
- *   <li>DefaultMaterials.forFluidState(fluidState) - to get correct material</li>
- *   <li>IClientFluidTypeExtensions.of(fluidState) - to get correct fluid handler</li>
- *   <li>handler.renderFluid(fluidState, ...) - to render correct fluid</li>
- *   <li>DefaultRenderContext.setUp(..., fluidState, ...) - to setup context correctly</li>
- * </ul>
- * </p>
+ * <p>Strategy: We use ThreadLocal to capture blockState and blockPos at method entry,
+ * then use @Redirect and @ModifyArg to replace fluidState at each use site.</p>
  * 
  * <p>This mixin is only applied when Sodium is present, controlled by SodiumMixinPlugin.</p>
  */
-@Pseudo
-@Mixin(targets = "net.caffeinemc.mods.sodium.neoforge.render.FluidRendererImpl", remap = false)
+@Mixin(value = FluidRendererImpl.class, remap = false)
 public class FluidRendererImplMixin {
 
+    @Unique
+    private static final Logger HOTBATH_LOGGER = LoggerFactory.getLogger("HotBath-Sodium");
+
     /**
-     * ThreadLocal to store the correct FluidState for the current render call.
-     * This is used to pass information between the @Inject and @Redirect/@ModifyArg.
+     * Thread-local storage for the correct FluidState.
+     * Set at method entry if the block is waterlogged with a hotBath fluid.
      */
     @Unique
     private static final ThreadLocal<FluidState> hotbath$correctFluidState = new ThreadLocal<>();
 
     /**
-     * At the beginning of render, check if we need to substitute a different fluid.
-     * Store the correct FluidState in a ThreadLocal for use by the redirects.
-     * 
-     * <p>Using @Coerce on parameters that are Sodium-specific types allows us to use Object
-     * as the parameter type without needing a compile-time dependency on Sodium.</p>
+     * Capture the correct FluidState at the beginning of render.
+     * If the block is waterlogged with a hotBath fluid, store that fluid state.
      */
-    @Inject(
-        method = "render",
-        at = @At("HEAD"),
-        remap = false
-    )
-    private void hotbath$onRenderHead(@Coerce Object level, BlockState blockState, FluidState fluidState, 
-            BlockPos blockPos, BlockPos offset, @Coerce Object collector, @Coerce Object buffers, CallbackInfo ci) {
+    @Inject(method = "render", at = @At("HEAD"), remap = false)
+    private void hotbath$captureCorrectFluidState(LevelSlice level, BlockState blockState, FluidState fluidState, 
+            BlockPos blockPos, BlockPos offset, TranslucentGeometryCollector collector, ChunkBuildBuffers buffers, CallbackInfo ci) {
         
-        // Check if this block has WATERLOGGED property first
+        // Reset the ThreadLocal
+        hotbath$correctFluidState.set(null);
+        
+        // Check if this block is waterlogged with a hotBath fluid
         if (blockState != null && blockState.hasProperty(BlockStateProperties.WATERLOGGED)) {
             boolean isWaterlogged = blockState.getValue(BlockStateProperties.WATERLOGGED);
             
             if (isWaterlogged) {
+                // Make immutable copy for safe cache lookup (blockPos might be mutable)
+                BlockPos immutablePos = blockPos.immutable();
+                
                 // Get the stored fluid type from our client cache
-                Fluid storedFluid = HotbathWaterloggingHelper.getStoredFluidTypeClientDirect(blockPos);
+                Fluid storedFluid = HotbathWaterloggingHelper.getStoredFluidTypeClientDirect(immutablePos);
+                
+                // Debug logging
+                HOTBATH_LOGGER.info("[HotBath-Sodium] Waterlogged block at {}: storedFluid={}, originalFluid={}", 
+                    immutablePos, storedFluid, fluidState.getType());
                 
                 if (storedFluid != null && storedFluid != Fluids.EMPTY && storedFluid != Fluids.WATER) {
                     // Store the correct fluid state for use in the redirects
-                    hotbath$correctFluidState.set(storedFluid.defaultFluidState());
-                    return;
+                    FluidState correctState = storedFluid.defaultFluidState();
+                    hotbath$correctFluidState.set(correctState);
+                    HOTBATH_LOGGER.info("[HotBath-Sodium] Set correct fluid state: {}", correctState.getType());
                 }
             }
         }
-        hotbath$correctFluidState.set(null);
     }
 
     /**
-     * Clear the ThreadLocal after the render method completes.
+     * Clean up thread-local storage after render completes.
      */
-    @Inject(
-        method = "render",
-        at = @At("RETURN"),
-        remap = false
-    )
-    private void hotbath$onRenderReturn(@Coerce Object level, BlockState blockState, FluidState fluidState, 
-            BlockPos blockPos, BlockPos offset, @Coerce Object collector, @Coerce Object buffers, CallbackInfo ci) {
+    @Inject(method = "render", at = @At("RETURN"), remap = false)
+    private void hotbath$clearCorrectFluidState(LevelSlice level, BlockState blockState, FluidState fluidState, 
+            BlockPos blockPos, BlockPos offset, TranslucentGeometryCollector collector, ChunkBuildBuffers buffers, CallbackInfo ci) {
         hotbath$correctFluidState.remove();
     }
 
     /**
-     * Modify the fluidState argument passed to DefaultMaterials.forFluidState().
-     * This ensures the correct render material (e.g., translucent) is used.
+     * Helper method to get the correct FluidState.
+     */
+    @Unique
+    private static FluidState hotbath$getCorrectFluidState(FluidState original) {
+        FluidState correct = hotbath$correctFluidState.get();
+        return correct != null ? correct : original;
+    }
+
+    /**
+     * Redirect DefaultMaterials.forFluidState(fluidState) to use our correct fluid.
      */
     @ModifyArg(
         method = "render",
@@ -107,13 +114,12 @@ public class FluidRendererImplMixin {
         index = 0,
         remap = false
     )
-    private FluidState hotbath$modifyForFluidStateArg(FluidState originalFluidState) {
-        FluidState correctFluidState = hotbath$correctFluidState.get();
-        return correctFluidState != null ? correctFluidState : originalFluidState;
+    private FluidState hotbath$modifyForFluidStateArg(FluidState original) {
+        return hotbath$getCorrectFluidState(original);
     }
 
     /**
-     * Redirect the IClientFluidTypeExtensions.of() call to return the handler for our custom fluid.
+     * Redirect IClientFluidTypeExtensions.of(fluidState) to use our correct fluid.
      */
     @Redirect(
         method = "render",
@@ -124,17 +130,20 @@ public class FluidRendererImplMixin {
         ),
         remap = false
     )
-    private IClientFluidTypeExtensions hotbath$redirectGetFluidExtensions(FluidState originalFluidState) {
-        FluidState correctFluidState = hotbath$correctFluidState.get();
-        if (correctFluidState != null) {
-            return IClientFluidTypeExtensions.of(correctFluidState);
+    private IClientFluidTypeExtensions hotbath$redirectGetFluidExtensions(FluidState original) {
+        FluidState corrected = hotbath$getCorrectFluidState(original);
+        IClientFluidTypeExtensions handler = IClientFluidTypeExtensions.of(corrected);
+        if (corrected != original) {
+            int tintColor = handler.getTintColor();
+            HOTBATH_LOGGER.info("[HotBath-Sodium] Redirected IClientFluidTypeExtensions.of(): original={}, corrected={}, handler={}, tintColor=0x{}", 
+                original.getType(), corrected.getType(), handler.getClass().getName(), Integer.toHexString(tintColor));
         }
-        return IClientFluidTypeExtensions.of(originalFluidState);
+        return handler;
     }
 
     /**
-     * Modify the fluidState argument passed to handler.renderFluid().
-     * The method signature is: renderFluid(FluidState, BlockAndTintGetter, BlockPos, VertexConsumer, BlockState)
+     * Modify handler.renderFluid(fluidState, ...) to use our correct fluid.
+     * renderFluid signature: (FluidState, BlockAndTintGetter, BlockPos, VertexConsumer, BlockState) -> boolean
      */
     @ModifyArg(
         method = "render",
@@ -146,14 +155,14 @@ public class FluidRendererImplMixin {
         index = 0,
         remap = false
     )
-    private FluidState hotbath$modifyRenderFluidArg(FluidState originalFluidState) {
-        FluidState correctFluidState = hotbath$correctFluidState.get();
-        return correctFluidState != null ? correctFluidState : originalFluidState;
+    private FluidState hotbath$modifyRenderFluidArg(FluidState original) {
+        return hotbath$getCorrectFluidState(original);
     }
 
     /**
-     * Modify the fluidState argument passed to DefaultRenderContext.setUp().
-     * Parameter index 4 is the fluidState (0: colorProviderRegistry, 1: renderer, 2: level, 3: blockState, 4: fluidState, ...)
+     * Modify defaultContext.setUp(..., fluidState, ...) to use our correct fluid.
+     * setUp signature: (ColorProviderRegistry, DefaultFluidRenderer, LevelSlice, BlockState, FluidState, BlockPos, BlockPos, TranslucentGeometryCollector, ChunkModelBuilder, Material, IClientFluidTypeExtensions)
+     * FluidState is at index 4 (0-indexed).
      */
     @ModifyArg(
         method = "render",
@@ -165,8 +174,34 @@ public class FluidRendererImplMixin {
         index = 4,
         remap = false
     )
-    private FluidState hotbath$modifySetUpFluidStateArg(FluidState originalFluidState) {
+    private FluidState hotbath$modifySetUpFluidStateArg(FluidState original) {
+        return hotbath$getCorrectFluidState(original);
+    }
+
+    /**
+     * Modify defaultContext.setUp(..., handler) to use our correct fluid's handler.
+     * IClientFluidTypeExtensions is at index 10 (0-indexed).
+     * This ensures the color provider uses our fluid's tint color.
+     */
+    @ModifyArg(
+        method = "render",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/caffeinemc/mods/sodium/neoforge/render/FluidRendererImpl$DefaultRenderContext;setUp(Lnet/caffeinemc/mods/sodium/client/model/color/ColorProviderRegistry;Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/pipeline/DefaultFluidRenderer;Lnet/caffeinemc/mods/sodium/client/world/LevelSlice;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/material/FluidState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;Lnet/caffeinemc/mods/sodium/client/render/chunk/translucent_sorting/TranslucentGeometryCollector;Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/buffers/ChunkModelBuilder;Lnet/caffeinemc/mods/sodium/client/render/chunk/terrain/material/Material;Lnet/neoforged/neoforge/client/extensions/common/IClientFluidTypeExtensions;)V",
+            remap = false
+        ),
+        index = 10,
+        remap = false
+    )
+    private IClientFluidTypeExtensions hotbath$modifySetUpHandlerArg(IClientFluidTypeExtensions original) {
         FluidState correctFluidState = hotbath$correctFluidState.get();
-        return correctFluidState != null ? correctFluidState : originalFluidState;
+        if (correctFluidState != null) {
+            IClientFluidTypeExtensions correctHandler = IClientFluidTypeExtensions.of(correctFluidState);
+            HOTBATH_LOGGER.info("[HotBath-Sodium] Replaced setUp handler: original={}, corrected={}, tintColor=0x{}", 
+                original.getClass().getName(), correctHandler.getClass().getName(), 
+                Integer.toHexString(correctHandler.getTintColor()));
+            return correctHandler;
+        }
+        return original;
     }
 }

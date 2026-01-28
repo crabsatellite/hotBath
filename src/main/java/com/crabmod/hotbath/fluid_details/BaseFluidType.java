@@ -1,10 +1,14 @@
 package com.crabmod.hotbath.fluid_details;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -122,6 +126,20 @@ public class BaseFluidType extends FluidType {
                             float darkenWorldAmount,
                             Vector3f fluidFogColor) {
                         return fogColor;
+                    }
+
+                    /**
+                     * Override renderFluid to use vanilla rendering logic.
+                     * This tells Sodium to skip its custom rendering and use vanilla instead,
+                     * which works correctly with our fluid textures and colors.
+                     */
+                    @Override
+                    public boolean renderFluid(FluidState fluidState, BlockAndTintGetter getter, BlockPos pos, 
+                            VertexConsumer vertexConsumer, BlockState blockState) {
+                        // Use vanilla's LiquidBlockRenderer to render this fluid
+                        Minecraft.getInstance().getBlockRenderer().getLiquidBlockRenderer()
+                                .tesselate(getter, pos, vertexConsumer, blockState, fluidState);
+                        return true; // Return true to tell Sodium we handled the rendering
                     }
                 });
     }
