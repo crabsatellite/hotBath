@@ -8,7 +8,7 @@
   "type": "create:mixing",
   "ingredients": [
     {
-      "fluidTag": "minecraft:water",
+      "fluid": "minecraft:water",
       "amount": 1000
     },
     {
