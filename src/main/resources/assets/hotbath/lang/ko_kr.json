@@ -50,5 +50,12 @@
   "hotbath.advancement.chronic_invalid.desc": "허약하고 아픈 사람들을 위한 처방.",
   "hotbath.advancement.rose_body_fragrance": "장미 체취",
   "hotbath.advancement.rose_body_fragrance.desc": "장기간의 입욕만이 당신의 체취를 가꿀 수 있습니다.",
-  "hotbath_tab": "뜨거운 목욕"
+  "hotbath_tab": "뜨거운 목욕",
+
+  "commands.hotbath.dirtiness.get": "더러움: %s%% (%s)",
+  "commands.hotbath.dirtiness.get.flies_active": " [파리 발생]",
+  "commands.hotbath.dirtiness.get.max_dirty": " [최대 더러움: %s/%s 틱]",
+  "commands.hotbath.dirtiness.set": "더러움을 %s%%로 설정했습니다",
+  "commands.hotbath.dirtiness.clean": "이제 깨끗해졌습니다!",
+  "commands.hotbath.dirtiness.flies": "파리 활성화! 매우 더럽습니다 (100%%가 2일 이상 지속)"
 }

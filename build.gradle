@@ -106,8 +106,8 @@ dependencies {
 
     // ColdSweat - Temperature and season mod (optional dependency)
     // compileOnly for API access, runtimeOnly to have it in dev environment
-    compileOnly "curse.maven:cold-sweat-506194:7193946"
-    // runtimeOnly "curse.maven:cold-sweat-506194:7193946"
+    compileOnly "curse.maven:cold-sweat-506194:7492465"
+    // runtimeOnly "curse.maven:cold-sweat-506194:7492465"
 
     // GlitchCore - Library mod required by ToughAsNails
     // Project ID: 955399, File ID 5660740 corresponds to GlitchCore-neoforge-1.21.1-2.1.0.0.jar
@@ -125,6 +125,41 @@ dependencies {
     // compileOnly for API access, runtimeOnly to have it in dev environment
     compileOnly "curse.maven:legendary-survival-overhaul-840254:7254309"
     runtimeOnly "curse.maven:legendary-survival-overhaul-840254:7254309"
+
+    // Alex's Mobs - Animal/creature mod (optional dependency)
+    // Using local project build output since 1.21 version is not yet published
+    compileOnly files('../AlexsMobs/build/libs/alexsmobs-1.22.9.jar')
+    // Citadel - Library mod required by Alex's Mobs and Alex's Caves
+    // Project ID: 331936, File ID 7476597 corresponds to citadel for 1.21
+    compileOnly "curse.maven:citadel-331936:7476597"
+    // Uncomment to test in dev environment:
+    runtimeOnly files('../AlexsMobs/build/libs/alexsmobs-1.22.9.jar')
+    runtimeOnly "curse.maven:citadel-331936:7476597"
+
+    // Alex's Caves - Cave biome and creature mod (optional dependency)
+    // Using local project build output since 1.21 version is not yet published
+    compileOnly files('../AlexsCaves/build/libs/alexscaves-2.0.2.jar')
+    runtimeOnly files('../AlexsCaves/build/libs/alexscaves-2.0.2.jar')
+
+    // Twilight Forest - Fantasy dimension mod (optional dependency)
+    // Project ID: 227639, File ID 7398100 corresponds to twilightforest for 1.21.1
+    compileOnly "curse.maven:the-twilight-forest-227639:7398100"
+    runtimeOnly "curse.maven:the-twilight-forest-227639:7398100"
+
+    // Create - Mechanical and automation mod (optional dependency)
+    // Project ID: 328085, File ID 7408951 corresponds to Create 6.0.4 for NeoForge 1.21.1
+    compileOnly "curse.maven:create-328085:7408951"
+    runtimeOnly "curse.maven:create-328085:7408951"
+
+    // Farmer's Delight - Cooking and farming mod (optional dependency)
+    // Project ID: 398521, File ID 6917256 corresponds to farmersdelight for NeoForge 1.21.1
+    compileOnly "curse.maven:farmers-delight-398521:6917256"
+    runtimeOnly "curse.maven:farmers-delight-398521:6917256"
+
+    // Serene Seasons - Seasons mod (optional dependency)
+    // Project ID: 291874, File ID 6182596 corresponds to sereneseasons for NeoForge 1.21.1
+    compileOnly "curse.maven:serene-seasons-291874:6182596"
+    runtimeOnly "curse.maven:serene-seasons-291874:6182596"
 
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

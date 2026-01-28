@@ -1,6 +1,7 @@
 package com.crabmod.hotbath;
 
 import com.crabmod.hotbath.client.particle.CustomDripParticle;
+import com.crabmod.hotbath.client.particle.FlyParticle;
 import com.crabmod.hotbath.client.particle.HotBathBubbleParticle;
 import com.crabmod.hotbath.compat.ColdSweatCompat;
 import com.crabmod.hotbath.compat.ColdSweatIntegration;
@@ -8,6 +9,18 @@ import com.crabmod.hotbath.compat.LegendarySurvivalOverhaulIntegration;
 import com.crabmod.hotbath.compat.LSOCompat;
 import com.crabmod.hotbath.compat.ToughAsNailsCompat;
 import com.crabmod.hotbath.compat.ToughAsNailsIntegration;
+import com.crabmod.hotbath.compat.AlexsMobsCompat;
+import com.crabmod.hotbath.compat.AlexsMobsIntegration;
+import com.crabmod.hotbath.compat.AlexsCavesCompat;
+import com.crabmod.hotbath.compat.AlexsCavesIntegration;
+import com.crabmod.hotbath.compat.CreateCompat;
+import com.crabmod.hotbath.compat.TwilightForestCompat;
+import com.crabmod.hotbath.compat.TwilightForestIntegration;
+import com.crabmod.hotbath.compat.FarmersDelightCompat;
+import com.crabmod.hotbath.compat.FarmersDelightIntegration;
+import com.crabmod.hotbath.compat.SereneSeasonsCompat;
+import com.crabmod.hotbath.compat.SereneSeasonsIntegration;
+import com.crabmod.hotbath.dirtiness.DirtinessAttachment;
 import com.crabmod.hotbath.fluid_details.HotbathFluidType;
 import com.crabmod.hotbath.item.ItemGroup;
 import com.crabmod.hotbath.registers.BlocksRegister;
@@ -31,6 +44,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -49,6 +63,9 @@ public class HotBath {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public HotBath(ModContainer modContainer, IEventBus modEventBus) {
+        // Register config
+        modContainer.registerConfig(ModConfig.Type.COMMON, HotBathConfig.SPEC);
+        
         ItemGroup.register(modEventBus);
         FluidsRegister.register(modEventBus);
         BlocksRegister.register(modEventBus);
@@ -56,6 +73,7 @@ public class HotBath {
         ParticleRegister.register(modEventBus);
         EntityRegister.register(modEventBus);
         HotbathFluidType.register(modEventBus);
+        DirtinessAttachment.register(modEventBus);
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -100,6 +118,63 @@ public class HotBath {
             } catch (Exception e) {
                 LOGGER.error("Failed to register LSO integration: {}", e.getMessage(), e);
             }
+        }
+
+        if (AlexsMobsIntegration.isAlexsMobsLoaded()) {
+            LOGGER.info("Alex's Mobs detected! Fly/Mosquito/Cockroach attraction integration enabled.");
+            try {
+                AlexsMobsCompat.init();
+                LOGGER.info("Alex's Mobs integration registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register Alex's Mobs integration: {}", e.getMessage(), e);
+            }
+        }
+
+        if (AlexsCavesIntegration.isAlexsCavesLoaded()) {
+            LOGGER.info("Alex's Caves detected! GummyBear/Gammaroach/Raycat integration enabled.");
+            try {
+                AlexsCavesCompat.init();
+                LOGGER.info("Alex's Caves integration registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register Alex's Caves integration: {}", e.getMessage(), e);
+            }
+        }
+
+        if (TwilightForestIntegration.isTwilightForestLoaded()) {
+            LOGGER.info("Twilight Forest detected! Frost effect removal and firefly particles enabled.");
+            try {
+                TwilightForestCompat.init();
+                LOGGER.info("Twilight Forest integration registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register Twilight Forest integration: {}", e.getMessage(), e);
+            }
+        }
+
+        if (FarmersDelightIntegration.isFarmersDelightLoaded()) {
+            LOGGER.info("Farmer's Delight detected! Comfort effect integration enabled.");
+            try {
+                FarmersDelightCompat.init();
+                LOGGER.info("Farmer's Delight integration registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register Farmer's Delight integration: {}", e.getMessage(), e);
+            }
+        }
+
+        if (SereneSeasonsIntegration.isSereneSeasonsLoaded()) {
+            LOGGER.info("Serene Seasons detected! Winter buff and anti-freeze integration enabled.");
+            try {
+                SereneSeasonsCompat.init();
+                LOGGER.info("Serene Seasons integration registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register Serene Seasons integration: {}", e.getMessage(), e);
+            }
+        }
+
+        // Create integration - Open Pipe Effects and Spouting Behaviours
+        try {
+            CreateCompat.init();
+        } catch (Exception e) {
+            LOGGER.error("Failed to initialize Create integration: {}", e.getMessage(), e);
         }
     }
 
@@ -195,6 +270,9 @@ public class HotBath {
                 sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, null, null));
             event.registerSpriteSet(ParticleRegister.LANDING_ROSE_BATH.get(), 
                 sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, null, null));
+
+            // Fly particle for extremely dirty players
+            event.registerSpriteSet(ParticleRegister.FLY.get(), FlyParticle.Factory::new);
         }
     }
 

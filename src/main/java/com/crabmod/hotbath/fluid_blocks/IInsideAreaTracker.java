@@ -1,72 +1,101 @@
 package com.crabmod.hotbath.fluid_blocks;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * Interface for tracking when entities enter and stay in bath areas.
+ * Uses memory cache instead of PersistentData for better performance.
+ */
 public interface IInsideAreaTracker {
-    public record InsideAreaResult(
+    
+    /**
+     * Result of tracking an entity inside an area.
+     */
+    record InsideAreaResult(
             boolean isFirstEnter,
             boolean shouldProcess,
             int stayedTicks,
             int totalEnterCount
     ) {
     }
+    
+    /**
+     * Internal state cache for tracking area entry.
+     */
+    record AreaState(int lastInsideTick, int stayedTime, int enterCount) {}
+    
+    /**
+     * Global cache: AreaKey -> (PlayerUUID -> AreaState)
+     */
+    Map<String, Map<UUID, AreaState>> AREA_STATE_CACHE = new ConcurrentHashMap<>();
 
     default int reenterThresholdTicks() {
         return 10;
     }
 
     default InsideAreaResult trackInside(ServerPlayer player) {
-        CompoundTag data = player.getPersistentData();
-
         String key = getAreaKey();
-
-        String LAST_INSIDE = key + "_LastInsideTick";
-        String STAYED_TIME = key + "_StayedTime";
-        String ENTER_COUNT = key + "_EnterCount";
-
+        UUID playerUUID = player.getUUID();
         int currentTick = player.tickCount;
-        int lastInsideTick = data.getInt(LAST_INSIDE);
+        
+        // Get or create the area-specific cache
+        Map<UUID, AreaState> playerCache = AREA_STATE_CACHE.computeIfAbsent(key, k -> new ConcurrentHashMap<>());
+        AreaState state = playerCache.get(playerUUID);
+        
+        int lastInsideTick = state != null ? state.lastInsideTick() : 0;
+        int stayedTime = state != null ? state.stayedTime() : 0;
+        int enterCount = state != null ? state.enterCount() : 0;
 
+        // Same tick check - don't process again
         if (lastInsideTick == currentTick) {
-            return new InsideAreaResult(
-                    false,
-                    false,
-                    data.getInt(STAYED_TIME),
-                    data.getInt(ENTER_COUNT)
-            );
+            return new InsideAreaResult(false, false, stayedTime, enterCount);
         }
 
-        boolean isFirstEnter =
-                lastInsideTick == 0
-                        || currentTick < lastInsideTick
-                        || (currentTick - lastInsideTick) > reenterThresholdTicks();
+        boolean isFirstEnter = lastInsideTick == 0
+                || currentTick < lastInsideTick
+                || (currentTick - lastInsideTick) > reenterThresholdTicks();
 
-        int enterCount = data.getInt(ENTER_COUNT);
-        int stayed;
+        int newEnterCount = enterCount;
+        int newStayedTime;
 
         if (isFirstEnter) {
-            enterCount++;
-            stayed = 0;
-            data.putInt(ENTER_COUNT, enterCount);
-            data.putInt(STAYED_TIME, 0);
+            newEnterCount++;
+            newStayedTime = 0;
         } else {
-            stayed = data.getInt(STAYED_TIME) + 1;
-            data.putInt(STAYED_TIME, stayed);
+            newStayedTime = stayedTime + 1;
         }
 
-        data.putInt(LAST_INSIDE, currentTick);
+        // Update cache (single write instead of multiple NBT writes)
+        playerCache.put(playerUUID, new AreaState(currentTick, newStayedTime, newEnterCount));
 
-        return new InsideAreaResult(
-                isFirstEnter,
-                true,
-                stayed,
-                enterCount
-        );
+        return new InsideAreaResult(isFirstEnter, true, newStayedTime, newEnterCount);
     }
-
 
     default String getAreaKey() {
         return getClass().getSimpleName();
+    }
+    
+    /**
+     * Clean up player data from all area caches.
+     * Should be called when player logs out or dies.
+     */
+    static void cleanupPlayer(UUID playerUUID) {
+        AREA_STATE_CACHE.values().forEach(cache -> cache.remove(playerUUID));
+    }
+    
+    /**
+     * Get the enter count for a player in a specific area.
+     * Useful for advancement checks without triggering a full track.
+     */
+    default int getEnterCount(ServerPlayer player) {
+        String key = getAreaKey();
+        Map<UUID, AreaState> playerCache = AREA_STATE_CACHE.get(key);
+        if (playerCache == null) return 0;
+        AreaState state = playerCache.get(player.getUUID());
+        return state != null ? state.enterCount() : 0;
     }
 }

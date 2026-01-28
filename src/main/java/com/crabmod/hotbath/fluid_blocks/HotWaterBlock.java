@@ -1,8 +1,7 @@
 package com.crabmod.hotbath.fluid_blocks;
 
-import net.minecraft.advancements.AdvancementHolder;
+import com.crabmod.hotbath.util.AdvancementHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -43,14 +42,7 @@ public class HotWaterBlock extends AbstractHotbathBlock implements IInsideAreaTr
 
         if (result.isFirstEnter()) {
             if (result.totalEnterCount() >= ENTERED_TRIGGER_COUNT) {
-                AdvancementHolder advancement =
-                        player.getServer()
-                                .getAdvancements()
-                                .get(ResourceLocation.tryParse(ADVANCEMENT_ID));
-
-                if (advancement != null) {
-                    player.getAdvancements().award(advancement, "code_triggered");
-                }
+                AdvancementHelper.tryAwardAdvancement(player, ADVANCEMENT_ID, "code_triggered");
             }
         }
 

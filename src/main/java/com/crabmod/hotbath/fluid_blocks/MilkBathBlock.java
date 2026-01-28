@@ -1,11 +1,10 @@
 package com.crabmod.hotbath.fluid_blocks;
 
+import com.crabmod.hotbath.util.AdvancementHelper;
 import com.crabmod.hotbath.util.EffectRemovalHandler;
 import com.crabmod.hotbath.util.HealthRegenHandler;
 import com.crabmod.hotbath.util.HungerRegenHandler;
-import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -46,14 +45,7 @@ public class MilkBathBlock extends AbstractHotbathBlock implements IInsideAreaTr
             int entered = result.totalEnterCount();
 
             if (entered >= ENTERED_COUNT_TRIGGER_NUMBER) {
-                AdvancementHolder advancement =
-                        player.getServer()
-                                .getAdvancements()
-                                .get(ResourceLocation.tryParse(ADVANCEMENT_ID));
-
-                if (advancement != null) {
-                    player.getAdvancements().award(advancement, "code_triggered");
-                }
+                AdvancementHelper.tryAwardAdvancement(player, ADVANCEMENT_ID, "code_triggered");
             }
         }
 

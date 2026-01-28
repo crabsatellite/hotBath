@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "minecraft:glass_bottle"
+    },
+    {
+      "type": "neoforge:fluid_stack",
+      "fluid": "hotbath:honey_bath_fluid",
+      "amount": 250
+    }
+  ],
+  "results": [
+    {
+      "item": "hotbath:honey_bath_bottle"
+    }
+  ]
+}

@@ -3,8 +3,12 @@
   "minVersion": "0.8",
   "package": "com.crabmod.hotbath.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": ["FishingHookMixin"],
-  "client": [],
+  "mixins": [
+    "FishingHookMixin",
+    "SimpleWaterloggedBlockMixin",
+    "LevelFluidStateMixin"
+  ],
+  "client": ["client.BlockRenderDispatcherMixin"],
   "injectors": {
     "defaultRequire": 1
   }

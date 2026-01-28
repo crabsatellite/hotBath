@@ -68,8 +68,8 @@ public class FluidsRegister {
                             () -> HOT_WATER_FLUID.get()),
                     HOT_WATER_FLUID,
                     HOT_WATER_FLOWING)
-                    .slopeFindDistance(2)
-                    .levelDecreasePerBlock(2)
+                    .slopeFindDistance(4)
+                    .levelDecreasePerBlock(1)
                     .block(HOT_WATER_BLOCK)
                     .bucket(ItemRegister.HOT_WATER_BUCKET);
 
@@ -107,8 +107,8 @@ public class FluidsRegister {
                             () -> HONEY_BATH_FLUID.get()),
                     HONEY_BATH_FLUID,
                     HONEY_BATH_FLOWING)
-                    .slopeFindDistance(2)
-                    .levelDecreasePerBlock(2)
+                    .slopeFindDistance(4)
+                    .levelDecreasePerBlock(1)
                     .block(HONEY_BATH_BLOCK)
                     .bucket(ItemRegister.HONEY_BATH_BUCKET);
 
@@ -146,8 +146,8 @@ public class FluidsRegister {
                             () -> MILK_BATH_FLUID.get()),
                     MILK_BATH_FLUID,
                     MILK_BATH_FLOWING)
-                    .slopeFindDistance(2)
-                    .levelDecreasePerBlock(2)
+                    .slopeFindDistance(4)
+                    .levelDecreasePerBlock(1)
                     .block(MILK_BATH_BLOCK)
                     .bucket(ItemRegister.MILK_BATH_BUCKET);
 
@@ -185,8 +185,8 @@ public class FluidsRegister {
                             () -> HERBAL_BATH_FLUID.get()),
                     HERBAL_BATH_FLUID,
                     HERBAL_BATH_FLOWING)
-                    .slopeFindDistance(2)
-                    .levelDecreasePerBlock(2)
+                    .slopeFindDistance(4)
+                    .levelDecreasePerBlock(1)
                     .block(HERBAL_BATH_BLOCK)
                     .bucket(ItemRegister.HERBAL_BATH_BUCKET);
 
@@ -225,8 +225,8 @@ public class FluidsRegister {
                             () -> PEONY_BATH_FLUID.get()),
                     PEONY_BATH_FLUID,
                     PEONY_BATH_FLOWING)
-                    .slopeFindDistance(2)
-                    .levelDecreasePerBlock(2)
+                    .slopeFindDistance(4)
+                    .levelDecreasePerBlock(1)
                     .block(PEONY_BATH_BLOCK)
                     .bucket(ItemRegister.PEONY_BATH_BUCKET);
 
@@ -265,8 +265,8 @@ public class FluidsRegister {
                             () -> ROSE_BATH_FLUID.get()),
                     ROSE_BATH_FLUID,
                     ROSE_BATH_FLOWING)
-                    .slopeFindDistance(2)
-                    .levelDecreasePerBlock(2)
+                    .slopeFindDistance(4)
+                    .levelDecreasePerBlock(1)
                     .block(ROSE_BATH_BLOCK)
                     .bucket(ItemRegister.ROSE_BATH_BUCKET);
 

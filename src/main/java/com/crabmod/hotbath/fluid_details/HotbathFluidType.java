@@ -5,6 +5,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -39,13 +40,16 @@ public class HotbathFluidType {
                 name,
                 FluidType.Properties.create()
                         .lightLevel(2)
-                        .density(15)
-                        .viscosity(5)
+                        .density(1000)
+                        .viscosity(1000)
                         .canExtinguish(true)
                         .supportsBoating(true)
                         .fallDistanceModifier(0.0F)
                         .canDrown(true)
                         .canSwim(true)
+                        .canConvertToSource(true)
+                        .pathType(PathType.WATER)
+                        .adjacentPathType(PathType.WATER_BORDER)
                         .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
                         .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
                         .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)

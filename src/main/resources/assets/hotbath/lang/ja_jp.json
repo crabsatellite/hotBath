@@ -48,5 +48,12 @@
   "hotbath.advancement.chronic_invalid": "薬漬け",
   "hotbath.advancement.chronic_invalid.desc": "病弱な人はたくさん浸かろう。",
   "hotbath.advancement.rose_body_fragrance": "薔薇の体臭",
-  "hotbath.advancement.rose_body_fragrance.desc": "長く浸かり続けることで、体から香りが漂い、蝶や蜂を引き寄せる偉業を成し遂げる。"
+  "hotbath.advancement.rose_body_fragrance.desc": "長く浸かり続けることで、体から香りが漂い、蝶や蜂を引き寄せる偉業を成し遂げる。",
+
+  "commands.hotbath.dirtiness.get": "汚れ度: %s%% (%s)",
+  "commands.hotbath.dirtiness.get.flies_active": " [ハエ発生中]",
+  "commands.hotbath.dirtiness.get.max_dirty": " [最大汚れ: %s/%s ティック]",
+  "commands.hotbath.dirtiness.set": "汚れ度を %s%% に設定しました",
+  "commands.hotbath.dirtiness.clean": "あなたは今、清潔です！",
+  "commands.hotbath.dirtiness.flies": "ハエを有効化！あなたは非常に汚れています（100%%が2日以上続いています）"
 }

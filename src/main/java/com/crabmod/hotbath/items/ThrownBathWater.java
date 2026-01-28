@@ -1,13 +1,19 @@
 package com.crabmod.hotbath.items;
 
+import com.crabmod.hotbath.dirtiness.DirtinessAttachment;
+import com.crabmod.hotbath.dirtiness.DirtinessData;
+import com.crabmod.hotbath.dirtiness.DirtinessNetworking;
+import com.crabmod.hotbath.HotBathConfig;
 import com.crabmod.hotbath.registers.EntityRegister;
 import com.crabmod.hotbath.registers.ItemRegister;
 import com.crabmod.hotbath.registers.ParticleRegister;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -65,6 +71,14 @@ public class ThrownBathWater extends ThrowableItemProjectile {
                     double d0 = this.distanceToSqr(livingentity);
                     if (d0 < 16.0D) {
                         splashItem.applyEffect(livingentity);
+                        
+                        // Reduce dirtiness by 10% when hit by splash hot water (if enabled)
+                        if (HotBathConfig.isDirtinessEnabled() && livingentity instanceof ServerPlayer serverPlayer) {
+                            DirtinessData data = serverPlayer.getData(DirtinessAttachment.DIRTINESS);
+                            long gameTime = serverPlayer.level().getGameTime();
+                            data.reduceDirtiness(gameTime, 0.10f); // 10% reduction
+                            DirtinessNetworking.syncToClient(serverPlayer);
+                        }
                     }
                 }
             }

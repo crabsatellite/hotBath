@@ -1,17 +1,13 @@
 package com.crabmod.hotbath.fluid_blocks;
 
+import com.crabmod.hotbath.util.AdvancementHelper;
 import com.crabmod.hotbath.util.EffectRemovalHandler;
 import com.crabmod.hotbath.util.HealthRegenHandler;
 import com.crabmod.hotbath.util.ResistanceBoostHandler;
-import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.monster.Skeleton;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -58,15 +54,9 @@ public class HerbalBathBlock extends AbstractHotbathBlock implements IInsideArea
 
         HealthRegenHandler.regenHealth(0.25F, 2, player);
 
-        if (result.totalEnterCount() >= ENTERED_TRIGGER_COUNT) {
-            AdvancementHolder advancement =
-                    player.getServer()
-                            .getAdvancements()
-                            .get(ResourceLocation.tryParse(ADVANCEMENT_ID));
-
-            if (advancement != null) {
-                player.getAdvancements().award(advancement, "code_triggered");
-            }
+        // Only check advancement on first enter to avoid redundant checks
+        if (result.isFirstEnter() && result.totalEnterCount() >= ENTERED_TRIGGER_COUNT) {
+            AdvancementHelper.tryAwardAdvancement(player, ADVANCEMENT_ID, "code_triggered");
         }
 
         if (result.stayedTicks() >= EFFECT_TRIGGER_SECONDS * TICK_NUMBER) {

@@ -8,64 +8,55 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Temperature modifier that applies when the player is inside a Hot Bath block.
- * Provides two effects:
- * 1. Cold resistance: accumulates every 10 seconds (each 10s adds 1 min, max 5 min)
- * 2. Thermal comfort: after 10 seconds in bath, provides temperature immunity in cold areas
- *    (refreshed every tick, lasts 10 seconds after leaving)
+ * Handles LSO temperature effects when player is in a Hot Bath.
+ * - Warms player to HOT zone (27°C) while in bath
+ * - Accumulates cold resistance every 10 seconds (max 5 min)
+ * - Applies cold immunity after 10 seconds (persists 10s after leaving)
  */
 public class HotBathImmersionLSOModifier {
 
-    // Track players currently in bath and their bathing duration
     private static final Map<UUID, Integer> BATH_TIMERS = new ConcurrentHashMap<>();
-    
-    private static final int UPDATE_INTERVAL = 200; // 10 seconds in ticks
-    private static final int RESISTANCE_GAIN_PER_UPDATE = 1200; // 1 minute in ticks
-    private static final int THERMAL_COMFORT_START_DELAY = 200; // Start thermal comfort after 10 seconds
+    private static final int UPDATE_INTERVAL = 200; // 10 seconds
+    private static final int RESISTANCE_GAIN_PER_UPDATE = 1200; // 1 minute
+    private static final int COLD_IMMUNITY_START_DELAY = 200; // Start after 10 seconds
+    private static final int TEMP_UPDATE_INTERVAL = 20; // Update temperature modifier every 1 second (20 ticks)
 
-    /**
-     * Check if a player is currently in bath
-     */
     public static boolean isPlayerInBath(UUID playerUUID) {
         return BATH_TIMERS.containsKey(playerUUID);
     }
 
-    /**
-     * Accumulate cold resistance effect while in bath
-     * Also applies thermal comfort (temperature immunity) after 10 seconds in cold environments
-     * Updates effect every 10 seconds
-     * Should be called from player tick event
-     */
     public static void tick(Player player) {
         UUID playerUUID = player.getUUID();
         boolean isInBath = CustomFluidHandler.isPlayerInHotBathBlock(player);
 
         if (isInBath) {
-            // Increment timer
-            int timer = BATH_TIMERS.getOrDefault(playerUUID, 0);
-            timer++;
+            int timer = BATH_TIMERS.getOrDefault(playerUUID, 0) + 1;
             BATH_TIMERS.put(playerUUID, timer);
             
-            // Every 10 seconds, update the cold resistance effect
+            // Warm player to HOT zone - update every second instead of every tick
+            if (timer % TEMP_UPDATE_INTERVAL == 0) {
+                LSOApiHelper.applyBathTemperatureModifier(player);
+            }
+            
+            // Accumulate cold resistance every 10 seconds
             if (timer % UPDATE_INTERVAL == 0) {
                 LSOApiHelper.updateImmersionResistanceEffect(player, RESISTANCE_GAIN_PER_UPDATE);
             }
             
-            // After 10 seconds, start applying thermal comfort every tick (in cold environments)
-            if (timer >= THERMAL_COMFORT_START_DELAY) {
-                LSOApiHelper.applyThermalComfortEffect(player);
+            // Apply cold immunity after 10 seconds (prevents shivering after leaving)
+            // Check every second to avoid unnecessary effect instance creation
+            if (timer >= COLD_IMMUNITY_START_DELAY && timer % TEMP_UPDATE_INTERVAL == 0) {
+                LSOApiHelper.applyColdImmunityEffect(player);
             }
         } else {
-            // Player left bath, remove timer
-            BATH_TIMERS.remove(playerUUID);
+            if (BATH_TIMERS.containsKey(playerUUID)) {
+                LSOApiHelper.removeBathTemperatureModifier(player);
+                BATH_TIMERS.remove(playerUUID);
+            }
         }
     }
 
-    /**
-     * Clean up when player logs out or dies
-     */
     public static void cleanup(Player player) {
         BATH_TIMERS.remove(player.getUUID());
-        // Cold resistance effect will naturally expire
     }
 }

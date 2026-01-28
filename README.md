@@ -78,7 +78,8 @@ Welcome to **Hot Bath Mod**! Take a break from your adventures and soak in a rel
   - HotBath fluids maintain body temp at ~37°C.
 - **[Legendary Survival Overhaul](https://www.curseforge.com/minecraft/mc-mods/legendary-survival-overhaul)**:
   - Bottles restore thirst and give "Hot Drink" buff.
-  - HotBath fluids provide "Cold Resistance" and "Thermostatic" buffs.
+  - HotBath fluids warm player to comfortable temperature, preventing shivering.
+  - After 10s in bath: "Cold Resistance" buff (accumulates up to 5 min) + "Cold Immunity" buff (lasts 10s after leaving).
 
 ## Classic Features (Items & Recipes)
 
@@ -257,7 +258,8 @@ Welcome to **Hot Bath Mod**! Take a break from your adventures and soak in a rel
   - HotBath 流体将体温维持在约 37°C。
 - **[Legendary Survival Overhaul](https://www.curseforge.com/minecraft/mc-mods/legendary-survival-overhaul)**:
   - 浴水瓶恢复口渴值并给予“热饮”buff。
-  - HotBath 流体提供“抗寒”和“恒温”buff。
+  - HotBath 流体将玩家温度提升至舒适温暖区域，防止颤抖。
+  - 泡澡 10 秒后：获得"抗寒"buff（可累积至 5 分钟）+ "寒冷免疫"buff（离开后持续 10 秒）。
 
 ## 经典功能 (物品与配方)
 

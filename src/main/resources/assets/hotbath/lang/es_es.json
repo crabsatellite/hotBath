@@ -50,5 +50,12 @@
   "hotbath.advancement.chronic_invalid.desc": "Receta para los frágiles y enfermos.",
   "hotbath.advancement.rose_body_fragrance": "Fragancia Corporal de Rosas",
   "hotbath.advancement.rose_body_fragrance.desc": "Solo la inmersión a largo plazo puede cultivar tu fragancia corporal.",
-  "hotbath_tab": "Baño Caliente"
+  "hotbath_tab": "Baño Caliente",
+
+  "commands.hotbath.dirtiness.get": "Suciedad: %s%% (%s)",
+  "commands.hotbath.dirtiness.get.flies_active": " [MOSCAS ACTIVAS]",
+  "commands.hotbath.dirtiness.get.max_dirty": " [Suciedad máx: %s/%s ticks]",
+  "commands.hotbath.dirtiness.set": "Suciedad establecida a %s%%",
+  "commands.hotbath.dirtiness.clean": "¡Ahora estás limpio!",
+  "commands.hotbath.dirtiness.flies": "¡Moscas activadas! Estás extremadamente sucio (100%% por 2+ días)"
 }

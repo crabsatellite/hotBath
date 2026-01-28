@@ -50,5 +50,12 @@
   "hotbath.advancement.chronic_invalid.desc": "Ordonnance pour les fragiles et les malades.",
   "hotbath.advancement.rose_body_fragrance": "Parfum Corporel à la Rose",
   "hotbath.advancement.rose_body_fragrance.desc": "Seule une immersion à long terme peut cultiver votre parfum corporel.",
-  "hotbath_tab": "Bain Chaud"
+  "hotbath_tab": "Bain Chaud",
+
+  "commands.hotbath.dirtiness.get": "Saleté: %s%% (%s)",
+  "commands.hotbath.dirtiness.get.flies_active": " [MOUCHES ACTIVES]",
+  "commands.hotbath.dirtiness.get.max_dirty": " [Saleté max: %s/%s ticks]",
+  "commands.hotbath.dirtiness.set": "Saleté réglée à %s%%",
+  "commands.hotbath.dirtiness.clean": "Vous êtes maintenant propre!",
+  "commands.hotbath.dirtiness.flies": "Mouches activées! Vous êtes extrêmement sale (100%% depuis 2+ jours)"
 }
