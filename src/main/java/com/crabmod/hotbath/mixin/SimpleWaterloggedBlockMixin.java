@@ -15,6 +15,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -22,8 +23,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /**
  * Mixin to extend SimpleWaterloggedBlock to accept any fluid in the #minecraft:water tag.
  * This allows hotBath fluids to waterlog blocks like stairs, slabs, fences, etc.
+ * 
+ * <p>Priority is set high to ensure we run before other mods' mixins.</p>
  */
-@Mixin(SimpleWaterloggedBlock.class)
+@Mixin(value = SimpleWaterloggedBlock.class, priority = 500)
 public interface SimpleWaterloggedBlockMixin {
 
     /**
@@ -44,7 +47,8 @@ public interface SimpleWaterloggedBlockMixin {
     }
 
     /**
-     * Modify placeLiquid to handle any fluid in the water tag
+     * Modify placeLiquid to handle any fluid in the water tag.
+     * Uses defensive programming to ensure block state is properly preserved.
      */
     @Inject(method = "placeLiquid", at = @At("HEAD"), cancellable = true)
     default void hotbath$placeLiquid(LevelAccessor level, BlockPos pos, BlockState state,
@@ -53,15 +57,50 @@ public interface SimpleWaterloggedBlockMixin {
         if (fluidState.is(FluidTags.WATER)) {
             if (state.hasProperty(BlockStateProperties.WATERLOGGED) 
                     && !state.getValue(BlockStateProperties.WATERLOGGED)) {
+                
+                // DEFENSIVE: Get fresh block state from world to ensure we have the latest
+                BlockState currentState = level.getBlockState(pos);
+                
+                // Verify the block is still the same type and not already waterlogged
+                if (!currentState.is(state.getBlock())) {
+                    // Block changed, don't proceed
+                    cir.setReturnValue(false);
+                    return;
+                }
+                
+                if (currentState.hasProperty(BlockStateProperties.WATERLOGGED) 
+                        && currentState.getValue(BlockStateProperties.WATERLOGGED)) {
+                    // Already waterlogged, don't proceed
+                    cir.setReturnValue(false);
+                    return;
+                }
+                
                 // Store the fluid type for later retrieval
-                // On server: store in SavedData (which also syncs to client cache)
-                // On client: just update client cache directly for immediate rendering
                 HotbathWaterloggingHelper.storeFluidType(level, pos, fluidState.getType());
                 
-                // Set the block state and schedule tick
-                level.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, true), 3);
-                level.scheduleTick(pos, fluidState.getType(), fluidState.getType().getTickDelay(level));
-                cir.setReturnValue(true);
+                // DEFENSIVE: Create new state from current world state, not passed parameter
+                BlockState newState = currentState.setValue(BlockStateProperties.WATERLOGGED, true);
+                
+                // Set the block state with flag 3 (notify clients + neighbors)
+                boolean success = level.setBlock(pos, newState, 3);
+                
+                if (success) {
+                    // Schedule tick for fluid behavior
+                    level.scheduleTick(pos, fluidState.getType(), fluidState.getType().getTickDelay(level));
+                    
+                    // DEFENSIVE: Verify the block was actually set correctly
+                    BlockState verifyState = level.getBlockState(pos);
+                    if (!verifyState.hasProperty(BlockStateProperties.WATERLOGGED) 
+                            || !verifyState.getValue(BlockStateProperties.WATERLOGGED)) {
+                        // Block state was not set correctly, try again with higher priority flag
+                        level.setBlock(pos, newState, 2 | 16 | 32 | 64);
+                    }
+                } else {
+                    // setBlock failed, clean up stored fluid type
+                    HotbathWaterloggingHelper.removeFluidType(level, pos);
+                }
+                
+                cir.setReturnValue(success);
             }
         }
     }
@@ -78,9 +117,13 @@ public interface SimpleWaterloggedBlockMixin {
             Fluid storedFluid = HotbathWaterloggingHelper.getStoredFluidType(level, pos);
             
             if (storedFluid != null && storedFluid != Fluids.WATER && storedFluid != Fluids.EMPTY) {
-                level.setBlock(pos, state.setValue(BlockStateProperties.WATERLOGGED, false), 3);
+                // DEFENSIVE: Get fresh state from world
+                BlockState currentState = level.getBlockState(pos);
+                if (currentState.hasProperty(BlockStateProperties.WATERLOGGED)) {
+                    level.setBlock(pos, currentState.setValue(BlockStateProperties.WATERLOGGED, false), 3);
+                }
+                
                 HotbathWaterloggingHelper.removeFluidType(level, pos);
-                // Also remove from client cache
                 HotbathWaterloggingHelper.removeFromClientCache(pos);
                 
                 ItemStack bucket = new ItemStack(storedFluid.getBucket());
