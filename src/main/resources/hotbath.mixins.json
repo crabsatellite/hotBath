@@ -4,6 +4,7 @@
   "package": "com.crabmod.hotbath.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "hotbath.refmap.json",
+  "plugin": "com.crabmod.hotbath.mixin.HotBathMixinPlugin",
   "mixins": [
     "FishingHookMixin",
     "LevelFluidStateMixin",

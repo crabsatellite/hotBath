@@ -1,6 +1,7 @@
 package com.crabmod.hotbath.waterlogging;
 
 import com.crabmod.hotbath.HotBath;
+import com.crabmod.hotbath.HotBathConfig;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.TickEvent;
@@ -24,6 +25,10 @@ public class WaterloggingEvents {
      */
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        // Skip if compatibility mode is enabled
+        if (HotBathConfig.isCompatibilityModeEnabled()) {
+            return;
+        }
         if (event.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = player.serverLevel();
             WaterloggingNetworking.syncAllToPlayer(player, level);
@@ -35,6 +40,10 @@ public class WaterloggingEvents {
      */
     @SubscribeEvent
     public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        // Skip if compatibility mode is enabled
+        if (HotBathConfig.isCompatibilityModeEnabled()) {
+            return;
+        }
         if (event.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = player.serverLevel();
             // Clear client cache first (old dimension data)
@@ -49,6 +58,10 @@ public class WaterloggingEvents {
      */
     @SubscribeEvent
     public static void onWorldUnload(LevelEvent.Unload event) {
+        // Skip if compatibility mode is enabled
+        if (HotBathConfig.isCompatibilityModeEnabled()) {
+            return;
+        }
         if (event.getLevel().isClientSide()) {
             HotbathWaterloggingHelper.clearClientCache();
         }
@@ -59,6 +72,10 @@ public class WaterloggingEvents {
      */
     @SubscribeEvent
     public static void onServerLevelTick(TickEvent.LevelTickEvent event) {
+        // Skip if compatibility mode is enabled
+        if (HotBathConfig.isCompatibilityModeEnabled()) {
+            return;
+        }
         if (event.phase == TickEvent.Phase.END && event.level instanceof ServerLevel serverLevel) {
             tickCounter++;
             if (tickCounter >= CLEANUP_INTERVAL) {

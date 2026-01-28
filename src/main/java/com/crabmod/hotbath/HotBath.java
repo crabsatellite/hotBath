@@ -84,11 +84,22 @@ public class HotBath {
     private void commonSetup(final FMLCommonSetupEvent event) {
         LOGGER.info("HELLO FROM COMMON SETUP");
         
-        // Register dirtiness networking
+        // Register dirtiness networking (always register, handler checks config at runtime)
         DirtinessNetworking.register();
         
-        // Register waterlogging networking
-        com.crabmod.hotbath.waterlogging.WaterloggingNetworking.register();
+        // Register waterlogging networking (only if waterlogging is enabled)
+        if (HotBathConfig.isWaterloggingEnabled()) {
+            com.crabmod.hotbath.waterlogging.WaterloggingNetworking.register();
+        } else {
+            LOGGER.info("Waterlogging disabled - waterlogging networking not registered.");
+        }
+
+        // Skip all mod integrations if disabled
+        if (!HotBathConfig.isModIntegrationsEnabled()) {
+            LOGGER.info("Mod integrations disabled in config - skipping all mod integrations.");
+            registerBrewingRecipes(event);
+            return;
+        }
 
         if (ColdSweatIntegration.isColdSweatLoaded()) {
             LOGGER.info("Cold Sweat detected! Temperature integration enabled.");
@@ -167,6 +178,10 @@ public class HotBath {
             LOGGER.error("Failed to initialize Create integration: {}", e.getMessage(), e);
         }
         
+        registerBrewingRecipes(event);
+    }
+    
+    private void registerBrewingRecipes(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemRegister.HOT_WATER_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_HOT_WATER_BOTTLE.get().getDefaultInstance());
             BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemRegister.HONEY_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_HONEY_BATH_BOTTLE.get().getDefaultInstance());
@@ -178,6 +193,12 @@ public class HotBath {
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
+        // Skip mod integrations if disabled
+        if (!HotBathConfig.isModIntegrationsEnabled()) {
+            LOGGER.info("Mod integrations disabled - ToughAsNails integration skipped.");
+            return;
+        }
+        
         if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {
             LOGGER.info("Tough As Nails detected! Temperature integration enabled.");
             try {
