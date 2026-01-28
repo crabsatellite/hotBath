@@ -111,6 +111,24 @@ public class HotbathWaterloggingHelper {
     }
     
     /**
+     * Get stored fluid type for client-side rendering, without needing a Level reference.
+     * This is specifically designed for Sodium compatibility, where the render thread
+     * doesn't have access to the Level object in the same way.
+     * 
+     * <p>Note: This method only checks the client cache. The cache must be populated
+     * via network sync from the server.</p>
+     * 
+     * @param pos The block position to query
+     * @return The stored fluid, or null if none is stored
+     */
+    @Nullable
+    public static Fluid getStoredFluidTypeClientDirect(BlockPos pos) {
+        if (pos == null) return null;
+        // Directly check the client cache - optimized for Sodium's render thread
+        return getFluidFromCache(pos);
+    }
+    
+    /**
      * Get fluid from client cache.
      * Safely handles missing/unregistered fluids.
      */
