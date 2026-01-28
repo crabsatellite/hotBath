@@ -90,6 +90,12 @@ public class HotBath {
     private void commonSetup(final FMLCommonSetupEvent event) {
         LOGGER.info("HELLO FROM COMMON SETUP");
 
+        // Skip all mod integrations if disabled
+        if (!HotBathConfig.isModIntegrationsEnabled()) {
+            LOGGER.info("Mod integrations disabled in config - skipping all mod integrations.");
+            return;
+        }
+
         if (ColdSweatIntegration.isColdSweatLoaded()) {
             LOGGER.info("Cold Sweat detected! Temperature integration enabled.");
             try {
