@@ -50,5 +50,12 @@
   "hotbath.advancement.chronic_invalid.desc": "Rezept für die Gebrechlichen und Kranken.",
   "hotbath.advancement.rose_body_fragrance": "Rosenkörperduft",
   "hotbath.advancement.rose_body_fragrance.desc": "Nur langfristiges Eintauchen kann deinen Körperduft kultivieren.",
-  "hotbath_tab": "Heißes Bad"
+  "hotbath_tab": "Heißes Bad",
+
+  "commands.hotbath.dirtiness.get": "Verschmutzung: %s%% (%s)",
+  "commands.hotbath.dirtiness.get.flies_active": " [FLIEGEN AKTIV]",
+  "commands.hotbath.dirtiness.get.max_dirty": " [Max. Verschmutzung: %s/%s Ticks]",
+  "commands.hotbath.dirtiness.set": "Verschmutzung auf %s%% gesetzt",
+  "commands.hotbath.dirtiness.clean": "Du bist jetzt sauber!",
+  "commands.hotbath.dirtiness.flies": "Fliegen aktiviert! Du bist jetzt extrem schmutzig (100%% seit 2+ Tagen)"
 }

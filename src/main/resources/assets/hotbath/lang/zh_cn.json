@@ -48,5 +48,12 @@
   "hotbath.advancement.chronic_invalid": "药罐子",
   "hotbath.advancement.chronic_invalid.desc": "体弱多病要多泡。",
   "hotbath.advancement.rose_body_fragrance": "玫瑰体香",
-  "hotbath.advancement.rose_body_fragrance.desc": "只有长久的浸养与熏陶，才能体香大成，进行招蜂引蝶的大业。"
+  "hotbath.advancement.rose_body_fragrance.desc": "只有长久的浸养与熏陶，才能体香大成，进行招蜂引蝶的大业。",
+
+  "commands.hotbath.dirtiness.get": "污渍度: %s%% (%s)",
+  "commands.hotbath.dirtiness.get.flies_active": " [苍蝇出没]",
+  "commands.hotbath.dirtiness.get.max_dirty": " [最大污渍: %s/%s 刻]",
+  "commands.hotbath.dirtiness.set": "已将污渍度设置为 %s%%",
+  "commands.hotbath.dirtiness.clean": "你现在干干净净了！",
+  "commands.hotbath.dirtiness.flies": "苍蝇已启用！你现在非常脏（100%%持续2天以上）"
 }

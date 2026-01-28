@@ -1,0 +1,13 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "com.crabmod.hotbath.mixin.alexsmobs",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "hotbath.alexsmobs.refmap.json",
+  "plugin": "com.crabmod.hotbath.mixin.alexsmobs.AlexsMobsMixinPlugin",
+  "mixins": ["CapuchinTamingMixin", "RaccoonAIWashMixin", "RaccoonTamingMixin"],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

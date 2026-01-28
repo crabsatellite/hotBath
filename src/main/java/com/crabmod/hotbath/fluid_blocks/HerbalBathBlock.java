@@ -1,20 +1,18 @@
 package com.crabmod.hotbath.fluid_blocks;
 
+import com.crabmod.hotbath.util.AdvancementHelper;
 import com.crabmod.hotbath.util.EffectRemovalHandler;
 import com.crabmod.hotbath.util.HealthRegenHandler;
 import com.crabmod.hotbath.util.ResistanceBoostHandler;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.monster.Skeleton;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 
-import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -38,7 +36,8 @@ public class HerbalBathBlock extends AbstractHotbathBlock implements IInsideArea
         }
 
         if (!(entity instanceof ServerPlayer player)) {
-            if (entity instanceof Zombie || entity instanceof Skeleton) {
+            // Check if entity is undead (using MobType check for 1.20 compatibility)
+            if (entity instanceof LivingEntity livingEntity && livingEntity.getMobType() == MobType.UNDEAD) {
                 if (entity.tickCount % 20 == 0) {
                     entity.hurt(level.damageSources().magic(), 0.5F);
                 }
@@ -57,15 +56,9 @@ public class HerbalBathBlock extends AbstractHotbathBlock implements IInsideArea
 
         HealthRegenHandler.regenHealth(0.25F, 2, player);
 
-        if (result.totalEnterCount() >= ENTERED_TRIGGER_COUNT) {
-            Advancement advancement =
-                Objects.requireNonNull(player.getServer())
-                    .getAdvancements()
-                    .getAdvancement(Objects.requireNonNull(ResourceLocation.tryParse(ADVANCEMENT_ID)));
-
-            if (advancement != null) {
-                player.getAdvancements().award(advancement, "code_triggered");
-            }
+        // Only check advancement on first enter to avoid redundant checks
+        if (result.isFirstEnter() && result.totalEnterCount() >= ENTERED_TRIGGER_COUNT) {
+            AdvancementHelper.tryAwardAdvancement(player, ADVANCEMENT_ID, "code_triggered");
         }
 
         if (result.stayedTicks() >= EFFECT_TRIGGER_SECONDS * TICK_NUMBER) {
@@ -77,6 +70,7 @@ public class HerbalBathBlock extends AbstractHotbathBlock implements IInsideArea
         }
     }
 }
+
 
 
 

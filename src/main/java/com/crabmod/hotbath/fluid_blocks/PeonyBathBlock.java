@@ -1,10 +1,10 @@
 package com.crabmod.hotbath.fluid_blocks;
 
 import com.crabmod.hotbath.HotBath;
+import com.crabmod.hotbath.events.enter_fluid_events.PeonyBathEvents;
 import com.crabmod.hotbath.util.EffectRemovalHandler;
 import com.crabmod.hotbath.util.HealthRegenHandler;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -39,8 +39,6 @@ public class PeonyBathBlock extends AbstractHotbathBlock implements IInsideAreaT
     @SuppressWarnings("removal")
     public static final ResourceLocation KNOCKBACK_RESISTANCE_MODIFIER_NAME =
         new ResourceLocation(HotBath.MOD_ID, "peony_bath_knockback_resistance_modifier");
-
-    public static String PeonyExitedTimeKey = "PeonyBathExitedTime";
 
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
@@ -90,8 +88,8 @@ public class PeonyBathBlock extends AbstractHotbathBlock implements IInsideAreaT
                     true));
         }
 
-        net.minecraft.nbt.CompoundTag data = player.getPersistentData();
-        data.putInt(PeonyExitedTimeKey, 0);
+        // Reset exit timer using memory cache instead of PersistentData
+        PeonyBathEvents.resetExitTimer(player.getUUID());
     }
 
     public static void applyAttributeModifier(

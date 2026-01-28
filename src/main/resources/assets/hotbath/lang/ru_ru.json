@@ -50,5 +50,12 @@
   "hotbath.advancement.chronic_invalid.desc": "Рецепт для слабых и больных.",
   "hotbath.advancement.rose_body_fragrance": "Аромат тела розы",
   "hotbath.advancement.rose_body_fragrance.desc": "Только длительное погружение может культивировать аромат вашего тела.",
-  "hotbath_tab": "Горячая ванна"
+  "hotbath_tab": "Горячая ванна",
+
+  "commands.hotbath.dirtiness.get": "Грязь: %s%% (%s)",
+  "commands.hotbath.dirtiness.get.flies_active": " [МУХИ АКТИВНЫ]",
+  "commands.hotbath.dirtiness.get.max_dirty": " [Макс. грязь: %s/%s тиков]",
+  "commands.hotbath.dirtiness.set": "Грязь установлена на %s%%",
+  "commands.hotbath.dirtiness.clean": "Теперь вы чисты!",
+  "commands.hotbath.dirtiness.flies": "Мухи включены! Вы очень грязный (100%% более 2 дней)"
 }

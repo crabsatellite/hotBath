@@ -1,0 +1,23 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "minecraft:glass_bottle"
+    },
+    {
+      "fluid": "hotbath:peony_bath_fluid",
+      "amount": 250
+    }
+  ],
+  "results": [
+    {
+      "item": "hotbath:peony_bath_bottle"
+    }
+  ]
+}

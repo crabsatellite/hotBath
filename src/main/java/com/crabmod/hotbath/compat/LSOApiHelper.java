@@ -1,8 +1,5 @@
 package com.crabmod.hotbath.compat;
 
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -10,30 +7,47 @@ import sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry;
 import sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureUtil;
 import sfiomn.legendarysurvivaloverhaul.api.thirst.ThirstUtil;
 
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Helper class for LSO API calls. Only loaded when LSO is present.
  */
 public class LSOApiHelper {
     
-    // Bottle effect: HOT_DRINK potion (suitable for drinking)
+    // Cache for temperature modifier values to avoid redundant API calls
+    // Stores the last applied warmth value so we don't need to clear and re-read
+    private static final Map<UUID, CachedTempData> TEMP_MODIFIER_CACHE = new ConcurrentHashMap<>();
+    private static final double TEMP_UPDATE_THRESHOLD = 0.5; // Only update if change > 0.5°C
+    
+    // Record to store both the applied warmth and a timestamp for periodic recalculation
+    private record CachedTempData(double appliedWarmth, long lastCalculationTime) {}
+    
+    // Bottle effects
     private static final int HOT_DRINK_BOTTLE_DURATION = 300; // 15 seconds
-    private static final int HOT_DRINK_BOTTLE_AMPLIFIER = 0; // Level 1
-    private static final int HOT_DRINK_BOTTLE_AMPLIFIER_BOOSTED = 2; // Level 3 (when bathing)
+    private static final int HOT_DRINK_BOTTLE_AMPLIFIER = 0;
+    private static final int HOT_DRINK_BOTTLE_AMPLIFIER_BOOSTED = 2; // When bathing
     
-    // Immersion effect: COLD_RESISTANCE (builds up over time)
+    // Immersion: Cold resistance accumulation
+    private static final int COLD_RESISTANCE_AMPLIFIER = 2;
     private static final int MAX_RESISTANCE_DURATION = 6000; // 5 minutes
-    private static final int COLD_RESISTANCE_AMPLIFIER = 0; // Level 1
     
-    // Thermal comfort: TEMPERATURE_IMMUNITY (short duration)
-    private static final int THERMAL_COMFORT_DURATION = 200; // 10 seconds
-    private static final float COLD_TEMPERATURE_THRESHOLD = 16.0f; // Below this is considered cold
+    // Bath temperature modifier
+    private static final UUID HOT_BATH_TEMP_MODIFIER_UUID = UUID.fromString("a1b2c3d4-e5f6-7890-abcd-ef1234567890");
+    private static final float TARGET_WARM_TEMPERATURE = 27.0f; // HOT zone middle
     
-    // Thirst values
-    private static final int HYDRATION = 4;
-    private static final float SATURATION = 0.6F;
-
+    // Cold immunity effect - prevents shivering after leaving bath
+    private static final int COLD_IMMUNITY_DURATION = 200; // 10 seconds
+    
+    // Thirst
+    private static final int HYDRATION = 5;
+    private static final float SATURATION = 0.5f;
+    
+    /**
+     * Apply HOT_DRINK effect for bottle (Level 1 or Level 3 if bathing, 15 seconds)
+     * @param isBathing Whether player is currently in hot bath (for boosted effect)
+     */
     public static void applyBottleTemperatureEffect(Player player, boolean isBathing) {
         MobEffect hotDrink = MobEffectRegistry.HOT_DRINk.get();
         
@@ -83,34 +97,81 @@ public class LSOApiHelper {
         player.addEffect(effect);
     }
     
+    // How often to fully recalculate temperature (5 seconds in game ticks)
+    private static final long TEMP_RECALCULATION_INTERVAL = 100;
+    
     /**
-     * Apply thermal comfort (temperature immunity) in cold environments
-     * Provides constant temperature effect for 10 seconds
-     * Only applies if player is in cold environment (< 16C)
+     * Apply temperature modifier to warm player to HOT zone (27°C).
+     * Only warms if player is colder than target; no effect if already warm.
+     * Uses caching to minimize API calls - only recalculates every 5 seconds or on significant change.
      */
-    public static void applyThermalComfortEffect(Player player) {
-        float currentTemp = TemperatureUtil.getPlayerTargetTemperature(player);
+    public static void applyBathTemperatureModifier(Player player) {
+        UUID playerUUID = player.getUUID();
+        long currentTime = player.level().getGameTime();
         
-        // Only apply if in cold environment
-        if (currentTemp >= COLD_TEMPERATURE_THRESHOLD) {
-            return;
+        CachedTempData cached = TEMP_MODIFIER_CACHE.get(playerUUID);
+        
+        // Check if we need to recalculate (first time, or periodic recalculation)
+        boolean needsRecalculation = cached == null || 
+            (currentTime - cached.lastCalculationTime()) >= TEMP_RECALCULATION_INTERVAL;
+        
+        if (needsRecalculation) {
+            // Get current temperature (includes our existing modifier if any)
+            float currentTargetTemp = TemperatureUtil.getPlayerTargetTemperature(player);
+            
+            // Calculate base temperature by subtracting our current modifier
+            double currentModifier = cached != null ? cached.appliedWarmth() : 0;
+            float baseTargetTemp = (float) (currentTargetTemp - currentModifier);
+            
+            // Calculate new warmth needed
+            double warmthNeeded = Math.max(0, TARGET_WARM_TEMPERATURE - baseTargetTemp);
+            
+            // Only call API if value changed significantly (avoid unnecessary calls)
+            if (cached == null || Math.abs(warmthNeeded - currentModifier) > TEMP_UPDATE_THRESHOLD) {
+                TemperatureUtil.addTemperatureModifier(player, warmthNeeded, HOT_BATH_TEMP_MODIFIER_UUID);
+            }
+            TEMP_MODIFIER_CACHE.put(playerUUID, new CachedTempData(warmthNeeded, currentTime));
         }
-        
-        MobEffect tempImmunity = MobEffectRegistry.TEMPERATURE_IMMUNITY.get();
-        
-        MobEffectInstance effect = new MobEffectInstance(
-            tempImmunity,
-            THERMAL_COMFORT_DURATION,
-            0,
-            false,
-            true,
-            true
-        );
-        player.addEffect(effect);
+        // If not time for recalculation, keep using cached value (no API call needed)
     }
     
     /**
-     * Add thirst and saturation to player
+     * Remove temperature modifier when player leaves bath.
+     */
+    public static void removeBathTemperatureModifier(Player player) {
+        UUID playerUUID = player.getUUID();
+        CachedTempData cached = TEMP_MODIFIER_CACHE.get(playerUUID);
+        // Only call API if we actually had a modifier applied
+        if (cached != null && cached.appliedWarmth() > 0) {
+            TemperatureUtil.addTemperatureModifier(player, 0.0, HOT_BATH_TEMP_MODIFIER_UUID);
+        }
+        TEMP_MODIFIER_CACHE.remove(playerUUID);
+    }
+    
+    /**
+     * Apply COLD_IMMUNITY effect to prevent shivering.
+     * Used after bathing for 10+ seconds, refreshed only when effect is missing or about to expire.
+     */
+    public static void applyColdImmunityEffect(Player player) {
+        MobEffect coldImmunity = MobEffectRegistry.COLD_IMMUNITY.get();
+        
+        // Only add effect if not present or about to expire (< 5 seconds remaining)
+        MobEffectInstance current = player.getEffect(coldImmunity);
+        if (current == null || current.getDuration() < 100) {
+            MobEffectInstance effect = new MobEffectInstance(
+                coldImmunity,
+                COLD_IMMUNITY_DURATION,
+                0,
+                false,
+                false, // Hide particles
+                true
+            );
+            player.addEffect(effect);
+        }
+    }
+    
+    /**
+     * Add thirst and saturation to player.
      */
     public static void addThirst(Player player) {
         ThirstUtil.takeDrink(player, HYDRATION, SATURATION);
@@ -143,4 +204,12 @@ public class LSOApiHelper {
         );
         player.addEffect(effect);
     }
+    
+    /**
+     * Clean up player cache when they log out to prevent memory leaks.
+     */
+    public static void cleanupPlayerCache(Player player) {
+        TEMP_MODIFIER_CACHE.remove(player.getUUID());
+    }
 }
+

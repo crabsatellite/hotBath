@@ -1,0 +1,25 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "fluidTag": "minecraft:water",
+      "amount": 1000
+    },
+    {
+      "item": "minecraft:honey_bottle"
+    }
+  ],
+  "results": [
+    {
+      "fluid": "hotbath:honey_bath_fluid",
+      "amount": 1000
+    }
+  ],
+  "heatRequirement": "heated"
+}

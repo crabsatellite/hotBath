@@ -1,0 +1,28 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "fluidTag": "minecraft:water",
+      "amount": 1000
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    }
+  ],
+  "results": [
+    {
+      "fluid": "hotbath:milk_bath_fluid",
+      "amount": 1000
+    },
+    {
+      "item": "minecraft:bucket"
+    }
+  ],
+  "heatRequirement": "heated"
+}

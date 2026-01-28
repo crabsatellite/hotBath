@@ -143,20 +143,20 @@ dependencies {
 
     // ColdSweat - Temperature and season mod (optional dependency)
     // compileOnly for API access, runtimeOnly to have it in dev environment
-    compileOnly fg.deobf("curse.maven:cold-sweat-506194:7299012")
-    // runtimeOnly fg.deobf("curse.maven:cold-sweat-506194:7299012")
+    compileOnly fg.deobf("curse.maven:cold-sweat-506194:7492468")
+    // runtimeOnly fg.deobf("curse.maven:cold-sweat-506194:7492468")
 
     // GlitchCore - Library mod required by ToughAsNails
     // Project ID: 955399, File ID 5772820 corresponds to GlitchCore-forge-1.20.1-0.0.1.1.jar
     // runtimeOnly because it's a library dependency needed at runtime
     compileOnly fg.deobf("curse.maven:glitchcore-955399:5772820")
-    // runtimeOnly fg.deobf("curse.maven:glitchcore-955399:5772820")
+    runtimeOnly fg.deobf("curse.maven:glitchcore-955399:5772820")
 
     // ToughAsNails - Temperature and thirst mod (optional dependency)
     // Project ID: 246391, File ID 4750298 corresponds to ToughAsNails-1.20.1-9.0.0.96.jar
     // compileOnly for API access, runtimeOnly to have it in dev environment
     compileOnly fg.deobf("curse.maven:tough-as-nails-246391:4750298")
-    // runtimeOnly fg.deobf("curse.maven:tough-as-nails-246391:4750298")
+    runtimeOnly fg.deobf("curse.maven:tough-as-nails-246391:4750298")
 
     // Legendary Survival Overhaul - Temperature and survival overhaul mod (optional dependency)
     // Project ID: 840254, File ID 6550305 corresponds to legendarysurvivaloverhaul-1.20.1-1.1.1.1.jar
@@ -189,6 +189,36 @@ dependencies {
 
     // Obscure API (for Aquamirae)
     runtimeOnly fg.deobf("curse.maven:obscure-api-638417:7171906")
+
+    // Alex's Mobs - Animal/creature mod (optional dependency for fly attraction integration)
+    // Project ID: 426558, File ID 5698791 corresponds to alexsmobs-1.22.9.jar for 1.20.1
+    // compileOnly for API access during development
+    compileOnly fg.deobf("curse.maven:alexs-mobs-426558:5698791")
+    // Citadel - Library mod required by Alex's Mobs and Alex's Caves
+    // Project ID: 331936, File ID 7476570 corresponds to citadel for 1.20.1
+    compileOnly fg.deobf("curse.maven:citadel-331936:7476570")
+    runtimeOnly fg.deobf("curse.maven:alexs-mobs-426558:5698791")
+    runtimeOnly fg.deobf("curse.maven:citadel-331936:7476570")
+
+    // Alex's Caves - Cave biome and creature mod (optional dependency)
+    // Project ID: 924854, File ID 5848216 corresponds to alexscaves for 1.20.1
+    compileOnly fg.deobf("curse.maven:alexs-caves-924854:5848216")
+    runtimeOnly fg.deobf("curse.maven:alexs-caves-924854:5848216")
+
+    // Twilight Forest - Fantasy dimension mod (optional dependency)
+    // Project ID: 227639, File ID 5468648 corresponds to twilightforest for 1.20.1
+    compileOnly fg.deobf("curse.maven:the-twilight-forest-227639:5468648")
+    runtimeOnly fg.deobf("curse.maven:the-twilight-forest-227639:5468648")
+
+    // Farmer's Delight - Cooking and farming mod (optional dependency)
+    // Project ID: 398521, File ID 6917255 corresponds to farmersdelight for Forge 1.20.1
+    compileOnly fg.deobf("curse.maven:farmers-delight-398521:6917255")
+    runtimeOnly fg.deobf("curse.maven:farmers-delight-398521:6917255")
+
+    // Serene Seasons - Season mod (optional dependency)
+    // Project ID: 291874, File ID 6398227 corresponds to sereneseasons for Forge 1.20.1
+    compileOnly fg.deobf("curse.maven:serene-seasons-291874:6398227")
+    runtimeOnly fg.deobf("curse.maven:serene-seasons-291874:6398227")
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

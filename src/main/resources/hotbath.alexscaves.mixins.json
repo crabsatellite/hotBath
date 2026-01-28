@@ -1,0 +1,12 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "com.crabmod.hotbath.mixin.alexscaves",
+  "compatibilityLevel": "JAVA_17",
+  "plugin": "com.crabmod.hotbath.mixin.alexscaves.AlexsCavesMixinPlugin",
+  "mixins": [],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

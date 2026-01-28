@@ -48,5 +48,12 @@
   "hotbath.advancement.chronic_invalid": "藥罐",
   "hotbath.advancement.chronic_invalid.desc": "體弱多病者宜多浴。",
   "hotbath.advancement.rose_body_fragrance": "玫瑰體香",
-  "hotbath.advancement.rose_body_fragrance.desc": "久浴熏陶，方成體香，以招蜂引蝶。"
+  "hotbath.advancement.rose_body_fragrance.desc": "久浴熏陶，方成體香，以招蜂引蝶。",
+
+  "commands.hotbath.dirtiness.get": "污穢: %s%% (%s)",
+  "commands.hotbath.dirtiness.get.flies_active": " [蠅蟲滋生]",
+  "commands.hotbath.dirtiness.get.max_dirty": " [至穢: %s/%s 刻]",
+  "commands.hotbath.dirtiness.set": "污穢設為 %s%%",
+  "commands.hotbath.dirtiness.clean": "汝今潔淨矣！",
+  "commands.hotbath.dirtiness.flies": "蠅蟲已啟！汝今至穢也（百分百穢逾二日）"
 }

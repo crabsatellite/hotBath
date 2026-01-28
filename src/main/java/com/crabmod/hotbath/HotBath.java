@@ -6,6 +6,12 @@ import com.crabmod.hotbath.compat.LegendarySurvivalOverhaulIntegration;
 import com.crabmod.hotbath.compat.LSOCompat;
 import com.crabmod.hotbath.compat.ToughAsNailsCompat;
 import com.crabmod.hotbath.compat.ToughAsNailsIntegration;
+import com.crabmod.hotbath.compat.AlexsMobsCompat;
+import com.crabmod.hotbath.compat.AlexsMobsIntegration;
+import com.crabmod.hotbath.compat.AlexsCavesCompat;
+import com.crabmod.hotbath.compat.AlexsCavesIntegration;
+import com.crabmod.hotbath.compat.CreateCompat;
+import com.crabmod.hotbath.dirtiness.DirtinessNetworking;
 import com.crabmod.hotbath.fluid_details.HotbathFluidType;
 import com.crabmod.hotbath.item.ItemGroup;
 import com.crabmod.hotbath.registers.BlocksRegister;
@@ -18,7 +24,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -47,6 +55,10 @@ public class HotBath {
 
     public HotBath(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
+        
+        // Register config
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, HotBathConfig.SPEC);
+        
         ItemGroup.register(modEventBus);
         FluidsRegister.register(modEventBus);
         BlocksRegister.register(modEventBus);
@@ -65,6 +77,12 @@ public class HotBath {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         LOGGER.info("HELLO FROM COMMON SETUP");
+        
+        // Register dirtiness networking
+        DirtinessNetworking.register();
+        
+        // Register waterlogging networking
+        com.crabmod.hotbath.waterlogging.WaterloggingNetworking.register();
 
         if (ColdSweatIntegration.isColdSweatLoaded()) {
             LOGGER.info("Cold Sweat detected! Temperature integration enabled.");
@@ -84,6 +102,33 @@ public class HotBath {
             } catch (Exception e) {
                 LOGGER.error("Failed to register LSO integration: {}", e.getMessage(), e);
             }
+        }
+
+        if (AlexsMobsIntegration.isAlexsMobsLoaded()) {
+            LOGGER.info("Alex's Mobs detected! Fly/Mosquito/Cockroach attraction integration enabled.");
+            try {
+                AlexsMobsCompat.init();
+                LOGGER.info("Alex's Mobs integration registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register Alex's Mobs integration: {}", e.getMessage(), e);
+            }
+        }
+
+        if (AlexsCavesIntegration.isAlexsCavesLoaded()) {
+            LOGGER.info("Alex's Caves detected! GummyBear/Gammaroach/Raycat integration enabled.");
+            try {
+                AlexsCavesCompat.init();
+                LOGGER.info("Alex's Caves integration registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register Alex's Caves integration: {}", e.getMessage(), e);
+            }
+        }
+        
+        // Create mod integration
+        try {
+            CreateCompat.init();
+        } catch (Exception e) {
+            LOGGER.error("Failed to initialize Create integration: {}", e.getMessage(), e);
         }
         
         event.enqueueWork(() -> {

@@ -1,0 +1,28 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "fluidTag": "minecraft:water",
+      "amount": 1000
+    },
+    {
+      "tag": "minecraft:flowers"
+    },
+    {
+      "item": "minecraft:rose_bush"
+    }
+  ],
+  "results": [
+    {
+      "fluid": "hotbath:rose_bath_fluid",
+      "amount": 1000
+    }
+  ],
+  "heatRequirement": "heated"
+}

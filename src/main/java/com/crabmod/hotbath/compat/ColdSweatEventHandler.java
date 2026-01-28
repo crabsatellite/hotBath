@@ -1,7 +1,11 @@
 package com.crabmod.hotbath.compat;
 
 import com.mojang.logging.LogUtils;
+import com.momosoftworks.coldsweat.api.event.core.init.DefaultTempModifiersEvent;
 import com.momosoftworks.coldsweat.api.event.core.registry.TempModifierRegisterEvent;
+import com.momosoftworks.coldsweat.api.util.Temperature;
+import com.momosoftworks.coldsweat.api.util.placement.Matcher;
+import com.momosoftworks.coldsweat.api.util.placement.Placement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.slf4j.Logger;
@@ -26,19 +30,17 @@ public class ColdSweatEventHandler {
     }
 
     @SubscribeEvent
-    public static void onDefaultModifiers(com.momosoftworks.coldsweat.api.event.core.init.DefaultTempModifiersEvent event) {
+    public static void onDefaultModifiers(DefaultTempModifiersEvent event) {
         event.addModifier(
-                com.momosoftworks.coldsweat.api.util.Temperature.Trait.WORLD,
+                Temperature.Trait.WORLD,
                 new HotBathImmersionModifier(),
-                com.momosoftworks.coldsweat.api.util.Placement.Duplicates.BY_CLASS,
-                com.momosoftworks.coldsweat.api.util.Placement.AFTER_LAST
+                Placement.LAST.noDuplicates(Matcher.SAME_CLASS)
         );
         
         event.addModifier(
-                com.momosoftworks.coldsweat.api.util.Temperature.Trait.WORLD,
+                Temperature.Trait.WORLD,
                 new BathWaterBottleColdSweatModifier(),
-                com.momosoftworks.coldsweat.api.util.Placement.Duplicates.BY_CLASS,
-                com.momosoftworks.coldsweat.api.util.Placement.AFTER_LAST
+                Placement.LAST.noDuplicates(Matcher.SAME_CLASS)
         );
     }
 }

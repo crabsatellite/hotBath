@@ -107,6 +107,10 @@ public class ParticleRegister {
     public static final RegistryObject<SimpleParticleType> LANDING_ROSE_BATH =
             PARTICLE_TYPES.register("landing_rose_bath", () -> new SimpleParticleType(false));
 
+    // Fly particle for extremely dirty players
+    public static final RegistryObject<SimpleParticleType> FLY =
+            PARTICLE_TYPES.register("fly", () -> new SimpleParticleType(false));
+
     public static void register(IEventBus eventBus) {
         PARTICLE_TYPES.register(eventBus);
     }

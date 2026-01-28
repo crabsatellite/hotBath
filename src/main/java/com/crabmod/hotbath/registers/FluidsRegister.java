@@ -39,7 +39,7 @@ public class FluidsRegister {
                     ParticleRegister.DRIPPING_HOT_WATER, ParticleRegister.HOT_WATER_BUBBLE, ParticleRegister.HOT_WATER_SPLASH,
                     HOT_WATER_FLUID),
             HOT_WATER_FLUID, HOT_WATER_FLOWING)
-            .slopeFindDistance(2).levelDecreasePerBlock(2).block(HOT_WATER_BLOCK).bucket(ItemRegister.HOT_WATER_BUCKET);
+            .slopeFindDistance(4).levelDecreasePerBlock(1).block(HOT_WATER_BLOCK).bucket(ItemRegister.HOT_WATER_BUCKET);
 
 
     public static final RegistryObject<FlowingFluid> HONEY_BATH_FLUID = FLUIDS.register("honey_bath_fluid",
@@ -55,7 +55,7 @@ public class FluidsRegister {
                     ParticleRegister.DRIPPING_HONEY_BATH, ParticleRegister.HONEY_BATH_BUBBLE, ParticleRegister.HONEY_WATER_SPLASH,
                     HONEY_BATH_FLUID),
             HONEY_BATH_FLUID, HONEY_BATH_FLOWING)
-            .slopeFindDistance(2).levelDecreasePerBlock(2).block(HONEY_BATH_BLOCK).bucket(ItemRegister.HONEY_BATH_BUCKET);
+            .slopeFindDistance(4).levelDecreasePerBlock(1).block(HONEY_BATH_BLOCK).bucket(ItemRegister.HONEY_BATH_BUCKET);
 
 
     public static final RegistryObject<FlowingFluid> MILK_BATH_FLUID = FLUIDS.register("milk_bath_fluid",
@@ -71,7 +71,7 @@ public class FluidsRegister {
                     ParticleRegister.DRIPPING_MILK_BATH, ParticleRegister.MILK_BATH_BUBBLE, ParticleRegister.MILK_WATER_SPLASH,
                     MILK_BATH_FLUID),
             MILK_BATH_FLUID, MILK_BATH_FLOWING)
-            .slopeFindDistance(2).levelDecreasePerBlock(2).block(MILK_BATH_BLOCK).bucket(ItemRegister.MILK_BATH_BUCKET);
+            .slopeFindDistance(4).levelDecreasePerBlock(1).block(MILK_BATH_BLOCK).bucket(ItemRegister.MILK_BATH_BUCKET);
 
 
     public static final RegistryObject<FlowingFluid> HERBAL_BATH_FLUID = FLUIDS.register("herbal_bath_fluid",
@@ -87,7 +87,7 @@ public class FluidsRegister {
                     ParticleRegister.DRIPPING_HERBAL_BATH, ParticleRegister.HERBAL_BATH_BUBBLE, ParticleRegister.HERBAL_WATER_SPLASH,
                     HERBAL_BATH_FLUID),
             HERBAL_BATH_FLUID, HERBAL_BATH_FLOWING)
-            .slopeFindDistance(2).levelDecreasePerBlock(2).block(HERBAL_BATH_BLOCK).bucket(ItemRegister.HERBAL_BATH_BUCKET);
+            .slopeFindDistance(4).levelDecreasePerBlock(1).block(HERBAL_BATH_BLOCK).bucket(ItemRegister.HERBAL_BATH_BUCKET);
 
 
     public static final RegistryObject<FlowingFluid> PEONY_BATH_FLUID = FLUIDS.register("peony_bath_fluid",
@@ -103,7 +103,7 @@ public class FluidsRegister {
                     ParticleRegister.DRIPPING_PEONY_BATH, ParticleRegister.PEONY_BATH_BUBBLE, ParticleRegister.PEONY_WATER_SPLASH,
                     PEONY_BATH_FLUID),
             PEONY_BATH_FLUID, PEONY_BATH_FLOWING)
-            .slopeFindDistance(2).levelDecreasePerBlock(2).block(PEONY_BATH_BLOCK).bucket(ItemRegister.PEONY_BATH_BUCKET);
+            .slopeFindDistance(4).levelDecreasePerBlock(1).block(PEONY_BATH_BLOCK).bucket(ItemRegister.PEONY_BATH_BUCKET);
 
 
     public static final RegistryObject<FlowingFluid> ROSE_BATH_FLUID = FLUIDS.register("rose_bath_fluid",
@@ -119,7 +119,7 @@ public class FluidsRegister {
                     ParticleRegister.DRIPPING_ROSE_BATH, ParticleRegister.ROSE_BATH_BUBBLE, ParticleRegister.ROSE_WATER_SPLASH,
                     ROSE_BATH_FLUID),
             ROSE_BATH_FLUID, ROSE_BATH_FLOWING)
-            .slopeFindDistance(2).levelDecreasePerBlock(2).block(ROSE_BATH_BLOCK).bucket(ItemRegister.ROSE_BATH_BUCKET);
+            .slopeFindDistance(4).levelDecreasePerBlock(1).block(ROSE_BATH_BLOCK).bucket(ItemRegister.ROSE_BATH_BUCKET);
 
     public static void register(IEventBus eventBus) {
         FLUIDS.register(eventBus);

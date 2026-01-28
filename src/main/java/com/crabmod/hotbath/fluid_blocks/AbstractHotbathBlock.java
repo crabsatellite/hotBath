@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,12 +26,28 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 import com.crabmod.hotbath.fluid_details.BaseFluidType;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.fluids.FluidType;
 
 public abstract class AbstractHotbathBlock extends LiquidBlock {
+    // Cache for bubble column direction to avoid repeated scans
+    private static final Map<Long, CachedBubbleResult> BUBBLE_COLUMN_CACHE = new ConcurrentHashMap<>();
+    private static final int BUBBLE_CACHE_TTL_TICKS = 20; // 1 second cache
+    private static final int MAX_BUBBLE_SCAN_DEPTH = 64; // Limit scan depth
+    private static final int MAX_SURFACE_SEARCH_DEPTH = 64; // Limit surface search
+    private static final int CACHE_CLEANUP_INTERVAL = 100; // Check cleanup every 100 cache accesses
+    private static final int MAX_CACHE_SIZE = 1000;
+    private static final int TIME_BASED_CLEANUP_INTERVAL = 6000; // Clean up every 5 minutes (6000 ticks)
+    private static final AtomicInteger cacheAccessCounter = new AtomicInteger(0);
+    private static long lastTimeBasedCleanup = 0;
+
+    private record CachedBubbleResult(int direction, long cacheTime) {}
     private static final String HOTBATH_UNDERWATER_STATE = "HotbathUnderwaterState";
     private static final String HOTBATH_ENTER_WATER_STATE = "HotbathEnterWaterState";
 
@@ -50,6 +67,10 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
             entity.hurt(level.damageSources().magic(), 1.0F);
         }
 
+        // Note: Splash effects are handled by SplashSyncHandler for proper multiplayer sync
+        // Note: Player cleaning is handled gradually by DirtinessHandler.onPlayerTick()
+        // No instant bath trigger here - bathing is progressive
+
         // Bubble column physics
         int direction = getBubbleColumnDirection(level, pos);
         if (direction != 0) {
@@ -64,16 +85,49 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
     }
 
     private int getBubbleColumnDirection(Level level, BlockPos pos) {
+        // Use position-based cache key
+        long posKey = pos.asLong();
+        long currentTime = level.getGameTime();
+        
+        // Check cache first
+        CachedBubbleResult cached = BUBBLE_COLUMN_CACHE.get(posKey);
+        if (cached != null && (currentTime - cached.cacheTime()) < BUBBLE_CACHE_TTL_TICKS) {
+            return cached.direction();
+        }
+        
+        // Calculate direction
+        int direction = calculateBubbleColumnDirection(level, pos);
+        
+        // Store in cache
+        BUBBLE_COLUMN_CACHE.put(posKey, new CachedBubbleResult(direction, currentTime));
+        
+        // Periodically clean old cache entries
+        int accessCount = cacheAccessCounter.incrementAndGet();
+        boolean shouldCleanByCount = accessCount % CACHE_CLEANUP_INTERVAL == 0 && BUBBLE_COLUMN_CACHE.size() > MAX_CACHE_SIZE;
+        boolean shouldCleanByTime = (currentTime - lastTimeBasedCleanup) > TIME_BASED_CLEANUP_INTERVAL;
+        
+        if (shouldCleanByCount || shouldCleanByTime) {
+            BUBBLE_COLUMN_CACHE.entrySet().removeIf(entry -> 
+                (currentTime - entry.getValue().cacheTime()) > BUBBLE_CACHE_TTL_TICKS * 5);
+            if (shouldCleanByTime) {
+                lastTimeBasedCleanup = currentTime;
+            }
+        }
+        
+        return direction;
+    }
+    
+    private int calculateBubbleColumnDirection(Level level, BlockPos pos) {
         BlockPos.MutableBlockPos mutablePos = pos.mutable();
         FluidType currentFluidType = level.getFluidState(pos).getFluidType();
-        
-        // Limit scan to avoid lag, but allow deep oceans
-        for (int i = 0; i < 384; i++) {
+
+        // Limit scan depth to avoid lag
+        for (int i = 0; i < MAX_BUBBLE_SCAN_DEPTH; i++) {
             mutablePos.move(Direction.DOWN);
             BlockState state = level.getBlockState(mutablePos);
             if (state.is(Blocks.SOUL_SAND)) return 1;
             if (state.is(Blocks.MAGMA_BLOCK)) return -1;
-            
+
             // Stop if we hit a solid block or a different fluid
             if (!state.is(this) && state.getFluidState().getFluidType() != currentFluidType) return 0;
         }
@@ -117,28 +171,29 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
             }
         }
 
+        // Optimization: Only process the local client player instead of iterating all players
+        // This is client-side code, so we only need to handle the local player's sounds
+        Player localPlayer = Minecraft.getInstance().player;
+        if (localPlayer == null) return;
+        
         // Set the maximum distance in squared units to avoid unnecessary checks
         final double maxDistanceSqr = 3.0 * 3.0;
-
-        // Client-side detection for players being underwater or entering/exiting the water
-        for (var player : worldIn.players()) {
-            // Calculate the squared distance between the player and the block position
-            if (player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5)
-                    > maxDistanceSqr) {
-                continue; // Skip if the player is too far from the hot bath block
-            }
-
-            // Check if the player's head is underwater, if so, don't play ambient sound
-            boolean isPlayerHeadUnderwater = CustomFluidHandler.isPlayerHeadInHotBath(player);
-            if (!isPlayerHeadUnderwater) {
-                // Play ambient water sound only if the player is not completely underwater
-                SoundHandler.playAmbientWaterSound(worldIn, pos, rand);
-            }
-
-            // Only handle underwater and water entry/exit states if the player is within range
-            handleClientPlayerUnderwaterState(player, rand);
-            handleClientPlayerEnterWaterState(player, rand);
+        
+        // Calculate the squared distance between the local player and the block position
+        if (localPlayer.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) > maxDistanceSqr) {
+            return; // Skip if the player is too far from the hot bath block
         }
+
+        // Check if the player's head is underwater, if so, don't play ambient sound
+        boolean isPlayerHeadUnderwater = CustomFluidHandler.isPlayerHeadInHotBath(localPlayer);
+        if (!isPlayerHeadUnderwater) {
+            // Play ambient water sound only if the player is not completely underwater
+            SoundHandler.playAmbientWaterSound(worldIn, pos, rand);
+        }
+
+        // Only handle underwater and water entry/exit states if the player is within range
+        handleClientPlayerUnderwaterState(localPlayer, rand);
+        handleClientPlayerEnterWaterState(localPlayer, rand);
     }
 
     // Handle the logic for when a player enters the water for the first time and exits completely
@@ -166,10 +221,14 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
 
     private void spawnSplashParticles(Player player, Level level, RandomSource rand) {
         BlockPos pos = player.blockPosition();
-        // Find the actual surface level
+        // Find the actual surface level with depth limit to avoid performance issues
         BlockPos surfacePos = pos;
-        while (level.getBlockState(surfacePos.above()).getBlock() instanceof AbstractHotbathBlock && surfacePos.getY() < level.getMaxBuildHeight()) {
+        int searchCount = 0;
+        while (level.getBlockState(surfacePos.above()).getBlock() instanceof AbstractHotbathBlock 
+               && surfacePos.getY() < level.getMaxBuildHeight()
+               && searchCount < MAX_SURFACE_SEARCH_DEPTH) {
             surfacePos = surfacePos.above();
+            searchCount++;
         }
         
         BlockState state = level.getBlockState(surfacePos);
