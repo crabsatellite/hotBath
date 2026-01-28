@@ -6,9 +6,10 @@
     }
   ],
   "type": "create:mixing",
+  "heat_requirement": "heated",
   "ingredients": [
     {
-      "type": "neoforge:fluid_stack",
+      "type": "neoforge:single",
       "fluid": "minecraft:water",
       "amount": 1000
     },
@@ -21,10 +22,8 @@
   ],
   "results": [
     {
-      "type": "neoforge:fluid_stack",
-      "fluid": "hotbath:peony_bath_fluid",
+      "id": "hotbath:peony_bath_fluid",
       "amount": 1000
     }
-  ],
-  "heatRequirement": "heated"
+  ]
 }

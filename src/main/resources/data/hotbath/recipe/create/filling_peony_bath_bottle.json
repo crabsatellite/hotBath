@@ -11,14 +11,14 @@
       "item": "minecraft:glass_bottle"
     },
     {
-      "type": "neoforge:fluid_stack",
+      "type": "neoforge:single",
       "fluid": "hotbath:peony_bath_fluid",
       "amount": 250
     }
   ],
   "results": [
     {
-      "item": "hotbath:peony_bath_bottle"
+      "id": "hotbath:peony_bath_bottle"
     }
   ]
 }

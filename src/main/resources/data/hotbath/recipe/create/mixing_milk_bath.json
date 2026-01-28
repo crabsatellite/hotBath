@@ -6,24 +6,23 @@
     }
   ],
   "type": "create:mixing",
+  "heat_requirement": "heated",
   "ingredients": [
     {
-      "type": "neoforge:fluid_stack",
+      "type": "neoforge:single",
       "fluid": "minecraft:water",
       "amount": 1000
     },
     {
-      "type": "neoforge:fluid_stack",
-      "fluid": "minecraft:milk",
+      "type": "neoforge:tag",
+      "tag": "c:milk",
       "amount": 250
     }
   ],
   "results": [
     {
-      "type": "neoforge:fluid_stack",
-      "fluid": "hotbath:milk_bath_fluid",
+      "id": "hotbath:milk_bath_fluid",
       "amount": 1000
     }
-  ],
-  "heatRequirement": "heated"
+  ]
 }

@@ -84,6 +84,7 @@ mixin {
     config 'hotbath.mixins.json'
     config 'hotbath.alexsmobs.mixins.json'
     config 'hotbath.alexscaves.mixins.json'
+    config 'hotbath.sodium.mixins.json'
 }
 
 repositories {

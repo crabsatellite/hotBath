@@ -31,7 +31,13 @@
         "--fml.neoFormVersion",
         "20240808.144430",
         "--fml.mixin",
-        "hotbath.mixins.json"
+        "hotbath.mixins.json",
+        "--fml.mixin",
+        "hotbath.alexsmobs.mixins.json",
+        "--fml.mixin",
+        "hotbath.alexscaves.mixins.json",
+        "--fml.mixin",
+        "hotbath.sodium.mixins.json"
       ],
       "vmArgs": [
         "-p",
@@ -96,7 +102,13 @@
         "--fml.neoFormVersion",
         "20240808.144430",
         "--fml.mixin",
-        "hotbath.mixins.json"
+        "hotbath.mixins.json",
+        "--fml.mixin",
+        "hotbath.alexsmobs.mixins.json",
+        "--fml.mixin",
+        "hotbath.alexscaves.mixins.json",
+        "--fml.mixin",
+        "hotbath.sodium.mixins.json"
       ],
       "vmArgs": [
         "-p",
@@ -147,7 +159,13 @@
         "--fml.neoFormVersion",
         "20240808.144430",
         "--fml.mixin",
-        "hotbath.mixins.json"
+        "hotbath.mixins.json",
+        "--fml.mixin",
+        "hotbath.alexsmobs.mixins.json",
+        "--fml.mixin",
+        "hotbath.alexscaves.mixins.json",
+        "--fml.mixin",
+        "hotbath.sodium.mixins.json"
       ],
       "vmArgs": [
         "-p",
@@ -207,7 +225,13 @@
         "--fml.neoFormVersion",
         "20240808.144430",
         "--fml.mixin",
-        "hotbath.mixins.json"
+        "hotbath.mixins.json",
+        "--fml.mixin",
+        "hotbath.alexsmobs.mixins.json",
+        "--fml.mixin",
+        "hotbath.alexscaves.mixins.json",
+        "--fml.mixin",
+        "hotbath.sodium.mixins.json"
       ],
       "vmArgs": [
         "-p",
@@ -260,7 +284,13 @@
         "--fml.neoFormVersion",
         "20240808.144430",
         "--fml.mixin",
-        "hotbath.mixins.json"
+        "hotbath.mixins.json",
+        "--fml.mixin",
+        "hotbath.alexsmobs.mixins.json",
+        "--fml.mixin",
+        "hotbath.alexscaves.mixins.json",
+        "--fml.mixin",
+        "hotbath.sodium.mixins.json"
       ],
       "vmArgs": [
         "-p",
