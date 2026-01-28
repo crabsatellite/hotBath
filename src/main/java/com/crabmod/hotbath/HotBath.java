@@ -11,6 +11,12 @@ import com.crabmod.hotbath.compat.AlexsMobsIntegration;
 import com.crabmod.hotbath.compat.AlexsCavesCompat;
 import com.crabmod.hotbath.compat.AlexsCavesIntegration;
 import com.crabmod.hotbath.compat.CreateCompat;
+import com.crabmod.hotbath.compat.TwilightForestCompat;
+import com.crabmod.hotbath.compat.TwilightForestIntegration;
+import com.crabmod.hotbath.compat.FarmersDelightCompat;
+import com.crabmod.hotbath.compat.FarmersDelightIntegration;
+import com.crabmod.hotbath.compat.SereneSeasonsCompat;
+import com.crabmod.hotbath.compat.SereneSeasonsIntegration;
 import com.crabmod.hotbath.dirtiness.DirtinessNetworking;
 import com.crabmod.hotbath.fluid_details.HotbathFluidType;
 import com.crabmod.hotbath.item.ItemGroup;
@@ -121,6 +127,36 @@ public class HotBath {
                 LOGGER.info("Alex's Caves integration registered successfully.");
             } catch (Exception e) {
                 LOGGER.error("Failed to register Alex's Caves integration: {}", e.getMessage(), e);
+            }
+        }
+
+        if (TwilightForestIntegration.isTwilightForestLoaded()) {
+            LOGGER.info("Twilight Forest detected! Frost effect removal and firefly particles enabled.");
+            try {
+                TwilightForestCompat.init();
+                LOGGER.info("Twilight Forest integration registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register Twilight Forest integration: {}", e.getMessage(), e);
+            }
+        }
+
+        if (FarmersDelightIntegration.isFarmersDelightLoaded()) {
+            LOGGER.info("Farmer's Delight detected! Comfort effect integration enabled.");
+            try {
+                FarmersDelightCompat.init();
+                LOGGER.info("Farmer's Delight integration registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register Farmer's Delight integration: {}", e.getMessage(), e);
+            }
+        }
+
+        if (SereneSeasonsIntegration.isSereneSeasonsLoaded()) {
+            LOGGER.info("Serene Seasons detected! Winter buff and anti-freeze integration enabled.");
+            try {
+                SereneSeasonsCompat.init();
+                LOGGER.info("Serene Seasons integration registered successfully.");
+            } catch (Exception e) {
+                LOGGER.error("Failed to register Serene Seasons integration: {}", e.getMessage(), e);
             }
         }
         
