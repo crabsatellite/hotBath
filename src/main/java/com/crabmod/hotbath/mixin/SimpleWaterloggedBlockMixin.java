@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
@@ -75,8 +76,11 @@ public interface SimpleWaterloggedBlockMixin {
                     return;
                 }
                 
-                // Store the fluid type for later retrieval
-                HotbathWaterloggingHelper.storeFluidType(level, pos, fluidState.getType());
+                // Store the SOURCE fluid type for later retrieval
+                // IMPORTANT: Always store the source version, not the flowing version
+                // This ensures proper behavior in fluid tick logic (isSource() check)
+                Fluid fluidToStore = hotbath$getSourceFluid(fluidState.getType());
+                HotbathWaterloggingHelper.storeFluidType(level, pos, fluidToStore);
                 
                 // DEFENSIVE: Create new state from current world state, not passed parameter
                 BlockState newState = currentState.setValue(BlockStateProperties.WATERLOGGED, true);
@@ -132,5 +136,21 @@ public interface SimpleWaterloggedBlockMixin {
                 }
             }
         }
+    }
+    
+    /**
+     * Get the source version of a fluid.
+     * For FlowingFluid, this returns the source fluid.
+     * For other fluids, returns the fluid itself.
+     * 
+     * <p>This is important because we need to store the source version to ensure
+     * proper behavior in fluid tick logic (isSource() check in FlowingFluid.tick()).</p>
+     */
+    @Unique
+    private static Fluid hotbath$getSourceFluid(Fluid fluid) {
+        if (fluid instanceof FlowingFluid flowingFluid) {
+            return flowingFluid.getSource();
+        }
+        return fluid;
     }
 }
