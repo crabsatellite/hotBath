@@ -25,6 +25,7 @@ import com.crabmod.hotbath.fluid_details.HotbathFluidType;
 import com.crabmod.hotbath.item.ItemGroup;
 import com.crabmod.hotbath.registers.BlocksRegister;
 import com.crabmod.hotbath.registers.EntityRegister;
+import com.crabmod.hotbath.registers.ExtraEventsRegister;
 import com.crabmod.hotbath.registers.FluidsRegister;
 import com.crabmod.hotbath.registers.ItemRegister;
 import com.crabmod.hotbath.registers.ParticleRegister;
@@ -74,6 +75,7 @@ public class HotBath {
         EntityRegister.register(modEventBus);
         HotbathFluidType.register(modEventBus);
         DirtinessAttachment.register(modEventBus);
+        ExtraEventsRegister.register(modEventBus);
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
