@@ -71,13 +71,21 @@ def generate_dirt_overlay(seed, pattern_index):
         'left_arm_top': (36, 48, 4, 4),
         'left_arm_bottom': (40, 48, 4, 4),
         
-        # Head (least dirt)
+        # Head (least dirt) - Inner layer
         'head_front': (8, 8, 8, 8),
         'head_back': (24, 8, 8, 8),
         'head_left': (0, 8, 8, 8),
         'head_right': (16, 8, 8, 8),
         'head_top': (8, 0, 8, 8),
         'head_bottom': (16, 0, 8, 8),
+        
+        # Head outer layer (hat layer) - IMPORTANT: must include for dirt to show on head
+        'head_outer_front': (40, 8, 8, 8),
+        'head_outer_back': (56, 8, 8, 8),
+        'head_outer_left': (32, 8, 8, 8),
+        'head_outer_right': (48, 8, 8, 8),
+        'head_outer_top': (40, 0, 8, 8),
+        'head_outer_bottom': (48, 0, 8, 8),
     }
     
     # Spot density per region type
@@ -95,7 +103,7 @@ def generate_dirt_overlay(seed, pattern_index):
             return density['body']
         elif 'arm' in region_name:
             return density['arm']
-        elif 'head' in region_name:
+        elif 'head' in region_name:  # Covers both 'head_' and 'head_outer_'
             return density['head']
         return density['body']
     
