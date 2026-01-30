@@ -1,5 +1,6 @@
 package com.crabmod.hotbath.mixin.sodium;
 
+import com.crabmod.hotbath.util.HotbathFluidHelper;
 import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.ChunkBuildBuffers;
 import net.caffeinemc.mods.sodium.client.render.chunk.translucent_sorting.TranslucentGeometryCollector;
@@ -10,7 +11,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -61,7 +61,7 @@ public class FluidRendererImplMixin {
                 BlockPos immutablePos = blockPos.immutable();
                 Fluid storedFluid = HotbathWaterloggingHelper.getStoredFluidTypeClientDirect(immutablePos);
                 
-                if (storedFluid != null && storedFluid != Fluids.EMPTY && storedFluid != Fluids.WATER) {
+                if (storedFluid != null && HotbathFluidHelper.isHotbathFluid(storedFluid)) {
                     hotbath$correctFluidState.set(storedFluid.defaultFluidState());
                 }
             }

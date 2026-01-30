@@ -1,9 +1,9 @@
 package com.crabmod.hotbath.mixin;
 
+import com.crabmod.hotbath.util.HotbathFluidHelper;
 import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -55,7 +55,7 @@ public abstract class FlowingFluidMixin {
         // NON-INVASIVE CHECK: Only handle if this block has a stored hotBath fluid
         // Vanilla water in waterlogged blocks will pass through and use vanilla logic
         Fluid storedFluid = HotbathWaterloggingHelper.getStoredFluidType(level, pos);
-        if (storedFluid == null || storedFluid == Fluids.WATER || storedFluid == Fluids.EMPTY) {
+        if (storedFluid == null || !HotbathFluidHelper.isHotbathFluid(storedFluid)) {
             // No hotBath fluid stored - let vanilla handle it
             return;
         }
@@ -142,7 +142,7 @@ public abstract class FlowingFluidMixin {
         
         // NON-INVASIVE CHECK: Only handle if this block has a stored hotBath fluid
         Fluid storedFluid = HotbathWaterloggingHelper.getStoredFluidType(level, pos);
-        if (storedFluid == null || storedFluid == Fluids.WATER || storedFluid == Fluids.EMPTY) {
+        if (storedFluid == null || !HotbathFluidHelper.isHotbathFluid(storedFluid)) {
             // No hotBath fluid stored - let vanilla handle it
             return;
         }
@@ -150,8 +150,8 @@ public abstract class FlowingFluidMixin {
         // Block already has a hotBath fluid - prevent any spread operation
         // that might try to replace or destroy the block
         
-        // If the spreading fluid is the same type, just update and cancel
-        if (fluidState.is(FluidTags.WATER)) {
+        // If the spreading fluid is also a hotBath fluid, handle it specially
+        if (HotbathFluidHelper.isHotbathFluid(fluidState.getType())) {
             FlowingFluid spreadingFluid = (FlowingFluid) fluidState.getType();
             if (spreadingFluid.isSame(storedFluid)) {
                 // Same fluid type - nothing to do, block is already waterlogged
@@ -159,14 +159,14 @@ public abstract class FlowingFluidMixin {
                 return;
             }
             
-            // Different water-tagged fluid trying to spread in
+            // Different hotBath fluid trying to spread in
             // Update the stored fluid type to the new one (source version)
             if (!level.isClientSide()) {
-                Fluid sourceFluid = hotbath$getSourceFluid(fluidState.getType());
+                Fluid sourceFluid = HotbathFluidHelper.getSourceFluid(fluidState.getType());
                 HotbathWaterloggingHelper.storeFluidType(level, pos, sourceFluid);
             }
             ci.cancel();
         }
-        // If it's a completely different fluid (e.g., lava), let vanilla handle it
+        // If it's not a hotBath fluid (vanilla water, lava, etc.), let vanilla handle it
     }
 }

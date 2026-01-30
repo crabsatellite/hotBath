@@ -1,5 +1,6 @@
 package com.crabmod.hotbath.mixin.client;
 
+import com.crabmod.hotbath.util.HotbathFluidHelper;
 import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.client.renderer.block.LiquidBlockRenderer;
 import net.minecraft.core.BlockPos;
@@ -9,7 +10,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -56,13 +56,15 @@ public class LiquidBlockRendererMixin {
 
     /**
      * Get the stored hotBath fluid for a waterlogged block, or null if not applicable.
+     * Only returns hotBath fluids specifically.
      */
     @Unique
     private static Fluid hotbath$getStoredFluid(BlockPos pos, BlockState blockState) {
         if (blockState.hasProperty(BlockStateProperties.WATERLOGGED) 
                 && blockState.getValue(BlockStateProperties.WATERLOGGED)) {
             Fluid storedFluid = HotbathWaterloggingHelper.getStoredFluidTypeClientDirect(pos);
-            if (storedFluid != null && storedFluid != Fluids.EMPTY && storedFluid != Fluids.WATER) {
+            // Only return hotBath fluids specifically
+            if (storedFluid != null && HotbathFluidHelper.isHotbathFluid(storedFluid)) {
                 return storedFluid;
             }
         }
@@ -87,7 +89,7 @@ public class LiquidBlockRendererMixin {
                 && otherState.getValue(BlockStateProperties.WATERLOGGED)) {
             BlockPos otherPos = currentPos.relative(neighborFace.getOpposite());
             Fluid storedFluid = HotbathWaterloggingHelper.getStoredFluidTypeClientDirect(otherPos);
-            if (storedFluid != null && storedFluid != Fluids.EMPTY && storedFluid != Fluids.WATER) {
+            if (HotbathFluidHelper.isHotbathFluid(storedFluid)) {
                 return storedFluid.isSame(selfState.getType());
             }
         }

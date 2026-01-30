@@ -1,5 +1,6 @@
 package com.crabmod.hotbath.mixin;
 
+import com.crabmod.hotbath.util.HotbathFluidHelper;
 import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
@@ -31,31 +32,33 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public interface SimpleWaterloggedBlockMixin {
 
     /**
-     * Modify canPlaceLiquid to accept any fluid in the water tag, not just Fluids.WATER
+     * Modify canPlaceLiquid to accept hotBath fluids in waterloggable blocks.
+     * Only handles hotBath fluids specifically, not other mods' water-like fluids.
      */
     @Inject(method = "canPlaceLiquid", at = @At("HEAD"), cancellable = true)
     default void hotbath$canPlaceLiquid(@Nullable Player player, BlockGetter level, BlockPos pos,
                                          BlockState state, Fluid fluid, CallbackInfoReturnable<Boolean> cir) {
-        // Check if the state has WATERLOGGED property and the fluid is in the water tag
-        if (state.hasProperty(BlockStateProperties.WATERLOGGED)) {
-            boolean isWaterlogged = state.getValue(BlockStateProperties.WATERLOGGED);
-            boolean isWaterTagFluid = fluid.defaultFluidState().is(FluidTags.WATER);
-            
-            if (!isWaterlogged && isWaterTagFluid) {
-                cir.setReturnValue(true);
+        // Only handle hotBath fluids specifically - non-invasive to other mods
+        if (HotbathFluidHelper.isHotbathFluid(fluid)) {
+            if (state.hasProperty(BlockStateProperties.WATERLOGGED)) {
+                boolean isWaterlogged = state.getValue(BlockStateProperties.WATERLOGGED);
+                if (!isWaterlogged) {
+                    cir.setReturnValue(true);
+                }
             }
         }
     }
 
     /**
-     * Modify placeLiquid to handle any fluid in the water tag.
+     * Modify placeLiquid to handle hotBath fluids.
+     * Only handles hotBath fluids specifically - non-invasive to other mods.
      * Uses defensive programming to ensure block state is properly preserved.
      */
     @Inject(method = "placeLiquid", at = @At("HEAD"), cancellable = true)
     default void hotbath$placeLiquid(LevelAccessor level, BlockPos pos, BlockState state,
                                       FluidState fluidState, CallbackInfoReturnable<Boolean> cir) {
-        // If the fluid is in the water tag, handle it
-        if (fluidState.is(FluidTags.WATER)) {
+        // Only handle hotBath fluids specifically
+        if (HotbathFluidHelper.isHotbathFluid(fluidState.getType())) {
             if (state.hasProperty(BlockStateProperties.WATERLOGGED) 
                     && !state.getValue(BlockStateProperties.WATERLOGGED)) {
                 
@@ -110,7 +113,8 @@ public interface SimpleWaterloggedBlockMixin {
     }
 
     /**
-     * Modify pickupBlock to return the correct bucket for hotBath fluids
+     * Modify pickupBlock to return the correct bucket for hotBath fluids.
+     * Only handles hotBath fluids specifically - non-invasive to other mods.
      */
     @Inject(method = "pickupBlock", at = @At("HEAD"), cancellable = true)
     default void hotbath$pickupBlock(@Nullable Player player, LevelAccessor level, BlockPos pos,
@@ -120,7 +124,8 @@ public interface SimpleWaterloggedBlockMixin {
             // Get the stored fluid type
             Fluid storedFluid = HotbathWaterloggingHelper.getStoredFluidType(level, pos);
             
-            if (storedFluid != null && storedFluid != Fluids.WATER && storedFluid != Fluids.EMPTY) {
+            // Only handle hotBath fluids specifically
+            if (storedFluid != null && HotbathFluidHelper.isHotbathFluid(storedFluid)) {
                 // DEFENSIVE: Get fresh state from world
                 BlockState currentState = level.getBlockState(pos);
                 if (currentState.hasProperty(BlockStateProperties.WATERLOGGED)) {

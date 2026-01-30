@@ -1,5 +1,6 @@
 package com.crabmod.hotbath.mixin.client;
 
+import com.crabmod.hotbath.util.HotbathFluidHelper;
 import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -9,7 +10,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -38,7 +38,8 @@ public class BlockRenderDispatcherMixin {
             // Get the stored fluid type from our helper
             Fluid storedFluid = HotbathWaterloggingHelper.getStoredFluidTypeClient(level, pos);
             
-            if (storedFluid != null && storedFluid != Fluids.EMPTY && storedFluid != Fluids.WATER) {
+            // Only handle hotBath fluids specifically
+            if (storedFluid != null && HotbathFluidHelper.isHotbathFluid(storedFluid)) {
                 // Return the stored fluid's source state for rendering
                 return storedFluid.defaultFluidState();
             }

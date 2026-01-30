@@ -1,10 +1,9 @@
 package com.crabmod.hotbath.mixin;
 
+import com.crabmod.hotbath.util.HotbathFluidHelper;
 import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.FluidState;
@@ -56,7 +55,8 @@ public abstract class LevelFluidStateMixin {
         Level level = (Level) (Object) this;
         Fluid storedFluid = HotbathWaterloggingHelper.getStoredFluidType(level, pos);
         
-        if (storedFluid != null && storedFluid != Fluids.EMPTY && storedFluid != Fluids.WATER) {
+        // Only handle hotBath fluids specifically
+        if (storedFluid != null && HotbathFluidHelper.isHotbathFluid(storedFluid)) {
             // Return the SOURCE state of the stored fluid
             FluidState sourceState = hotbath$getSourceFluidState(storedFluid);
             cir.setReturnValue(sourceState);
