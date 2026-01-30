@@ -9,7 +9,17 @@
     "SimpleWaterloggedBlockMixin",
     "LevelFluidStateMixin",
     "EntityMixin",
-    "FlowingFluidMixin"
+    "FlowingFluidMixin",
+    "ConduitBlockMixin",
+    "SeagrassBlockMixin",
+    "KelpBlockMixin",
+    "KelpPlantBlockMixin",
+    "TallSeagrassBlockMixin",
+    "BaseCoralPlantTypeBlockMixin",
+    "BaseCoralWallFanBlockMixin",
+    "CoralPlantBlockMixin",
+    "CoralFanBlockMixin",
+    "CoralWallFanBlockMixin"
   ],
   "client": [
     "client.BlockRenderDispatcherMixin",

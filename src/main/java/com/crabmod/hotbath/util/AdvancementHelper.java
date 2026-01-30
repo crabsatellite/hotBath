@@ -13,6 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Helper class to cache advancement completion status and avoid redundant checks.
  * The award() method is idempotent in Minecraft, but we can avoid the lookup overhead.
+ * 
+ * Note: The cache only stores positive completions. If an advancement is revoked,
+ * we always check the actual game state before caching.
  */
 public class AdvancementHelper {
     
@@ -31,11 +34,9 @@ public class AdvancementHelper {
     public static boolean tryAwardAdvancement(ServerPlayer player, String advancementId, String criterionKey) {
         UUID playerUUID = player.getUUID();
         
-        // Check cache first - if already earned, skip all processing
+        // Check cache first for fast path - but verify with game state to handle revokes
         Set<String> playerCache = ADVANCEMENT_CACHE.get(playerUUID);
-        if (playerCache != null && playerCache.contains(advancementId)) {
-            return false; // Already earned, no need to process
-        }
+        boolean cachedAsCompleted = playerCache != null && playerCache.contains(advancementId);
         
         // Get the advancement
         AdvancementHolder advancement = player.getServer()
@@ -46,11 +47,19 @@ public class AdvancementHelper {
             return false;
         }
         
-        // Check if already completed
+        // Check actual game state
         AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
         if (progress.isDone()) {
-            addToCache(playerUUID, advancementId);
+            // Already completed in game, ensure cache is updated
+            if (!cachedAsCompleted) {
+                addToCache(playerUUID, advancementId);
+            }
             return false;
+        }
+        
+        // Not completed in game - if it was cached, the advancement was revoked, so remove from cache
+        if (cachedAsCompleted) {
+            playerCache.remove(advancementId);
         }
         
         // Award the advancement
