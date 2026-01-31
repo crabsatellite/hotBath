@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
@@ -106,17 +107,21 @@ public class CustomFluidBucketItem extends Item {
             }
             
             BlockState targetState = level.getBlockState(placePos);
+            FluidState targetFluid = targetState.getFluidState();
             
             // Can only place in air or replaceable blocks
             if (targetState.isAir() || targetState.canBeReplaced()) {
                 if (!level.isClientSide) {
-                    // Check if target is already a custom fluid block - just update the fluid ID
+                    // Check if target is already a SOURCE custom fluid block - just update the fluid ID
+                    // If it's flowing fluid (not source), we need to replace it with a source block
                     BlockEntity existingBe = level.getBlockEntity(placePos);
-                    if (existingBe instanceof CustomFluidBlockEntity customBe) {
-                        // Directly update the existing BlockEntity - this triggers render refresh
-                        customBe.setFluidId(definition.id());
+                    boolean isExistingSource = targetFluid.isSource() && existingBe instanceof CustomFluidBlockEntity;
+                    
+                    if (isExistingSource) {
+                        // Directly update the existing source BlockEntity - this triggers render refresh
+                        ((CustomFluidBlockEntity) existingBe).setFluidId(definition.id());
                     } else {
-                        // Place dynamic custom fluid block with BlockEntity to store fluid ID
+                        // Place dynamic custom fluid block (source) with BlockEntity to store fluid ID
                         BlockState fluidState = CustomFluidBlocksRegister.CUSTOM_FLUID_BLOCK.get().defaultBlockState();
                         level.setBlock(placePos, fluidState, 11);
                         

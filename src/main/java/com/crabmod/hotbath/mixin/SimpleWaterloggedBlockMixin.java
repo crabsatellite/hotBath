@@ -1,5 +1,6 @@
 package com.crabmod.hotbath.mixin;
 
+import com.crabmod.hotbath.custom_fluid.CustomFluidBlockEntity;
 import com.crabmod.hotbath.custom_fluid.CustomFluidDataComponents;
 import com.crabmod.hotbath.custom_fluid.CustomFluidItems;
 import com.crabmod.hotbath.custom_fluid.CustomFluidRegistry;
@@ -7,6 +8,7 @@ import com.crabmod.hotbath.custom_fluid.DynamicFluidRegistry;
 import com.crabmod.hotbath.util.HotbathFluidHelper;
 import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.player.Player;
@@ -14,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
@@ -89,6 +92,15 @@ public interface SimpleWaterloggedBlockMixin {
                 // This ensures proper behavior in fluid tick logic (isSource() check)
                 Fluid fluidToStore = hotbath$getSourceFluid(fluidState.getType());
                 HotbathWaterloggingHelper.storeFluidType(level, pos, fluidToStore);
+                
+                // For dynamic custom fluids, also store the custom fluid ID
+                // by finding the source CustomFluidBlockEntity
+                if (hotbath$isDynamicCustomFluid(fluidToStore)) {
+                    ResourceLocation customFluidId = hotbath$findCustomFluidIdFromSurrounding(level, pos);
+                    if (customFluidId != null) {
+                        HotbathWaterloggingHelper.storeCustomFluidId(level, pos, customFluidId);
+                    }
+                }
                 
                 // DEFENSIVE: Create new state from current world state, not passed parameter
                 BlockState newState = currentState.setValue(BlockStateProperties.WATERLOGGED, true);
@@ -174,6 +186,30 @@ public interface SimpleWaterloggedBlockMixin {
         Fluid sourceFluid = hotbath$getSourceFluid(fluid);
         return sourceFluid == DynamicFluidRegistry.DYNAMIC_FLUID_STILL.get()
                 || sourceFluid == DynamicFluidRegistry.DYNAMIC_FLUID_FLOWING.get();
+    }
+    
+    /**
+     * Find the custom fluid ID from surrounding CustomFluidBlockEntity blocks.
+     * Searches current position first, then adjacent positions.
+     */
+    @Unique
+    private static ResourceLocation hotbath$findCustomFluidIdFromSurrounding(LevelAccessor level, BlockPos pos) {
+        // First check the current position (in case the fluid block is there)
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof CustomFluidBlockEntity customBe && customBe.getFluidId() != null) {
+            return customBe.getFluidId();
+        }
+        
+        // Search adjacent positions for CustomFluidBlockEntity
+        for (Direction dir : Direction.values()) {
+            BlockPos adjacent = pos.relative(dir);
+            BlockEntity adjacentBe = level.getBlockEntity(adjacent);
+            if (adjacentBe instanceof CustomFluidBlockEntity customBe && customBe.getFluidId() != null) {
+                return customBe.getFluidId();
+            }
+        }
+        
+        return null;
     }
     
     /**
