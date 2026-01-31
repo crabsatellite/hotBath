@@ -17,8 +17,13 @@ import net.minecraftforge.registries.RegistryObject;
  *   <li>Custom Fluid Bucket - Places the fluid in the world</li>
  *   <li>Custom Fluid Bottle - Drinkable, applies effects from the fluid definition</li>
  *   <li>Splash Custom Fluid Bottle - Throwable, applies effects to entities</li>
- * </ul>
- */
+ * </ul> * 
+ * <p><b>Command usage (1.20 Forge):</b></p>
+ * <pre>
+ * /give @p hotbath:custom_fluid_bucket{HotbathCustomFluid:{FluidId:"hotbath:golden_bath"}} 1
+ * /give @p hotbath:custom_fluid_bottle{HotbathCustomFluid:{FluidId:"hotbath:golden_bath"}} 16
+ * /give @p hotbath:splash_custom_fluid_bottle{HotbathCustomFluid:{FluidId:"hotbath:golden_bath"}} 16
+ * </pre> */
 public class CustomFluidItems {
     
     public static final DeferredRegister<Item> ITEMS =
