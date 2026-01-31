@@ -22,6 +22,7 @@ public class DynamicFluidTypeRegistry {
     /**
      * A dynamic fluid type that reads color from BlockEntity.
      * Used by DynamicCustomFluidBlock to display different colors per-block.
+     * Supports boats, infinite water source, and proper pathfinding like vanilla water.
      */
     public static final DeferredHolder<FluidType, DynamicFluidType> DYNAMIC_CUSTOM_FLUID_TYPE =
             FLUID_TYPES.register("dynamic_custom_fluid",
@@ -35,7 +36,7 @@ public class DynamicFluidTypeRegistry {
                                     .fallDistanceModifier(0.0F)
                                     .canDrown(true)
                                     .canSwim(true)
-                                    .canConvertToSource(false)  // Don't create infinite source
+                                    .canConvertToSource(true)  // Enable infinite source like vanilla water
                                     .pathType(PathType.WATER)
                                     .adjacentPathType(PathType.WATER_BORDER)
                                     .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
