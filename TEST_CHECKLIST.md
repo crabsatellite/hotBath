@@ -910,7 +910,44 @@
 - [ ] 在下界中不会出现萤火虫粒子效果
 - [ ] 粒子效果在玩家远离时停止（性能优化）
 
-### 10.4 兼容性测试 (Compatibility Tests)
+### 10.4 冰系生物伤害 (Ice Mob Damage)
+
+测试暮色森林的冰系生物在热水浴中会受到伤害
+
+**测试环境搭建：**
+
+```
+给自己热水并生成冰系生物：
+/give @p hotbath:hot_water_bucket 16
+/summon twilightforest:ice_crystal ~ ~ ~
+/summon twilightforest:stable_ice_core ~ ~ ~
+/summon twilightforest:unstable_ice_core ~ ~ ~
+/summon twilightforest:snow_guardian ~ ~ ~
+/summon twilightforest:snow_queen ~ ~ ~
+```
+
+**测试步骤：**
+
+1. 挖一个 3x3x3 的坑
+2. 用热水桶填充成热水池
+3. 生成冰系生物并引导/推入热水池
+4. 观察生物受到伤害
+
+**测试项目：**
+
+- [ ] 冰晶 (Ice Crystal) 在热水中每 tick 受到 2 点魔法伤害
+- [ ] 冰晶核 (Stable Ice Core) 在热水中每 tick 受到 2 点魔法伤害
+- [ ] 不稳定冰晶核 (Unstable Ice Core) 在热水中每 tick 受到 2 点魔法伤害
+- [ ] 冰雪守卫 (Snow Guardian) 在热水中每 tick 受到 2 点魔法伤害
+- [ ] 冰雪女王 (Snow Queen) 在热水中每 tick 受到 2 点魔法伤害
+- [ ] 蜂蜜浴也能对冰系生物造成伤害
+- [ ] 牛奶浴也能对冰系生物造成伤害
+- [ ] 草药浴也能对冰系生物造成伤害
+- [ ] 牡丹浴也能对冰系生物造成伤害
+- [ ] 玫瑰浴也能对冰系生物造成伤害
+- [ ] 非冰系暮色森林生物（如迷宫史莱姆、红帽地精等）不会受到额外伤害
+
+### 10.5 兼容性测试 (Compatibility Tests)
 
 - [ ] 未安装暮色森林时，Hot Bath 正常运行（无错误日志）
 - [ ] 安装暮色森林后，日志显示 "Twilight Forest detected!"

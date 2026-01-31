@@ -67,6 +67,11 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
         if (isNonTropicalAquatic(entity)) {
             entity.hurt(level.damageSources().magic(), 1.0F);
         }
+        
+        // Twilight Forest ice mobs take damage in hot bath
+        if (com.crabmod.hotbath.compat.TwilightForestIntegration.isTwilightForestIceMob(entity)) {
+            entity.hurt(level.damageSources().magic(), 2.0F);
+        }
 
         // Note: Splash effects are handled by SplashSyncHandler for proper multiplayer sync
         // Note: Player cleaning is handled gradually by DirtinessHandler.onPlayerTick()
