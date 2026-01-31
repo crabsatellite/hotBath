@@ -37,6 +37,18 @@
   "item.hotbath.splash_rose_bath_bottle": "Botella de Baño de Rosas Arrojadiza",
   "item.hotbath.splash_rose_bath_bottle.desc": "Romance líquido, entregado a alta velocidad. Otorga la fuerza de mil espinas. Nada dice 'me importas' como una cara llena de agua de rosas.",
   "fluid.hotbath.hot_water_block": "Bloque de Agua Caliente",
+
+  "item.hotbath.custom_fluid_bucket": "Cubo de %s",
+  "item.hotbath.custom_fluid_bucket.desc": "Un cubo de líquido de baño personalizado.",
+  "item.hotbath.custom_fluid_bucket.tooltip": "Contiene: %s",
+  "item.hotbath.custom_fluid_bottle": "Botella de %s",
+  "item.hotbath.custom_fluid_bottle.desc": "Una botella de líquido de baño personalizado bebible.",
+  "item.hotbath.custom_fluid_bottle.tooltip": "Contiene: %s",
+  "item.hotbath.splash_custom_fluid_bottle": "Botella de %s Arrojadiza",
+  "item.hotbath.splash_custom_fluid_bottle.desc": "Una botella de líquido de baño personalizado arrojadiza.",
+  "item.hotbath.splash_custom_fluid_bottle.tooltip": "Contiene: %s",
+  "item.hotbath.custom_fluid.unknown": "Líquido Desconocido",
+
   "item.hotbath.bath_herb": "Hierba de Baño",
   "item.hotbath.bath_herb.desc": "Hierbas misteriosas del Lejano Oriente, pulsando con energía antigua. Se dice que armoniza el flujo interior y limpia el cansancio del alma.",
   "itemGroup.hotbath.hotbath_tab": "Baño Caliente",

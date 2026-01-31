@@ -36,6 +36,18 @@
   "item.hotbath.splash_rose_bath_bottle": "投擲用薔薇湯入り瓶",
   "item.hotbath.splash_rose_bath_bottle.desc": "高速で届く液体のロマンス。千の棘のような力を与える。顔に薔薇水を浴びせることほど「気にかけている」と伝える方法はない。",
   "fluid.hotbath.hot_water_block": "お湯ブロック",
+
+  "item.hotbath.custom_fluid_bucket": "%sバケツ",
+  "item.hotbath.custom_fluid_bucket.desc": "カスタム入浴液の入ったバケツ。",
+  "item.hotbath.custom_fluid_bucket.tooltip": "内容物: %s",
+  "item.hotbath.custom_fluid_bottle": "%sボトル",
+  "item.hotbath.custom_fluid_bottle.desc": "飲用可能なカスタム入浴液のボトル。",
+  "item.hotbath.custom_fluid_bottle.tooltip": "内容物: %s",
+  "item.hotbath.splash_custom_fluid_bottle": "スプラッシュ%sボトル",
+  "item.hotbath.splash_custom_fluid_bottle.desc": "投擲可能なカスタム入浴液のスプラッシュボトル。",
+  "item.hotbath.splash_custom_fluid_bottle.tooltip": "内容物: %s",
+  "item.hotbath.custom_fluid.unknown": "未知の液体",
+
   "item.hotbath.bath_herb": "入浴用薬草",
   "item.hotbath.bath_herb.desc": "遥か東方より伝わりし神秘の薬草。古の気が宿っており、浸かる者の脈を整え、魂の澱を浄化すると言われている。",
   "itemGroup.hotbath.hotbath_tab": "ホットバス",

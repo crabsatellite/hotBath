@@ -3,6 +3,7 @@ package com.crabmod.hotbath.registers;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import com.crabmod.hotbath.HotBath;
+import com.crabmod.hotbath.custom_fluid.ThrownCustomFluidBottle;
 import com.crabmod.hotbath.items.ThrownBathWater;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -21,6 +22,14 @@ public class EntityRegister {
                             .clientTrackingRange(4)
                             .updateInterval(10)
                             .build("thrown_bath_water"));
+
+    public static final RegistryObject<EntityType<ThrownCustomFluidBottle>> THROWN_CUSTOM_FLUID_BOTTLE =
+            ENTITY_TYPES.register("thrown_custom_fluid_bottle",
+                    () -> EntityType.Builder.<ThrownCustomFluidBottle>of(ThrownCustomFluidBottle::new, MobCategory.MISC)
+                            .sized(0.25F, 0.25F)
+                            .clientTrackingRange(4)
+                            .updateInterval(10)
+                            .build("thrown_custom_fluid_bottle"));
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);

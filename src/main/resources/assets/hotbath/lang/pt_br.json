@@ -37,6 +37,18 @@
   "item.hotbath.splash_rose_bath_bottle": "Garrafa de Banho de Rosas Arremessável",
   "item.hotbath.splash_rose_bath_bottle.desc": "Romance líquido, entregue em alta velocidade. Concede a força de mil espinhos. Nada diz 'eu me importo' como um rosto cheio de água de rosas.",
   "fluid.hotbath.hot_water_block": "Bloco de Água Quente",
+
+  "item.hotbath.custom_fluid_bucket": "Balde de %s",
+  "item.hotbath.custom_fluid_bucket.desc": "Um balde de líquido de banho personalizado.",
+  "item.hotbath.custom_fluid_bucket.tooltip": "Contém: %s",
+  "item.hotbath.custom_fluid_bottle": "Garrafa de %s",
+  "item.hotbath.custom_fluid_bottle.desc": "Uma garrafa de líquido de banho personalizado bebível.",
+  "item.hotbath.custom_fluid_bottle.tooltip": "Contém: %s",
+  "item.hotbath.splash_custom_fluid_bottle": "Garrafa de %s Arremessável",
+  "item.hotbath.splash_custom_fluid_bottle.desc": "Uma garrafa de líquido de banho personalizado arremessável.",
+  "item.hotbath.splash_custom_fluid_bottle.tooltip": "Contém: %s",
+  "item.hotbath.custom_fluid.unknown": "Líquido Desconhecido",
+
   "item.hotbath.bath_herb": "Erva de Banho",
   "item.hotbath.bath_herb.desc": "Ervas misteriosas do Extremo Oriente, pulsando com energia antiga. Diz-se que harmoniza o fluxo interior e limpa o cansaço da alma.",
   "itemGroup.hotbath.hotbath_tab": "Banho Quente",

@@ -32,6 +32,10 @@ public class FluidsTexture {
             new ResourceLocation("hotbath", "block/still_rose_bath");
     public static final ResourceLocation ROSE_BATH_FLOWING_TEXTURE =
             new ResourceLocation("hotbath", "block/flowing_rose_bath");
+    public static final ResourceLocation CUSTOM_FLUID_STILL_TEXTURE =
+            new ResourceLocation(HotBath.MOD_ID, "block/still_custom_fluid_grayscale");
+    public static final ResourceLocation CUSTOM_FLUID_FLOWING_TEXTURE =
+            new ResourceLocation(HotBath.MOD_ID, "block/flowing_custom_fluid_grayscale");
 }
 
 

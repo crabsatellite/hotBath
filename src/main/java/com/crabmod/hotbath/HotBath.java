@@ -17,10 +17,17 @@ import com.crabmod.hotbath.compat.FarmersDelightCompat;
 import com.crabmod.hotbath.compat.FarmersDelightIntegration;
 import com.crabmod.hotbath.compat.SereneSeasonsCompat;
 import com.crabmod.hotbath.compat.SereneSeasonsIntegration;
+import com.crabmod.hotbath.custom_fluid.CustomFluidBrewingRecipe;
+import com.crabmod.hotbath.custom_fluid.CustomFluidItems;
+import com.crabmod.hotbath.custom_fluid.CustomFluidNetworking;
+import com.crabmod.hotbath.custom_fluid.DynamicFluidRegistry;
+import com.crabmod.hotbath.custom_fluid.DynamicFluidTypeRegistry;
 import com.crabmod.hotbath.dirtiness.DirtinessNetworking;
 import com.crabmod.hotbath.fluid_details.HotbathFluidType;
 import com.crabmod.hotbath.item.ItemGroup;
+import com.crabmod.hotbath.registers.BlockEntityRegister;
 import com.crabmod.hotbath.registers.BlocksRegister;
+import com.crabmod.hotbath.registers.CustomFluidBlocksRegister;
 import com.crabmod.hotbath.registers.EntityRegister;
 import com.crabmod.hotbath.registers.FluidsRegister;
 import com.crabmod.hotbath.registers.ItemRegister;
@@ -72,6 +79,14 @@ public class HotBath {
         ParticleRegister.register(modEventBus);
         EntityRegister.register(modEventBus);
         HotbathFluidType.register(modEventBus);
+        CustomFluidItems.register(modEventBus);
+        
+        // Register dynamic custom fluid system
+        DynamicFluidTypeRegistry.register(modEventBus);
+        DynamicFluidRegistry.register(modEventBus);
+        CustomFluidBlocksRegister.register(modEventBus);
+        BlockEntityRegister.register(modEventBus);
+        
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::enqueueIMC);
@@ -86,6 +101,9 @@ public class HotBath {
         
         // Register dirtiness networking (always register, handler checks config at runtime)
         DirtinessNetworking.register();
+        
+        // Register custom fluid networking
+        CustomFluidNetworking.register();
         
         // Register waterlogging networking (only if waterlogging is enabled)
         if (HotBathConfig.isWaterloggingEnabled()) {
@@ -189,6 +207,9 @@ public class HotBath {
             BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemRegister.HERBAL_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_HERBAL_BATH_BOTTLE.get().getDefaultInstance());
             BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemRegister.PEONY_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_PEONY_BATH_BOTTLE.get().getDefaultInstance());
             BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemRegister.ROSE_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_ROSE_BATH_BOTTLE.get().getDefaultInstance());
+            
+            // Register custom fluid brewing recipe (bottle -> splash bottle with gunpowder)
+            BrewingRecipeRegistry.addRecipe(new CustomFluidBrewingRecipe());
         });
     }
 

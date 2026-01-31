@@ -37,6 +37,18 @@
   "item.hotbath.splash_rose_bath_bottle": "투척용 장미 목욕 병",
   "item.hotbath.splash_rose_bath_bottle.desc": "고속으로 배달되는 액체 로맨스. 천 개의 가시 같은 힘을 부여합니다. 장미 물을 얼굴에 맞는 것만큼 '난 널 신경 써'라고 말하는 것은 없습니다.",
   "fluid.hotbath.hot_water_block": "뜨거운 물 블록",
+
+  "item.hotbath.custom_fluid_bucket": "%s 양동이",
+  "item.hotbath.custom_fluid_bucket.desc": "맞춤형 목욕 액체가 든 양동이.",
+  "item.hotbath.custom_fluid_bucket.tooltip": "내용물: %s",
+  "item.hotbath.custom_fluid_bottle": "%s 병",
+  "item.hotbath.custom_fluid_bottle.desc": "마실 수 있는 맞춤형 목욕 액체 병.",
+  "item.hotbath.custom_fluid_bottle.tooltip": "내용물: %s",
+  "item.hotbath.splash_custom_fluid_bottle": "투척용 %s 병",
+  "item.hotbath.splash_custom_fluid_bottle.desc": "던질 수 있는 맞춤형 목욕 액체 스플래시 병.",
+  "item.hotbath.splash_custom_fluid_bottle.tooltip": "내용물: %s",
+  "item.hotbath.custom_fluid.unknown": "알 수 없는 액체",
+
   "item.hotbath.bath_herb": "목욕 약초",
   "item.hotbath.bath_herb.desc": "극동에서 온 신비한 약초로, 고대의 에너지가 고동칩니다. 내면의 흐름을 조화시키고 영혼의 피로를 씻어낸다고 합니다.",
   "itemGroup.hotbath.hotbath_tab": "뜨거운 목욕",

@@ -8,6 +8,18 @@
   "mixins": [
     "FishingHookMixin",
     "LevelFluidStateMixin",
+    "EntityMixin",
+    "FlowingFluidMixin",
+    "ConduitBlockMixin",
+    "SeagrassBlockMixin",
+    "KelpBlockMixin",
+    "KelpPlantBlockMixin",
+    "TallSeagrassBlockMixin",
+    "BaseCoralPlantTypeBlockMixin",
+    "BaseCoralWallFanBlockMixin",
+    "CoralPlantBlockMixin",
+    "CoralFanBlockMixin",
+    "CoralWallFanBlockMixin",
     "StairBlockMixin",
     "SlabBlockMixin",
     "TrapDoorBlockMixin",
@@ -19,7 +31,6 @@
     "LanternBlockMixin",
     "CampfireBlockMixin",
     "SignBlockMixin",
-    "ConduitBlockMixin",
     "SeaPickleBlockMixin",
     "ScaffoldingBlockMixin",
     "LightningRodBlockMixin",
@@ -43,7 +54,10 @@
     "LightBlockMixin",
     "BarrierBlockMixin"
   ],
-  "client": ["client.BlockRenderDispatcherMixin"],
+  "client": [
+    "client.BlockRenderDispatcherMixin",
+    "client.LiquidBlockRendererMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

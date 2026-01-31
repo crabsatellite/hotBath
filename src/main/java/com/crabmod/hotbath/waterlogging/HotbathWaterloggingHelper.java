@@ -162,6 +162,58 @@ public class HotbathWaterloggingHelper {
     public static void clearClientCache() {
         clientFluidCache.clear();
     }
+    
+    // =============================================================
+    // Custom Fluid ID Support (for data pack defined fluids)
+    // =============================================================
+    
+    // Client-side cache for custom fluid IDs (for data pack fluids that don't have registry entries)
+    private static final Map<Long, ResourceLocation> customFluidIdCache = new ConcurrentHashMap<>();
+    
+    /**
+     * Store a custom fluid ID for a waterlogged position.
+     * This is used for data pack defined fluids that use a generic fluid block.
+     * 
+     * @param level The level
+     * @param pos The block position
+     * @param customFluidId The custom fluid definition ID
+     */
+    public static void storeCustomFluidId(LevelAccessor level, BlockPos pos, ResourceLocation customFluidId) {
+        if (customFluidId == null || pos == null) return;
+        
+        customFluidIdCache.put(pos.asLong(), customFluidId);
+        
+        // For now, also store as regular fluid using a placeholder
+        // Full implementation would need server-side storage
+    }
+    
+    /**
+     * Get the custom fluid ID for a waterlogged position.
+     * 
+     * @param pos The block position
+     * @return The custom fluid ID, or null if not a custom fluid
+     */
+    @Nullable
+    public static ResourceLocation getCustomFluidId(BlockPos pos) {
+        if (pos == null) return null;
+        return customFluidIdCache.get(pos.asLong());
+    }
+    
+    /**
+     * Remove the custom fluid ID for a position.
+     */
+    public static void removeCustomFluidId(BlockPos pos) {
+        if (pos != null) {
+            customFluidIdCache.remove(pos.asLong());
+        }
+    }
+    
+    /**
+     * Clear the custom fluid ID cache.
+     */
+    public static void clearCustomFluidIdCache() {
+        customFluidIdCache.clear();
+    }
 
     /**
      * Remove the stored fluid type for a position
