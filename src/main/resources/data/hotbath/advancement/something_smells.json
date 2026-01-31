@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "id": "hotbath:something_smells_icon"
+    },
+    "title": {
+      "translate": "hotbath.advancement.something_smells"
+    },
+    "description": {
+      "translate": "hotbath.advancement.something_smells.desc"
+    },
+    "background": "minecraft:textures/block/stone.png",
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "parent": "hotbath:hot_bath",
+  "criteria": {
+    "code_triggered": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 50
+  }
+}

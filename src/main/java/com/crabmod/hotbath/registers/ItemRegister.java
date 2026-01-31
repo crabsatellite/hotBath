@@ -121,6 +121,11 @@ public class ItemRegister {
                     () -> new SplashBathWaterBottleItem(new Item.Properties().stacksTo(16), 
                             BathWaterEffects::roseBathSplashEffect, ParticleRegister.ROSE_WATER_SPLASH, ParticleRegister.ROSE_BATH_BUBBLE, ParticleRegister.ROSE_BATH_EFFECT, FluidsColor.ROSE_BATH_COLOR));
 
+    // Icon item for advancement display only (not obtainable in survival)
+    public static final DeferredHolder<Item, Item> SOMETHING_SMELLS_ICON =
+            ITEMS.register("something_smells_icon",
+                    () -> new Item(new Item.Properties()));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

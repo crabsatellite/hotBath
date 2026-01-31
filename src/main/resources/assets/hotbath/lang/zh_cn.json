@@ -63,6 +63,8 @@
   "hotbath.advancement.chronic_invalid.desc": "体弱多病要多泡。",
   "hotbath.advancement.rose_body_fragrance": "玫瑰体香",
   "hotbath.advancement.rose_body_fragrance.desc": "只有长久的浸养与熏陶，才能体香大成，进行招蜂引蝶的大业。",
+  "hotbath.advancement.something_smells": "\"香饽饽\"",
+  "hotbath.advancement.something_smells.desc": "你可能需要洗个澡了。",
 
   "commands.hotbath.dirtiness.get": "污渍度: %s%% (%s)",
   "commands.hotbath.dirtiness.get.flies_active": " [苍蝇出没]",

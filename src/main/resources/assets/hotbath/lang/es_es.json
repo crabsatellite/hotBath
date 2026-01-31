@@ -62,6 +62,8 @@
   "hotbath.advancement.chronic_invalid.desc": "Receta para los frágiles y enfermos.",
   "hotbath.advancement.rose_body_fragrance": "Fragancia Corporal de Rosas",
   "hotbath.advancement.rose_body_fragrance.desc": "Solo la inmersión a largo plazo puede cultivar tu fragancia corporal.",
+  "hotbath.advancement.something_smells": "Algo huele mal…",
+  "hotbath.advancement.something_smells.desc": "Quizás deberías darte un baño.",
   "hotbath_tab": "Baño Caliente",
 
   "commands.hotbath.dirtiness.get": "Suciedad: %s%% (%s)",

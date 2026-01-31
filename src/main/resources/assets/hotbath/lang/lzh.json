@@ -61,6 +61,8 @@
   "hotbath.advancement.chronic_invalid.desc": "體弱多病者宜多浴。",
   "hotbath.advancement.rose_body_fragrance": "玫瑰體香",
   "hotbath.advancement.rose_body_fragrance.desc": "久浴熏陶，方成體香，以招蜂引蝶。",
+  "hotbath.advancement.something_smells": "「衆所趨也」",
+  "hotbath.advancement.something_smells.desc": "汝當沐浴矣。",
 
   "commands.hotbath.dirtiness.get": "污穢: %s%% (%s)",
   "commands.hotbath.dirtiness.get.flies_active": " [蠅蟲滋生]",

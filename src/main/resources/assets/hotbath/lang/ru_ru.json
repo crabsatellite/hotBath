@@ -62,6 +62,8 @@
   "hotbath.advancement.chronic_invalid.desc": "Рецепт для слабых и больных.",
   "hotbath.advancement.rose_body_fragrance": "Аромат тела розы",
   "hotbath.advancement.rose_body_fragrance.desc": "Только длительное погружение может культивировать аромат вашего тела.",
+  "hotbath.advancement.something_smells": "«Любимчик!»",
+  "hotbath.advancement.something_smells.desc": "Может, стоит принять ванну?",
   "hotbath_tab": "Горячая ванна",
 
   "commands.hotbath.dirtiness.get": "Грязь: %s%% (%s)",

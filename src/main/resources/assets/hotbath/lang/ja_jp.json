@@ -61,6 +61,8 @@
   "hotbath.advancement.chronic_invalid.desc": "病弱な人はたくさん浸かろう。",
   "hotbath.advancement.rose_body_fragrance": "薔薇の体臭",
   "hotbath.advancement.rose_body_fragrance.desc": "長く浸かり続けることで、体から香りが漂い、蝶や蜂を引き寄せる偉業を成し遂げる。",
+  "hotbath.advancement.something_smells": "「モテモテ」",
+  "hotbath.advancement.something_smells.desc": "お風呂に入った方がいいかも。",
 
   "commands.hotbath.dirtiness.get": "汚れ度: %s%% (%s)",
   "commands.hotbath.dirtiness.get.flies_active": " [ハエ発生中]",

@@ -62,6 +62,8 @@
   "hotbath.advancement.chronic_invalid.desc": "Ordonnance pour les fragiles et les malades.",
   "hotbath.advancement.rose_body_fragrance": "Parfum Corporel à la Rose",
   "hotbath.advancement.rose_body_fragrance.desc": "Seule une immersion à long terme peut cultiver votre parfum corporel.",
+  "hotbath.advancement.something_smells": "\"Populaire !\"",
+  "hotbath.advancement.something_smells.desc": "Tu devrais peut-être prendre un bain.",
   "hotbath_tab": "Bain Chaud",
 
   "commands.hotbath.dirtiness.get": "Saleté: %s%% (%s)",

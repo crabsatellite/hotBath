@@ -64,6 +64,8 @@
   "hotbath.advancement.chronic_invalid.desc": "Prescription for the frail and sick.",
   "hotbath.advancement.rose_body_fragrance": "Rose Body Fragrance",
   "hotbath.advancement.rose_body_fragrance.desc": "Only long-term immersion can cultivate your body fragrance.",
+  "hotbath.advancement.something_smells": "Something Smells...",
+  "hotbath.advancement.something_smells.desc": "You might want to take a bath.",
   "hotbath_tab": "Hot Bath",
 
   "commands.hotbath.dirtiness.get": "Dirtiness: %s%% (%s)",
