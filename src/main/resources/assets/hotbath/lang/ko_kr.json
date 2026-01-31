@@ -62,6 +62,8 @@
   "hotbath.advancement.chronic_invalid.desc": "허약하고 아픈 사람들을 위한 처방.",
   "hotbath.advancement.rose_body_fragrance": "장미 체취",
   "hotbath.advancement.rose_body_fragrance.desc": "장기간의 입욕만이 당신의 체취를 가꿀 수 있습니다.",
+  "hotbath.advancement.something_smells": "「인기인」",
+  "hotbath.advancement.something_smells.desc": "목욕을 해야 할 것 같아요.",
   "hotbath_tab": "뜨거운 목욕",
 
   "commands.hotbath.dirtiness.get": "더러움: %s%% (%s)",

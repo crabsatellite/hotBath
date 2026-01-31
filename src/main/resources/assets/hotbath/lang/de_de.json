@@ -62,6 +62,8 @@
   "hotbath.advancement.chronic_invalid.desc": "Rezept für die Gebrechlichen und Kranken.",
   "hotbath.advancement.rose_body_fragrance": "Rosenkörperduft",
   "hotbath.advancement.rose_body_fragrance.desc": "Nur langfristiges Eintauchen kann deinen Körperduft kultivieren.",
+  "hotbath.advancement.something_smells": "Hier riecht's komisch…",
+  "hotbath.advancement.something_smells.desc": "Vielleicht solltest du mal baden.",
   "hotbath_tab": "Heißes Bad",
 
   "commands.hotbath.dirtiness.get": "Verschmutzung: %s%% (%s)",
