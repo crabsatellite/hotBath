@@ -84,13 +84,28 @@ public class CustomFluidDataComponents {
 
     /**
      * Gets the custom fluid color from an item stack.
+     * If the color component is not set but the fluid ID is, looks up the color from the registry.
      * 
      * @param stack The item stack
      * @return The color as ARGB, or -1 if not present
      */
     public static int getFluidColor(net.minecraft.world.item.ItemStack stack) {
+        // First try to get the cached color component
         Integer color = stack.get(CUSTOM_FLUID_COLOR.get());
-        return color != null ? color : -1;
+        if (color != null) {
+            return color;
+        }
+        
+        // Fallback: look up color from fluid definition by ID
+        // This handles cases where only custom_fluid_id is set (e.g., via /give command)
+        ResourceLocation fluidId = getFluidId(stack);
+        if (fluidId != null) {
+            return CustomFluidRegistry.getDefinition(fluidId)
+                    .map(def -> 0xFF000000 | def.color())
+                    .orElse(-1);
+        }
+        
+        return -1;
     }
 
     /**
