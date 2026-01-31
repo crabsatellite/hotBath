@@ -2,6 +2,7 @@ package com.crabmod.hotbath.custom_fluid;
 
 import com.crabmod.hotbath.HotBath;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidType;
@@ -21,7 +22,7 @@ public class DynamicFluidTypeRegistry {
     /**
      * A dynamic fluid type that reads color from BlockEntity.
      * Used by DynamicCustomFluidBlock to display different colors per-block.
-     * Note: PathType parameters are not available in Forge 1.20.1
+     * Supports boats, infinite water source, and proper pathfinding like vanilla water.
      */
     public static final RegistryObject<DynamicFluidType> DYNAMIC_CUSTOM_FLUID_TYPE =
             FLUID_TYPES.register("dynamic_custom_fluid",
@@ -35,7 +36,9 @@ public class DynamicFluidTypeRegistry {
                                     .fallDistanceModifier(0.0F)
                                     .canDrown(true)
                                     .canSwim(true)
-                                    .canConvertToSource(false)  // Don't create infinite source
+                                    .canConvertToSource(true)  // Enable infinite source like vanilla water
+                                    .pathType(BlockPathTypes.WATER)
+                                    .adjacentPathType(BlockPathTypes.WATER_BORDER)
                                     .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
                                     .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
                                     .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)
