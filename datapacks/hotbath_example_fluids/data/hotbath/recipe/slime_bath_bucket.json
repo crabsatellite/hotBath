@@ -1,15 +1,6 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["SSS", "S#S", "SSS"],
-  "key": {
-    "#": {
-      "item": "hotbath:hot_water_bucket"
-    },
-    "S": {
-      "item": "minecraft:slime_ball"
-    }
-  },
-  "result": {
-    "id": "hotbath:slime_bath_bucket"
-  }
+  "type": "hotbath:custom_fluid_crafting",
+  "fluid_id": "hotbath:slime_bath",
+  "ingredient": "minecraft:slime_ball",
+  "ingredient_count": 4
 }

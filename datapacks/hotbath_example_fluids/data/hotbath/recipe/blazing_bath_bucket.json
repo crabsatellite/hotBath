@@ -1,15 +1,6 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["SSS", "S#S", "SSS"],
-  "key": {
-    "#": {
-      "item": "hotbath:hot_water_bucket"
-    },
-    "S": {
-      "item": "minecraft:blaze_powder"
-    }
-  },
-  "result": {
-    "id": "hotbath:blazing_bath_bucket"
-  }
+  "type": "hotbath:custom_fluid_crafting",
+  "fluid_id": "hotbath:blazing_bath",
+  "ingredient": "minecraft:blaze_powder",
+  "ingredient_count": 4
 }

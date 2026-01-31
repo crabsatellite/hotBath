@@ -1,15 +1,6 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": ["SSS", "S#S", "SSS"],
-  "key": {
-    "#": {
-      "item": "hotbath:hot_water_bucket"
-    },
-    "S": {
-      "item": "minecraft:gold_ingot"
-    }
-  },
-  "result": {
-    "id": "hotbath:golden_bath_bucket"
-  }
+  "type": "hotbath:custom_fluid_crafting",
+  "fluid_id": "hotbath:golden_bath",
+  "ingredient": "minecraft:gold_ingot",
+  "ingredient_count": 4
 }
