@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["SSS", "S#S", "SSS"],
+  "key": {
+    "#": {
+      "item": "hotbath:hot_water_bucket"
+    },
+    "S": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "result": {
+    "id": "hotbath:golden_bath_bucket"
+  }
+}

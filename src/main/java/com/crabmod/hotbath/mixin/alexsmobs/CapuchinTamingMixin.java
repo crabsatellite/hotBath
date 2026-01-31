@@ -7,12 +7,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,16 +30,12 @@ import java.util.Random;
  * Hot spring taming: 30% (1.5x bonus)
  */
 @Mixin(value = EntityCapuchinMonkey.class, remap = false)
-public abstract class CapuchinTamingMixin {
+public abstract class CapuchinTamingMixin extends TamableAnimal {
     
-    @Shadow
-    public abstract boolean isTame();
-    
-    @Shadow
-    public abstract void setTame(boolean tamed, boolean updateOwner);
-    
-    @Shadow
-    public abstract void setOwnerUUID(java.util.UUID ownerUUID);
+    // Private constructor to satisfy TamableAnimal requirement - never called
+    private CapuchinTamingMixin() {
+        super(null, null);
+    }
     
     @Unique
     private static final Random HOTBATH_RANDOM = new Random();

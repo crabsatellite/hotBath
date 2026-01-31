@@ -31,8 +31,8 @@ public class ToughAsNailsDrinkHandler {
         }
         
         // Check if player is in any hot bath block
-        // We use the generic check since all bath blocks inherit from AbstractHotbathBlock
-        if (CustomFluidHandler.isPlayerInHotBathBlock(player)) {
+        // For custom fluids, only applies if temperature >= 35°C
+        if (CustomFluidHandler.isPlayerInHotBath(player)) {
             BathWaterEffects.applyTemperatureEffectsOnly(player);
             
             // If LSO is loaded, also restore thirst

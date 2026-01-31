@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Player temperature modifier for Tough As Nails integration.
  * When a player is inside a hot bath block, their temperature is set to WARM.
- * This corresponds to the 37°C (body temperature) that the hot bath provides.
+ * Only applies to built-in hot baths and custom fluids with temperature >= 35°C.
  */
 public class HotBathTANPlayerModifier implements IPlayerTemperatureModifier {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -29,8 +29,9 @@ public class HotBathTANPlayerModifier implements IPlayerTemperatureModifier {
 
     @Override
     public TemperatureLevel modify(Player player, TemperatureLevel current) {
-        // Check if the player is inside any hot bath block using the existing utility method
-        boolean inBath = CustomFluidHandler.isPlayerInHotBathBlock(player);
+        // Check if the player is inside a HOT bath block (not just any bath block)
+        // This will return false for custom fluids with temperature < 35°C
+        boolean inBath = CustomFluidHandler.isPlayerInHotBath(player);
         long currentTime = System.currentTimeMillis();
         UUID uuid = player.getUUID();
 

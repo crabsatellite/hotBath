@@ -1,8 +1,13 @@
 package com.crabmod.hotbath.mixin;
 
+import com.crabmod.hotbath.custom_fluid.CustomFluidDataComponents;
+import com.crabmod.hotbath.custom_fluid.CustomFluidItems;
+import com.crabmod.hotbath.custom_fluid.CustomFluidRegistry;
+import com.crabmod.hotbath.custom_fluid.DynamicFluidRegistry;
 import com.crabmod.hotbath.util.HotbathFluidHelper;
 import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -132,15 +137,43 @@ public interface SimpleWaterloggedBlockMixin {
                     level.setBlock(pos, currentState.setValue(BlockStateProperties.WATERLOGGED, false), 3);
                 }
                 
+                ItemStack bucket;
+                
+                // Check if this is a dynamic custom fluid
+                if (hotbath$isDynamicCustomFluid(storedFluid)) {
+                    // Get the custom fluid ID from storage
+                    ResourceLocation customFluidId = HotbathWaterloggingHelper.getStoredCustomFluidId(level, pos);
+                    if (customFluidId != null) {
+                        // Create a custom fluid bucket with the correct fluid ID
+                        bucket = CustomFluidDataComponents.createStack(
+                                CustomFluidItems.CUSTOM_FLUID_BUCKET.get(), customFluidId);
+                    } else {
+                        // Fallback to empty bucket if no custom ID stored
+                        bucket = ItemStack.EMPTY;
+                    }
+                } else {
+                    // Built-in hotBath fluid - use standard bucket
+                    bucket = new ItemStack(storedFluid.getBucket());
+                }
+                
                 HotbathWaterloggingHelper.removeFluidType(level, pos);
                 HotbathWaterloggingHelper.removeFromClientCache(pos);
                 
-                ItemStack bucket = new ItemStack(storedFluid.getBucket());
                 if (!bucket.isEmpty()) {
                     cir.setReturnValue(bucket);
                 }
             }
         }
+    }
+    
+    /**
+     * Check if a fluid is the dynamic custom fluid (from data packs).
+     */
+    @Unique
+    private static boolean hotbath$isDynamicCustomFluid(Fluid fluid) {
+        Fluid sourceFluid = hotbath$getSourceFluid(fluid);
+        return sourceFluid == DynamicFluidRegistry.DYNAMIC_FLUID_STILL.get()
+                || sourceFluid == DynamicFluidRegistry.DYNAMIC_FLUID_FLOWING.get();
     }
     
     /**

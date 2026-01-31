@@ -36,6 +36,18 @@
   "item.hotbath.splash_rose_bath_bottle": "投擲用玫瑰湯瓶",
   "item.hotbath.splash_rose_bath_bottle.desc": "極速浪漫。賦千棘之力。滿面玫瑰水，以此表關切。",
   "fluid.hotbath.hot_water_block": "熱湯方塊",
+
+  "item.hotbath.custom_fluid_bucket": "%s桶",
+  "item.hotbath.custom_fluid_bucket.desc": "盛放自定義浴液之桶。",
+  "item.hotbath.custom_fluid_bucket.tooltip": "內含: %s",
+  "item.hotbath.custom_fluid_bottle": "%s瓶",
+  "item.hotbath.custom_fluid_bottle.desc": "可飲之自定義浴液瓶。",
+  "item.hotbath.custom_fluid_bottle.tooltip": "內含: %s",
+  "item.hotbath.splash_custom_fluid_bottle": "投擲%s瓶",
+  "item.hotbath.splash_custom_fluid_bottle.desc": "可擲之自定義浴液瓶。",
+  "item.hotbath.splash_custom_fluid_bottle.tooltip": "內含: %s",
+  "item.hotbath.custom_fluid.unknown": "未知之液",
+
   "item.hotbath.bath_herb": "沐浴藥草",
   "item.hotbath.bath_herb.desc": "遠東秘草，古氣盎然。傳能調氣脈，滌魂乏。",
   "itemGroup.hotbath.hotbath_tab": "熱湯浴",

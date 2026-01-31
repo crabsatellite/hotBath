@@ -1,6 +1,9 @@
 package com.crabmod.hotbath.item;
 
 import com.crabmod.hotbath.HotBath;
+import com.crabmod.hotbath.custom_fluid.CustomFluidAPI;
+import com.crabmod.hotbath.custom_fluid.CustomFluidDefinition;
+import com.crabmod.hotbath.custom_fluid.CustomFluidItems;
 import com.crabmod.hotbath.registers.ItemRegister;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -23,25 +26,53 @@ public class ItemGroup {
                                     .title(Component.translatable("itemGroup.hotbath.hotbath_tab"))
                                     .displayItems(
                                             (pParameters, pOutput) -> {
+                                                // Original buckets
                                                 pOutput.accept(ItemRegister.HOT_WATER_BUCKET.get());
                                                 pOutput.accept(ItemRegister.HERBAL_BATH_BUCKET.get());
                                                 pOutput.accept(ItemRegister.HONEY_BATH_BUCKET.get());
                                                 pOutput.accept(ItemRegister.MILK_BATH_BUCKET.get());
                                                 pOutput.accept(ItemRegister.PEONY_BATH_BUCKET.get());
                                                 pOutput.accept(ItemRegister.ROSE_BATH_BUCKET.get());
+                                                
+                                                // Original bottles
                                                 pOutput.accept(ItemRegister.HOT_WATER_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.HONEY_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.MILK_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.HERBAL_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.PEONY_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.ROSE_BATH_BOTTLE.get());
+                                                
+                                                // Original splash bottles
                                                 pOutput.accept(ItemRegister.SPLASH_HOT_WATER_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.SPLASH_HONEY_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.SPLASH_MILK_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.SPLASH_HERBAL_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.SPLASH_PEONY_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.SPLASH_ROSE_BATH_BOTTLE.get());
+                                                
+                                                // Ingredients
                                                 pOutput.accept(ItemRegister.BATH_HERB.get());
+                                                
+                                                // Dynamic custom fluid items from data packs
+                                                for (CustomFluidDefinition definition : CustomFluidAPI.getAllFluids()) {
+                                                    // Add custom bucket
+                                                    ItemStack bucket = CustomFluidAPI.createBucket(definition);
+                                                    if (!bucket.isEmpty()) {
+                                                        pOutput.accept(bucket);
+                                                    }
+                                                    
+                                                    // Add custom bottle
+                                                    ItemStack bottle = CustomFluidAPI.createBottle(definition);
+                                                    if (!bottle.isEmpty()) {
+                                                        pOutput.accept(bottle);
+                                                    }
+                                                    
+                                                    // Add custom splash bottle
+                                                    ItemStack splashBottle = CustomFluidAPI.createSplashBottle(definition);
+                                                    if (!splashBottle.isEmpty()) {
+                                                        pOutput.accept(splashBottle);
+                                                    }
+                                                }
                                             })
                                     .build());
 

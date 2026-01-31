@@ -44,6 +44,11 @@ public class AlexsMobsEventHandler {
     private static final double MONKEY_ATTRACTION_RANGE = 16.0;
     private static final int MONKEY_CHECK_INTERVAL = 60; // 3 seconds
     
+    // Low-priority sitting behavior timing (similar to cat behavior)
+    private static final int MIN_SOAK_TIME = 600; // 30 seconds minimum soak
+    private static final int MAX_SOAK_TIME = 2400; // 2 minutes maximum soak
+    private static final float RANDOM_LEAVE_CHANCE = 0.03f; // 3% chance to leave per check
+    
     // Cache for monkey hot spring search results to avoid repeated block searches
     // Key: monkey entity ID, Value: cached search result
     private static final java.util.Map<Integer, CachedHotSpringSearch> MONKEY_HOTSPRING_CACHE = 
@@ -52,10 +57,10 @@ public class AlexsMobsEventHandler {
     private static final int CACHE_CLEANUP_INTERVAL = 1200; // 1 minute cleanup
     private static long lastCacheCleanup = 0;
     
-    // Track monkeys that have recently been made to sit in hot springs
-    // This prevents us from constantly resetting their sitting state
-    private static final java.util.Set<Integer> MONKEYS_SITTING_IN_HOTSPRING = 
-            java.util.Collections.newSetFromMap(new java.util.concurrent.ConcurrentHashMap<>());
+    // Track monkeys that are soaking in hot springs with their soak start time
+    // Key: monkey entity ID, Value: game time when soaking started
+    private static final java.util.Map<Integer, Long> MONKEYS_SOAKING_IN_HOTSPRING = 
+            new java.util.concurrent.ConcurrentHashMap<>();
     
     private record CachedHotSpringSearch(BlockPos result, long cacheTime, BlockPos monkeyPos) {}
     
@@ -199,6 +204,11 @@ public class AlexsMobsEventHandler {
      * Handle monkey tick events for hot spring attraction and buff.
      * Capuchin monkeys are attracted to nearby hot springs and receive
      * regeneration buff when bathing (like Japanese macaques!).
+     * 
+     * This is a LOW PRIORITY idle behavior - monkeys should:
+     * - NOT be forced to stay in the hot spring
+     * - Naturally leave after soaking for a while
+     * - Not be re-attracted immediately after leaving
      */
     @SubscribeEvent
     public static void onEntityTick(EntityTickEvent.Post event) {
@@ -206,20 +216,145 @@ public class AlexsMobsEventHandler {
         if (event.getEntity().level().isClientSide()) return;
         if (!(event.getEntity() instanceof EntityCapuchinMonkey monkey)) return;
         
-        // Only check every MONKEY_CHECK_INTERVAL ticks for performance
-        if (monkey.tickCount % MONKEY_CHECK_INTERVAL != 0) return;
+        int monkeyId = monkey.getId();
+        boolean isSoaking = MONKEYS_SOAKING_IN_HOTSPRING.containsKey(monkeyId);
         
-        // Check if monkey is already in hot spring
-        if (isInHotSpring(monkey)) {
-            applyHotSpringBuff(monkey);
-        } else {
-            // Check if monkey just left hot spring (was sitting but not tamed)
-            if (monkey.isSitting() && !monkey.isTame() && !monkey.isOrderedToSit()) {
-                handleMonkeyLeavingHotSpring(monkey);
-            }
-            // Try to attract monkey to nearby hot spring
-            attractToHotSpring(monkey);
+        // For soaking monkeys, check more frequently (every 10 ticks) to maintain sitting pose
+        // For non-soaking monkeys, check less frequently (every 60 ticks) for performance
+        int checkInterval = isSoaking ? 10 : MONKEY_CHECK_INTERVAL;
+        if (monkey.tickCount % checkInterval != 0) return;
+        
+        long currentTime = monkey.level().getGameTime();
+        
+        // Clean up if monkey is dead or removed
+        if (!monkey.isAlive()) {
+            MONKEYS_SOAKING_IN_HOTSPRING.remove(monkeyId);
+            MONKEY_HOTSPRING_CACHE.remove(monkeyId);
+            return;
         }
+        
+        // Check if monkey is currently in hot spring
+        boolean currentlyInHotSpring = isInHotSpring(monkey);
+        
+        if (currentlyInHotSpring) {
+            // Monkey is in hot spring
+            if (!isSoaking) {
+                // Just entered - start soaking
+                startSoaking(monkey, currentTime);
+            } else {
+                // Continue soaking - check if should leave
+                if (shouldLeaveSoaking(monkey, currentTime)) {
+                    stopSoaking(monkey);
+                    // After leaving, don't re-attract for a while (handled by navigation being busy)
+                    return;
+                }
+                // Apply buff while soaking
+                applyHotSpringBuff(monkey);
+            }
+        } else {
+            // Monkey is NOT in hot spring
+            if (isSoaking) {
+                // Just left the hot spring - clean up state
+                stopSoaking(monkey);
+            }
+            
+            // Only attract to hot spring if monkey is idle and not recently left
+            // This is the LOW PRIORITY part - don't interfere with other behaviors
+            if (shouldAttractToHotSpring(monkey)) {
+                attractToHotSpring(monkey);
+            }
+        }
+    }
+    
+    /**
+     * Check if monkey should be attracted to a hot spring.
+     * This should be LOW PRIORITY - don't interfere with other behaviors.
+     */
+    private static boolean shouldAttractToHotSpring(EntityCapuchinMonkey monkey) {
+        // Don't attract tamed monkeys (they follow their owner)
+        if (monkey.isTame()) return false;
+        
+        // Don't attract if monkey was ordered to sit
+        if (monkey.isOrderedToSit()) return false;
+        
+        // Don't attract if monkey has a target (fighting, fleeing, etc.)
+        if (monkey.getTarget() != null) return false;
+        
+        // Don't attract if monkey was recently hurt
+        if (monkey.getLastHurtByMob() != null) return false;
+        
+        // Don't attract if navigation is busy (monkey is going somewhere)
+        if (monkey.getNavigation().isInProgress()) return false;
+        
+        return true;
+    }
+    
+    /**
+     * Start soaking in hot spring - make monkey sit and track time.
+     */
+    private static void startSoaking(EntityCapuchinMonkey monkey, long currentTime) {
+        int monkeyId = monkey.getId();
+        
+        // Record soak start time
+        MONKEYS_SOAKING_IN_HOTSPRING.put(monkeyId, currentTime);
+        
+        // CRITICAL: Stop navigation first to prevent spinning
+        monkey.getNavigation().stop();
+        
+        // Make monkey sit down to relax
+        monkey.setOrderedToSit(true);
+        
+        // Apply initial buff
+        applyHotSpringBuff(monkey);
+    }
+    
+    /**
+     * Check if monkey should leave the hot spring based on time and random chance.
+     */
+    private static boolean shouldLeaveSoaking(EntityCapuchinMonkey monkey, long currentTime) {
+        int monkeyId = monkey.getId();
+        Long soakStartTime = MONKEYS_SOAKING_IN_HOTSPRING.get(monkeyId);
+        
+        if (soakStartTime == null) return true;
+        
+        long soakDuration = currentTime - soakStartTime;
+        
+        // Must leave after maximum soak time
+        if (soakDuration > MAX_SOAK_TIME) {
+            return true;
+        }
+        
+        // After minimum time, random chance to leave
+        if (soakDuration > MIN_SOAK_TIME && RANDOM.nextFloat() < RANDOM_LEAVE_CHANCE) {
+            return true;
+        }
+        
+        // Check if monkey wants to leave (being attacked, has target, etc.)
+        if (monkey.hurtTime > 0 || 
+            monkey.getTarget() != null || 
+            monkey.getLastHurtByMob() != null) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Stop soaking - make monkey stand up and clear tracking.
+     */
+    private static void stopSoaking(EntityCapuchinMonkey monkey) {
+        int monkeyId = monkey.getId();
+        
+        // Clear tracking
+        MONKEYS_SOAKING_IN_HOTSPRING.remove(monkeyId);
+        
+        // Make monkey stand up (if it was sitting due to hot spring)
+        if (monkey.isSitting() && !monkey.isTame()) {
+            monkey.setOrderedToSit(false);
+        }
+        
+        // Clear navigation so monkey will wander naturally
+        monkey.getNavigation().stop();
     }
     
     /**
@@ -233,20 +368,18 @@ public class AlexsMobsEventHandler {
     
     /**
      * Apply regeneration buff to monkey bathing in hot spring.
-     * Makes them sit down to relax (like Japanese macaques!).
-     * The monkey can leave on its own after a while - this is idle behavior, not forced.
+     * Also ensures the monkey stays sitting and doesn't wander.
      */
     private static void applyHotSpringBuff(EntityCapuchinMonkey monkey) {
-        int monkeyId = monkey.getId();
+        // CRITICAL: Ensure monkey stays sitting and doesn't spin
+        // The monkey's AI may try to make it stand up and move
+        if (!monkey.isSitting()) {
+            monkey.setOrderedToSit(true);
+        }
         
-        // Only make monkey sit down once when entering the hot spring
-        // This allows the monkey's natural idle behavior to take over
-        // (they will stand up after 75-125 ticks on their own)
-        if (!MONKEYS_SITTING_IN_HOTSPRING.contains(monkeyId)) {
-            if (!monkey.isSitting()) {
-                monkey.setOrderedToSit(true);
-            }
-            MONKEYS_SITTING_IN_HOTSPRING.add(monkeyId);
+        // Stop any navigation that might have started
+        if (monkey.getNavigation().isInProgress()) {
+            monkey.getNavigation().stop();
         }
         
         // Give regeneration effect (this refreshes while in hot spring)
@@ -265,34 +398,13 @@ public class AlexsMobsEventHandler {
             monkey.playAmbientSound();
         }
     }
-    
-    /**
-     * Handle monkey leaving the hot spring.
-     * Clears the tracking state so the monkey can be attracted again later.
-     */
-    private static void handleMonkeyLeavingHotSpring(EntityCapuchinMonkey monkey) {
-        int monkeyId = monkey.getId();
-        
-        // Clear tracking - monkey is no longer in hot spring
-        MONKEYS_SITTING_IN_HOTSPRING.remove(monkeyId);
-        
-        // If monkey was sitting in the hot spring (not tamed owner-ordered sit), make them stand
-        if (monkey.isSitting() && !monkey.isTame()) {
-            monkey.setOrderedToSit(false);
-        }
-    }
-    
+
     /**
      * Attract monkeys to nearby hot springs.
      * Wild (untamed) monkeys will naturally move towards hot springs.
+     * This is LOW PRIORITY - only when monkey is completely idle.
      */
     private static void attractToHotSpring(EntityCapuchinMonkey monkey) {
-        // Only attract wild monkeys (tamed ones follow their owner)
-        if (monkey.isTame()) return;
-        
-        // Don't attract if monkey is sitting or has a target
-        if (monkey.isOrderedToSit() || monkey.getTarget() != null) return;
-        
         // Search for nearby hot spring
         BlockPos monkeyPos = monkey.blockPosition();
         BlockPos nearestHotSpring = findNearestHotSpring(monkey, monkeyPos);

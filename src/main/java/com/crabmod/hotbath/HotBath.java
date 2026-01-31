@@ -23,7 +23,9 @@ import com.crabmod.hotbath.compat.SereneSeasonsIntegration;
 import com.crabmod.hotbath.dirtiness.DirtinessAttachment;
 import com.crabmod.hotbath.fluid_details.HotbathFluidType;
 import com.crabmod.hotbath.item.ItemGroup;
+import com.crabmod.hotbath.registers.BlockEntityRegister;
 import com.crabmod.hotbath.registers.BlocksRegister;
+import com.crabmod.hotbath.registers.CustomFluidBlocksRegister;
 import com.crabmod.hotbath.registers.EntityRegister;
 import com.crabmod.hotbath.registers.ExtraEventsRegister;
 import com.crabmod.hotbath.registers.FluidsRegister;
@@ -52,6 +54,10 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.brewing.BrewingRecipeRegistry;
+import com.crabmod.hotbath.custom_fluid.CustomFluidDataComponents;
+import com.crabmod.hotbath.custom_fluid.CustomFluidItems;
+import com.crabmod.hotbath.custom_fluid.DynamicFluidRegistry;
+import com.crabmod.hotbath.custom_fluid.DynamicFluidTypeRegistry;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.slf4j.Logger;
 
@@ -69,13 +75,22 @@ public class HotBath {
         
         ItemGroup.register(modEventBus);
         FluidsRegister.register(modEventBus);
+        DynamicFluidTypeRegistry.register(modEventBus);
+        DynamicFluidRegistry.register(modEventBus);
         BlocksRegister.register(modEventBus);
+        CustomFluidBlocksRegister.register(modEventBus);
+        BlockEntityRegister.register(modEventBus);
         ItemRegister.register(modEventBus);
         ParticleRegister.register(modEventBus);
         EntityRegister.register(modEventBus);
         HotbathFluidType.register(modEventBus);
         DirtinessAttachment.register(modEventBus);
         ExtraEventsRegister.register(modEventBus);
+        
+        // Register custom fluid system
+        CustomFluidDataComponents.register(modEventBus);
+        CustomFluidItems.register(modEventBus);
+        
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -212,6 +227,10 @@ public class HotBath {
             ItemBlockRenderTypes.setRenderLayer(FluidsRegister.PEONY_BATH_FLOWING.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(FluidsRegister.ROSE_BATH_FLUID.get(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(FluidsRegister.ROSE_BATH_FLOWING.get(), RenderType.translucent());
+            
+            // Dynamic custom fluid
+            ItemBlockRenderTypes.setRenderLayer(com.crabmod.hotbath.custom_fluid.DynamicFluidRegistry.DYNAMIC_FLUID_STILL.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(com.crabmod.hotbath.custom_fluid.DynamicFluidRegistry.DYNAMIC_FLUID_FLOWING.get(), RenderType.translucent());
         }
 
         @SubscribeEvent
@@ -292,5 +311,9 @@ public class HotBath {
         event.getBuilder().addRecipe(Ingredient.of(ItemRegister.HERBAL_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_HERBAL_BATH_BOTTLE.get().getDefaultInstance());
         event.getBuilder().addRecipe(Ingredient.of(ItemRegister.PEONY_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_PEONY_BATH_BOTTLE.get().getDefaultInstance());
         event.getBuilder().addRecipe(Ingredient.of(ItemRegister.ROSE_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_ROSE_BATH_BOTTLE.get().getDefaultInstance());
+        
+        // Register dynamic brewing recipe for custom fluids from data packs
+        // This allows: Custom Fluid Bottle + Gunpowder = Splash Custom Fluid Bottle
+        event.getBuilder().addRecipe(new com.crabmod.hotbath.custom_fluid.CustomFluidBrewingRecipe());
     }
 }

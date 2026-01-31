@@ -9,7 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Handles LSO temperature effects when player is in a Hot Bath.
- * - Warms player to HOT zone (27°C) while in bath
+ * Only applies to built-in hot baths and custom fluids with temperature >= 35°C.
+ * - Warms player to HOT zone while in bath
  * - Accumulates cold resistance every 10 seconds (max 5 min)
  * - Applies cold immunity after 10 seconds (persists 10s after leaving)
  */
@@ -27,7 +28,9 @@ public class HotBathImmersionLSOModifier {
 
     public static void tick(Player player) {
         UUID playerUUID = player.getUUID();
-        boolean isInBath = CustomFluidHandler.isPlayerInHotBathBlock(player);
+        // Use isPlayerInHotBath instead of isPlayerInHotBathBlock
+        // This will return false for custom fluids with temperature < 35°C
+        boolean isInBath = CustomFluidHandler.isPlayerInHotBath(player);
 
         if (isInBath) {
             int timer = BATH_TIMERS.getOrDefault(playerUUID, 0) + 1;

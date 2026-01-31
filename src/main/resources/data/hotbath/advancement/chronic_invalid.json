@@ -18,7 +18,7 @@
   "parent": "hotbath:hot_bath",
   "criteria": {
     "code_triggered": {
-      "trigger": "hotbath:chronic_invalid"
+      "trigger": "minecraft:impossible"
     }
   },
   "rewards": {

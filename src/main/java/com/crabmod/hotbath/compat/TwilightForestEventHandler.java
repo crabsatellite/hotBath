@@ -60,7 +60,8 @@ public class TwilightForestEventHandler {
         if (event.getEntity().level().isClientSide()) return;
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         
-        boolean isInBath = CustomFluidHandler.isPlayerInHotBathBlock(player);
+        // Check if player is in a HOT bath (temperature >= 35°C for custom fluids)
+        boolean isInBath = CustomFluidHandler.isPlayerInHotBath(player);
         UUID playerId = player.getUUID();
         
         if (isInBath) {

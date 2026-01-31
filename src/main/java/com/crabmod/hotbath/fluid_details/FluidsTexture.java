@@ -7,6 +7,12 @@ import net.minecraft.resources.ResourceLocation;
  * Texture reference: <a href="https://github.com/connor135246/Simply-Hot-Springs">...</a>
  */
 public class FluidsTexture {
+    // Grayscale base textures for custom fluids (tinted at runtime)
+    public static final ResourceLocation CUSTOM_FLUID_STILL_TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(HotBath.MOD_ID, "block/still_custom_fluid_grayscale");
+    public static final ResourceLocation CUSTOM_FLUID_FLOWING_TEXTURE =
+            ResourceLocation.fromNamespaceAndPath(HotBath.MOD_ID, "block/flowing_custom_fluid_grayscale");
+    
     public static final ResourceLocation HOT_WATER_STILL_TEXTURE =
             ResourceLocation.fromNamespaceAndPath(HotBath.MOD_ID, "block/still_hot_water");
     public static final ResourceLocation HOT_WATER_FLOWING_TEXTURE =

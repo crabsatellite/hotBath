@@ -133,11 +133,11 @@ dependencies {
     // Using local project build output since 1.21 version is not yet published
     compileOnly files('../AlexsMobs/build/libs/alexsmobs-1.22.9.jar')
     // Citadel - Library mod required by Alex's Mobs and Alex's Caves
-    // Project ID: 331936, File ID 7476597 corresponds to citadel for 1.21
-    compileOnly "curse.maven:citadel-331936:7476597"
+    // Using local project build output
+    compileOnly files('../Citadel/build/libs/citadel-1.21.1-2.7.0.jar')
     // Uncomment to test in dev environment:
     runtimeOnly files('../AlexsMobs/build/libs/alexsmobs-1.22.9.jar')
-    runtimeOnly "curse.maven:citadel-331936:7476597"
+    runtimeOnly files('../Citadel/build/libs/citadel-1.21.1-2.7.0.jar')
 
     // Alex's Caves - Cave biome and creature mod (optional dependency)
     // Using local project build output since 1.21 version is not yet published

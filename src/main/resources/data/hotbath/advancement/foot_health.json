@@ -18,7 +18,7 @@
   "parent": "hotbath:hot_bath",
   "criteria": {
     "code_triggered": {
-      "trigger": "hotbath:foot_health"
+      "trigger": "minecraft:impossible"
     }
   },
   "rewards": {

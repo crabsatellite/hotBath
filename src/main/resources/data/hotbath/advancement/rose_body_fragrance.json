@@ -18,7 +18,7 @@
   "parent": "hotbath:hot_bath",
   "criteria": {
     "code_triggered": {
-      "trigger": "hotbath:rose_body_fragrance"
+      "trigger": "minecraft:impossible"
     }
   },
   "rewards": {

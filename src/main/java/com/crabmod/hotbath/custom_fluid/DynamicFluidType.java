@@ -1,0 +1,246 @@
+package com.crabmod.hotbath.custom_fluid;
+
+import com.crabmod.hotbath.fluid_details.FluidsColor;
+import com.crabmod.hotbath.fluid_details.FluidsTexture;
+import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.FluidState;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.fluids.FluidType;
+import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
+
+import java.util.Optional;
+import java.util.function.Consumer;
+
+/**
+ * A FluidType that supports dynamic per-block coloring based on BlockEntity data
+ * or waterlogging storage.
+ * This allows each placed fluid block to have its own color based on the 
+ * CustomFluidDefinition stored in its BlockEntity or waterlogging data.
+ * 
+ * Both source and flowing fluid blocks have BlockEntities that store the fluid ID,
+ * as the DynamicCustomFluid.spreadTo() method propagates this data when fluid spreads.
+ * For waterlogged blocks, the custom fluid ID is stored in the waterlogging helper.
+ * 
+ * Uses grayscale textures that are tinted with the fluid's color for proper coloring.
+ */
+public class DynamicFluidType extends FluidType {
+    
+    // Use grayscale textures for proper tinting with custom colors
+    private static final ResourceLocation CUSTOM_FLUID_STILL_RL = FluidsTexture.CUSTOM_FLUID_STILL_TEXTURE;
+    private static final ResourceLocation CUSTOM_FLUID_FLOWING_RL = FluidsTexture.CUSTOM_FLUID_FLOWING_TEXTURE;
+    private static final ResourceLocation WATER_OVERLAY_RL = ResourceLocation.parse("block/water_overlay");
+    
+    private static final int DEFAULT_TINT_COLOR = 0xFF45E1E9; // Default cyan with full alpha
+    private static final Vector3f DEFAULT_FOG_COLOR = FluidsColor.DEFAULT_FOG_COLOR;
+    
+    // Default values (used when no BlockEntity data is found)
+    private static final int DEFAULT_LIGHT_LEVEL = 2;
+    private static final int DEFAULT_DENSITY = 1000;
+    private static final int DEFAULT_VISCOSITY = 1000;
+    private static final int DEFAULT_TEMPERATURE = 300; // Room temperature in Kelvin
+
+    public DynamicFluidType(Properties properties) {
+        super(properties);
+    }
+    
+    /**
+     * Gets the CustomFluidDefinition from the BlockEntity at the given position.
+     */
+    private static Optional<CustomFluidDefinition> getDefinitionFromBlockEntity(BlockAndTintGetter getter, BlockPos pos) {
+        BlockEntity be = getter.getBlockEntity(pos);
+        if (be instanceof CustomFluidBlockEntity customBe) {
+            return customBe.getFluidDefinition();
+        }
+        return Optional.empty();
+    }
+    
+    /**
+     * Gets the CustomFluidDefinition from waterlogging storage (for waterlogged blocks).
+     */
+    private static Optional<CustomFluidDefinition> getDefinitionFromWaterlogging(BlockAndTintGetter getter, BlockPos pos) {
+        BlockState state = getter.getBlockState(pos);
+        if (state.hasProperty(BlockStateProperties.WATERLOGGED) 
+                && state.getValue(BlockStateProperties.WATERLOGGED)) {
+            ResourceLocation customFluidId = HotbathWaterloggingHelper.getStoredCustomFluidIdClientDirect(pos);
+            if (customFluidId != null) {
+                return CustomFluidAPI.getFluidDefinition(customFluidId);
+            }
+        }
+        return Optional.empty();
+    }
+    
+    /**
+     * Gets the CustomFluidDefinition for the fluid at the given position.
+     * Checks BlockEntity first, then waterlogging storage.
+     */
+    private static Optional<CustomFluidDefinition> getDefinition(BlockAndTintGetter getter, BlockPos pos) {
+        Optional<CustomFluidDefinition> def = getDefinitionFromBlockEntity(getter, pos);
+        if (def.isPresent()) {
+            return def;
+        }
+        return getDefinitionFromWaterlogging(getter, pos);
+    }
+    
+    // ==================== Dynamic Property Overrides ====================
+    
+    /**
+     * Returns the light level based on the fluid definition at the position.
+     */
+    @Override
+    public int getLightLevel(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
+        return getDefinition(getter, pos)
+                .map(CustomFluidDefinition::luminosity)
+                .orElse(DEFAULT_LIGHT_LEVEL);
+    }
+    
+    /**
+     * Returns the density based on the fluid definition at the position.
+     */
+    @Override
+    public int getDensity(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
+        return getDefinition(getter, pos)
+                .map(CustomFluidDefinition::density)
+                .orElse(DEFAULT_DENSITY);
+    }
+    
+    /**
+     * Returns the viscosity based on the fluid definition at the position.
+     */
+    @Override
+    public int getViscosity(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
+        return getDefinition(getter, pos)
+                .map(CustomFluidDefinition::viscosity)
+                .orElse(DEFAULT_VISCOSITY);
+    }
+    
+    /**
+     * Returns the temperature based on the fluid definition at the position.
+     * Converts Celsius to Kelvin (Kelvin = Celsius + 273).
+     */
+    @Override
+    public int getTemperature(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
+        return getDefinition(getter, pos)
+                .map(def -> (int)(def.temperature() + 273)) // Convert Celsius to Kelvin
+                .orElse(DEFAULT_TEMPERATURE);
+    }
+    
+    /**
+     * Gets the color from the BlockEntity at the given position.
+     * Both source and flowing fluid blocks should have BlockEntities with color data.
+     */
+    private static int getColorFromBlockEntity(BlockAndTintGetter getter, BlockPos pos) {
+        BlockEntity be = getter.getBlockEntity(pos);
+        if (be instanceof CustomFluidBlockEntity customBe) {
+            int color = customBe.getFluidColor();
+            if (color != 0) {
+                return 0xFF000000 | color; // Ensure alpha is set
+            }
+        }
+        return -1; // No color found
+    }
+    
+    /**
+     * Gets the color from waterlogging storage (for waterlogged blocks).
+     */
+    private static int getColorFromWaterlogging(BlockAndTintGetter getter, BlockPos pos) {
+        // Check if this is a waterlogged block with our custom fluid
+        BlockState state = getter.getBlockState(pos);
+        if (state.hasProperty(BlockStateProperties.WATERLOGGED) 
+                && state.getValue(BlockStateProperties.WATERLOGGED)) {
+            // Get the custom fluid ID from waterlogging storage
+            ResourceLocation customFluidId = HotbathWaterloggingHelper.getStoredCustomFluidIdClientDirect(pos);
+            if (customFluidId != null) {
+                // Look up the fluid definition to get its color
+                Optional<CustomFluidDefinition> defOpt = CustomFluidAPI.getFluidDefinition(customFluidId);
+                if (defOpt.isPresent()) {
+                    int color = defOpt.get().color();
+                    return 0xFF000000 | color; // Ensure alpha is set
+                }
+            }
+        }
+        return -1; // No color found
+    }
+
+    @SuppressWarnings("removal")
+    @Override
+    public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
+        consumer.accept(new IClientFluidTypeExtensions() {
+            @Override
+            public ResourceLocation getStillTexture() {
+                return CUSTOM_FLUID_STILL_RL;
+            }
+
+            @Override
+            public ResourceLocation getFlowingTexture() {
+                return CUSTOM_FLUID_FLOWING_RL;
+            }
+
+            @Override
+            public ResourceLocation getOverlayTexture() {
+                return WATER_OVERLAY_RL;
+            }
+
+            @Override
+            public int getTintColor() {
+                return DEFAULT_TINT_COLOR;
+            }
+
+            /**
+             * Gets the tint color based on the BlockEntity at the given position,
+             * or from waterlogging storage for waterlogged blocks.
+             * Both source and flowing fluid blocks have BlockEntities with color data,
+             * as DynamicCustomFluid.spreadTo() propagates the data when fluid spreads.
+             * For waterlogged blocks, the color is retrieved from waterlogging storage.
+             */
+            @Override
+            public int getTintColor(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
+                // First try to get color from BlockEntity (for DynamicCustomFluidBlock)
+                int color = getColorFromBlockEntity(getter, pos);
+                if (color != -1) {
+                    return color;
+                }
+                
+                // Then try to get color from waterlogging storage (for waterlogged blocks)
+                color = getColorFromWaterlogging(getter, pos);
+                if (color != -1) {
+                    return color;
+                }
+                
+                // Fallback to default
+                return DEFAULT_TINT_COLOR;
+            }
+
+            @Override
+            public @NotNull Vector3f modifyFogColor(
+                    Camera camera,
+                    float partialTick,
+                    ClientLevel level,
+                    int renderDistance,
+                    float darkenWorldAmount,
+                    Vector3f fluidFogColor) {
+                // TODO: Could potentially get fog color from BlockEntity too
+                return DEFAULT_FOG_COLOR;
+            }
+
+            @Override
+            public boolean renderFluid(FluidState fluidState, BlockAndTintGetter getter, BlockPos pos,
+                    VertexConsumer vertexConsumer, BlockState blockState) {
+                // Use vanilla's LiquidBlockRenderer to render this fluid
+                Minecraft.getInstance().getBlockRenderer().getLiquidBlockRenderer()
+                        .tesselate(getter, pos, vertexConsumer, blockState, fluidState);
+                return true;
+            }
+        });
+    }
+}

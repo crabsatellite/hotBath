@@ -33,6 +33,12 @@ public class WaterloggingNetworking {
     public static final ResourceLocation SYNC_BULK_WATERLOGGING_ID = 
             ResourceLocation.fromNamespaceAndPath(HotBath.MOD_ID, "sync_bulk_waterlogging");
     
+    public static final ResourceLocation SYNC_CUSTOM_FLUID_ID_ID = 
+            ResourceLocation.fromNamespaceAndPath(HotBath.MOD_ID, "sync_custom_fluid_id");
+    
+    public static final ResourceLocation SYNC_BULK_CUSTOM_FLUID_ID_ID = 
+            ResourceLocation.fromNamespaceAndPath(HotBath.MOD_ID, "sync_bulk_custom_fluid_id");
+    
     /**
      * Packet payload for syncing single waterlogging data
      */
@@ -92,6 +98,65 @@ public class WaterloggingNetworking {
         }
     }
     
+    /**
+     * Packet payload for syncing custom fluid ID (for dynamic custom fluids in waterlogged blocks)
+     */
+    public record SyncCustomFluidIdPayload(BlockPos pos, ResourceLocation customFluidId) implements CustomPacketPayload {
+        
+        public static final Type<SyncCustomFluidIdPayload> TYPE = 
+                new Type<>(SYNC_CUSTOM_FLUID_ID_ID);
+        
+        public static final StreamCodec<FriendlyByteBuf, SyncCustomFluidIdPayload> STREAM_CODEC = 
+                StreamCodec.composite(
+                    BlockPos.STREAM_CODEC, SyncCustomFluidIdPayload::pos,
+                    ResourceLocation.STREAM_CODEC, SyncCustomFluidIdPayload::customFluidId,
+                    SyncCustomFluidIdPayload::new
+                );
+        
+        @Override
+        public Type<? extends CustomPacketPayload> type() {
+            return TYPE;
+        }
+    }
+    
+    /**
+     * Packet payload for bulk syncing custom fluid IDs
+     */
+    public record SyncBulkCustomFluidIdPayload(Map<Long, ResourceLocation> customFluidIdMap) implements CustomPacketPayload {
+        
+        public static final Type<SyncBulkCustomFluidIdPayload> TYPE = 
+                new Type<>(SYNC_BULK_CUSTOM_FLUID_ID_ID);
+        
+        public static final StreamCodec<FriendlyByteBuf, SyncBulkCustomFluidIdPayload> STREAM_CODEC = 
+                new StreamCodec<>() {
+                    @Override
+                    public SyncBulkCustomFluidIdPayload decode(FriendlyByteBuf buf) {
+                        int size = buf.readVarInt();
+                        Map<Long, ResourceLocation> map = new HashMap<>();
+                        for (int i = 0; i < size; i++) {
+                            long posLong = buf.readLong();
+                            ResourceLocation customId = buf.readResourceLocation();
+                            map.put(posLong, customId);
+                        }
+                        return new SyncBulkCustomFluidIdPayload(map);
+                    }
+                    
+                    @Override
+                    public void encode(FriendlyByteBuf buf, SyncBulkCustomFluidIdPayload payload) {
+                        buf.writeVarInt(payload.customFluidIdMap().size());
+                        for (Map.Entry<Long, ResourceLocation> entry : payload.customFluidIdMap().entrySet()) {
+                            buf.writeLong(entry.getKey());
+                            buf.writeResourceLocation(entry.getValue());
+                        }
+                    }
+                };
+        
+        @Override
+        public Type<? extends CustomPacketPayload> type() {
+            return TYPE;
+        }
+    }
+    
     @SubscribeEvent
     public static void registerPayloads(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar(HotBath.MOD_ID);
@@ -104,6 +169,16 @@ public class WaterloggingNetworking {
             SyncBulkWaterloggingPayload.TYPE,
             SyncBulkWaterloggingPayload.STREAM_CODEC,
             WaterloggingNetworking::handleBulkSyncOnClient
+        );
+        registrar.playToClient(
+            SyncCustomFluidIdPayload.TYPE,
+            SyncCustomFluidIdPayload.STREAM_CODEC,
+            WaterloggingNetworking::handleCustomFluidIdSyncOnClient
+        );
+        registrar.playToClient(
+            SyncBulkCustomFluidIdPayload.TYPE,
+            SyncBulkCustomFluidIdPayload.STREAM_CODEC,
+            WaterloggingNetworking::handleBulkCustomFluidIdSyncOnClient
         );
     }
     
@@ -148,6 +223,32 @@ public class WaterloggingNetworking {
     }
     
     /**
+     * Handle custom fluid ID sync packet on client
+     */
+    private static void handleCustomFluidIdSyncOnClient(SyncCustomFluidIdPayload payload, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            if (payload == null || payload.pos() == null) return;
+            
+            HotbathWaterloggingHelper.updateClientCustomFluidIdCache(payload.pos(), payload.customFluidId());
+        });
+    }
+    
+    /**
+     * Handle bulk custom fluid ID sync packet on client
+     */
+    private static void handleBulkCustomFluidIdSyncOnClient(SyncBulkCustomFluidIdPayload payload, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            if (payload == null || payload.customFluidIdMap() == null) return;
+            
+            for (Map.Entry<Long, ResourceLocation> entry : payload.customFluidIdMap().entrySet()) {
+                BlockPos pos = BlockPos.of(entry.getKey());
+                ResourceLocation customId = entry.getValue();
+                HotbathWaterloggingHelper.updateClientCustomFluidIdCache(pos, customId);
+            }
+        });
+    }
+    
+    /**
      * Send waterlogging sync to all nearby players
      */
     public static void syncToAllPlayers(BlockPos pos, Fluid fluid) {
@@ -161,6 +262,16 @@ public class WaterloggingNetworking {
     }
     
     /**
+     * Send custom fluid ID sync to all players (for dynamic custom fluids)
+     */
+    public static void syncCustomFluidIdToAllPlayers(BlockPos pos, ResourceLocation customFluidId) {
+        if (pos == null || customFluidId == null) return;
+        
+        SyncCustomFluidIdPayload payload = new SyncCustomFluidIdPayload(pos, customFluidId);
+        PacketDistributor.sendToAllPlayers(payload);
+    }
+    
+    /**
      * Send waterlogging clear to all players
      */
     public static void syncRemoveToAllPlayers(BlockPos pos) {
@@ -169,6 +280,10 @@ public class WaterloggingNetworking {
         ResourceLocation emptyId = BuiltInRegistries.FLUID.getKey(net.minecraft.world.level.material.Fluids.EMPTY);
         SyncWaterloggingPayload payload = new SyncWaterloggingPayload(pos, emptyId);
         PacketDistributor.sendToAllPlayers(payload);
+        
+        // Also clear custom fluid ID
+        SyncCustomFluidIdPayload customPayload = new SyncCustomFluidIdPayload(pos, null);
+        // Note: null is handled by client to remove from cache
     }
     
     /**
@@ -178,25 +293,45 @@ public class WaterloggingNetworking {
     public static void syncAllToPlayer(ServerPlayer player, ServerLevel level) {
         if (player == null || level == null) return;
         
+        // Sync fluid types
         Map<Long, ResourceLocation> fluidMap = HotbathWaterloggingHelper.getAllStoredFluids(level);
-        if (fluidMap.isEmpty()) return;
+        if (!fluidMap.isEmpty()) {
+            syncMapToPlayer(player, fluidMap, true);
+        }
         
-        // Split into chunks of 500 entries to avoid packet size issues
+        // Sync custom fluid IDs (for dynamic custom fluids)
+        Map<Long, ResourceLocation> customIdMap = HotbathWaterloggingHelper.getAllStoredCustomFluidIds(level);
+        if (!customIdMap.isEmpty()) {
+            syncMapToPlayer(player, customIdMap, false);
+        }
+    }
+    
+    /**
+     * Helper method to sync a map of data to a player, splitting into chunks if needed.
+     */
+    private static void syncMapToPlayer(ServerPlayer player, Map<Long, ResourceLocation> map, boolean isFluidType) {
         final int CHUNK_SIZE = 500;
-        if (fluidMap.size() <= CHUNK_SIZE) {
-            SyncBulkWaterloggingPayload payload = new SyncBulkWaterloggingPayload(fluidMap);
-            PacketDistributor.sendToPlayer(player, payload);
+        
+        if (map.size() <= CHUNK_SIZE) {
+            if (isFluidType) {
+                PacketDistributor.sendToPlayer(player, new SyncBulkWaterloggingPayload(map));
+            } else {
+                PacketDistributor.sendToPlayer(player, new SyncBulkCustomFluidIdPayload(map));
+            }
         } else {
             // Split large data into multiple packets
             Map<Long, ResourceLocation> chunk = new HashMap<>();
             int count = 0;
-            for (Map.Entry<Long, ResourceLocation> entry : fluidMap.entrySet()) {
+            for (Map.Entry<Long, ResourceLocation> entry : map.entrySet()) {
                 chunk.put(entry.getKey(), entry.getValue());
                 count++;
                 
                 if (count >= CHUNK_SIZE) {
-                    SyncBulkWaterloggingPayload payload = new SyncBulkWaterloggingPayload(new HashMap<>(chunk));
-                    PacketDistributor.sendToPlayer(player, payload);
+                    if (isFluidType) {
+                        PacketDistributor.sendToPlayer(player, new SyncBulkWaterloggingPayload(new HashMap<>(chunk)));
+                    } else {
+                        PacketDistributor.sendToPlayer(player, new SyncBulkCustomFluidIdPayload(new HashMap<>(chunk)));
+                    }
                     chunk.clear();
                     count = 0;
                 }
@@ -204,8 +339,11 @@ public class WaterloggingNetworking {
             
             // Send remaining entries
             if (!chunk.isEmpty()) {
-                SyncBulkWaterloggingPayload payload = new SyncBulkWaterloggingPayload(chunk);
-                PacketDistributor.sendToPlayer(player, payload);
+                if (isFluidType) {
+                    PacketDistributor.sendToPlayer(player, new SyncBulkWaterloggingPayload(chunk));
+                } else {
+                    PacketDistributor.sendToPlayer(player, new SyncBulkCustomFluidIdPayload(chunk));
+                }
             }
         }
     }

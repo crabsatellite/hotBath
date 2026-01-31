@@ -37,6 +37,18 @@
   "item.hotbath.splash_rose_bath_bottle": "Wurf-Rosenbadflasche",
   "item.hotbath.splash_rose_bath_bottle.desc": "Flüssige Romantik, mit hoher Geschwindigkeit geliefert. Gewährt die Stärke von tausend Dornen. Nichts sagt 'Ich mag dich' wie ein Gesicht voller Rosenwasser.",
   "fluid.hotbath.hot_water_block": "Heißwasserblock",
+
+  "item.hotbath.custom_fluid_bucket": "%s Eimer",
+  "item.hotbath.custom_fluid_bucket.desc": "Ein Eimer mit individueller Badeflüssigkeit.",
+  "item.hotbath.custom_fluid_bucket.tooltip": "Enthält: %s",
+  "item.hotbath.custom_fluid_bottle": "%s Flasche",
+  "item.hotbath.custom_fluid_bottle.desc": "Eine trinkbare Flasche mit individueller Badeflüssigkeit.",
+  "item.hotbath.custom_fluid_bottle.tooltip": "Enthält: %s",
+  "item.hotbath.splash_custom_fluid_bottle": "Wurf-%s Flasche",
+  "item.hotbath.splash_custom_fluid_bottle.desc": "Eine werfbare Spritzflasche mit individueller Badeflüssigkeit.",
+  "item.hotbath.splash_custom_fluid_bottle.tooltip": "Enthält: %s",
+  "item.hotbath.custom_fluid.unknown": "Unbekannte Flüssigkeit",
+
   "item.hotbath.bath_herb": "Badekraut",
   "item.hotbath.bath_herb.desc": "Geheimnisvolle Kräuter aus dem Fernen Osten, die vor alter Energie pulsieren. Es heißt, sie harmonisieren den inneren Fluss und reinigen die Müdigkeit der Seele.",
   "itemGroup.hotbath.hotbath_tab": "Heißes Bad",

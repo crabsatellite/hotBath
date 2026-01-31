@@ -68,6 +68,16 @@ public class HotBathConfig {
                      "Default: true")
             .define("enableModIntegrations", true);
     
+    // Coral dies in hotbath fluid - controls whether coral treats hotbath fluids as water
+    private static final ModConfigSpec.BooleanValue CORAL_DIES_IN_HOTBATH = BUILDER
+            .comment("=== CORAL BEHAVIOR ===",
+                     "Enable or disable coral dying in hotbath fluids.",
+                     "When enabled (default), coral will die in hotbath fluids just like on land.",
+                     "When disabled, coral will survive in hotbath fluids as if they were water.",
+                     "SAVE SAFETY: This has NO impact on world data - can be toggled freely.",
+                     "Default: true")
+            .define("coralDiesInHotbathFluid", true);
+    
     public static final ModConfigSpec SPEC = BUILDER.build();
     
     // Cached config values for runtime access
@@ -75,6 +85,7 @@ public class HotBathConfig {
     private static boolean enableWaterlogging = true;
     private static boolean enableDirtinessSystem = true;
     private static boolean enableModIntegrations = true;
+    private static boolean coralDiesInHotbath = true;
     
     /**
      * Check if compatibility mode is enabled.
@@ -126,6 +137,16 @@ public class HotBathConfig {
     }
     
     /**
+     * Check if coral should die in hotbath fluids.
+     * When enabled, coral will die in hotbath fluids just like on land.
+     * When disabled, coral will survive as if hotbath fluids were water.
+     * @return true if coral should die in hotbath fluids
+     */
+    public static boolean doesCoralDieInHotbath() {
+        return coralDiesInHotbath;
+    }
+    
+    /**
      * Called when the config is loaded or reloaded.
      */
     @SubscribeEvent
@@ -135,12 +156,14 @@ public class HotBathConfig {
             enableWaterlogging = ENABLE_WATERLOGGING.get();
             enableDirtinessSystem = ENABLE_DIRTINESS_SYSTEM.get();
             enableModIntegrations = ENABLE_MOD_INTEGRATIONS.get();
+            coralDiesInHotbath = CORAL_DIES_IN_HOTBATH.get();
             
             HotBath.LOGGER.info("HotBath config loaded:");
             HotBath.LOGGER.info("  - Compatibility mode: {}", compatibilityMode);
             HotBath.LOGGER.info("  - Waterlogging: {}", isWaterloggingEnabled());
             HotBath.LOGGER.info("  - Dirtiness system: {}", isDirtinessEnabled());
             HotBath.LOGGER.info("  - Mod integrations: {}", isModIntegrationsEnabled());
+            HotBath.LOGGER.info("  - Coral dies in hotbath: {}", coralDiesInHotbath);
             
             if (compatibilityMode) {
                 HotBath.LOGGER.info("Compatibility mode is ON - all advanced features are disabled.");

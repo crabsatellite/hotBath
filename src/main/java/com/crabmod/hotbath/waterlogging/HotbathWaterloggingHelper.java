@@ -1,6 +1,7 @@
 package com.crabmod.hotbath.waterlogging;
 
 import com.crabmod.hotbath.HotBath;
+import com.crabmod.hotbath.custom_fluid.DynamicFluidRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -30,6 +31,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * Since the vanilla WATERLOGGED property is just a boolean, we need a way to
  * remember which fluid was actually placed in the block.
  * 
+ * <p>For dynamic custom fluids (from data packs), this also stores the custom
+ * fluid ID (e.g., "hotbath:milk_tea") to preserve color and properties.</p>
+ * 
  * <p>Defensive Design Notes:
  * <ul>
  *   <li>When mod is unloaded, waterlogged blocks will fall back to vanilla water behavior</li>
@@ -44,6 +48,9 @@ public class HotbathWaterloggingHelper {
     
     // Client-side cache for fluid types (synced from server via packets)
     private static final Map<Long, ResourceLocation> clientFluidCache = new ConcurrentHashMap<>();
+    
+    // Client-side cache for custom fluid IDs (for dynamic custom fluids)
+    private static final Map<Long, ResourceLocation> clientCustomFluidIdCache = new ConcurrentHashMap<>();
 
     /**
      * Store the fluid type for a waterlogged position
@@ -69,6 +76,72 @@ public class HotbathWaterloggingHelper {
             if (fluidId != null && !fluidId.equals(waterId)) {
                 clientFluidCache.put(pos.asLong(), fluidId);
             }
+        }
+    }
+    
+    /**
+     * Store the custom fluid ID for a waterlogged position (for dynamic custom fluids).
+     * This should be called in addition to storeFluidType for dynamic custom fluids.
+     * 
+     * @param level The level
+     * @param pos The position
+     * @param customFluidId The custom fluid ID (e.g., "hotbath:milk_tea")
+     */
+    public static void storeCustomFluidId(LevelAccessor level, BlockPos pos, ResourceLocation customFluidId) {
+        if (customFluidId == null || pos == null) return;
+        
+        if (level instanceof ServerLevel serverLevel) {
+            WaterloggingData data = getOrCreateData(serverLevel);
+            data.setCustomFluidId(pos, customFluidId);
+            // Update client cache
+            clientCustomFluidIdCache.put(pos.asLong(), customFluidId);
+            // Sync to all clients
+            WaterloggingNetworking.syncCustomFluidIdToAllPlayers(pos, customFluidId);
+        } else if (level instanceof Level clientLevel && clientLevel.isClientSide()) {
+            clientCustomFluidIdCache.put(pos.asLong(), customFluidId);
+        }
+    }
+    
+    /**
+     * Get the stored custom fluid ID for a position.
+     * This is used for dynamic custom fluids to determine their color and properties.
+     * 
+     * @param level The level
+     * @param pos The position
+     * @return The custom fluid ID, or null if not stored
+     */
+    @Nullable
+    public static ResourceLocation getStoredCustomFluidId(LevelAccessor level, BlockPos pos) {
+        if (pos == null) return null;
+        
+        if (level instanceof ServerLevel serverLevel) {
+            WaterloggingData data = getOrCreateData(serverLevel);
+            return data.getCustomFluidId(pos);
+        }
+        // For client side, use the cache
+        return clientCustomFluidIdCache.get(pos.asLong());
+    }
+    
+    /**
+     * Get the stored custom fluid ID from client cache only.
+     * This is optimized for client-side rendering.
+     */
+    @Nullable
+    public static ResourceLocation getStoredCustomFluidIdClientDirect(BlockPos pos) {
+        if (pos == null) return null;
+        return clientCustomFluidIdCache.get(pos.asLong());
+    }
+    
+    /**
+     * Update client cache for custom fluid ID
+     */
+    public static void updateClientCustomFluidIdCache(BlockPos pos, ResourceLocation customFluidId) {
+        if (pos == null) return;
+        
+        if (customFluidId == null) {
+            clientCustomFluidIdCache.remove(pos.asLong());
+        } else {
+            clientCustomFluidIdCache.put(pos.asLong(), customFluidId);
         }
     }
 
@@ -173,6 +246,7 @@ public class HotbathWaterloggingHelper {
     public static void removeFromClientCache(BlockPos pos) {
         if (pos != null) {
             clientFluidCache.remove(pos.asLong());
+            clientCustomFluidIdCache.remove(pos.asLong());
         }
     }
     
@@ -181,6 +255,7 @@ public class HotbathWaterloggingHelper {
      */
     public static void clearClientCache() {
         clientFluidCache.clear();
+        clientCustomFluidIdCache.clear();
     }
 
     /**
@@ -192,11 +267,13 @@ public class HotbathWaterloggingHelper {
         if (level instanceof ServerLevel serverLevel) {
             WaterloggingData data = getOrCreateData(serverLevel);
             data.removeFluid(pos);
+            data.removeCustomFluidId(pos);
             // Also sync removal to clients
             WaterloggingNetworking.syncRemoveToAllPlayers(pos);
         }
         // Also remove from local cache
         clientFluidCache.remove(pos.asLong());
+        clientCustomFluidIdCache.remove(pos.asLong());
     }
     
     /**
@@ -235,6 +312,14 @@ public class HotbathWaterloggingHelper {
         WaterloggingData data = getOrCreateData(level);
         return data.getAllFluidsForSync();
     }
+    
+    /**
+     * Get all stored custom fluid IDs for syncing to clients
+     */
+    public static Map<Long, ResourceLocation> getAllStoredCustomFluidIds(ServerLevel level) {
+        WaterloggingData data = getOrCreateData(level);
+        return data.getAllCustomFluidIdsForSync();
+    }
 
     /**
      * SavedData implementation to persist waterlogged fluid types.
@@ -248,11 +333,13 @@ public class HotbathWaterloggingHelper {
      */
     public static class WaterloggingData extends SavedData {
         private final Map<BlockPos, ResourceLocation> fluidMap = new HashMap<>();
+        private final Map<BlockPos, ResourceLocation> customFluidIdMap = new HashMap<>();
 
         public WaterloggingData() {
         }
 
         public WaterloggingData(CompoundTag tag, HolderLookup.Provider provider) {
+            // Load fluid types
             CompoundTag fluidsTag = tag.getCompound("fluids");
             for (String key : fluidsTag.getAllKeys()) {
                 String[] parts = key.split(",");
@@ -279,6 +366,29 @@ public class HotbathWaterloggingHelper {
                     }
                 }
             }
+            
+            // Load custom fluid IDs (for dynamic custom fluids)
+            if (tag.contains("customFluidIds")) {
+                CompoundTag customIdsTag = tag.getCompound("customFluidIds");
+                for (String key : customIdsTag.getAllKeys()) {
+                    String[] parts = key.split(",");
+                    if (parts.length == 3) {
+                        try {
+                            int x = Integer.parseInt(parts[0]);
+                            int y = Integer.parseInt(parts[1]);
+                            int z = Integer.parseInt(parts[2]);
+                            BlockPos pos = new BlockPos(x, y, z);
+                            String customIdStr = customIdsTag.getString(key);
+                            ResourceLocation customId = ResourceLocation.tryParse(customIdStr);
+                            if (customId != null) {
+                                customFluidIdMap.put(pos, customId);
+                            }
+                        } catch (NumberFormatException e) {
+                            LOGGER.warn("Invalid position format in custom fluid ID data: {}", key);
+                        }
+                    }
+                }
+            }
         }
 
         public static Factory<WaterloggingData> factory() {
@@ -287,6 +397,7 @@ public class HotbathWaterloggingHelper {
 
         @Override
         public CompoundTag save(CompoundTag tag, HolderLookup.Provider provider) {
+            // Save fluid types
             CompoundTag fluidsTag = new CompoundTag();
             for (Map.Entry<BlockPos, ResourceLocation> entry : fluidMap.entrySet()) {
                 BlockPos pos = entry.getKey();
@@ -294,6 +405,16 @@ public class HotbathWaterloggingHelper {
                 fluidsTag.putString(key, entry.getValue().toString());
             }
             tag.put("fluids", fluidsTag);
+            
+            // Save custom fluid IDs
+            CompoundTag customIdsTag = new CompoundTag();
+            for (Map.Entry<BlockPos, ResourceLocation> entry : customFluidIdMap.entrySet()) {
+                BlockPos pos = entry.getKey();
+                String key = pos.getX() + "," + pos.getY() + "," + pos.getZ();
+                customIdsTag.putString(key, entry.getValue().toString());
+            }
+            tag.put("customFluidIds", customIdsTag);
+            
             return tag;
         }
 
@@ -305,6 +426,23 @@ public class HotbathWaterloggingHelper {
             // Only store non-vanilla water fluids
             if (fluidId != null && !fluidId.equals(waterId)) {
                 fluidMap.put(pos.immutable(), fluidId);
+                setDirty();
+            }
+        }
+        
+        public void setCustomFluidId(BlockPos pos, ResourceLocation customFluidId) {
+            if (pos == null || customFluidId == null) return;
+            customFluidIdMap.put(pos.immutable(), customFluidId);
+            setDirty();
+        }
+        
+        @Nullable
+        public ResourceLocation getCustomFluidId(BlockPos pos) {
+            return customFluidIdMap.get(pos);
+        }
+        
+        public void removeCustomFluidId(BlockPos pos) {
+            if (customFluidIdMap.remove(pos) != null) {
                 setDirty();
             }
         }
@@ -332,6 +470,8 @@ public class HotbathWaterloggingHelper {
             if (fluidMap.remove(pos) != null) {
                 setDirty();
             }
+            // Also remove custom fluid ID if present
+            customFluidIdMap.remove(pos);
         }
         
         /**
@@ -369,6 +509,8 @@ public class HotbathWaterloggingHelper {
                 
                 if (shouldRemove) {
                     iterator.remove();
+                    // Also remove from custom fluid ID map
+                    customFluidIdMap.remove(pos);
                     removed++;
                 }
             }
@@ -392,6 +534,17 @@ public class HotbathWaterloggingHelper {
                 if (BuiltInRegistries.FLUID.containsKey(entry.getValue())) {
                     result.put(entry.getKey().asLong(), entry.getValue());
                 }
+            }
+            return result;
+        }
+        
+        /**
+         * Get all custom fluid IDs as a map for syncing.
+         */
+        public Map<Long, ResourceLocation> getAllCustomFluidIdsForSync() {
+            Map<Long, ResourceLocation> result = new HashMap<>();
+            for (Map.Entry<BlockPos, ResourceLocation> entry : customFluidIdMap.entrySet()) {
+                result.put(entry.getKey().asLong(), entry.getValue());
             }
             return result;
         }

@@ -37,6 +37,18 @@
   "item.hotbath.splash_rose_bath_bottle": "Bouteille de Bain à la Rose Jetable",
   "item.hotbath.splash_rose_bath_bottle.desc": "Romance liquide, livrée à grande vitesse. Accorde la force de mille épines. Rien ne dit 'je tiens à toi' comme un visage plein d'eau de rose.",
   "fluid.hotbath.hot_water_block": "Bloc d'Eau Chaude",
+
+  "item.hotbath.custom_fluid_bucket": "Seau de %s",
+  "item.hotbath.custom_fluid_bucket.desc": "Un seau de liquide de bain personnalisé.",
+  "item.hotbath.custom_fluid_bucket.tooltip": "Contient: %s",
+  "item.hotbath.custom_fluid_bottle": "Bouteille de %s",
+  "item.hotbath.custom_fluid_bottle.desc": "Une bouteille de liquide de bain personnalisé buvable.",
+  "item.hotbath.custom_fluid_bottle.tooltip": "Contient: %s",
+  "item.hotbath.splash_custom_fluid_bottle": "Bouteille de %s Jetable",
+  "item.hotbath.splash_custom_fluid_bottle.desc": "Une bouteille de liquide de bain personnalisé jetable.",
+  "item.hotbath.splash_custom_fluid_bottle.tooltip": "Contient: %s",
+  "item.hotbath.custom_fluid.unknown": "Liquide Inconnu",
+
   "item.hotbath.bath_herb": "Herbe de Bain",
   "item.hotbath.bath_herb.desc": "Herbes mystérieuses d'Extrême-Orient, pulsant d'une énergie ancienne. On dit qu'elles harmonisent le flux intérieur et nettoient la lassitude de l'âme.",
   "itemGroup.hotbath.hotbath_tab": "Bain Chaud",
