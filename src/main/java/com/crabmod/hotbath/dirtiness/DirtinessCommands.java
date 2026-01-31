@@ -2,6 +2,7 @@ package com.crabmod.hotbath.dirtiness;
 
 import com.crabmod.hotbath.HotBath;
 import com.crabmod.hotbath.HotBathConfig;
+import com.crabmod.hotbath.util.AdvancementHelper;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import net.minecraft.commands.CommandSourceStack;
@@ -104,6 +105,9 @@ public class DirtinessCommands {
                         // Set to 100% dirty and simulate being at max for 2+ days
                         data.setDirtinessDebugWithFlies(gameTime);
                         DirtinessNetworking.syncToClient(player);
+                        
+                        // Award "Something Smells..." advancement
+                        AdvancementHelper.tryAwardAdvancement(player, "hotbath:something_smells", "code_triggered");
                         
                         context.getSource().sendSuccess(
                             () -> Component.translatable(KEY_FLIES),
