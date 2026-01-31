@@ -6,10 +6,16 @@ import com.crabmod.hotbath.util.ParticleGenerator;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -47,6 +53,41 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new CustomFluidBlockEntity(pos, state);
+    }
+
+    /**
+     * Override pickupBlock to return the correct custom fluid bucket.
+     * This is called when a player uses an empty bucket on the fluid block.
+     */
+    @Override
+    public @NotNull ItemStack pickupBlock(@Nullable Player player, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockState state) {
+        // Only allow pickup of source blocks (level 0)
+        if (state.getValue(LEVEL) != 0) {
+            return ItemStack.EMPTY;
+        }
+
+        // Get fluid definition from BlockEntity before removing it
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof CustomFluidBlockEntity customBe) {
+            Optional<CustomFluidDefinition> definitionOpt = customBe.getFluidDefinition();
+            if (definitionOpt.isPresent()) {
+                // Remove the fluid block
+                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
+                // Return the filled custom fluid bucket
+                return CustomFluidAPI.createBucket(definitionOpt.get());
+            }
+        }
+
+        // Fallback to parent behavior if no definition found
+        return super.pickupBlock(player, level, pos, state);
+    }
+
+    /**
+     * Override getPickupSound to return the correct sound for bucket pickup.
+     */
+    @Override
+    public @NotNull Optional<SoundEvent> getPickupSound() {
+        return Optional.of(SoundEvents.BUCKET_FILL);
     }
 
     /**
