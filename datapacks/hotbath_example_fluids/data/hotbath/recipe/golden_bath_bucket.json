@@ -1,0 +1,6 @@
+{
+  "type": "hotbath:custom_fluid_crafting",
+  "fluid_id": "hotbath:golden_bath",
+  "ingredient": "minecraft:gold_ingot",
+  "ingredient_count": 4
+}

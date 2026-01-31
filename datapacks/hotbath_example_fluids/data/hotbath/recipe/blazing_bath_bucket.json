@@ -1,0 +1,6 @@
+{
+  "type": "hotbath:custom_fluid_crafting",
+  "fluid_id": "hotbath:blazing_bath",
+  "ingredient": "minecraft:blaze_powder",
+  "ingredient_count": 4
+}

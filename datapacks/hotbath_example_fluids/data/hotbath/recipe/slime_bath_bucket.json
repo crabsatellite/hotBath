@@ -1,0 +1,6 @@
+{
+  "type": "hotbath:custom_fluid_crafting",
+  "fluid_id": "hotbath:slime_bath",
+  "ingredient": "minecraft:slime_ball",
+  "ingredient_count": 4
+}

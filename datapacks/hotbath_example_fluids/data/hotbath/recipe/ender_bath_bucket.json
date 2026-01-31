@@ -1,0 +1,6 @@
+{
+  "type": "hotbath:custom_fluid_crafting",
+  "fluid_id": "hotbath:ender_bath",
+  "ingredient": "minecraft:ender_pearl",
+  "ingredient_count": 4
+}

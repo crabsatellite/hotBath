@@ -1,0 +1,6 @@
+{
+  "type": "hotbath:custom_fluid_crafting",
+  "fluid_id": "hotbath:enchanted_bath",
+  "ingredient": "minecraft:lapis_lazuli",
+  "ingredient_count": 4
+}
