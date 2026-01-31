@@ -5,7 +5,11 @@
   "compatibilityLevel": "JAVA_21",
   "plugin": "com.crabmod.hotbath.mixin.sodium.SodiumMixinPlugin",
   "mixins": [],
-  "client": ["FluidRendererImplMixin", "DefaultFluidRendererMixin"],
+  "client": [
+    "FluidRendererImplMixin",
+    "DefaultFluidRendererMixin",
+    "ItemRendererSodiumSmokeZOffsetMixin"
+  ],
   "injectors": {
     "defaultRequire": 0
   }
