@@ -1,5 +1,6 @@
 package com.crabmod.hotbath.custom_fluid;
 
+import com.crabmod.hotbath.registers.CustomFluidBlocksRegister;
 import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -16,6 +17,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -106,8 +108,23 @@ public class CustomFluidBucketItem extends Item {
             // Can only place in air or replaceable blocks
             if (targetState.isAir() || targetState.canBeReplaced()) {
                 if (!level.isClientSide) {
-                    // For now, waterlog a barrier or place nothing (custom fluid blocks need more implementation)
-                    // This is a simplified version - full implementation needs custom fluid block placement
+                    // Check if target is already a custom fluid block - just update the fluid ID
+                    BlockEntity existingBe = level.getBlockEntity(placePos);
+                    if (existingBe instanceof CustomFluidBlockEntity customBe) {
+                        // Directly update the existing BlockEntity - this triggers render refresh
+                        customBe.setFluidId(definition.id());
+                    } else {
+                        // Place dynamic custom fluid block with BlockEntity to store fluid ID
+                        BlockState fluidState = CustomFluidBlocksRegister.CUSTOM_FLUID_BLOCK.get().defaultBlockState();
+                        level.setBlock(placePos, fluidState, 11);
+                        
+                        // Set the fluid ID in the BlockEntity
+                        BlockEntity be = level.getBlockEntity(placePos);
+                        if (be instanceof CustomFluidBlockEntity newBe) {
+                            newBe.setFluidId(definition.id());
+                        }
+                    }
+                    
                     level.playSound(null, placePos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
                     level.gameEvent(player, GameEvent.FLUID_PLACE, placePos);
                 }
