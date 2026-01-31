@@ -156,4 +156,22 @@ public class TwilightForestEventHandler {
     public static void onPlayerLoggedOut(UUID playerId) {
         playerWasInBath.remove(playerId);
     }
+    
+    /**
+     * Check if an entity is a Twilight Forest ice mob that should take damage in hot bath.
+     * Ice mobs include: IceCrystal, StableIceCore, UnstableIceCore, SnowGuardian, and SnowQueen.
+     * @param entity The entity to check
+     * @return true if the entity is an ice mob
+     */
+    public static boolean isIceMob(net.minecraft.world.entity.Entity entity) {
+        // Check for BaseIceMob (parent class of IceCrystal, StableIceCore, UnstableIceCore, SnowGuardian)
+        if (entity instanceof twilightforest.entity.monster.BaseIceMob) {
+            return true;
+        }
+        // Check for SnowQueen (boss entity, not a subclass of BaseIceMob)
+        if (entity instanceof twilightforest.entity.boss.SnowQueen) {
+            return true;
+        }
+        return false;
+    }
 }
