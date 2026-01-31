@@ -110,14 +110,21 @@ public class CustomFluidBucketItem extends Item {
             // Can only place in air or replaceable blocks
             if (targetState.isAir() || targetState.canBeReplaced()) {
                 if (!level.isClientSide) {
-                    // Place dynamic custom fluid block with BlockEntity to store fluid ID
-                    BlockState fluidState = CustomFluidBlocksRegister.CUSTOM_FLUID_BLOCK.get().defaultBlockState();
-                    level.setBlock(placePos, fluidState, 11);
-                    
-                    // Set the fluid ID in the BlockEntity
-                    BlockEntity be = level.getBlockEntity(placePos);
-                    if (be instanceof CustomFluidBlockEntity customBe) {
+                    // Check if target is already a custom fluid block - just update the fluid ID
+                    BlockEntity existingBe = level.getBlockEntity(placePos);
+                    if (existingBe instanceof CustomFluidBlockEntity customBe) {
+                        // Directly update the existing BlockEntity - this triggers render refresh
                         customBe.setFluidId(definition.id());
+                    } else {
+                        // Place dynamic custom fluid block with BlockEntity to store fluid ID
+                        BlockState fluidState = CustomFluidBlocksRegister.CUSTOM_FLUID_BLOCK.get().defaultBlockState();
+                        level.setBlock(placePos, fluidState, 11);
+                        
+                        // Set the fluid ID in the BlockEntity
+                        BlockEntity be = level.getBlockEntity(placePos);
+                        if (be instanceof CustomFluidBlockEntity newBe) {
+                            newBe.setFluidId(definition.id());
+                        }
                     }
                     
                     level.playSound(null, placePos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);

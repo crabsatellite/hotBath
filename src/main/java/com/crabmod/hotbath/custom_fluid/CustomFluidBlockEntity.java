@@ -8,6 +8,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -108,5 +109,22 @@ public class CustomFluidBlockEntity extends BlockEntity {
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+    
+    @Override
+    public void handleUpdateTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
+        ResourceLocation oldFluidId = this.fluidId;
+        super.handleUpdateTag(tag, registries);
+        loadAdditional(tag, registries);
+        
+        // If fluid ID changed, trigger re-render
+        if (level != null && level.isClientSide) {
+            boolean fluidChanged = (oldFluidId == null && fluidId != null) 
+                    || (oldFluidId != null && !oldFluidId.equals(fluidId));
+            if (fluidChanged) {
+                // Force chunk re-render for fluid color update
+                level.setBlocksDirty(worldPosition, Blocks.AIR.defaultBlockState(), getBlockState());
+            }
+        }
     }
 }
