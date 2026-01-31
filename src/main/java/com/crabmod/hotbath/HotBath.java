@@ -202,8 +202,6 @@ public class HotBath {
     }
     
     private void registerBrewingRecipes(final FMLCommonSetupEvent event) {
-    
-    private void registerBrewingRecipes(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemRegister.HOT_WATER_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_HOT_WATER_BOTTLE.get().getDefaultInstance());
             BrewingRecipeRegistry.addRecipe(Ingredient.of(ItemRegister.HONEY_BATH_BOTTLE.get()), Ingredient.of(Items.GUNPOWDER), ItemRegister.SPLASH_HONEY_BATH_BOTTLE.get().getDefaultInstance());

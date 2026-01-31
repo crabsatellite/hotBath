@@ -56,7 +56,8 @@
   ],
   "client": [
     "client.BlockRenderDispatcherMixin",
-    "client.LiquidBlockRendererMixin"
+    "client.LiquidBlockRendererMixin",
+    "client.ItemRendererSmokeZOffsetMixin"
   ],
   "injectors": {
     "defaultRequire": 1
