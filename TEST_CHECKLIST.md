@@ -1412,3 +1412,56 @@
 
 - [ ] 放置大量（50+）自定义流体方块时游戏不卡顿
 - [ ] 多个玩家同时使用自定义流体物品时游戏不卡顿
+
+---
+
+## 14. 兼容性安全系统测试 (Compatibility Safety System)
+
+测试 CompatManager 的错误处理和玩家通知功能
+
+### 14.1 启动日志 (Startup Logging)
+
+游戏启动后检查日志
+
+- [ ] 日志显示 "=== Hot Bath Mod Compatibility System ==="
+- [ ] 日志显示 "Hot Bath version: X.X.X"
+- [ ] 日志显示 "Minecraft version: 1.21.x" 或 "1.20.1"
+- [ ] 每个已加载的模组显示 "[ENABLED] ModName (vX.X.X)"
+- [ ] 未加载的模组显示 "[NOT LOADED] ModName - mod not present"
+- [ ] 日志最后显示 "Summary: X enabled, X disabled, X not loaded"
+
+### 14.2 错误自动禁用 (Automatic Disable on Error)
+
+**测试方法：** 模拟兼容模组 API 变更（需要手动创建测试场景）
+
+- [ ] 如果 compat 初始化失败，日志显示 "HOT BATH COMPAT ERROR: XXX integration DISABLED"
+- [ ] 日志包含模组 ID 和版本信息
+- [ ] 日志包含 GitHub issue 报告链接
+- [ ] 游戏不会崩溃，继续正常运行
+- [ ] 失败的 compat 不会再次尝试执行
+
+### 14.3 玩家通知系统 (Player Notification)
+
+**测试条件：** 需要有 compat 失败的情况
+
+- [ ] 玩家首次进入游戏时收到聊天栏通知
+- [ ] 通知包含 "[Hot Bath] ⚠ Compatibility Warning" 标题
+- [ ] 通知显示哪个模组的兼容功能被禁用
+- [ ] 通知显示该模组的版本号
+- [ ] 通知包含可点击的 GitHub issue 链接
+- [ ] 同一个玩家在同一游戏会话中不会收到重复通知
+- [ ] 退出并重新进入游戏后，通知会再次显示（新会话）
+
+### 14.4 运行时错误处理 (Runtime Error Handling)
+
+- [ ] 如果 compat 操作在运行时出错，不会导致游戏崩溃
+- [ ] 运行时错误会禁用该 compat 模块
+- [ ] 玩家会在下次进入时收到通知
+
+### 14.5 多模组兼容 (Multiple Mods)
+
+同时安装多个兼容模组测试
+
+- [ ] 所有兼容模组都能正常初始化
+- [ ] 如果其中一个模组出错，不影响其他模组
+- [ ] 日志正确记录所有模组的状态

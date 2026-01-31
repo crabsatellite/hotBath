@@ -3,6 +3,7 @@ package com.crabmod.hotbath;
 import com.crabmod.hotbath.client.particle.CustomDripParticle;
 import com.crabmod.hotbath.client.particle.FlyParticle;
 import com.crabmod.hotbath.client.particle.HotBathBubbleParticle;
+import com.crabmod.hotbath.compat.CompatManager;
 import com.crabmod.hotbath.compat.ColdSweatCompat;
 import com.crabmod.hotbath.compat.ColdSweatIntegration;
 import com.crabmod.hotbath.compat.LegendarySurvivalOverhaulIntegration;
@@ -14,6 +15,7 @@ import com.crabmod.hotbath.compat.AlexsMobsIntegration;
 import com.crabmod.hotbath.compat.AlexsCavesCompat;
 import com.crabmod.hotbath.compat.AlexsCavesIntegration;
 import com.crabmod.hotbath.compat.CreateCompat;
+import com.crabmod.hotbath.compat.CreateIntegration;
 import com.crabmod.hotbath.compat.TwilightForestCompat;
 import com.crabmod.hotbath.compat.TwilightForestIntegration;
 import com.crabmod.hotbath.compat.FarmersDelightCompat;
@@ -113,92 +115,80 @@ public class HotBath {
             return;
         }
 
-        if (ColdSweatIntegration.isColdSweatLoaded()) {
-            LOGGER.info("Cold Sweat detected! Temperature integration enabled.");
-            try {
-                ColdSweatCompat.init();
-                LOGGER.info("Cold Sweat event handler registered successfully.");
-            } catch (Exception e) {
-                LOGGER.error("Failed to register Cold Sweat event handler: {}", e.getMessage(), e);
-            }
-        }
-
-        if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {
-            LOGGER.info("Tough As Nails detected! Temperature integration enabled.");
-            try {
-                ToughAsNailsCompat.init();
-                LOGGER.info("Tough As Nails integration registered successfully.");
-            } catch (Exception e) {
-                LOGGER.error("Failed to initialize Tough As Nails integration: {}", e.getMessage(), e);
-            }
-        }
-
-        if (LegendarySurvivalOverhaulIntegration.isLSOLoaded()) {
-            LOGGER.info("Legendary Survival Overhaul detected! Integration enabled.");
-            try {
-                LSOCompat.init();
-                LOGGER.info("LSO integration registered successfully.");
-            } catch (Exception e) {
-                LOGGER.error("Failed to register LSO integration: {}", e.getMessage(), e);
-            }
-        }
-
-        if (AlexsMobsIntegration.isAlexsMobsLoaded()) {
-            LOGGER.info("Alex's Mobs detected! Fly/Mosquito/Cockroach attraction integration enabled.");
-            try {
-                AlexsMobsCompat.init();
-                LOGGER.info("Alex's Mobs integration registered successfully.");
-            } catch (Exception e) {
-                LOGGER.error("Failed to register Alex's Mobs integration: {}", e.getMessage(), e);
-            }
-        }
-
-        if (AlexsCavesIntegration.isAlexsCavesLoaded()) {
-            LOGGER.info("Alex's Caves detected! GummyBear/Gammaroach/Raycat integration enabled.");
-            try {
-                AlexsCavesCompat.init();
-                LOGGER.info("Alex's Caves integration registered successfully.");
-            } catch (Exception e) {
-                LOGGER.error("Failed to register Alex's Caves integration: {}", e.getMessage(), e);
-            }
-        }
-
-        if (TwilightForestIntegration.isTwilightForestLoaded()) {
-            LOGGER.info("Twilight Forest detected! Frost effect removal and firefly particles enabled.");
-            try {
-                TwilightForestCompat.init();
-                LOGGER.info("Twilight Forest integration registered successfully.");
-            } catch (Exception e) {
-                LOGGER.error("Failed to register Twilight Forest integration: {}", e.getMessage(), e);
-            }
-        }
-
-        if (FarmersDelightIntegration.isFarmersDelightLoaded()) {
-            LOGGER.info("Farmer's Delight detected! Comfort effect integration enabled.");
-            try {
-                FarmersDelightCompat.init();
-                LOGGER.info("Farmer's Delight integration registered successfully.");
-            } catch (Exception e) {
-                LOGGER.error("Failed to register Farmer's Delight integration: {}", e.getMessage(), e);
-            }
-        }
-
-        if (SereneSeasonsIntegration.isSereneSeasonsLoaded()) {
-            LOGGER.info("Serene Seasons detected! Winter buff and anti-freeze integration enabled.");
-            try {
-                SereneSeasonsCompat.init();
-                LOGGER.info("Serene Seasons integration registered successfully.");
-            } catch (Exception e) {
-                LOGGER.error("Failed to register Serene Seasons integration: {}", e.getMessage(), e);
-            }
-        }
-
-        // Create integration - Open Pipe Effects and Spouting Behaviours
-        try {
-            CreateCompat.init();
-        } catch (Exception e) {
-            LOGGER.error("Failed to initialize Create integration: {}", e.getMessage(), e);
-        }
+        // Register all compat modules with the CompatManager
+        registerCompatModules();
+        
+        // Initialize all registered compats safely
+        CompatManager.initializeAll();
+    }
+    
+    /**
+     * Register all compatibility modules with the CompatManager.
+     * Each module is registered with its mod ID, display name, load check, and initializer.
+     */
+    private void registerCompatModules() {
+        CompatManager.registerCompat(
+            "coldsweat",
+            "Cold Sweat",
+            ColdSweatIntegration::isColdSweatLoaded,
+            ColdSweatCompat::init
+        );
+        
+        CompatManager.registerCompat(
+            "toughasnails",
+            "Tough As Nails",
+            ToughAsNailsIntegration::isToughAsNailsLoaded,
+            ToughAsNailsCompat::init
+        );
+        
+        CompatManager.registerCompat(
+            "legendarysurvivaloverhaul",
+            "Legendary Survival Overhaul",
+            LegendarySurvivalOverhaulIntegration::isLSOLoaded,
+            LSOCompat::init
+        );
+        
+        CompatManager.registerCompat(
+            "alexsmobs",
+            "Alex's Mobs",
+            AlexsMobsIntegration::isAlexsMobsLoaded,
+            AlexsMobsCompat::init
+        );
+        
+        CompatManager.registerCompat(
+            "alexscaves",
+            "Alex's Caves",
+            AlexsCavesIntegration::isAlexsCavesLoaded,
+            AlexsCavesCompat::init
+        );
+        
+        CompatManager.registerCompat(
+            "twilightforest",
+            "Twilight Forest",
+            TwilightForestIntegration::isTwilightForestLoaded,
+            TwilightForestCompat::init
+        );
+        
+        CompatManager.registerCompat(
+            "farmersdelight",
+            "Farmer's Delight",
+            FarmersDelightIntegration::isFarmersDelightLoaded,
+            FarmersDelightCompat::init
+        );
+        
+        CompatManager.registerCompat(
+            "sereneseasons",
+            "Serene Seasons",
+            SereneSeasonsIntegration::isSereneSeasonsLoaded,
+            SereneSeasonsCompat::init
+        );
+        
+        CompatManager.registerCompat(
+            "create",
+            "Create",
+            CreateIntegration::isCreateLoaded,
+            CreateCompat::init
+        );
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

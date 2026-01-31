@@ -28,10 +28,18 @@ import java.util.function.Predicate;
  */
 public class CreateIntegration {
     private static final Logger LOGGER = LogUtils.getLogger();
+    private static final String CREATE_MOD_ID = "create";
     
     // Effect durations (in ticks)
     private static final int PIPE_EFFECT_DURATION = 200; // 10 seconds
     private static final int PIPE_EFFECT_INTERVAL = 5; // Apply every 5 ticks
+    
+    /**
+     * Check if Create mod is loaded.
+     */
+    public static boolean isCreateLoaded() {
+        return net.neoforged.fml.ModList.get().isLoaded(CREATE_MOD_ID);
+    }
     
     /**
      * Initialize all Create integrations.
