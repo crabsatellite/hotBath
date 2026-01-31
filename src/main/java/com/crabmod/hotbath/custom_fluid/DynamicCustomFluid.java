@@ -1,11 +1,13 @@
 package com.crabmod.hotbath.custom_fluid;
 
+import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import org.jetbrains.annotations.NotNull;
@@ -23,6 +25,7 @@ public abstract class DynamicCustomFluid extends ForgeFlowingFluid {
     /**
      * Override spreadTo to copy BlockEntity data from source to new flowing block.
      * This ensures flowing fluid maintains the same color as the source.
+     * Also checks waterlogging storage for custom fluid ID when spreading from waterlogged blocks.
      */
     @Override
     protected void spreadTo(@NotNull LevelAccessor level, @NotNull BlockPos pos, 
@@ -31,11 +34,23 @@ public abstract class DynamicCustomFluid extends ForgeFlowingFluid {
         // Get the source position (where the fluid is spreading FROM)
         BlockPos sourcePos = pos.relative(direction.getOpposite());
         
-        // Get fluid data from the source block
+        // Get fluid data from the source block - check BlockEntity first, then waterlogging storage
         ResourceLocation fluidId = null;
+        
+        // Try to get from BlockEntity first
         BlockEntity sourceBe = level.getBlockEntity(sourcePos);
         if (sourceBe instanceof CustomFluidBlockEntity sourceFluidBe) {
             fluidId = sourceFluidBe.getFluidId();
+        }
+        
+        // If not found in BlockEntity, try waterlogging storage
+        // This handles the case when fluid spreads from a waterlogged block
+        if (fluidId == null) {
+            BlockState sourceState = level.getBlockState(sourcePos);
+            if (sourceState.hasProperty(BlockStateProperties.WATERLOGGED) 
+                    && sourceState.getValue(BlockStateProperties.WATERLOGGED)) {
+                fluidId = HotbathWaterloggingHelper.getCustomFluidId(sourcePos);
+            }
         }
         
         // Call parent to place the fluid block

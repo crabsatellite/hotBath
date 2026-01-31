@@ -77,7 +77,7 @@ public abstract class CoralWallFanBlockMixin {
                         .setValue(BlockStateProperties.HORIZONTAL_FACING, state.getValue(BlockStateProperties.HORIZONTAL_FACING));
                 level.setBlock(pos, deadState, 2);
                 // Transfer the stored fluid type to the dead coral block
-                HotbathWaterloggingHelper.storeFluidType(level, pos, storedFluid);
+                HotbathWaterloggingHelper.storeFluidTypeWithCustomId(level, pos, storedFluid);
                 ci.cancel();
             }
         }

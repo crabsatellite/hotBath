@@ -60,7 +60,7 @@ public abstract class LightBlockMixin extends Block implements SimpleWaterlogged
                 return;
             }
                 // Store the fluid type for later retrieval
-            HotbathWaterloggingHelper.storeFluidType(level, pos, fluidState.getType());
+            HotbathWaterloggingHelper.storeFluidTypeWithCustomId(level, pos, fluidState.getType());
                 // DEFENSIVE: Create new state from current world state
             BlockState newState = currentState.setValue(BlockStateProperties.WATERLOGGED, true);
                 // Set the block state with flag 3 (notify clients + neighbors)

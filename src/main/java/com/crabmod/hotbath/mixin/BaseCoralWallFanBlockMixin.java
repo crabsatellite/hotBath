@@ -39,7 +39,7 @@ public abstract class BaseCoralWallFanBlockMixin {
             // Only store hotBath fluids specifically
             if (HotbathFluidHelper.isHotbathFluid(fluidType)) {
                 Fluid sourceFluid = HotbathFluidHelper.getSourceFluid(fluidType);
-                HotbathWaterloggingHelper.storeFluidType(context.getLevel(), context.getClickedPos(), sourceFluid);
+                HotbathWaterloggingHelper.storeFluidTypeWithCustomId(context.getLevel(), context.getClickedPos(), sourceFluid);
             }
         }
     }

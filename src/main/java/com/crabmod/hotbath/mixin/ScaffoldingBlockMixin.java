@@ -66,7 +66,7 @@ public abstract class ScaffoldingBlockMixin extends Block implements SimpleWater
             }
             
             // Store the fluid type for later retrieval
-            HotbathWaterloggingHelper.storeFluidType(level, pos, fluidState.getType());
+            HotbathWaterloggingHelper.storeFluidTypeWithCustomId(level, pos, fluidState.getType());
             
             // DEFENSIVE: Create new state from current world state
             BlockState newState = currentState.setValue(BlockStateProperties.WATERLOGGED, true);

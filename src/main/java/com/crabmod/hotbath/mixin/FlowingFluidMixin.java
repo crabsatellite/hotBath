@@ -162,7 +162,7 @@ public abstract class FlowingFluidMixin {
             // Update the stored fluid type to the new one (source version)
             if (!level.isClientSide()) {
                 Fluid sourceFluid = HotbathFluidHelper.getSourceFluid(fluidState.getType());
-                HotbathWaterloggingHelper.storeFluidType(level, pos, sourceFluid);
+                HotbathWaterloggingHelper.storeFluidTypeWithCustomId(level, pos, sourceFluid);
             }
             ci.cancel();
         }

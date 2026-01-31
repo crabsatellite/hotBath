@@ -77,7 +77,7 @@ public abstract class CoralPlantBlockMixin {
                         .setValue(BlockStateProperties.WATERLOGGED, Boolean.TRUE);
                 level.setBlock(pos, deadState, 2);
                 // Transfer the stored fluid type to the dead coral block
-                HotbathWaterloggingHelper.storeFluidType(level, pos, storedFluid);
+                HotbathWaterloggingHelper.storeFluidTypeWithCustomId(level, pos, storedFluid);
                 ci.cancel();
             }
         }

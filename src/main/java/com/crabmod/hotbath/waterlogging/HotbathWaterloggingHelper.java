@@ -1,16 +1,21 @@
 package com.crabmod.hotbath.waterlogging;
 
 import com.crabmod.hotbath.HotBath;
+import com.crabmod.hotbath.custom_fluid.CustomFluidBlockEntity;
+import com.crabmod.hotbath.custom_fluid.DynamicFluidRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -417,6 +422,82 @@ public class HotbathWaterloggingHelper {
                 }
             }
             return result;
+        }
+    }
+    
+    // =============================================================
+    // Utility methods for waterlogging with custom fluids
+    // =============================================================
+    
+    /**
+     * Check if a fluid is the dynamic custom fluid (from data packs).
+     */
+    public static boolean isDynamicCustomFluid(Fluid fluid) {
+        Fluid sourceFluid = getSourceFluid(fluid);
+        return sourceFluid == DynamicFluidRegistry.DYNAMIC_FLUID_STILL.get()
+                || sourceFluid == DynamicFluidRegistry.DYNAMIC_FLUID_FLOWING.get();
+    }
+    
+    /**
+     * Get the source version of a fluid.
+     * For FlowingFluid, this returns the source fluid.
+     * For other fluids, returns the fluid itself.
+     */
+    public static Fluid getSourceFluid(Fluid fluid) {
+        if (fluid instanceof FlowingFluid flowingFluid) {
+            return flowingFluid.getSource();
+        }
+        return fluid;
+    }
+    
+    /**
+     * Find the custom fluid ID from surrounding CustomFluidBlockEntity blocks.
+     * Searches current position first, then adjacent positions.
+     * 
+     * @param level The level accessor
+     * @param pos The block position to search around
+     * @return The custom fluid ID, or null if not found
+     */
+    @Nullable
+    public static ResourceLocation findCustomFluidIdFromSurrounding(LevelAccessor level, BlockPos pos) {
+        // First check the current position (in case the fluid block is there)
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof CustomFluidBlockEntity customBe && customBe.getFluidId() != null) {
+            return customBe.getFluidId();
+        }
+        
+        // Search adjacent positions for CustomFluidBlockEntity
+        for (Direction dir : Direction.values()) {
+            BlockPos adjacent = pos.relative(dir);
+            BlockEntity adjacentBe = level.getBlockEntity(adjacent);
+            if (adjacentBe instanceof CustomFluidBlockEntity customBe && customBe.getFluidId() != null) {
+                return customBe.getFluidId();
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Store the fluid type for waterlogging, handling custom fluids automatically.
+     * This method should be called when waterlogging a block to ensure custom fluid IDs
+     * are properly stored.
+     * 
+     * @param level The level accessor
+     * @param pos The block position
+     * @param fluid The fluid being placed
+     */
+    public static void storeFluidTypeWithCustomId(LevelAccessor level, BlockPos pos, Fluid fluid) {
+        // Store the regular fluid type
+        Fluid sourceFluid = getSourceFluid(fluid);
+        storeFluidType(level, pos, sourceFluid);
+        
+        // For dynamic custom fluids, also store the custom fluid ID
+        if (isDynamicCustomFluid(sourceFluid)) {
+            ResourceLocation customFluidId = findCustomFluidIdFromSurrounding(level, pos);
+            if (customFluidId != null) {
+                storeCustomFluidId(level, pos, customFluidId);
+            }
         }
     }
 }

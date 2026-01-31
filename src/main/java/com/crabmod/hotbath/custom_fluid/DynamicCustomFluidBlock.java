@@ -3,8 +3,10 @@ package com.crabmod.hotbath.custom_fluid;
 import com.crabmod.hotbath.fluid_blocks.AbstractHotbathBlock;
 import com.crabmod.hotbath.fluid_blocks.IInsideAreaTracker;
 import com.crabmod.hotbath.util.ParticleGenerator;
+import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -39,6 +41,7 @@ import java.util.function.Supplier;
  *   <li>Generates steam particles only when fluid is hot (temperature >= threshold)</li>
  *   <li>Applies effects from the stored fluid definition</li>
  *   <li>Supports tinted rendering based on fluid color</li>
+ *   <li>Recovers custom fluid ID from waterlogging storage when created from broken waterlogged blocks</li>
  * </ul>
  */
 public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements EntityBlock, IInsideAreaTracker {
@@ -53,6 +56,37 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new CustomFluidBlockEntity(pos, state);
+    }
+    
+    /**
+     * Called when this block is placed in the world.
+     * Checks if there was a stored custom fluid ID in waterlogging storage at this position,
+     * which happens when a waterlogged block is broken and releases the fluid.
+     */
+    @Override
+    public void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, 
+                        @NotNull BlockState oldState, boolean movedByPiston) {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+        
+        if (level.isClientSide) {
+            return;
+        }
+        
+        // Check if there's a stored custom fluid ID from waterlogging at this position
+        // This handles the case when a waterlogged block is broken and fluid is released
+        ResourceLocation customFluidId = HotbathWaterloggingHelper.getCustomFluidId(pos);
+        if (customFluidId != null) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof CustomFluidBlockEntity customBe) {
+                // Only set if the BlockEntity doesn't already have a fluid ID
+                if (customBe.getFluidId() == null) {
+                    customBe.setFluidId(customFluidId);
+                }
+            }
+            // Clean up the waterlogging storage since we've moved the fluid to a regular block
+            HotbathWaterloggingHelper.removeFluidType(level, pos);
+            HotbathWaterloggingHelper.removeFromClientCache(pos);
+        }
     }
 
     /**
