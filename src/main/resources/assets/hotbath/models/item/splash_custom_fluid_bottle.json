@@ -1,8 +1,12 @@
 {
+  "loader": "neoforge:item_layers",
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "minecraft:item/potion_overlay",
     "layer1": "minecraft:item/splash_potion",
     "layer2": "hotbath:item/custom_splash_smoke"
+  },
+  "render_types": {
+    "minecraft:translucent": [2]
   }
 }
