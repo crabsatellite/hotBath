@@ -171,11 +171,21 @@ public class DirtinessHandler {
                                                 DirtinessFactors factors, long gameTime) {
         // Only update dirt every DIRT_UPDATE_INTERVAL ticks for performance
         if (player.tickCount % DIRT_UPDATE_INTERVAL == 0) {
+            // Check flies state BEFORE adding dirt
+            boolean hadFlies = data.shouldSpawnFlies(gameTime);
+            
             // Calculate environmental multiplier
             float multiplier = factors.calculateMultiplier(player, gameTime);
             
             // Add dirt based on multiplier (pass gameTime for fly tracking)
             data.addDirt(multiplier, DIRT_UPDATE_INTERVAL, gameTime);
+            
+            // Check if flies state just became active
+            boolean hasFlies = data.shouldSpawnFlies(gameTime);
+            if (!hadFlies && hasFlies) {
+                // Award "Something Smells..." advancement
+                AdvancementHelper.tryAwardAdvancement(player, "hotbath:something_smells", "code_triggered");
+            }
             
             // Sync to client (includes fly status for client-side particle spawning)
             DirtinessNetworking.syncToClient(player);
