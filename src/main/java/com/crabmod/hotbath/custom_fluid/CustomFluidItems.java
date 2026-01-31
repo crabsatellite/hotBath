@@ -18,6 +18,13 @@ import net.neoforged.neoforge.registries.DeferredRegister;
  *   <li>Custom Fluid Bottle - Drinkable, applies effects from the fluid definition</li>
  *   <li>Splash Custom Fluid Bottle - Throwable, applies effects to nearby entities</li>
  * </ul>
+ * 
+ * <p><b>Command usage (1.21 NeoForge):</b></p>
+ * <pre>
+ * /give @p hotbath:custom_fluid_bucket[hotbath:custom_fluid_id="hotbath:golden_bath"] 1
+ * /give @p hotbath:custom_fluid_bottle[hotbath:custom_fluid_id="hotbath:golden_bath"] 16
+ * /give @p hotbath:splash_custom_fluid_bottle[hotbath:custom_fluid_id="hotbath:golden_bath"] 16
+ * </pre>
  */
 public class CustomFluidItems {
     
