@@ -1,0 +1,17 @@
+{
+  "name": "hotbath.entry.custom_overview.name",
+  "icon": "minecraft:knowledge_book",
+  "category": "hotbath:custom_fluids",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.custom_overview.page1"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.custom_overview.features.title",
+      "text": "hotbath.entry.custom_overview.features"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "name": "hotbath.category.compat_temperature.name",
+  "description": "hotbath.category.compat_temperature.desc",
+  "icon": "minecraft:campfire",
+  "parent": "hotbath:compat",
+  "sortnum": 0
+}

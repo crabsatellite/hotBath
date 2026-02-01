@@ -1,0 +1,15 @@
+{
+  "name": "hotbath.entry.alexs_caves.name",
+  "icon": "minecraft:glow_berries",
+  "category": "hotbath:compat_creatures",
+  "flag": "!mod:alexscaves",
+  "sortnum": 11,
+  "entry_color": "777777",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.compat.not_installed.title",
+      "text": "hotbath.compat.not_installed.alexs_caves"
+    }
+  ]
+}

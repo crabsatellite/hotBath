@@ -1,0 +1,30 @@
+{
+  "name": "hotbath.entry.shower_core.name",
+  "icon": "minecraft:cauldron",
+  "category": "hotbath:basics",
+  "flag": "!mod:showercore",
+  "read_by_default": false,
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.compat.not_installed.title",
+      "text": "hotbath.compat.not_installed.shower_core"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.shower_core.bathtub.title",
+      "text": "hotbath.entry.shower_core.bathtub"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.shower_core.shower.title",
+      "text": "hotbath.entry.shower_core.shower"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.shower_core.duck.title",
+      "text": "hotbath.entry.shower_core.duck"
+    }
+  ]
+}

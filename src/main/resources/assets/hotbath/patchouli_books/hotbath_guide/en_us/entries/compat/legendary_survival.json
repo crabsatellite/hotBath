@@ -1,0 +1,34 @@
+{
+  "name": "hotbath.entry.lso.name",
+  "icon": "minecraft:soul_campfire",
+  "category": "hotbath:compat_temperature",
+  "flag": "mod:legendarysurvivaloverhaul",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "flag": "hotbath:legendarysurvivaloverhaul_disabled",
+      "title": "hotbath.compat.disabled.title",
+      "text": "hotbath.compat.disabled.lso"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.lso.page1"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.lso.temperature.title",
+      "text": "hotbath.entry.lso.temperature"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.lso.resistance.title",
+      "text": "hotbath.entry.lso.resistance"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.lso.thirst.title",
+      "text": "hotbath.entry.lso.thirst"
+    }
+  ]
+}

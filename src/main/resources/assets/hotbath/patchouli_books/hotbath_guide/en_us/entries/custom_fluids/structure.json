@@ -1,0 +1,22 @@
+{
+  "name": "hotbath.entry.custom_structure.name",
+  "icon": "minecraft:structure_block",
+  "category": "hotbath:custom_fluids",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.custom_structure.page1"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.custom_structure.datapack.title",
+      "text": "hotbath.entry.custom_structure.datapack"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.custom_structure.resourcepack.title",
+      "text": "hotbath.entry.custom_structure.resourcepack"
+    }
+  ]
+}

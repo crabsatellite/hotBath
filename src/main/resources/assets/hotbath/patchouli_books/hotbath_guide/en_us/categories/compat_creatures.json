@@ -1,0 +1,7 @@
+{
+  "name": "hotbath.category.compat_creatures.name",
+  "description": "hotbath.category.compat_creatures.desc",
+  "icon": "minecraft:spawner",
+  "parent": "hotbath:compat",
+  "sortnum": 1
+}

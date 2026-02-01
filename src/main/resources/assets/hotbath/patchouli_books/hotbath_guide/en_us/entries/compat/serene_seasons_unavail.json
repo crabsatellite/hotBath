@@ -1,0 +1,15 @@
+{
+  "name": "hotbath.entry.serene_seasons.name",
+  "icon": "minecraft:clock",
+  "category": "hotbath:compat_world",
+  "flag": "!mod:sereneseasons",
+  "sortnum": 12,
+  "entry_color": "777777",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.compat.not_installed.title",
+      "text": "hotbath.compat.not_installed.serene_seasons"
+    }
+  ]
+}

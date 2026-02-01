@@ -1,0 +1,23 @@
+{
+  "name": "hotbath.entry.honey_bath.name",
+  "icon": "hotbath:honey_bath_bucket",
+  "category": "hotbath:fluids",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "hotbath:honey_bath_bucket",
+      "text": "hotbath.entry.honey_bath.page1"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "hotbath:honey_bath_bucket",
+      "text": "hotbath.entry.honey_bath.recipe"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.honey_bath.effects.title",
+      "text": "hotbath.entry.honey_bath.effects"
+    }
+  ]
+}

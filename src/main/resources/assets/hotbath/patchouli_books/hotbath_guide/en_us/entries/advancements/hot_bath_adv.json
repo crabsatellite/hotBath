@@ -1,0 +1,12 @@
+{
+  "name": "hotbath.entry.adv_hot_bath.name",
+  "icon": "hotbath:hot_water_bucket",
+  "category": "hotbath:advancements",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.adv_hot_bath.page1"
+    }
+  ]
+}

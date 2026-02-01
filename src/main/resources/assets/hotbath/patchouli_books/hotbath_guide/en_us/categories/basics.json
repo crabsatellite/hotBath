@@ -1,0 +1,6 @@
+{
+  "name": "hotbath.category.basics.name",
+  "description": "hotbath.category.basics.desc",
+  "icon": "hotbath:hot_water_bucket",
+  "sortnum": 0
+}

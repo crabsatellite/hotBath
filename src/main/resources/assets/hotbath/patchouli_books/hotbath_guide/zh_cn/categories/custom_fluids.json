@@ -1,0 +1,6 @@
+{
+  "name": "hotbath.category.custom_fluids.name",
+  "description": "hotbath.category.custom_fluids.desc",
+  "icon": "minecraft:command_block",
+  "sortnum": 4
+}

@@ -1,0 +1,23 @@
+{
+  "name": "hotbath.entry.rose_bath.name",
+  "icon": "hotbath:rose_bath_bucket",
+  "category": "hotbath:fluids",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "hotbath:rose_bath_bucket",
+      "text": "hotbath.entry.rose_bath.page1"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "hotbath:rose_bath_bucket",
+      "text": "hotbath.entry.rose_bath.recipe"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.rose_bath.effects.title",
+      "text": "hotbath.entry.rose_bath.effects"
+    }
+  ]
+}

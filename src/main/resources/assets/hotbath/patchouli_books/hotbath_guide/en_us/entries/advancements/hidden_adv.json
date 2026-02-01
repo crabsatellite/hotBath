@@ -1,0 +1,12 @@
+{
+  "name": "hotbath.entry.adv_hidden.name",
+  "icon": "hotbath:something_smells_icon",
+  "category": "hotbath:advancements",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.adv_hidden.page1"
+    }
+  ]
+}

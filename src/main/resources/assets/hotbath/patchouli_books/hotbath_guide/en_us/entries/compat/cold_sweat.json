@@ -1,0 +1,34 @@
+{
+  "name": "hotbath.entry.cold_sweat.name",
+  "icon": "minecraft:powder_snow_bucket",
+  "category": "hotbath:compat_temperature",
+  "flag": "mod:cold_sweat",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "flag": "hotbath:cold_sweat_disabled",
+      "title": "hotbath.compat.disabled.title",
+      "text": "hotbath.compat.disabled.cold_sweat"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.cold_sweat.page1"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.cold_sweat.immersion.title",
+      "text": "hotbath.entry.cold_sweat.immersion"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.cold_sweat.bottles.title",
+      "text": "hotbath.entry.cold_sweat.bottles"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.cold_sweat.custom.title",
+      "text": "hotbath.entry.cold_sweat.custom"
+    }
+  ]
+}

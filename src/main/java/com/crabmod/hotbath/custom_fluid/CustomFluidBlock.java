@@ -51,6 +51,17 @@ public class CustomFluidBlock extends AbstractHotbathBlock implements IInsideAre
         return definition;
     }
 
+    /**
+     * Checks if this custom fluid is considered "hot" based on its temperature.
+     * Only hot fluids (temperature >= 35°C) cause damage to ice mobs.
+     * 
+     * @return true if temperature >= HOT_TEMPERATURE_THRESHOLD
+     */
+    @Override
+    protected boolean isHotBath() {
+        return definition.isHot();
+    }
+
     @Override
     public void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
         super.entityInside(state, level, pos, entity);

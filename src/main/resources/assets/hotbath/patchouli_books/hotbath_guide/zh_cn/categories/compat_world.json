@@ -1,0 +1,7 @@
+{
+  "name": "hotbath.category.compat_world.name",
+  "description": "hotbath.category.compat_world.desc",
+  "icon": "minecraft:grass_block",
+  "parent": "hotbath:compat",
+  "sortnum": 2
+}

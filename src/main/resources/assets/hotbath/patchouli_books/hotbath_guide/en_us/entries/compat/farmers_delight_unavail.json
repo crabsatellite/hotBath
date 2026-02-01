@@ -1,0 +1,15 @@
+{
+  "name": "hotbath.entry.farmers_delight.name",
+  "icon": "minecraft:smoker",
+  "category": "hotbath:compat_world",
+  "flag": "!mod:farmersdelight",
+  "sortnum": 10,
+  "entry_color": "777777",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.compat.not_installed.title",
+      "text": "hotbath.compat.not_installed.farmers_delight"
+    }
+  ]
+}

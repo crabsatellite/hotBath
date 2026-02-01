@@ -1,0 +1,23 @@
+{
+  "name": "hotbath.entry.hot_water.name",
+  "icon": "hotbath:hot_water_bucket",
+  "category": "hotbath:fluids",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "hotbath:hot_water_bucket",
+      "text": "hotbath.entry.hot_water.page1"
+    },
+    {
+      "type": "patchouli:smelting",
+      "recipe": "hotbath:hot_water_bucket",
+      "text": "hotbath.entry.hot_water.recipe"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.hot_water.effects.title",
+      "text": "hotbath.entry.hot_water.effects"
+    }
+  ]
+}

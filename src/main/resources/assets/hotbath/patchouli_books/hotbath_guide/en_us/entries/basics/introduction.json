@@ -1,0 +1,23 @@
+{
+  "name": "hotbath.entry.introduction.name",
+  "icon": "hotbath:hot_water_bucket",
+  "category": "hotbath:basics",
+  "sortnum": 0,
+  "priority": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.introduction.page1"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.introduction.page2.title",
+      "text": "hotbath.entry.introduction.page2"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.introduction.page3.title",
+      "text": "hotbath.entry.introduction.page3"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "name": "hotbath.entry.custom_example.name",
+  "icon": "minecraft:gold_ingot",
+  "category": "hotbath:custom_fluids",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.custom_example.page1"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.custom_example.golden.title",
+      "text": "hotbath.entry.custom_example.golden"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.custom_example.slime.title",
+      "text": "hotbath.entry.custom_example.slime"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.custom_example.blazing.title",
+      "text": "hotbath.entry.custom_example.blazing"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.custom_example.ender.title",
+      "text": "hotbath.entry.custom_example.ender"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.custom_example.enchanted.title",
+      "text": "hotbath.entry.custom_example.enchanted"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.custom_example.milk_tea.title",
+      "text": "hotbath.entry.custom_example.milk_tea"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.custom_example.silent.title",
+      "text": "hotbath.entry.custom_example.silent"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "hotbath.entry.lso.name",
+  "icon": "minecraft:soul_campfire",
+  "category": "hotbath:compat_temperature",
+  "flag": "!mod:legendarysurvivaloverhaul",
+  "sortnum": 12,
+  "entry_color": "777777",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.compat.not_installed.title",
+      "text": "hotbath.compat.not_installed.lso"
+    }
+  ]
+}
