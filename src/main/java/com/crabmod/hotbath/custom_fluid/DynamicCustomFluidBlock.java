@@ -13,6 +13,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -58,6 +59,30 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new CustomFluidBlockEntity(pos, state);
+    }
+    
+    /**
+     * Indicates that this block has dynamic light emission that depends on BlockEntity data.
+     * This tells NeoForge to call getLightEmission() for each block instance.
+     */
+    @Override
+    public boolean hasDynamicLightEmission(@NotNull BlockState state) {
+        return true;
+    }
+    
+    /**
+     * Gets the light emission value for this fluid block based on the stored fluid definition.
+     * This allows each custom fluid to have its own luminosity value.
+     */
+    @Override
+    public int getLightEmission(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof CustomFluidBlockEntity customBe) {
+            return customBe.getFluidDefinition()
+                    .map(CustomFluidDefinition::luminosity)
+                    .orElse(2); // Default luminosity
+        }
+        return 2; // Default luminosity if BlockEntity not found
     }
     
     /**
