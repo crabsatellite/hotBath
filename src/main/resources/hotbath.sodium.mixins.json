@@ -6,6 +6,7 @@
   "plugin": "com.crabmod.hotbath.mixin.sodium.SodiumMixinPlugin",
   "mixins": [],
   "client": [
+    "BlockOcclusionCacheMixin",
     "FluidRendererImplMixin",
     "DefaultFluidRendererMixin",
     "ItemRendererSodiumSmokeZOffsetMixin"

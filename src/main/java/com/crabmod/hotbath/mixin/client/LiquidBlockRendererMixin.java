@@ -1,11 +1,15 @@
 package com.crabmod.hotbath.mixin.client;
 
+import com.crabmod.hotbath.custom_fluid.CustomFluidBlockEntity;
+import com.crabmod.hotbath.custom_fluid.DynamicFluidRegistry;
 import com.crabmod.hotbath.util.HotbathFluidHelper;
 import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.client.renderer.block.LiquidBlockRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
@@ -18,13 +22,18 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * Mixin to fix hotBath fluid rendering in waterlogged blocks.
+ * Mixin to fix hotBath fluid rendering in waterlogged blocks and between different custom fluids.
  * 
- * <p>Problem: The vanilla LiquidBlockRenderer gets adjacent FluidStates via 
+ * <p>Problem 1: The vanilla LiquidBlockRenderer gets adjacent FluidStates via 
  * BlockState.getFluidState(), which returns vanilla water for waterlogged blocks.
  * This causes hotBath fluids to not connect properly between adjacent waterlogged blocks.</p>
  * 
- * <p>Solution: Redirect the relevant method calls to use our corrected fluid state logic.</p>
+ * <p>Problem 2: All dynamic custom fluids share the same base fluid type (DYNAMIC_FLUID_STILL),
+ * so the vanilla isSame() check returns true for all of them. This prevents different
+ * custom fluids (e.g., milk_tea vs green_tea) from rendering boundaries between them.</p>
+ * 
+ * <p>Solution: Redirect the relevant method calls to use our corrected fluid state logic,
+ * and compare customFluidIds when both positions contain dynamic custom fluids.</p>
  */
 @Mixin(LiquidBlockRenderer.class)
 public class LiquidBlockRendererMixin {
@@ -35,14 +44,22 @@ public class LiquidBlockRendererMixin {
      */
     @Unique
     private static final ThreadLocal<BlockPos> hotbath$pos = new ThreadLocal<>();
+    
+    /**
+     * Thread-local storage for current level context.
+     * Used by static method redirects to access BlockEntity data.
+     */
+    @Unique
+    private static final ThreadLocal<BlockAndTintGetter> hotbath$level = new ThreadLocal<>();
 
     /**
-     * Capture position context at start of tesselate.
+     * Capture position and level context at start of tesselate.
      */
     @Inject(method = "tesselate", at = @At("HEAD"))
     private void hotbath$captureContext(BlockAndTintGetter level, BlockPos pos, 
             com.mojang.blaze3d.vertex.VertexConsumer buffer, BlockState blockState, FluidState fluidState, CallbackInfo ci) {
         hotbath$pos.set(pos.immutable());
+        hotbath$level.set(level);
     }
 
     /**
@@ -52,6 +69,7 @@ public class LiquidBlockRendererMixin {
     private void hotbath$clearContext(BlockAndTintGetter level, BlockPos pos, 
             com.mojang.blaze3d.vertex.VertexConsumer buffer, BlockState blockState, FluidState fluidState, CallbackInfo ci) {
         hotbath$pos.remove();
+        hotbath$level.remove();
     }
 
     /**
@@ -70,10 +88,40 @@ public class LiquidBlockRendererMixin {
         }
         return null;
     }
+    
+    /**
+     * Get the customFluidId at a position (from BlockEntity or waterlogging storage).
+     * Returns null if position doesn't contain a dynamic custom fluid.
+     */
+    @Unique
+    private static ResourceLocation hotbath$getCustomFluidId(BlockAndTintGetter level, BlockPos pos) {
+        if (level == null || pos == null) return null;
+        
+        // Try BlockEntity first (for normal fluid blocks)
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof CustomFluidBlockEntity customBe) {
+            return customBe.getFluidId();
+        }
+        
+        // Try waterlogging storage (for waterlogged blocks)
+        return HotbathWaterloggingHelper.getStoredCustomFluidIdClientDirect(pos);
+    }
+    
+    /**
+     * Check if a fluid is a dynamic custom fluid.
+     */
+    @Unique
+    private static boolean hotbath$isDynamicCustomFluid(Fluid fluid) {
+        if (fluid == null) return false;
+        Fluid stillFluid = DynamicFluidRegistry.DYNAMIC_FLUID_STILL.get();
+        Fluid flowingFluid = DynamicFluidRegistry.DYNAMIC_FLUID_FLOWING.get();
+        return fluid.isSame(stillFluid) || fluid.isSame(flowingFluid);
+    }
 
     /**
      * Redirect shouldHideAdjacentFluidFace in isNeighborStateHidingOverlay.
-     * Checks if adjacent waterlogged block has same hotBath fluid.
+     * Checks if adjacent block has same hotBath fluid, considering both waterlogged 
+     * blocks and normal fluid blocks with customFluidId.
      */
     @Redirect(
         method = "isNeighborStateHidingOverlay",
@@ -83,16 +131,56 @@ public class LiquidBlockRendererMixin {
         )
     )
     private static boolean hotbath$redirectShouldHideFluidFace(BlockState otherState, Direction neighborFace, FluidState selfState) {
-        // Check if otherState is waterlogged with hotBath fluid
         BlockPos currentPos = hotbath$pos.get();
-        if (currentPos != null && otherState.hasProperty(BlockStateProperties.WATERLOGGED) 
+        BlockAndTintGetter level = hotbath$level.get();
+        
+        if (currentPos == null) {
+            return otherState.shouldHideAdjacentFluidFace(neighborFace, selfState);
+        }
+        
+        BlockPos otherPos = currentPos.relative(neighborFace.getOpposite());
+        
+        // Check if the self fluid is a dynamic custom fluid
+        boolean selfIsDynamic = hotbath$isDynamicCustomFluid(selfState.getType());
+        
+        // Get the other block's fluid
+        FluidState otherFluidState = otherState.getFluidState();
+        Fluid otherFluid = otherFluidState.getType();
+        
+        // Check for waterlogged block fluid override
+        if (otherState.hasProperty(BlockStateProperties.WATERLOGGED) 
                 && otherState.getValue(BlockStateProperties.WATERLOGGED)) {
-            BlockPos otherPos = currentPos.relative(neighborFace.getOpposite());
             Fluid storedFluid = HotbathWaterloggingHelper.getStoredFluidTypeClientDirect(otherPos);
-            if (HotbathFluidHelper.isHotbathFluid(storedFluid)) {
-                return storedFluid.isSame(selfState.getType());
+            if (storedFluid != null && HotbathFluidHelper.isHotbathFluid(storedFluid)) {
+                otherFluid = storedFluid;
             }
         }
+        
+        boolean otherIsDynamic = hotbath$isDynamicCustomFluid(otherFluid);
+        
+        // If both are dynamic custom fluids, compare customFluidIds
+        if (selfIsDynamic && otherIsDynamic && level != null) {
+            ResourceLocation selfCustomId = hotbath$getCustomFluidId(level, currentPos);
+            ResourceLocation otherCustomId = hotbath$getCustomFluidId(level, otherPos);
+            
+            // If both have customFluidIds, check if they match
+            if (selfCustomId != null && otherCustomId != null) {
+                // Hide face only if customFluidIds match (same custom fluid)
+                return selfCustomId.equals(otherCustomId);
+            }
+            // If one or both don't have customFluidId, treat as different fluids (show boundary)
+            if (selfCustomId != null || otherCustomId != null) {
+                return false;
+            }
+            // Both null - treat as same fluid (shouldn't happen in practice)
+            return true;
+        }
+        
+        // If either is a hotBath fluid but not dynamic, use normal isSame logic
+        if (HotbathFluidHelper.isHotbathFluid(selfState.getType()) || HotbathFluidHelper.isHotbathFluid(otherFluid)) {
+            return selfState.getType().isSame(otherFluid);
+        }
+        
         return otherState.shouldHideAdjacentFluidFace(neighborFace, selfState);
     }
 
