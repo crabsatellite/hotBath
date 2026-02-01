@@ -58,13 +58,15 @@ public final class TFFlaskColorHelper {
     }
     
     // Cache for color -> BathType lookup (initialized at class load)
+    // Use HashMap instead of IdentityHashMap because Integer values outside -128 to 127
+    // create new objects when boxed, making identity comparison fail
     private static final Map<Integer, BathType> COLOR_TO_TYPE;
     
     // Lazy-initialized cache for Item -> BathType lookup (must be lazy because Items aren't registered at class load)
     private static volatile Map<Item, BathType> ITEM_TO_TYPE;
     
     static {
-        COLOR_TO_TYPE = new IdentityHashMap<>();
+        COLOR_TO_TYPE = new java.util.HashMap<>();
         for (BathType type : BathType.values()) {
             COLOR_TO_TYPE.put(type.getColor(), type);
         }

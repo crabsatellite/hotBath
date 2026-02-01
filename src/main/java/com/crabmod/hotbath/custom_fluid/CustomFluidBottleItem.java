@@ -88,10 +88,13 @@ public class CustomFluidBottleItem extends Item {
 
     /**
      * Applies temperature effects for compatible mods.
+     * Only applies warming effects if the fluid is defined as hot.
      */
     private void applyTemperatureEffects(Player player, CustomFluidDefinition definition) {
-        // Scale temperature effect based on fluid temperature
-        float tempFactor = definition.temperature() / 40.0f; // Normalize around 40°C
+        // Only apply temperature effects if the fluid is hot
+        if (!definition.isHot()) {
+            return;
+        }
         
         // Apply ToughAsNails temperature effect
         if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {

@@ -1,6 +1,6 @@
 package com.crabmod.hotbath.mixin.twilightforest;
 
-import com.crabmod.hotbath.compat.CompatManager;
+import com.crabmod.hotbath.compat.*;
 import com.crabmod.hotbath.compat.twilightforest.TFFlaskColorHelper;
 import com.crabmod.hotbath.custom_fluid.CustomFluidAPI;
 import com.crabmod.hotbath.custom_fluid.CustomFluidBottleItem;
@@ -121,6 +121,7 @@ public class BrittleFlaskItemMixin {
     /**
      * Inject into finishUsingItem to apply HotBath effects.
      * Directly calls BathWaterEffects methods to ensure identical behavior to drinking bottles directly.
+     * For custom fluids, applies temperature effects if the fluid is hot.
      */
     @Inject(method = "finishUsingItem", at = @At("HEAD"))
     private void hotbath$applyHotBathEffects(ItemStack stack, net.minecraft.world.level.Level level, 
@@ -135,12 +136,50 @@ public class BrittleFlaskItemMixin {
             if (flaskContents.potion().customColor().isPresent() && flaskContents.potion().potion().isEmpty()) {
                 int color = flaskContents.potion().customColor().get();
                 
-                // Apply the complete bath effect based on color
+                // First try to apply legacy bath effect based on color
                 // This calls the exact same methods as drinking the bottle directly
-                TFFlaskColorHelper.applyEffectByColor(entity, color);
+                boolean isLegacyBath = TFFlaskColorHelper.applyEffectByColor(entity, color);
+                
+                // If not a legacy bath, check if it's a custom fluid and apply temperature effects
+                if (!isLegacyBath && entity instanceof Player player) {
+                    Optional<CustomFluidDefinition> definitionOpt = CustomFluidAPI.getDefinitionByColor(color);
+                    if (definitionOpt.isPresent()) {
+                        CustomFluidDefinition definition = definitionOpt.get();
+                        // Apply temperature effects only if the fluid is hot
+                        hotbath$applyTemperatureEffects(player, definition);
+                    }
+                }
             }
         } catch (Throwable e) {
             CompatManager.reportRuntimeError("twilightforest", "BrittleFlaskItemMixin.finishUsingItem", e);
+        }
+    }
+
+    /**
+     * Applies temperature effects for compatible mods.
+     * Only applies warming effects if the fluid is defined as hot.
+     */
+    @Unique
+    private void hotbath$applyTemperatureEffects(Player player, CustomFluidDefinition definition) {
+        // Only apply temperature effects if the fluid is hot
+        if (!definition.isHot()) {
+            return;
+        }
+        
+        // Apply ToughAsNails temperature effect
+        if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {
+            BathWaterBottleTANModifier.applyWarmEffect(player);
+            ToughAsNailsThirstHelper.restoreThirst(player);
+        }
+        
+        // Apply Cold Sweat temperature effect
+        if (ColdSweatIntegration.isColdSweatLoaded()) {
+            BathWaterBottleColdSweatModifier.applyWarmEffect(player);
+        }
+        
+        // Apply Legendary Survival Overhaul temperature effect
+        if (LegendarySurvivalOverhaulIntegration.isLSOLoaded()) {
+            BathWaterBottleLSOModifier.applyWarmEffect(player);
         }
     }
 
