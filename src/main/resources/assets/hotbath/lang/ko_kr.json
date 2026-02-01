@@ -78,5 +78,8 @@
   "hotbath.compat.warning.version": "  모드 버전: %s",
   "hotbath.compat.warning.api_change": "  이것은 %s의 API 변경 때문일 수 있습니다.",
   "hotbath.compat.warning.report": "[여기를 클릭하여 문제 보고]",
-  "hotbath.compat.warning.report.hover": "GitHub Issues 페이지 열기"
+  "hotbath.compat.warning.report.hover": "GitHub Issues 페이지 열기",
+
+  "hotbath.book.name": "발네움 욕장서",
+  "hotbath.book.landing_text": "발네움 욕장서에 오신 것을 환영합니다! 모험의 피로를 풀기 위해 편안한 뜨거운 목욕을 즐겨보세요. 이 가이드북은 기본 액체부터 고급 맞춤 액체 시스템까지 모든 것을 다룹니다."
 }

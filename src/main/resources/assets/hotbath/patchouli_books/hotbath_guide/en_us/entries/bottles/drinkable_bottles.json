@@ -1,0 +1,48 @@
+{
+  "name": "hotbath.entry.drinkable_bottles.name",
+  "icon": "hotbath:hot_water_bottle",
+  "category": "hotbath:bottles",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.drinkable_bottles.page1"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "hotbath:hot_water_bottle",
+      "title": "hotbath.entry.bottles.hot_water.title",
+      "text": "hotbath.entry.bottles.hot_water"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "hotbath:honey_bath_bottle",
+      "title": "hotbath.entry.bottles.honey.title",
+      "text": "hotbath.entry.bottles.honey"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "hotbath:milk_bath_bottle",
+      "title": "hotbath.entry.bottles.milk.title",
+      "text": "hotbath.entry.bottles.milk"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "hotbath:herbal_bath_bottle",
+      "title": "hotbath.entry.bottles.herbal.title",
+      "text": "hotbath.entry.bottles.herbal"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "hotbath:peony_bath_bottle",
+      "title": "hotbath.entry.bottles.peony.title",
+      "text": "hotbath.entry.bottles.peony"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "hotbath:rose_bath_bottle",
+      "title": "hotbath.entry.bottles.rose.title",
+      "text": "hotbath.entry.bottles.rose"
+    }
+  ]
+}

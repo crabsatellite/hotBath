@@ -1,0 +1,39 @@
+{
+  "name": "hotbath.entry.alexs_caves.name",
+  "icon": "alexscaves:uranium_rod",
+  "category": "hotbath:compat_creatures",
+  "flag": "mod:alexscaves",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "flag": "hotbath:alexscaves_disabled",
+      "title": "hotbath.compat.disabled.title",
+      "text": "hotbath.compat.disabled.alexs_caves"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.alexs_caves.page1"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.alexs_caves.gummy.title",
+      "text": "hotbath.entry.alexs_caves.gummy"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.alexs_caves.radiation.title",
+      "text": "hotbath.entry.alexs_caves.radiation"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.alexs_caves.gammaroach.title",
+      "text": "hotbath.entry.alexs_caves.gammaroach"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.alexs_caves.raycat.title",
+      "text": "hotbath.entry.alexs_caves.raycat"
+    }
+  ]
+}

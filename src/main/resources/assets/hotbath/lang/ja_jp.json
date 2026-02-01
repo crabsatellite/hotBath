@@ -76,5 +76,8 @@
   "hotbath.compat.warning.version": "  Modバージョン: %s",
   "hotbath.compat.warning.api_change": "  これは %s のAPI変更が原因の可能性があります。",
   "hotbath.compat.warning.report": "[ここをクリックして問題を報告]",
-  "hotbath.compat.warning.report.hover": "GitHub Issuesページを開く"
+  "hotbath.compat.warning.report.hover": "GitHub Issuesページを開く",
+
+  "hotbath.book.name": "バルネウム浴場書",
+  "hotbath.book.landing_text": "バルネウム浴場書へようこそ！冒険の疲れを癒すためにリラックスできる熱いお風呂に浸かりましょう。このガイドブックでは、基本的な液体から高度なカスタム液体システムまで、すべてを網羅しています。"
 }

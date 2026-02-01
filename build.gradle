@@ -108,6 +108,11 @@ repositories {
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
+    // Patchouli - Guide book mod (optional dependency)
+    // Project ID: 306770, File ID 6842247 corresponds to Patchouli for NeoForge 1.21.1
+    compileOnly "curse.maven:patchouli-306770:6842247"
+    runtimeOnly "curse.maven:patchouli-306770:6842247"
+
     // ColdSweat - Temperature and season mod (optional dependency)
     // compileOnly for API access, runtimeOnly to have it in dev environment
     compileOnly "curse.maven:cold-sweat-506194:7492465"
@@ -200,7 +205,7 @@ tasks.named('processResources', ProcessResources).configure {
     ]
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta']) {
+    filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta', 'data/hotbath/patchouli_books/hotbath_guide/book.json']) {
         expand replaceProperties + [project: project]
     }
 }

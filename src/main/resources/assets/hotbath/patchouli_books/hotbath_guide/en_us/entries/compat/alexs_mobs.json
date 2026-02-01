@@ -1,0 +1,34 @@
+{
+  "name": "hotbath.entry.alexs_mobs.name",
+  "icon": "alexsmobs:raccoon_tail",
+  "category": "hotbath:compat_creatures",
+  "flag": "mod:alexsmobs",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "flag": "hotbath:alexsmobs_disabled",
+      "title": "hotbath.compat.disabled.title",
+      "text": "hotbath.compat.disabled.alexs_mobs"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.alexs_mobs.page1"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.alexs_mobs.raccoon.title",
+      "text": "hotbath.entry.alexs_mobs.raccoon"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.alexs_mobs.capuchin.title",
+      "text": "hotbath.entry.alexs_mobs.capuchin"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.alexs_mobs.dirtiness.title",
+      "text": "hotbath.entry.alexs_mobs.dirtiness"
+    }
+  ]
+}

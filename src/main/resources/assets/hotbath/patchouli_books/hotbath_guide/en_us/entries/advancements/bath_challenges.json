@@ -1,0 +1,32 @@
+{
+  "name": "hotbath.entry.adv_challenges.name",
+  "icon": "minecraft:golden_apple",
+  "category": "hotbath:advancements",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.adv_challenges.page1"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.adv_challenges.foot.title",
+      "text": "hotbath.entry.adv_challenges.foot"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.adv_challenges.milk.title",
+      "text": "hotbath.entry.adv_challenges.milk"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.adv_challenges.chronic.title",
+      "text": "hotbath.entry.adv_challenges.chronic"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.adv_challenges.rose.title",
+      "text": "hotbath.entry.adv_challenges.rose"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "hotbath.entry.twilight_forest.name",
+  "icon": "minecraft:dark_oak_sapling",
+  "category": "hotbath:compat_world",
+  "flag": "!mod:twilightforest",
+  "sortnum": 11,
+  "entry_color": "777777",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.compat.not_installed.title",
+      "text": "hotbath.compat.not_installed.twilight_forest"
+    }
+  ]
+}

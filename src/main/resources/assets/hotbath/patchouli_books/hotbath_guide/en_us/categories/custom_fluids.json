@@ -1,0 +1,6 @@
+{
+  "name": "hotbath.category.custom_fluids.name",
+  "description": "hotbath.category.custom_fluids.desc",
+  "icon": "minecraft:brewing_stand",
+  "sortnum": 3
+}

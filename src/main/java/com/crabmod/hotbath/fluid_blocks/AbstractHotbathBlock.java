@@ -56,6 +56,17 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
         super(supplier.get(), properties);
     }
 
+    /**
+     * Checks if this bath fluid is considered "hot" (temperature >= 35°C).
+     * Hot baths cause damage to ice mobs and show steam effects.
+     * Subclasses (like CustomFluidBlock) can override this based on their temperature.
+     * 
+     * @return true if this is a hot bath (default for built-in bath fluids)
+     */
+    protected boolean isHotBath() {
+        return true; // Built-in bath fluids are always hot
+    }
+
     private static boolean isNonTropicalAquatic(Entity entity) {
         return (entity instanceof AbstractFish && !(entity instanceof TropicalFish)) || entity instanceof Squid;
     }
@@ -68,9 +79,13 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
             entity.hurt(level.damageSources().magic(), 1.0F);
         }
         
-        // Twilight Forest ice mobs take damage in hot bath
-        if (com.crabmod.hotbath.compat.TwilightForestIntegration.isTwilightForestIceMob(entity)) {
-            entity.hurt(level.damageSources().magic(), 2.0F);
+        // Twilight Forest ice mobs take damage in hot bath (1 damage per second)
+        // Only damage if this is a hot bath (temperature >= 35°C)
+        if (isHotBath() && com.crabmod.hotbath.compat.TwilightForestIntegration.isTwilightForestIceMob(entity)) {
+            // Only damage every 20 ticks (1 second) using entity tick count
+            if (entity.tickCount % 20 == 0) {
+                entity.hurt(level.damageSources().magic(), 1.0F);
+            }
         }
 
         // Note: Splash effects are handled by SplashSyncHandler for proper multiplayer sync

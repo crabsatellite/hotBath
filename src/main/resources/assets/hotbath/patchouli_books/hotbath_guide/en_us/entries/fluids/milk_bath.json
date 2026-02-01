@@ -1,0 +1,23 @@
+{
+  "name": "hotbath.entry.milk_bath.name",
+  "icon": "hotbath:milk_bath_bucket",
+  "category": "hotbath:fluids",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "hotbath:milk_bath_bucket",
+      "text": "hotbath.entry.milk_bath.page1"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "hotbath:milk_bath_bucket",
+      "text": "hotbath.entry.milk_bath.recipe"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.milk_bath.effects.title",
+      "text": "hotbath.entry.milk_bath.effects"
+    }
+  ]
+}

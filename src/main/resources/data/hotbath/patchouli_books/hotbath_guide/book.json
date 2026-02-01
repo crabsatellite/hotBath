@@ -1,0 +1,14 @@
+{
+  "name": "hotbath.book.name",
+  "landing_text": "hotbath.book.landing_text",
+  "version": "0",
+  "subtitle": "hotbath.book.subtitle",
+  "creative_tab": "hotbath.hotbath_tab",
+  "model": "hotbath:hotbath_guide",
+  "book_texture": "hotbath:textures/gui/book/hotbath_guide.png",
+  "use_blocky_font": false,
+  "i18n": true,
+  "use_resource_pack": true,
+  "show_progress": false,
+  "allow_extensions": true
+}

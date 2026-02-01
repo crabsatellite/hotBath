@@ -1,0 +1,24 @@
+{
+  "name": "hotbath.entry.serene_seasons.name",
+  "icon": "minecraft:clock",
+  "category": "hotbath:compat_world",
+  "flag": "mod:sereneseasons",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "flag": "hotbath:sereneseasons_disabled",
+      "title": "hotbath.compat.disabled.title",
+      "text": "hotbath.compat.disabled.serene_seasons"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.serene_seasons.page1"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.serene_seasons.winter.title",
+      "text": "hotbath.entry.serene_seasons.winter"
+    }
+  ]
+}

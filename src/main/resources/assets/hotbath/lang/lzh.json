@@ -76,5 +76,8 @@
   "hotbath.compat.warning.version": "  模組版本: %s",
   "hotbath.compat.warning.api_change": "  此或因 %s 之介面更迭所致。",
   "hotbath.compat.warning.report": "[點此稟報]",
-  "hotbath.compat.warning.report.hover": "開啟 GitHub Issues 頁"
+  "hotbath.compat.warning.report.hover": "開啟 GitHub Issues 頁",
+
+  "hotbath.book.name": "巴涅溫浴譜",
+  "hotbath.book.landing_text": "巴涅溫浴譜之序。冒險勞頓之餘，何妨泡湯解乏？此書盡載浴液之法，自尋常熱湯至精妙自製之方，無所不備。"
 }

@@ -1,0 +1,24 @@
+{
+  "name": "hotbath.entry.farmers_delight.name",
+  "icon": "farmersdelight:cooking_pot",
+  "category": "hotbath:compat_world",
+  "flag": "mod:farmersdelight",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "flag": "hotbath:farmersdelight_disabled",
+      "title": "hotbath.compat.disabled.title",
+      "text": "hotbath.compat.disabled.farmers_delight"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.farmers_delight.page1"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.farmers_delight.comfort.title",
+      "text": "hotbath.entry.farmers_delight.comfort"
+    }
+  ]
+}

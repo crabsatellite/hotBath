@@ -1,0 +1,37 @@
+{
+  "name": "hotbath.entry.custom_json.name",
+  "icon": "minecraft:writable_book",
+  "category": "hotbath:custom_fluids",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.custom_json.page1"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.custom_json.fields.title",
+      "text": "hotbath.entry.custom_json.fields"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.custom_json.visual.title",
+      "text": "hotbath.entry.custom_json.visual"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.custom_json.temperature.title",
+      "text": "hotbath.entry.custom_json.temperature"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.custom_json.effects.title",
+      "text": "hotbath.entry.custom_json.effects"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.custom_json.translations.title",
+      "text": "hotbath.entry.custom_json.translations"
+    }
+  ]
+}

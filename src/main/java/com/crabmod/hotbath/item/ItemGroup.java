@@ -1,6 +1,7 @@
 package com.crabmod.hotbath.item;
 
 import com.crabmod.hotbath.HotBath;
+import com.crabmod.hotbath.compat.PatchouliCompat;
 import com.crabmod.hotbath.custom_fluid.CustomFluidAPI;
 import com.crabmod.hotbath.custom_fluid.CustomFluidDefinition;
 import com.crabmod.hotbath.custom_fluid.CustomFluidItems;
@@ -52,6 +53,14 @@ public class ItemGroup {
                                                 
                                                 // Ingredients
                                                 pOutput.accept(ItemRegister.BATH_HERB.get());
+                                                
+                                                // Patchouli Guide Book (if Patchouli is loaded)
+                                                if (PatchouliCompat.isPatchouliLoaded()) {
+                                                    ItemStack guideBook = PatchouliCompat.getGuideBook();
+                                                    if (!guideBook.isEmpty()) {
+                                                        pOutput.accept(guideBook);
+                                                    }
+                                                }
                                                 
                                                 // Dynamic custom fluid items from data packs
                                                 for (CustomFluidDefinition definition : CustomFluidAPI.getAllFluids()) {

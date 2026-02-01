@@ -78,5 +78,8 @@
   "hotbath.compat.warning.version": "  Versión del mod: %s",
   "hotbath.compat.warning.api_change": "  Esto puede deberse a un cambio en la API de %s.",
   "hotbath.compat.warning.report": "[Haz clic aquí para reportar este problema]",
-  "hotbath.compat.warning.report.hover": "Abrir página de GitHub Issues"
+  "hotbath.compat.warning.report.hover": "Abrir página de GitHub Issues",
+
+  "hotbath.book.name": "Balneum Manuale",
+  "hotbath.book.landing_text": "¡Bienvenido al Balneum Manuale! Tómate un descanso de tus aventuras y sumérgete en un relajante baño caliente. Este manual cubre todo, desde líquidos básicos hasta sistemas avanzados de líquidos personalizados."
 }

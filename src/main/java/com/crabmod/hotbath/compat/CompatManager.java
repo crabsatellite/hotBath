@@ -118,6 +118,9 @@ public class CompatManager {
         }
         
         logStartupSummary();
+        
+        // Update Patchouli flags after all compats are initialized
+        PatchouliCompat.updateCompatFlags();
     }
     
     /**
@@ -248,6 +251,9 @@ public class CompatManager {
         LOGGER.error("Please report this issue at: {}", GITHUB_ISSUES_URL);
         LOGGER.error("Stack trace:", error);
         LOGGER.error("========================================");
+        
+        // Update Patchouli flags to reflect the disabled compat
+        PatchouliCompat.updateCompatFlags();
     }
     
     /**

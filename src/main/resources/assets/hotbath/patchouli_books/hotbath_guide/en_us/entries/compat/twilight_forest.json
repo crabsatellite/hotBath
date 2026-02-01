@@ -1,0 +1,34 @@
+{
+  "name": "hotbath.entry.twilight_forest.name",
+  "icon": "twilightforest:twilight_portal_miniature_structure",
+  "category": "hotbath:compat_world",
+  "flag": "mod:twilightforest",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "flag": "hotbath:twilightforest_disabled",
+      "title": "hotbath.compat.disabled.title",
+      "text": "hotbath.compat.disabled.twilight_forest"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.twilight_forest.page1"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.twilight_forest.frosted.title",
+      "text": "hotbath.entry.twilight_forest.frosted"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.twilight_forest.firefly.title",
+      "text": "hotbath.entry.twilight_forest.firefly"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.twilight_forest.ice_mobs.title",
+      "text": "hotbath.entry.twilight_forest.ice_mobs"
+    }
+  ]
+}

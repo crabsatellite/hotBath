@@ -1,0 +1,23 @@
+{
+  "name": "hotbath.entry.herbal_bath.name",
+  "icon": "hotbath:herbal_bath_bucket",
+  "category": "hotbath:fluids",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "hotbath:herbal_bath_bucket",
+      "text": "hotbath.entry.herbal_bath.page1"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "hotbath:herbal_bath_bucket",
+      "text": "hotbath.entry.herbal_bath.recipe"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.herbal_bath.effects.title",
+      "text": "hotbath.entry.herbal_bath.effects"
+    }
+  ]
+}

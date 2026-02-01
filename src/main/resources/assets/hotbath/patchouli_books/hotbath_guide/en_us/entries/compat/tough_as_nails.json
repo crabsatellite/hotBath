@@ -1,0 +1,34 @@
+{
+  "name": "hotbath.entry.tough_as_nails.name",
+  "icon": "minecraft:campfire",
+  "category": "hotbath:compat_temperature",
+  "flag": "mod:toughasnails",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "flag": "hotbath:toughasnails_disabled",
+      "title": "hotbath.compat.disabled.title",
+      "text": "hotbath.compat.disabled.tough_as_nails"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.tough_as_nails.page1"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.tough_as_nails.temperature.title",
+      "text": "hotbath.entry.tough_as_nails.temperature"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.tough_as_nails.thirst.title",
+      "text": "hotbath.entry.tough_as_nails.thirst"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.tough_as_nails.bottles.title",
+      "text": "hotbath.entry.tough_as_nails.bottles"
+    }
+  ]
+}

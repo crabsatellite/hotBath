@@ -1,0 +1,22 @@
+{
+  "name": "hotbath.entry.tips.name",
+  "icon": "minecraft:lantern",
+  "category": "hotbath:basics",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.tips.page1"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.tips.interactions.title",
+      "text": "hotbath.entry.tips.interactions"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.tips.recommendations.title",
+      "text": "hotbath.entry.tips.recommendations"
+    }
+  ]
+}

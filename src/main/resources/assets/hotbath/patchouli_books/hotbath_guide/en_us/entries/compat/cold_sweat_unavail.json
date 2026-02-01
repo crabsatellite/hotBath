@@ -1,0 +1,15 @@
+{
+  "name": "hotbath.entry.cold_sweat.name",
+  "icon": "minecraft:powder_snow_bucket",
+  "category": "hotbath:compat_temperature",
+  "flag": "!mod:cold_sweat",
+  "sortnum": 10,
+  "entry_color": "777777",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.compat.not_installed.title",
+      "text": "hotbath.compat.not_installed.cold_sweat"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "hotbath.entry.peony_bath.name",
+  "icon": "hotbath:peony_bath_bucket",
+  "category": "hotbath:fluids",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "hotbath:peony_bath_bucket",
+      "text": "hotbath.entry.peony_bath.page1"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "hotbath:peony_bath_bucket",
+      "text": "hotbath.entry.peony_bath.recipe"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.peony_bath.effects.title",
+      "text": "hotbath.entry.peony_bath.effects"
+    }
+  ]
+}
