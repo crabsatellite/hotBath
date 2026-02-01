@@ -71,5 +71,12 @@
   "commands.hotbath.dirtiness.get.max_dirty": " [Макс. грязь: %s/%s тиков]",
   "commands.hotbath.dirtiness.set": "Грязь установлена на %s%%",
   "commands.hotbath.dirtiness.clean": "Теперь вы чисты!",
-  "commands.hotbath.dirtiness.flies": "Мухи включены! Вы очень грязный (100%% более 2 дней)"
+  "commands.hotbath.dirtiness.flies": "Мухи включены! Вы очень грязный (100%% более 2 дней)",
+
+  "hotbath.compat.warning.title": "⚠ Предупреждение о совместимости",
+  "hotbath.compat.warning.disabled": "интеграция отключена из-за ошибки.",
+  "hotbath.compat.warning.version": "  Версия мода: %s",
+  "hotbath.compat.warning.api_change": "  Это может быть вызвано изменением API в %s.",
+  "hotbath.compat.warning.report": "[Нажмите здесь, чтобы сообщить о проблеме]",
+  "hotbath.compat.warning.report.hover": "Открыть страницу GitHub Issues"
 }

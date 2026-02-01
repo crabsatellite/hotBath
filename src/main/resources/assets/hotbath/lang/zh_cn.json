@@ -71,5 +71,12 @@
   "commands.hotbath.dirtiness.get.max_dirty": " [最大污渍: %s/%s 刻]",
   "commands.hotbath.dirtiness.set": "已将污渍度设置为 %s%%",
   "commands.hotbath.dirtiness.clean": "你现在干干净净了！",
-  "commands.hotbath.dirtiness.flies": "苍蝇已启用！你现在非常脏（100%%持续2天以上）"
+  "commands.hotbath.dirtiness.flies": "苍蝇已启用！你现在非常脏（100%%持续2天以上）",
+
+  "hotbath.compat.warning.title": "⚠ 兼容性警告",
+  "hotbath.compat.warning.disabled": "集成已因错误而禁用。",
+  "hotbath.compat.warning.version": "  模组版本: %s",
+  "hotbath.compat.warning.api_change": "  这可能是由于 %s 的API变更导致的。",
+  "hotbath.compat.warning.report": "[点击此处报告问题]",
+  "hotbath.compat.warning.report.hover": "打开 GitHub Issues 页面"
 }

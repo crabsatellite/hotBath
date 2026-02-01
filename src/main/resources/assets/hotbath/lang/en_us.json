@@ -73,5 +73,12 @@
   "commands.hotbath.dirtiness.get.max_dirty": " [Max dirty: %s/%s ticks]",
   "commands.hotbath.dirtiness.set": "Set dirtiness to %s%%",
   "commands.hotbath.dirtiness.clean": "You are now clean!",
-  "commands.hotbath.dirtiness.flies": "Flies enabled! You are now extremely dirty (100%% for 2+ days)"
+  "commands.hotbath.dirtiness.flies": "Flies enabled! You are now extremely dirty (100%% for 2+ days)",
+
+  "hotbath.compat.warning.title": "⚠ Compatibility Warning",
+  "hotbath.compat.warning.disabled": "integration disabled due to error.",
+  "hotbath.compat.warning.version": "  Mod version: %s",
+  "hotbath.compat.warning.api_change": "  This may be due to an API change in %s.",
+  "hotbath.compat.warning.report": "[Click here to report this issue]",
+  "hotbath.compat.warning.report.hover": "Open GitHub Issues page"
 }

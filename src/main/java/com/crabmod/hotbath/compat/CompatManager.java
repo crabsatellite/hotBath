@@ -289,7 +289,7 @@ public class CompatManager {
         MutableComponent header = Component.literal("[Hot Bath] ")
             .withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD);
         
-        MutableComponent warning = Component.literal("⚠ Compatibility Warning")
+        MutableComponent warning = Component.translatable("hotbath.compat.warning.title")
             .withStyle(ChatFormatting.YELLOW);
         
         player.sendSystemMessage(header.append(warning));
@@ -298,35 +298,31 @@ public class CompatManager {
         MutableComponent errorInfo = Component.literal("  ")
             .append(Component.literal(error.compatName)
                 .withStyle(ChatFormatting.WHITE, ChatFormatting.BOLD))
-            .append(Component.literal(" integration disabled due to error.")
+            .append(Component.literal(" ")
+                .withStyle(ChatFormatting.GRAY))
+            .append(Component.translatable("hotbath.compat.warning.disabled")
                 .withStyle(ChatFormatting.GRAY));
         player.sendSystemMessage(errorInfo);
         
         // Version info
-        MutableComponent versionInfo = Component.literal("  Mod version: ")
-            .withStyle(ChatFormatting.GRAY)
-            .append(Component.literal(error.modVersion)
-                .withStyle(ChatFormatting.AQUA));
+        MutableComponent versionInfo = Component.translatable("hotbath.compat.warning.version", error.modVersion)
+            .withStyle(ChatFormatting.GRAY);
         player.sendSystemMessage(versionInfo);
         
         // Possible cause
-        MutableComponent cause = Component.literal("  This may be due to an API change in ")
-            .withStyle(ChatFormatting.GRAY)
-            .append(Component.literal(error.modId)
-                .withStyle(ChatFormatting.YELLOW))
-            .append(Component.literal(".")
-                .withStyle(ChatFormatting.GRAY));
+        MutableComponent cause = Component.translatable("hotbath.compat.warning.api_change", error.modId)
+            .withStyle(ChatFormatting.GRAY);
         player.sendSystemMessage(cause);
         
         // Report link
         MutableComponent reportLink = Component.literal("  ")
-            .append(Component.literal("[Click here to report this issue]")
+            .append(Component.translatable("hotbath.compat.warning.report")
                 .withStyle(style -> style
                     .withColor(ChatFormatting.GREEN)
                     .withUnderlined(true)
                     .withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, GITHUB_ISSUES_URL))
                     .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, 
-                        Component.literal("Open GitHub Issues page")))));
+                        Component.translatable("hotbath.compat.warning.report.hover")))));
         player.sendSystemMessage(reportLink);
         
         // Separator

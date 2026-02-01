@@ -71,5 +71,12 @@
   "commands.hotbath.dirtiness.get.max_dirty": " [Suciedad máx: %s/%s ticks]",
   "commands.hotbath.dirtiness.set": "Suciedad establecida a %s%%",
   "commands.hotbath.dirtiness.clean": "¡Ahora estás limpio!",
-  "commands.hotbath.dirtiness.flies": "¡Moscas activadas! Estás extremadamente sucio (100%% por 2+ días)"
+  "commands.hotbath.dirtiness.flies": "¡Moscas activadas! Estás extremadamente sucio (100%% por 2+ días)",
+
+  "hotbath.compat.warning.title": "⚠ Advertencia de compatibilidad",
+  "hotbath.compat.warning.disabled": "integración deshabilitada debido a un error.",
+  "hotbath.compat.warning.version": "  Versión del mod: %s",
+  "hotbath.compat.warning.api_change": "  Esto puede deberse a un cambio en la API de %s.",
+  "hotbath.compat.warning.report": "[Haz clic aquí para reportar este problema]",
+  "hotbath.compat.warning.report.hover": "Abrir página de GitHub Issues"
 }
