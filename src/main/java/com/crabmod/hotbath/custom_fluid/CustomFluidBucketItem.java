@@ -69,24 +69,34 @@ public class CustomFluidBucketItem extends Item {
             BlockState clickedState = level.getBlockState(pos);
             
             // Check if the clicked block can be waterlogged
-            if (clickedState.getBlock() instanceof SimpleWaterloggedBlock waterloggedBlock
-                    && clickedState.hasProperty(BlockStateProperties.WATERLOGGED)
-                    && !clickedState.getValue(BlockStateProperties.WATERLOGGED)) {
+            if (clickedState.getBlock() instanceof SimpleWaterloggedBlock
+                    && clickedState.hasProperty(BlockStateProperties.WATERLOGGED)) {
+                
+                boolean isAlreadyWaterlogged = clickedState.getValue(BlockStateProperties.WATERLOGGED);
                 
                 if (!level.mayInteract(player, pos)) {
                     return InteractionResultHolder.fail(stack);
                 }
                 
                 if (!level.isClientSide) {
-                    // Waterlog the block
-                    level.setBlock(pos, clickedState.setValue(BlockStateProperties.WATERLOGGED, true), 3);
+                    if (!isAlreadyWaterlogged) {
+                        // Waterlog the block
+                        level.setBlock(pos, clickedState.setValue(BlockStateProperties.WATERLOGGED, true), 3);
+                    }
+                    // Whether it was already waterlogged or not, update the fluid type
+                    // This allows replacing existing water/fluid with custom fluid
                     
                     // Store the fluid type in waterlogging helper
                     HotbathWaterloggingHelper.storeFluidType(level, pos, 
                             DynamicFluidRegistry.DYNAMIC_FLUID_STILL.get());
                     
                     // Store the custom fluid ID for this waterlogged position
+                    // This triggers network sync and client re-render
                     HotbathWaterloggingHelper.storeCustomFluidId(level, pos, definition.id());
+                    
+                    // Trigger fluid spread update to propagate to blocks below
+                    HotbathWaterloggingHelper.triggerFluidSpreadUpdate(level, pos, 
+                            DynamicFluidRegistry.DYNAMIC_FLUID_STILL.get(), definition.id());
                     
                     level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
                     level.gameEvent(player, GameEvent.FLUID_PLACE, pos);

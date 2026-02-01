@@ -2,15 +2,13 @@ package com.crabmod.hotbath.custom_fluid;
 
 import com.crabmod.hotbath.fluid_blocks.AbstractHotbathBlock;
 import com.crabmod.hotbath.fluid_blocks.IInsideAreaTracker;
-import com.crabmod.hotbath.util.ParticleGenerator;
 import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -22,10 +20,13 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.FluidState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +47,7 @@ import java.util.function.Supplier;
  */
 public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements EntityBlock, IInsideAreaTracker {
     
+    private static final Logger LOGGER = LoggerFactory.getLogger(DynamicCustomFluidBlock.class);
     private static final int TICKS_PER_SECOND = 20;
 
     public DynamicCustomFluidBlock(Supplier<? extends FlowingFluid> fluidSupplier, Properties properties) {
@@ -62,6 +64,8 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
      * Called when this block is placed in the world.
      * Checks if there was a stored custom fluid ID in waterlogging storage at this position,
      * which happens when a waterlogged block is broken and releases the fluid.
+     * Also schedules tick updates for neighboring flowing fluids to ensure they recalculate
+     * whether their source is still valid.
      */
     @Override
     public void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, 
@@ -86,6 +90,33 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
             // Clean up the waterlogging storage since we've moved the fluid to a regular block
             HotbathWaterloggingHelper.removeFluidType(level, pos);
             HotbathWaterloggingHelper.removeFromClientCache(pos);
+        }
+        
+        // Schedule tick updates for neighboring flowing fluids
+        // This ensures that when a source block is replaced with a different custom fluid,
+        // the neighboring flowing fluids will recalculate and disappear if their source is no longer valid
+        scheduleNeighborFluidUpdates(level, pos);
+    }
+    
+    /**
+     * Schedule fluid tick updates for all neighboring blocks that contain flowing custom fluid.
+     * This is called when a source block is placed to ensure that any adjacent flowing fluids
+     * with a different customFluidId will recalculate and potentially disappear.
+     */
+    private void scheduleNeighborFluidUpdates(Level level, BlockPos pos) {
+        // Check all 6 directions
+        for (Direction direction : Direction.values()) {
+            BlockPos neighborPos = pos.relative(direction);
+            FluidState neighborFluid = level.getFluidState(neighborPos);
+            
+            // Check if neighbor is a dynamic custom fluid that is flowing (not source)
+            if (!neighborFluid.isEmpty() 
+                    && neighborFluid.getType() instanceof DynamicCustomFluid 
+                    && !neighborFluid.isSource()) {
+                // Schedule a tick for this flowing fluid to recalculate its state
+                level.scheduleTick(neighborPos, neighborFluid.getType(), 1);
+                LOGGER.debug("Scheduled tick for flowing fluid at {} due to source change at {}", neighborPos, pos);
+            }
         }
     }
 
@@ -191,48 +222,18 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
         }
     }
 
+    /**
+     * Override to check BlockEntity for steam display (based on temperature).
+     * Parent class will call this before generating steam particles.
+     */
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void animateTick(
-            @NotNull BlockState stateIn,
-            @NotNull Level worldIn,
-            @NotNull BlockPos pos,
-            @NotNull RandomSource rand) {
-        
-        // Call parent for bubble column and underwater effects
-        super.animateTick(stateIn, worldIn, pos, rand);
-        
-        // Get fluid definition from BlockEntity
-        BlockEntity be = worldIn.getBlockEntity(pos);
+    protected boolean shouldShowSteam(Level level, BlockPos pos) {
+        BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof CustomFluidBlockEntity customBe) {
-            // Generate steam particles only for hot fluids
-            if (customBe.isHot()) {
-                generateSteamParticles(worldIn, pos, rand);
-            }
+            return customBe.shouldShowSteam();
         }
-    }
-
-    /**
-     * Generates steam particles at adjacent air blocks.
-     */
-    private void generateSteamParticles(Level worldIn, BlockPos pos, RandomSource rand) {
-        BlockPos[] adjacentPositions = new BlockPos[]{
-                pos.above(), pos.below(), pos.north(), pos.south(), pos.east(), pos.west()
-        };
-
-        int airBlockCount = 0;
-        BlockPos[] airBlocks = new BlockPos[adjacentPositions.length];
-
-        for (BlockPos adjacentPos : adjacentPositions) {
-            if (worldIn.getBlockState(adjacentPos).isAir()) {
-                airBlocks[airBlockCount++] = adjacentPos;
-            }
-        }
-
-        if (airBlockCount > 0 && rand.nextInt(5) == 0) {
-            BlockPos selectedPos = airBlocks[rand.nextInt(airBlockCount)];
-            ParticleGenerator.renderDefaultSteam((ClientLevel) worldIn, selectedPos, rand);
-        }
+        return false; // No BlockEntity means no steam
     }
 
     /**

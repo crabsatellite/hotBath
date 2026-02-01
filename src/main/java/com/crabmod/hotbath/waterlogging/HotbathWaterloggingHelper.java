@@ -2,7 +2,9 @@ package com.crabmod.hotbath.waterlogging;
 
 import com.crabmod.hotbath.HotBath;
 import com.crabmod.hotbath.custom_fluid.DynamicFluidRegistry;
+import com.crabmod.hotbath.util.HotbathFluidHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -14,6 +16,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.Nullable;
@@ -103,6 +106,26 @@ public class HotbathWaterloggingHelper {
     }
     
     /**
+     * Remove the stored custom fluid ID for a position.
+     * This is used when replacing a dynamic custom fluid with a built-in hotBath fluid.
+     * 
+     * @param level The level
+     * @param pos The position
+     */
+    public static void removeCustomFluidId(LevelAccessor level, BlockPos pos) {
+        if (pos == null) return;
+        
+        clientCustomFluidIdCache.remove(pos.asLong());
+        
+        if (level instanceof ServerLevel serverLevel) {
+            WaterloggingData data = getOrCreateData(serverLevel);
+            data.removeCustomFluidId(pos);
+            // Sync removal to clients
+            WaterloggingNetworking.syncCustomFluidIdToAllPlayers(pos, null);
+        }
+    }
+    
+    /**
      * Get the stored custom fluid ID for a position.
      * This is used for dynamic custom fluids to determine their color and properties.
      * 
@@ -168,6 +191,23 @@ public class HotbathWaterloggingHelper {
             return null;
         }
         // For client side, use the cache
+        return getFluidFromCache(pos);
+    }
+    
+    /**
+     * Get the stored fluid type for a position (BlockGetter version for canPlaceLiquid).
+     * If level is a LevelAccessor, delegates to that method, otherwise uses cache.
+     */
+    @Nullable
+    public static Fluid getStoredFluidType(net.minecraft.world.level.BlockGetter level, BlockPos pos) {
+        if (pos == null) return null;
+        
+        // If it's actually a LevelAccessor, delegate to that method
+        if (level instanceof LevelAccessor levelAccessor) {
+            return getStoredFluidType(levelAccessor, pos);
+        }
+        
+        // Otherwise just use cache
         return getFluidFromCache(pos);
     }
     
@@ -547,6 +587,44 @@ public class HotbathWaterloggingHelper {
                 result.put(entry.getKey().asLong(), entry.getValue());
             }
             return result;
+        }
+    }
+    
+    /**
+     * Trigger fluid spread update to propagate the fluid to blocks below.
+     * This should be called when placing or replacing a fluid in a waterlogged block.
+     * 
+     * @param level The level
+     * @param pos The position where fluid was placed
+     * @param fluid The fluid type (source)
+     * @param customFluidId The custom fluid ID (null for built-in fluids)
+     */
+    public static void triggerFluidSpreadUpdate(LevelAccessor level, BlockPos pos, 
+                                                 Fluid fluid, ResourceLocation customFluidId) {
+        if (level.isClientSide()) return;
+        
+        // Simple approach: Schedule ticks for all neighboring fluid blocks
+        // The overridden getNewLiquid in DynamicCustomFluid will handle the customFluidId check
+        // and flowing fluids without valid source support will automatically disappear
+        
+        BlockState currentState = level.getBlockState(pos);
+        
+        // Schedule ticks for all 6 directions
+        for (Direction dir : Direction.values()) {
+            BlockPos neighborPos = pos.relative(dir);
+            FluidState neighborFluidState = level.getFluidState(neighborPos);
+            
+            if (!neighborFluidState.isEmpty() && HotbathFluidHelper.isHotbathFluid(neighborFluidState.getType())) {
+                // Schedule a fluid tick - the fluid's tick() method will call getNewLiquid()
+                // which we've overridden to check customFluidId
+                level.scheduleTick(neighborPos, neighborFluidState.getType(), 
+                        neighborFluidState.getType().getTickDelay(level));
+            }
+        }
+        
+        // Also trigger block update notifications so fluids know their neighbors changed
+        if (level instanceof Level realLevel) {
+            realLevel.updateNeighborsAt(pos, currentState.getBlock());
         }
     }
 }

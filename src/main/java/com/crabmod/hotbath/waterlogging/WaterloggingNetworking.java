@@ -197,6 +197,14 @@ public class WaterloggingNetworking {
                 // Fluid no longer exists, remove from cache
                 HotbathWaterloggingHelper.removeFromClientCache(payload.pos());
             }
+            
+            // Trigger block re-render on client to show the new fluid
+            net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
+            if (mc.level != null) {
+                mc.levelRenderer.setBlocksDirty(
+                        payload.pos().getX(), payload.pos().getY(), payload.pos().getZ(),
+                        payload.pos().getX(), payload.pos().getY(), payload.pos().getZ());
+            }
         });
     }
     
@@ -230,6 +238,14 @@ public class WaterloggingNetworking {
             if (payload == null || payload.pos() == null) return;
             
             HotbathWaterloggingHelper.updateClientCustomFluidIdCache(payload.pos(), payload.customFluidId());
+            
+            // Trigger block re-render on client
+            net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
+            if (mc.level != null) {
+                mc.levelRenderer.setBlocksDirty(
+                        payload.pos().getX(), payload.pos().getY(), payload.pos().getZ(),
+                        payload.pos().getX(), payload.pos().getY(), payload.pos().getZ());
+            }
         });
     }
     
