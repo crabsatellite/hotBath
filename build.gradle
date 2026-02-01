@@ -243,6 +243,9 @@ dependencies {
 mixin {
     add sourceSets.main, "hotbath.refmap.json"
     config "hotbath.mixins.json"
+    config "hotbath.alexsmobs.mixins.json"
+    config "hotbath.alexscaves.mixins.json"
+    config "hotbath.twilightforest.mixins.json"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
