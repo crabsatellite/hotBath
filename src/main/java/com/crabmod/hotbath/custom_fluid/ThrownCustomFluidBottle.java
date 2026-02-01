@@ -6,9 +6,11 @@ import com.crabmod.hotbath.dirtiness.DirtinessNetworking;
 import com.crabmod.hotbath.HotBathConfig;
 import com.crabmod.hotbath.registers.EntityRegister;
 import com.crabmod.hotbath.registers.ParticleRegister;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
@@ -99,25 +101,27 @@ public class ThrownCustomFluidBottle extends ThrowableItemProjectile {
             CustomFluidDefinition definition = CustomFluidDataComponents.getFluidDefinition(stack);
             
             int color = definition != null ? definition.color() : 0x45E1E9;
-            double r = ((color >> 16) & 0xFF) / 255.0;
-            double g = ((color >> 8) & 0xFF) / 255.0;
-            double b = (color & 0xFF) / 255.0;
+            float r = ((color >> 16) & 0xFF) / 255.0f;
+            float g = ((color >> 8) & 0xFF) / 255.0f;
+            float b = (color & 0xFF) / 255.0f;
 
-            // Effect particles
-            for (int k = 0; k < 20; ++k) {
-                double radius = this.random.nextDouble() * 2.0D;
+            // Effect particles using vanilla ENTITY_EFFECT with dynamic color (like vanilla potion)
+            ColorParticleOption coloredParticle = ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, FastColor.ARGB32.colorFromFloat(1.0f, r, g, b));
+            for (int k = 0; k < 100; ++k) {
+                double radius = this.random.nextDouble() * 4.0D;
                 double angle = this.random.nextDouble() * Math.PI * 2.0D;
                 double offsetX = Math.cos(angle) * radius;
                 double offsetZ = Math.sin(angle) * radius;
-                this.level().addParticle(ParticleRegister.HOT_WATER_EFFECT.get(),
+                this.level().addParticle(coloredParticle,
                         this.getX() + offsetX * 0.1D,
                         this.getY() + 0.3D,
                         this.getZ() + offsetZ * 0.1D,
-                        r, g, b);
+                        offsetX, 0.01D + this.random.nextDouble() * 0.5D, offsetZ);
             }
 
-            // Steam particles - Concentrated Center
-            boolean showSteam = definition == null || definition.showSteam();
+            // Steam particles - only show for hot fluids (temperature >= threshold)
+            boolean isHot = definition != null && definition.isHot();
+            boolean showSteam = isHot && (definition == null || definition.showSteam());
             if (showSteam) {
                 for (int k = 0; k < 10; ++k) {
                     double radius = this.random.nextDouble() * 0.5D;
@@ -147,29 +151,8 @@ public class ThrownCustomFluidBottle extends ThrowableItemProjectile {
                 }
             }
 
-            // Splash particles
-            boolean showParticles = definition == null || definition.showParticles();
-            if (showParticles) {
-                for (int i = 0; i < 16; ++i) {
-                    double d0 = (this.random.nextDouble() * 2.0D - 1.0D) * 0.5D;
-                    double d1 = (this.random.nextDouble() * 2.0D - 1.0D) * 0.5D;
-                    this.level().addParticle(ParticleRegister.HOT_WATER_SPLASH.get(),
-                            this.getX() + d0, this.getY() + 0.2D, this.getZ() + d1,
-                            d0, 0.2D, d1);
-                }
-            }
-
-            // Bubble particles
-            boolean showBubbles = definition == null || definition.showBubbles();
-            if (showBubbles) {
-                for (int i = 0; i < 8; ++i) {
-                    this.level().addParticle(ParticleRegister.HOT_WATER_BUBBLE.get(),
-                            this.getX(), this.getY() + 0.2D, this.getZ(),
-                            (this.random.nextFloat() - 0.5D) * 0.08D,
-                            (this.random.nextFloat() - 0.5D) * 0.08D,
-                            (this.random.nextFloat() - 0.5D) * 0.08D);
-                }
-            }
+            // Splash particles are now part of the colored effect particles above
+            // No need for separate splash particles since we use vanilla ENTITY_EFFECT
 
             // Item break particles
             for (int j = 0; j < 8; ++j) {
