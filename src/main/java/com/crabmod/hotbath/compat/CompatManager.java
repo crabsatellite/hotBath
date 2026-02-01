@@ -118,6 +118,9 @@ public class CompatManager {
         }
         
         logStartupSummary();
+        
+        // Update Patchouli flags after all compats are initialized
+        PatchouliCompat.updateCompatFlags();
     }
     
     /**

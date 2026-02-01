@@ -1,6 +1,9 @@
 package com.crabmod.hotbath.item;
 
 import com.crabmod.hotbath.HotBath;
+import com.crabmod.hotbath.compat.PatchouliCompat;
+import com.crabmod.hotbath.custom_fluid.CustomFluidAPI;
+import com.crabmod.hotbath.custom_fluid.CustomFluidDefinition;
 import com.crabmod.hotbath.registers.ItemRegister;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -41,7 +44,38 @@ public class ItemGroup {
                                                 pOutput.accept(ItemRegister.SPLASH_HERBAL_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.SPLASH_PEONY_BATH_BOTTLE.get());
                                                 pOutput.accept(ItemRegister.SPLASH_ROSE_BATH_BOTTLE.get());
+                                                
+                                                // Ingredients
                                                 pOutput.accept(ItemRegister.BATH_HERB.get());
+                                                
+                                                // Patchouli Guide Book (if Patchouli is loaded)
+                                                if (PatchouliCompat.isPatchouliLoaded()) {
+                                                    ItemStack guideBook = PatchouliCompat.getGuideBook();
+                                                    if (!guideBook.isEmpty()) {
+                                                        pOutput.accept(guideBook);
+                                                    }
+                                                }
+                                                
+                                                // Dynamic custom fluid items from data packs
+                                                for (CustomFluidDefinition definition : CustomFluidAPI.getAllFluids()) {
+                                                    // Add custom bucket
+                                                    ItemStack bucket = CustomFluidAPI.createBucket(definition);
+                                                    if (!bucket.isEmpty()) {
+                                                        pOutput.accept(bucket);
+                                                    }
+                                                    
+                                                    // Add custom bottle
+                                                    ItemStack bottle = CustomFluidAPI.createBottle(definition);
+                                                    if (!bottle.isEmpty()) {
+                                                        pOutput.accept(bottle);
+                                                    }
+                                                    
+                                                    // Add custom splash bottle
+                                                    ItemStack splashBottle = CustomFluidAPI.createSplashBottle(definition);
+                                                    if (!splashBottle.isEmpty()) {
+                                                        pOutput.accept(splashBottle);
+                                                    }
+                                                }
                                             })
                                     .build());
 
