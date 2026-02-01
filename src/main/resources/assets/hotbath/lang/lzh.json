@@ -69,5 +69,12 @@
   "commands.hotbath.dirtiness.get.max_dirty": " [至穢: %s/%s 刻]",
   "commands.hotbath.dirtiness.set": "污穢設為 %s%%",
   "commands.hotbath.dirtiness.clean": "汝今潔淨矣！",
-  "commands.hotbath.dirtiness.flies": "蠅蟲已啟！汝今至穢也（百分百穢逾二日）"
+  "commands.hotbath.dirtiness.flies": "蠅蟲已啟！汝今至穢也（百分百穢逾二日）",
+
+  "hotbath.compat.warning.title": "⚠ 相容之警",
+  "hotbath.compat.warning.disabled": "之銜接因誤而禁。",
+  "hotbath.compat.warning.version": "  模組版本: %s",
+  "hotbath.compat.warning.api_change": "  此或因 %s 之介面更迭所致。",
+  "hotbath.compat.warning.report": "[點此稟報]",
+  "hotbath.compat.warning.report.hover": "開啟 GitHub Issues 頁"
 }

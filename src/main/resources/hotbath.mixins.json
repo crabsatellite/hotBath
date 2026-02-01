@@ -44,7 +44,10 @@
     "LightBlockMixin",
     "BarrierBlockMixin"
   ],
-  "client": ["client.BlockRenderDispatcherMixin"],
+  "client": [
+    "client.BlockRenderDispatcherMixin",
+    "client.LiquidBlockRendererMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

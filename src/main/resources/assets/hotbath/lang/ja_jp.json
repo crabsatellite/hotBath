@@ -69,5 +69,12 @@
   "commands.hotbath.dirtiness.get.max_dirty": " [最大汚れ: %s/%s ティック]",
   "commands.hotbath.dirtiness.set": "汚れ度を %s%% に設定しました",
   "commands.hotbath.dirtiness.clean": "あなたは今、清潔です！",
-  "commands.hotbath.dirtiness.flies": "ハエを有効化！あなたは非常に汚れています（100%%が2日以上続いています）"
+  "commands.hotbath.dirtiness.flies": "ハエを有効化！あなたは非常に汚れています（100%%が2日以上続いています）",
+
+  "hotbath.compat.warning.title": "⚠ 互換性警告",
+  "hotbath.compat.warning.disabled": "の統合がエラーにより無効化されました。",
+  "hotbath.compat.warning.version": "  Modバージョン: %s",
+  "hotbath.compat.warning.api_change": "  これは %s のAPI変更が原因の可能性があります。",
+  "hotbath.compat.warning.report": "[ここをクリックして問題を報告]",
+  "hotbath.compat.warning.report.hover": "GitHub Issuesページを開く"
 }

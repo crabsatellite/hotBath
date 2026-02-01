@@ -71,5 +71,12 @@
   "commands.hotbath.dirtiness.get.max_dirty": " [Max. Verschmutzung: %s/%s Ticks]",
   "commands.hotbath.dirtiness.set": "Verschmutzung auf %s%% gesetzt",
   "commands.hotbath.dirtiness.clean": "Du bist jetzt sauber!",
-  "commands.hotbath.dirtiness.flies": "Fliegen aktiviert! Du bist jetzt extrem schmutzig (100%% seit 2+ Tagen)"
+  "commands.hotbath.dirtiness.flies": "Fliegen aktiviert! Du bist jetzt extrem schmutzig (100%% seit 2+ Tagen)",
+
+  "hotbath.compat.warning.title": "⚠ Kompatibilitätswarnung",
+  "hotbath.compat.warning.disabled": "Integration wurde wegen eines Fehlers deaktiviert.",
+  "hotbath.compat.warning.version": "  Mod-Version: %s",
+  "hotbath.compat.warning.api_change": "  Dies könnte auf eine API-Änderung in %s zurückzuführen sein.",
+  "hotbath.compat.warning.report": "[Hier klicken, um das Problem zu melden]",
+  "hotbath.compat.warning.report.hover": "GitHub Issues-Seite öffnen"
 }

@@ -71,5 +71,12 @@
   "commands.hotbath.dirtiness.get.max_dirty": " [Saleté max: %s/%s ticks]",
   "commands.hotbath.dirtiness.set": "Saleté réglée à %s%%",
   "commands.hotbath.dirtiness.clean": "Vous êtes maintenant propre!",
-  "commands.hotbath.dirtiness.flies": "Mouches activées! Vous êtes extrêmement sale (100%% depuis 2+ jours)"
+  "commands.hotbath.dirtiness.flies": "Mouches activées! Vous êtes extrêmement sale (100%% depuis 2+ jours)",
+
+  "hotbath.compat.warning.title": "⚠ Avertissement de compatibilité",
+  "hotbath.compat.warning.disabled": "intégration désactivée en raison d'une erreur.",
+  "hotbath.compat.warning.version": "  Version du mod: %s",
+  "hotbath.compat.warning.api_change": "  Cela peut être dû à un changement d'API dans %s.",
+  "hotbath.compat.warning.report": "[Cliquez ici pour signaler ce problème]",
+  "hotbath.compat.warning.report.hover": "Ouvrir la page GitHub Issues"
 }

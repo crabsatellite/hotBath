@@ -71,5 +71,12 @@
   "commands.hotbath.dirtiness.get.max_dirty": " [최대 더러움: %s/%s 틱]",
   "commands.hotbath.dirtiness.set": "더러움을 %s%%로 설정했습니다",
   "commands.hotbath.dirtiness.clean": "이제 깨끗해졌습니다!",
-  "commands.hotbath.dirtiness.flies": "파리 활성화! 매우 더럽습니다 (100%%가 2일 이상 지속)"
+  "commands.hotbath.dirtiness.flies": "파리 활성화! 매우 더럽습니다 (100%%가 2일 이상 지속)",
+
+  "hotbath.compat.warning.title": "⚠ 호환성 경고",
+  "hotbath.compat.warning.disabled": "통합이 오류로 인해 비활성화되었습니다.",
+  "hotbath.compat.warning.version": "  모드 버전: %s",
+  "hotbath.compat.warning.api_change": "  이것은 %s의 API 변경 때문일 수 있습니다.",
+  "hotbath.compat.warning.report": "[여기를 클릭하여 문제 보고]",
+  "hotbath.compat.warning.report.hover": "GitHub Issues 페이지 열기"
 }
