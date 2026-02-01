@@ -11,6 +11,7 @@
     "EntityMixin",
     "FlowingFluidMixin",
     "BlockItemMixin",
+    "BottleItemMixin",
     "ConduitBlockMixin",
     "SeagrassBlockMixin",
     "KelpBlockMixin",
