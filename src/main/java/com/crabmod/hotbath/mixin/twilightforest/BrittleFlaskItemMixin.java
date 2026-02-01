@@ -1,6 +1,7 @@
 package com.crabmod.hotbath.mixin.twilightforest;
 
-import com.crabmod.hotbath.compat.CompatManager;
+import com.crabmod.hotbath.compat.*;
+import com.crabmod.hotbath.compat.twilightforest.TFFlaskColorHelper;
 import com.crabmod.hotbath.custom_fluid.CustomFluidAPI;
 import com.crabmod.hotbath.custom_fluid.CustomFluidBottleItem;
 import com.crabmod.hotbath.custom_fluid.CustomFluidNBTHelper;
@@ -109,6 +110,69 @@ public class BrittleFlaskItemMixin {
             }
         } catch (Throwable e) {
             CompatManager.reportRuntimeError("twilightforest", "BrittleFlaskItemMixin.getBarColor", e);
+        }
+    }
+
+    /**
+     * Inject into finishUsingItem to apply HotBath effects.
+     * Directly calls BathWaterEffects methods to ensure identical behavior to drinking bottles directly.
+     * For custom fluids, applies temperature effects if the fluid is hot.
+     */
+    @Inject(method = "finishUsingItem", at = @At("HEAD"))
+    private void hotbath$applyHotBathEffects(ItemStack stack, net.minecraft.world.level.Level level, 
+            net.minecraft.world.entity.LivingEntity entity, CallbackInfoReturnable<ItemStack> cir) {
+        if (level.isClientSide()) return;
+        
+        try {
+            CompoundTag tag = stack.getTag();
+            if (tag != null && tag.getBoolean("IsHotBathContent")) {
+                // Check for legacy bath type (hot_water, honey_bath, etc.)
+                if (tag.contains("HotBathType")) {
+                    String bathTypeId = tag.getString("HotBathType");
+                    TFFlaskColorHelper.applyEffectByTypeId(entity, bathTypeId);
+                }
+                // Check for custom fluids and apply temperature effects
+                else if (tag.contains("HotBathFluidId") && entity instanceof Player player) {
+                    String fluidIdStr = tag.getString("HotBathFluidId");
+                    ResourceLocation fluidId = new ResourceLocation(fluidIdStr);
+                    Optional<CustomFluidDefinition> definitionOpt = CustomFluidAPI.getFluidDefinition(fluidId);
+                    if (definitionOpt.isPresent()) {
+                        CustomFluidDefinition definition = definitionOpt.get();
+                        // Apply temperature effects only if the fluid is hot
+                        hotbath$applyTemperatureEffects(player, definition);
+                    }
+                }
+            }
+        } catch (Throwable e) {
+            CompatManager.reportRuntimeError("twilightforest", "BrittleFlaskItemMixin.finishUsingItem", e);
+        }
+    }
+
+    /**
+     * Applies temperature effects for compatible mods.
+     * Only applies warming effects if the fluid is defined as hot.
+     */
+    @Unique
+    private void hotbath$applyTemperatureEffects(Player player, CustomFluidDefinition definition) {
+        // Only apply temperature effects if the fluid is hot
+        if (!definition.isHot()) {
+            return;
+        }
+        
+        // Apply ToughAsNails temperature effect
+        if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {
+            BathWaterBottleTANModifier.applyWarmEffect(player);
+            ToughAsNailsThirstHelper.restoreThirst(player);
+        }
+        
+        // Apply Cold Sweat temperature effect
+        if (ColdSweatIntegration.isColdSweatLoaded()) {
+            BathWaterBottleColdSweatModifier.applyWarmEffect(player);
+        }
+        
+        // Apply Legendary Survival Overhaul temperature effect
+        if (LegendarySurvivalOverhaulIntegration.isLSOLoaded()) {
+            BathWaterBottleLSOModifier.applyWarmEffect(player);
         }
     }
 
@@ -247,43 +311,20 @@ public class BrittleFlaskItemMixin {
 
     /**
      * Get the bath type identifier for a legacy bath bottle item.
+     * Uses TFFlaskColorHelper for centralized color/type management.
      */
     @Unique
     private String hotbath$getLegacyBathTypeId(Item bottleItem) {
-        if (bottleItem == ItemRegister.HOT_WATER_BOTTLE.get()) {
-            return "hot_water";
-        } else if (bottleItem == ItemRegister.HONEY_BATH_BOTTLE.get()) {
-            return "honey_bath";
-        } else if (bottleItem == ItemRegister.MILK_BATH_BOTTLE.get()) {
-            return "milk_bath";
-        } else if (bottleItem == ItemRegister.HERBAL_BATH_BOTTLE.get()) {
-            return "herbal_bath";
-        } else if (bottleItem == ItemRegister.PEONY_BATH_BOTTLE.get()) {
-            return "peony_bath";
-        } else if (bottleItem == ItemRegister.ROSE_BATH_BOTTLE.get()) {
-            return "rose_bath";
-        }
-        return null;
+        return TFFlaskColorHelper.getTypeIdForBottle(bottleItem);
     }
 
     /**
      * Get the color for a legacy bath bottle item.
+     * Uses TFFlaskColorHelper for centralized color management from FluidsColor.
      */
     @Unique
     private int hotbath$getLegacyBathColor(Item bottleItem) {
-        if (bottleItem == ItemRegister.HOT_WATER_BOTTLE.get()) {
-            return 0xE0FFFF;  // Light cyan
-        } else if (bottleItem == ItemRegister.HONEY_BATH_BOTTLE.get()) {
-            return 0xFFB300;  // Amber/Gold
-        } else if (bottleItem == ItemRegister.MILK_BATH_BOTTLE.get()) {
-            return 0xFFFAF0;  // Floral white
-        } else if (bottleItem == ItemRegister.HERBAL_BATH_BOTTLE.get()) {
-            return 0x2B8B57;  // Sea green
-        } else if (bottleItem == ItemRegister.PEONY_BATH_BOTTLE.get()) {
-            return 0xFFB6C1;  // Light pink
-        } else if (bottleItem == ItemRegister.ROSE_BATH_BOTTLE.get()) {
-            return 0xFF69B4;  // Hot pink
-        }
-        return 0xFFFFFF;  // White fallback
+        int color = TFFlaskColorHelper.getColorForBottle(bottleItem);
+        return color != -1 ? color : 0xFFFFFF;  // White fallback
     }
 }

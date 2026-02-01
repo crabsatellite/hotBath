@@ -350,4 +350,25 @@ public final class CustomFluidAPI {
     public static boolean hasCustomFluid(ItemStack stack) {
         return CustomFluidNBTHelper.getFluidId(stack) != null;
     }
+
+    /**
+     * Gets a custom fluid definition by its color.
+     * This is useful when only the color is available (e.g., from Twilight Forest Flask).
+     * Note: If multiple fluids have the same color, only one will be returned.
+     * 
+     * @param color The color value (RGB without alpha)
+     * @return Optional containing the first matching fluid definition
+     */
+    public static Optional<CustomFluidDefinition> getDefinitionByColor(int color) {
+        // Normalize color to ensure consistent matching (remove alpha if present)
+        int colorWithoutAlpha = color & 0x00FFFFFF;
+        
+        for (CustomFluidDefinition definition : getAllFluids()) {
+            int defColor = definition.color() & 0x00FFFFFF;
+            if (defColor == colorWithoutAlpha) {
+                return Optional.of(definition);
+            }
+        }
+        return Optional.empty();
+    }
 }

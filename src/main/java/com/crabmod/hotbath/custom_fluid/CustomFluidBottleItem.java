@@ -1,5 +1,6 @@
 package com.crabmod.hotbath.custom_fluid;
 
+import com.crabmod.hotbath.compat.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
@@ -54,6 +55,9 @@ public class CustomFluidBottleItem extends Item {
                             effect.showIcon()
                     ));
                 }
+                
+                // Apply temperature effects for mod compatibility (only if hot)
+                applyTemperatureEffects(serverPlayer, definition);
             }
         }
         
@@ -66,6 +70,33 @@ public class CustomFluidBottleItem extends Item {
         }
         
         return stack.isEmpty() ? new ItemStack(Items.GLASS_BOTTLE) : stack;
+    }
+    
+    /**
+     * Applies temperature effects for compatible mods.
+     * Only applies warming effects if the fluid is defined as hot.
+     */
+    private void applyTemperatureEffects(Player player, CustomFluidDefinition definition) {
+        // Only apply temperature effects if the fluid is hot
+        if (!definition.isHot()) {
+            return;
+        }
+        
+        // Apply ToughAsNails temperature effect
+        if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {
+            BathWaterBottleTANModifier.applyWarmEffect(player);
+            ToughAsNailsThirstHelper.restoreThirst(player);
+        }
+        
+        // Apply Cold Sweat temperature effect
+        if (ColdSweatIntegration.isColdSweatLoaded()) {
+            BathWaterBottleColdSweatModifier.applyWarmEffect(player);
+        }
+        
+        // Apply Legendary Survival Overhaul temperature effect
+        if (LegendarySurvivalOverhaulIntegration.isLSOLoaded()) {
+            BathWaterBottleLSOModifier.applyWarmEffect(player);
+        }
     }
 
     @Override
