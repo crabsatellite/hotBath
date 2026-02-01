@@ -260,6 +260,20 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
         }
         return false; // No BlockEntity means no steam
     }
+    
+    /**
+     * Override to check BlockEntity for bubble display setting.
+     * Parent class will call this before generating bubble particles.
+     */
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    protected boolean shouldShowBubbles(Level level, BlockPos pos) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof CustomFluidBlockEntity customBe) {
+            return customBe.shouldShowBubbles();
+        }
+        return true; // Default to showing bubbles
+    }
 
     /**
      * Gets the tint color for this fluid block at the given position.

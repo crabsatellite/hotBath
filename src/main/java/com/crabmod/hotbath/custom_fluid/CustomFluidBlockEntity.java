@@ -188,10 +188,32 @@ public class CustomFluidBlockEntity extends BlockEntity {
     
     /**
      * Checks if steam particles should be shown for this fluid.
-     * Steam is shown when temperature >= HOT_TEMPERATURE_THRESHOLD (35°C).
+     * Steam is shown when temperature >= HOT_TEMPERATURE_THRESHOLD (35°C) AND show_steam is true.
      */
     public boolean shouldShowSteam() {
-        return isHot();
+        return getFluidDefinition()
+                .map(def -> def.isHot() && def.showSteam())
+                .orElse(false);
+    }
+    
+    /**
+     * Checks if general particles (splash, drip, etc.) should be shown for this fluid.
+     * Controlled by the show_particles setting in the fluid definition.
+     */
+    public boolean shouldShowParticles() {
+        return getFluidDefinition()
+                .map(CustomFluidDefinition::showParticles)
+                .orElse(true);
+    }
+    
+    /**
+     * Checks if bubble particles should be shown for this fluid.
+     * Controlled by the show_bubbles setting in the fluid definition.
+     */
+    public boolean shouldShowBubbles() {
+        return getFluidDefinition()
+                .map(CustomFluidDefinition::showBubbles)
+                .orElse(true);
     }
     
     /**

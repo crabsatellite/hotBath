@@ -154,9 +154,9 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
             generateSteamParticles(worldIn, pos, rand);
         }
 
-        // Bubble column particles
+        // Bubble column particles - only if shouldShowBubbles returns true
         int direction = getBubbleColumnDirection(worldIn, pos);
-        if (direction != 0) {
+        if (direction != 0 && shouldShowBubbles(worldIn, pos)) {
             FluidType fluidType = stateIn.getFluidState().getFluidType();
             ParticleOptions bubbleParticle = null;
             if (fluidType instanceof BaseFluidType baseFluidType) {
@@ -339,6 +339,16 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
     @OnlyIn(Dist.CLIENT)
     protected boolean shouldShowSteam(Level level, BlockPos pos) {
         return true; // Default: all hardcoded hot baths show steam
+    }
+    
+    /**
+     * Determines if bubble particles should be shown for this fluid block.
+     * Default returns true for hardcoded hot bath blocks.
+     * Can be overridden by subclasses (e.g., DynamicCustomFluidBlock) to check showBubbles setting.
+     */
+    @OnlyIn(Dist.CLIENT)
+    protected boolean shouldShowBubbles(Level level, BlockPos pos) {
+        return true; // Default: all hardcoded hot baths show bubbles
     }
 
     // Generate steam particles around the block if adjacent blocks are air

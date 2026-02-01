@@ -104,8 +104,12 @@ public class ThrownCustomFluidBottle extends ThrowableItemProjectile {
             float r = ((color >> 16) & 0xFF) / 255.0f;
             float g = ((color >> 8) & 0xFF) / 255.0f;
             float b = (color & 0xFF) / 255.0f;
+            
+            // Check if particles should be shown
+            boolean showParticles = definition == null || definition.showParticles();
 
             // Effect particles using vanilla ENTITY_EFFECT with dynamic color (like vanilla potion)
+            if (showParticles) {
             ColorParticleOption coloredParticle = ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, FastColor.ARGB32.colorFromFloat(1.0f, r, g, b));
             for (int k = 0; k < 100; ++k) {
                 double radius = this.random.nextDouble() * 4.0D;
@@ -118,10 +122,11 @@ public class ThrownCustomFluidBottle extends ThrowableItemProjectile {
                         this.getZ() + offsetZ * 0.1D,
                         offsetX, 0.01D + this.random.nextDouble() * 0.5D, offsetZ);
             }
+            }
 
-            // Steam particles - only show for hot fluids (temperature >= threshold)
+            // Steam particles - only show for hot fluids (temperature >= threshold) and when particles enabled
             boolean isHot = definition != null && definition.isHot();
-            boolean showSteam = isHot && (definition == null || definition.showSteam());
+            boolean showSteam = showParticles && isHot && (definition == null || definition.showSteam());
             if (showSteam) {
                 for (int k = 0; k < 10; ++k) {
                     double radius = this.random.nextDouble() * 0.5D;

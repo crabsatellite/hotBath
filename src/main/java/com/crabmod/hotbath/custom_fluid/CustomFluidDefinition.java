@@ -52,6 +52,8 @@ public record CustomFluidDefinition(
         int viscosity,
         int density,
         int luminosity,
+        float opacity,
+        int nutrition,
         boolean showParticles,
         boolean showBubbles,
         boolean showSteam,
@@ -63,29 +65,81 @@ public record CustomFluidDefinition(
         Map<String, String> translations
 ) {
     
-    public static final Codec<CustomFluidDefinition> CODEC = RecordCodecBuilder.create(
+    /** Default saturation modifier for nutrition calculation (same as normal food) */
+    private static final float DEFAULT_SATURATION_MODIFIER = 0.6f;
+    
+    /**
+     * Calculates the saturation value based on nutrition.
+     * Formula: nutrition * saturationModifier * 2 (same as Minecraft food)
+     * @return the saturation value to restore
+     */
+    public float getSaturation() {
+        return nutrition * DEFAULT_SATURATION_MODIFIER * 2.0f;
+    }
+    
+    // Helper record for first group of fields (up to 16)
+    private record BaseFields(
+            ResourceLocation id, int color, float temperature, int viscosity, int density,
+            int luminosity, float opacity, int nutrition,
+            boolean showParticles, boolean showBubbles, boolean showSteam,
+            List<EffectEntry> effects, int triggerTimeSeconds,
+            ResourceLocation textureStill, ResourceLocation textureFlowing
+    ) {}
+    
+    // Helper record for extra fields
+    private record ExtraFields(String nameKey, Map<String, String> translations) {}
+    
+    private static final Codec<BaseFields> BASE_CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                    ResourceLocation.CODEC.fieldOf("id").forGetter(CustomFluidDefinition::id),
-                    Codec.INT.optionalFieldOf("color", 0x45E1E9).forGetter(CustomFluidDefinition::color),
-                    Codec.FLOAT.optionalFieldOf("temperature", 40.0f).forGetter(CustomFluidDefinition::temperature),
-                    Codec.INT.optionalFieldOf("viscosity", 1000).forGetter(CustomFluidDefinition::viscosity),
-                    Codec.INT.optionalFieldOf("density", 1000).forGetter(CustomFluidDefinition::density),
-                    Codec.INT.optionalFieldOf("luminosity", 2).forGetter(CustomFluidDefinition::luminosity),
-                    Codec.BOOL.optionalFieldOf("show_particles", true).forGetter(CustomFluidDefinition::showParticles),
-                    Codec.BOOL.optionalFieldOf("show_bubbles", true).forGetter(CustomFluidDefinition::showBubbles),
-                    Codec.BOOL.optionalFieldOf("show_steam", true).forGetter(CustomFluidDefinition::showSteam),
-                    EffectEntry.CODEC.listOf().optionalFieldOf("effects", List.of()).forGetter(CustomFluidDefinition::effects),
-                    Codec.INT.optionalFieldOf("trigger_time_seconds", 15).forGetter(CustomFluidDefinition::triggerTimeSeconds),
+                    ResourceLocation.CODEC.fieldOf("id").forGetter(BaseFields::id),
+                    Codec.INT.optionalFieldOf("color", 0x45E1E9).forGetter(BaseFields::color),
+                    Codec.FLOAT.optionalFieldOf("temperature", 40.0f).forGetter(BaseFields::temperature),
+                    Codec.INT.optionalFieldOf("viscosity", 1000).forGetter(BaseFields::viscosity),
+                    Codec.INT.optionalFieldOf("density", 1000).forGetter(BaseFields::density),
+                    Codec.INT.optionalFieldOf("luminosity", 2).forGetter(BaseFields::luminosity),
+                    Codec.FLOAT.optionalFieldOf("opacity", 1.0f).forGetter(BaseFields::opacity),
+                    Codec.INT.optionalFieldOf("nutrition", 0).forGetter(BaseFields::nutrition),
+                    Codec.BOOL.optionalFieldOf("show_particles", true).forGetter(BaseFields::showParticles),
+                    Codec.BOOL.optionalFieldOf("show_bubbles", true).forGetter(BaseFields::showBubbles),
+                    Codec.BOOL.optionalFieldOf("show_steam", true).forGetter(BaseFields::showSteam),
+                    EffectEntry.CODEC.listOf().optionalFieldOf("effects", List.of()).forGetter(BaseFields::effects),
+                    Codec.INT.optionalFieldOf("trigger_time_seconds", 15).forGetter(BaseFields::triggerTimeSeconds),
                     ResourceLocation.CODEC.optionalFieldOf("texture_still", 
                             ResourceLocation.fromNamespaceAndPath("hotbath", "block/still_custom_fluid_grayscale"))
-                            .forGetter(CustomFluidDefinition::textureStill),
+                            .forGetter(BaseFields::textureStill),
                     ResourceLocation.CODEC.optionalFieldOf("texture_flowing",
                             ResourceLocation.fromNamespaceAndPath("hotbath", "block/flowing_custom_fluid_grayscale"))
-                            .forGetter(CustomFluidDefinition::textureFlowing),
-                    Codec.STRING.optionalFieldOf("name_key", "").forGetter(CustomFluidDefinition::nameKey),
+                            .forGetter(BaseFields::textureFlowing)
+            ).apply(instance, BaseFields::new)
+    );
+    
+    private static final Codec<ExtraFields> EXTRA_CODEC = RecordCodecBuilder.create(
+            instance -> instance.group(
+                    Codec.STRING.optionalFieldOf("name_key", "").forGetter(ExtraFields::nameKey),
                     Codec.unboundedMap(Codec.STRING, Codec.STRING).optionalFieldOf("translations", Map.of())
-                            .forGetter(CustomFluidDefinition::translations)
-            ).apply(instance, CustomFluidDefinition::new)
+                            .forGetter(ExtraFields::translations)
+            ).apply(instance, ExtraFields::new)
+    );
+    
+    public static final Codec<CustomFluidDefinition> CODEC = Codec.pair(
+            BASE_CODEC, EXTRA_CODEC
+    ).xmap(
+            pair -> new CustomFluidDefinition(
+                    pair.getFirst().id, pair.getFirst().color, pair.getFirst().temperature,
+                    pair.getFirst().viscosity, pair.getFirst().density, pair.getFirst().luminosity,
+                    pair.getFirst().opacity, pair.getFirst().nutrition,
+                    pair.getFirst().showParticles, pair.getFirst().showBubbles, pair.getFirst().showSteam,
+                    pair.getFirst().effects, pair.getFirst().triggerTimeSeconds,
+                    pair.getFirst().textureStill, pair.getFirst().textureFlowing,
+                    pair.getSecond().nameKey, pair.getSecond().translations
+            ),
+            def -> com.mojang.datafixers.util.Pair.of(
+                    new BaseFields(def.id, def.color, def.temperature, def.viscosity, def.density,
+                            def.luminosity, def.opacity, def.nutrition,
+                            def.showParticles, def.showBubbles, def.showSteam,
+                            def.effects, def.triggerTimeSeconds, def.textureStill, def.textureFlowing),
+                    new ExtraFields(def.nameKey, def.translations)
+            )
     );
 
     /**
@@ -237,6 +291,8 @@ public record CustomFluidDefinition(
         private int viscosity = 1000;
         private int density = 1000;
         private int luminosity = 2;
+        private float opacity = 1.0f;
+        private int nutrition = 0;
         private boolean showParticles = true;
         private boolean showBubbles = true;
         private boolean showSteam = true;
@@ -273,6 +329,16 @@ public record CustomFluidDefinition(
 
         public Builder luminosity(int luminosity) {
             this.luminosity = luminosity;
+            return this;
+        }
+        
+        public Builder opacity(float opacity) {
+            this.opacity = opacity;
+            return this;
+        }
+        
+        public Builder nutrition(int nutrition) {
+            this.nutrition = nutrition;
             return this;
         }
 
@@ -329,6 +395,7 @@ public record CustomFluidDefinition(
         public CustomFluidDefinition build() {
             return new CustomFluidDefinition(
                     id, color, temperature, viscosity, density, luminosity,
+                    opacity, nutrition,
                     showParticles, showBubbles, showSteam,
                     effects, triggerTimeSeconds,
                     textureStill, textureFlowing, nameKey, translations
