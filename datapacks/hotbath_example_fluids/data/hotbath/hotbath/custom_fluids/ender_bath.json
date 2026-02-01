@@ -8,7 +8,6 @@
   "luminosity": 4,
   "show_particles": true,
   "show_bubbles": true,
-  "show_steam": false,
   "effects": [
     {
       "effect": "minecraft:invisibility",

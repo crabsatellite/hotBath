@@ -6,20 +6,9 @@
   "refmap": "hotbath.refmap.json",
   "plugin": "com.crabmod.hotbath.mixin.HotBathMixinPlugin",
   "mixins": [
+    "BottleItemMixin",
     "FishingHookMixin",
     "LevelFluidStateMixin",
-    "EntityMixin",
-    "FlowingFluidMixin",
-    "ConduitBlockMixin",
-    "SeagrassBlockMixin",
-    "KelpBlockMixin",
-    "KelpPlantBlockMixin",
-    "TallSeagrassBlockMixin",
-    "BaseCoralPlantTypeBlockMixin",
-    "BaseCoralWallFanBlockMixin",
-    "CoralPlantBlockMixin",
-    "CoralFanBlockMixin",
-    "CoralWallFanBlockMixin",
     "StairBlockMixin",
     "SlabBlockMixin",
     "TrapDoorBlockMixin",
@@ -31,6 +20,7 @@
     "LanternBlockMixin",
     "CampfireBlockMixin",
     "SignBlockMixin",
+    "ConduitBlockMixin",
     "SeaPickleBlockMixin",
     "ScaffoldingBlockMixin",
     "LightningRodBlockMixin",
@@ -54,11 +44,7 @@
     "LightBlockMixin",
     "BarrierBlockMixin"
   ],
-  "client": [
-    "client.BlockRenderDispatcherMixin",
-    "client.LiquidBlockRendererMixin",
-    "client.ItemRendererSmokeZOffsetMixin"
-  ],
+  "client": ["client.BlockRenderDispatcherMixin"],
   "injectors": {
     "defaultRequire": 1
   }

@@ -62,10 +62,15 @@ public class CustomFluidRegistry {
         float g = ((color >> 8) & 0xFF) / 255.0f;
         float b = (color & 0xFF) / 255.0f;
         
+        // Apply opacity to alpha channel
+        float opacity = definition.opacity();
+        int alpha = (int)(opacity * 255) & 0xFF;
+        int colorWithAlpha = (alpha << 24) | (color & 0x00FFFFFF);
+        
         return new RuntimeFluidData(
                 definition,
                 new Vector3f(r * 0.5f, g * 0.5f, b * 0.5f), // Fog color (darker version)
-                0xFF000000 | color // Full alpha color
+                colorWithAlpha
         );
     }
 

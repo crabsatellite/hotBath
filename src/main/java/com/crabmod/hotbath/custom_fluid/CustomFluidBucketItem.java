@@ -72,18 +72,28 @@ public class CustomFluidBucketItem extends Item {
             
             // Check if the clicked block can be waterlogged
             if (clickedState.getBlock() instanceof SimpleWaterloggedBlock
-                    && clickedState.hasProperty(BlockStateProperties.WATERLOGGED)
-                    && !clickedState.getValue(BlockStateProperties.WATERLOGGED)) {
+                    && clickedState.hasProperty(BlockStateProperties.WATERLOGGED)) {
+                
+                boolean isAlreadyWaterlogged = clickedState.getValue(BlockStateProperties.WATERLOGGED);
                 
                 if (!level.mayInteract(player, pos)) {
                     return InteractionResultHolder.fail(stack);
                 }
                 
                 if (!level.isClientSide) {
-                    // Waterlog the block
-                    level.setBlock(pos, clickedState.setValue(BlockStateProperties.WATERLOGGED, true), 3);
+                    if (!isAlreadyWaterlogged) {
+                        // Waterlog the block
+                        level.setBlock(pos, clickedState.setValue(BlockStateProperties.WATERLOGGED, true), 3);
+                    }
+                    // Whether it was already waterlogged or not, update the fluid type
+                    // This allows replacing existing water/fluid with custom fluid
+                    
+                    // Store the fluid type (DYNAMIC_FLUID for rendering)
+                    HotbathWaterloggingHelper.storeFluidType(level, pos, 
+                            DynamicFluidRegistry.DYNAMIC_FLUID_STILL.get());
                     
                     // Store the custom fluid ID for this waterlogged position
+                    // This triggers network sync and client re-render
                     HotbathWaterloggingHelper.storeCustomFluidId(level, pos, definition.id());
                     
                     level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);

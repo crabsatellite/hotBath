@@ -1,12 +1,15 @@
 package com.crabmod.hotbath.events;
 
 import com.crabmod.hotbath.HotBath;
+import com.crabmod.hotbath.custom_fluid.CustomFluidBlockEntity;
+import com.crabmod.hotbath.custom_fluid.DynamicCustomFluidBlock;
 import com.crabmod.hotbath.fluid_blocks.AbstractHotbathBlock;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -63,6 +66,16 @@ public class IceSnowMeltHandler {
                         
                         // Check if this is a hot bath block
                         if (state.getBlock() instanceof AbstractHotbathBlock) {
+                            // For DynamicCustomFluidBlock, check if it's actually hot
+                            if (state.getBlock() instanceof DynamicCustomFluidBlock) {
+                                BlockEntity be = level.getBlockEntity(pos);
+                                if (be instanceof CustomFluidBlockEntity customBe) {
+                                    // Only melt ice/snow if the fluid is hot (temperature >= 35°C)
+                                    if (!customBe.isHot()) {
+                                        continue; // Skip non-hot custom fluids
+                                    }
+                                }
+                            }
                             // Melt ice/snow in radius around this hot bath
                             meltIceAndSnowAroundPosition(level, pos);
                         }

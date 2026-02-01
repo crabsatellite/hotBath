@@ -8,7 +8,7 @@
   "luminosity": 12,
   "show_particles": true,
   "show_bubbles": false,
-  "show_steam": true,
+
   "effects": [
     {
       "effect": "minecraft:fire_resistance",

@@ -2,19 +2,17 @@ package com.crabmod.hotbath.custom_fluid;
 
 import com.crabmod.hotbath.fluid_blocks.AbstractHotbathBlock;
 import com.crabmod.hotbath.fluid_blocks.IInsideAreaTracker;
-import com.crabmod.hotbath.util.ParticleGenerator;
 import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -22,10 +20,13 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +47,7 @@ import java.util.function.Supplier;
  */
 public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements EntityBlock, IInsideAreaTracker {
     
+    private static final Logger LOGGER = LoggerFactory.getLogger(DynamicCustomFluidBlock.class);
     private static final int TICKS_PER_SECOND = 20;
 
     public DynamicCustomFluidBlock(Supplier<? extends FlowingFluid> fluidSupplier, Properties properties) {
@@ -56,6 +58,21 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new CustomFluidBlockEntity(pos, state);
+    }
+    
+    /**
+     * Gets the light emission value for this fluid block based on the stored fluid definition.
+     * This allows each custom fluid to have its own luminosity value.
+     */
+    @Override
+    public int getLightEmission(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof CustomFluidBlockEntity customBe) {
+            return customBe.getFluidDefinition()
+                    .map(CustomFluidDefinition::luminosity)
+                    .orElse(2); // Default luminosity
+        }
+        return 2; // Default luminosity if BlockEntity not found
     }
     
     /**
@@ -86,6 +103,27 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
             // Clean up the waterlogging storage since we've moved the fluid to a regular block
             HotbathWaterloggingHelper.removeFluidType(level, pos);
             HotbathWaterloggingHelper.removeFromClientCache(pos);
+        }
+        
+        // Schedule tick updates for neighboring flowing fluids
+        // This ensures they re-evaluate their sources when a new source is placed
+        scheduleNeighborFluidUpdates(level, pos);
+    }
+    
+    /**
+     * Schedule tick updates for neighboring flowing fluid blocks.
+     * This ensures they re-evaluate their state when the source changes.
+     */
+    public void scheduleNeighborFluidUpdates(Level level, BlockPos pos) {
+        for (Direction direction : Direction.values()) {
+            BlockPos neighborPos = pos.relative(direction);
+            FluidState neighborFluid = level.getFluidState(neighborPos);
+            
+            // Schedule tick for all non-source fluids
+            if (!neighborFluid.isEmpty() && !neighborFluid.isSource()) {
+                level.scheduleTick(neighborPos, neighborFluid.getType(), 1);
+                LOGGER.debug("Scheduled fluid tick for neighbor at {} (direction: {})", neighborPos, direction);
+            }
         }
     }
 
@@ -191,48 +229,32 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
         }
     }
 
+    /**
+     * Override to check BlockEntity for steam display (based on temperature).
+     * Parent class will call this before generating steam particles.
+     */
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void animateTick(
-            @NotNull BlockState stateIn,
-            @NotNull Level worldIn,
-            @NotNull BlockPos pos,
-            @NotNull RandomSource rand) {
-        
-        // Call parent for bubble column and underwater effects
-        super.animateTick(stateIn, worldIn, pos, rand);
-        
-        // Get fluid definition from BlockEntity
-        BlockEntity be = worldIn.getBlockEntity(pos);
+    protected boolean shouldShowSteam(Level level, BlockPos pos) {
+        BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof CustomFluidBlockEntity customBe) {
-            // Generate steam particles only for hot fluids
-            if (customBe.isHot()) {
-                generateSteamParticles(worldIn, pos, rand);
-            }
+            return customBe.shouldShowSteam();
         }
+        return false; // No BlockEntity means no steam
     }
-
+    
     /**
-     * Generates steam particles at adjacent air blocks.
+     * Override to check BlockEntity for bubble display setting.
+     * Parent class will call this before generating bubble particles.
      */
-    private void generateSteamParticles(Level worldIn, BlockPos pos, RandomSource rand) {
-        BlockPos[] adjacentPositions = new BlockPos[]{
-                pos.above(), pos.below(), pos.north(), pos.south(), pos.east(), pos.west()
-        };
-
-        int airBlockCount = 0;
-        BlockPos[] airBlocks = new BlockPos[adjacentPositions.length];
-
-        for (BlockPos adjacentPos : adjacentPositions) {
-            if (worldIn.getBlockState(adjacentPos).isAir()) {
-                airBlocks[airBlockCount++] = adjacentPos;
-            }
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    protected boolean shouldShowBubbles(Level level, BlockPos pos) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof CustomFluidBlockEntity customBe) {
+            return customBe.shouldShowBubbles();
         }
-
-        if (airBlockCount > 0 && rand.nextInt(5) == 0) {
-            BlockPos selectedPos = airBlocks[rand.nextInt(airBlockCount)];
-            ParticleGenerator.renderDefaultSteam((ClientLevel) worldIn, selectedPos, rand);
-        }
+        return true; // Default to showing bubbles
     }
 
     /**

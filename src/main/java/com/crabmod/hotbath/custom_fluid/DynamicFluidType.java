@@ -140,13 +140,19 @@ public class DynamicFluidType extends FluidType {
     /**
      * Gets the color from the BlockEntity at the given position.
      * Both source and flowing fluid blocks should have BlockEntities with color data.
+     * Applies the opacity from the fluid definition to the alpha channel.
      */
     private static int getColorFromBlockEntity(BlockAndTintGetter getter, BlockPos pos) {
         BlockEntity be = getter.getBlockEntity(pos);
         if (be instanceof CustomFluidBlockEntity customBe) {
             int color = customBe.getFluidColor();
             if (color != 0) {
-                return 0xFF000000 | color; // Ensure alpha is set
+                // Get opacity from definition, default to 1.0 (fully opaque)
+                float opacity = customBe.getFluidDefinition()
+                        .map(CustomFluidDefinition::opacity)
+                        .orElse(1.0f);
+                int alpha = (int)(opacity * 255) & 0xFF;
+                return (alpha << 24) | (color & 0x00FFFFFF);
             }
         }
         return -1; // No color found
@@ -154,6 +160,7 @@ public class DynamicFluidType extends FluidType {
     
     /**
      * Gets the color from waterlogging storage (for waterlogged blocks).
+     * Applies the opacity from the fluid definition to the alpha channel.
      */
     private static int getColorFromWaterlogging(BlockAndTintGetter getter, BlockPos pos) {
         // Check if this is a waterlogged block with our custom fluid
@@ -163,11 +170,14 @@ public class DynamicFluidType extends FluidType {
             // Get the custom fluid ID from waterlogging storage
             ResourceLocation customFluidId = HotbathWaterloggingHelper.getCustomFluidId(pos);
             if (customFluidId != null) {
-                // Look up the fluid definition to get its color
+                // Look up the fluid definition to get its color and opacity
                 Optional<CustomFluidDefinition> defOpt = CustomFluidAPI.getFluidDefinition(customFluidId);
                 if (defOpt.isPresent()) {
-                    int color = defOpt.get().color();
-                    return 0xFF000000 | color; // Ensure alpha is set
+                    CustomFluidDefinition def = defOpt.get();
+                    int color = def.color();
+                    float opacity = def.opacity();
+                    int alpha = (int)(opacity * 255) & 0xFF;
+                    return (alpha << 24) | (color & 0x00FFFFFF);
                 }
             }
         }

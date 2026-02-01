@@ -8,7 +8,6 @@
   "luminosity": 2,
   "show_particles": true,
   "show_bubbles": true,
-  "show_steam": false,
   "effects": [
     {
       "effect": "minecraft:jump_boost",

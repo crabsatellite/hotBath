@@ -47,6 +47,10 @@ public class WaterloggingNetworking {
                 SyncBulkWaterloggingPacket::encode,
                 SyncBulkWaterloggingPacket::decode,
                 SyncBulkWaterloggingPacket::handle);
+        CHANNEL.registerMessage(packetId++, SyncCustomFluidIdPacket.class,
+                SyncCustomFluidIdPacket::encode,
+                SyncCustomFluidIdPacket::decode,
+                SyncCustomFluidIdPacket::handle);
     }
     
     /**
@@ -86,6 +90,14 @@ public class WaterloggingNetworking {
                 } else {
                     // Fluid no longer exists, remove from cache
                     HotbathWaterloggingHelper.removeFromClientCache(packet.pos);
+                }
+                
+                // Trigger block re-render on client to show the new fluid
+                net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
+                if (mc.level != null) {
+                    mc.levelRenderer.setBlocksDirty(
+                            packet.pos.getX(), packet.pos.getY(), packet.pos.getZ(),
+                            packet.pos.getX(), packet.pos.getY(), packet.pos.getZ());
                 }
             });
             ctx.get().setPacketHandled(true);
@@ -146,6 +158,52 @@ public class WaterloggingNetworking {
     }
     
     /**
+     * Packet for syncing custom fluid ID (for dynamic custom fluids in waterlogged blocks)
+     */
+    public static class SyncCustomFluidIdPacket {
+        private final BlockPos pos;
+        private final ResourceLocation customFluidId;
+        
+        public SyncCustomFluidIdPacket(BlockPos pos, ResourceLocation customFluidId) {
+            this.pos = pos;
+            this.customFluidId = customFluidId;
+        }
+        
+        public static void encode(SyncCustomFluidIdPacket packet, FriendlyByteBuf buf) {
+            buf.writeBlockPos(packet.pos);
+            buf.writeBoolean(packet.customFluidId != null);
+            if (packet.customFluidId != null) {
+                buf.writeResourceLocation(packet.customFluidId);
+            }
+        }
+        
+        public static SyncCustomFluidIdPacket decode(FriendlyByteBuf buf) {
+            BlockPos pos = buf.readBlockPos();
+            boolean hasCustomId = buf.readBoolean();
+            ResourceLocation customId = hasCustomId ? buf.readResourceLocation() : null;
+            return new SyncCustomFluidIdPacket(pos, customId);
+        }
+        
+        public static void handle(SyncCustomFluidIdPacket packet, Supplier<NetworkEvent.Context> ctx) {
+            ctx.get().enqueueWork(() -> {
+                if (packet == null || packet.pos == null) return;
+                
+                // Client side handling - update the custom fluid ID cache
+                HotbathWaterloggingHelper.updateClientCustomFluidIdCache(packet.pos, packet.customFluidId);
+                
+                // Trigger block re-render on client
+                net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
+                if (mc.level != null) {
+                    mc.levelRenderer.setBlocksDirty(
+                            packet.pos.getX(), packet.pos.getY(), packet.pos.getZ(),
+                            packet.pos.getX(), packet.pos.getY(), packet.pos.getZ());
+                }
+            });
+            ctx.get().setPacketHandled(true);
+        }
+    }
+    
+    /**
      * Send waterlogging sync to all players
      */
     public static void syncToAllPlayers(BlockPos pos, Fluid fluid) {
@@ -169,6 +227,19 @@ public class WaterloggingNetworking {
             SyncWaterloggingPacket packet = new SyncWaterloggingPacket(pos, emptyId);
             CHANNEL.send(PacketDistributor.ALL.noArg(), packet);
         }
+        // Also clear custom fluid ID
+        SyncCustomFluidIdPacket customPacket = new SyncCustomFluidIdPacket(pos, null);
+        CHANNEL.send(PacketDistributor.ALL.noArg(), customPacket);
+    }
+    
+    /**
+     * Send custom fluid ID sync to all players (for dynamic custom fluids)
+     */
+    public static void syncCustomFluidIdToAllPlayers(BlockPos pos, ResourceLocation customFluidId) {
+        if (pos == null) return;
+        
+        SyncCustomFluidIdPacket packet = new SyncCustomFluidIdPacket(pos, customFluidId);
+        CHANNEL.send(PacketDistributor.ALL.noArg(), packet);
     }
     
     /**

@@ -8,7 +8,6 @@
   "luminosity": 8,
   "show_particles": true,
   "show_bubbles": true,
-  "show_steam": true,
   "effects": [
     {
       "effect": "minecraft:luck",

@@ -103,6 +103,23 @@ public class HotbathWaterloggingHelper {
     }
     
     /**
+     * Get the stored fluid type for a position (BlockGetter version for canPlaceLiquid).
+     * If level is a ServerLevel, returns from data, otherwise from cache.
+     */
+    @Nullable
+    public static Fluid getStoredFluidType(net.minecraft.world.level.BlockGetter level, BlockPos pos) {
+        if (pos == null) return null;
+        
+        // If it's actually a LevelAccessor, delegate to that method
+        if (level instanceof LevelAccessor levelAccessor) {
+            return getStoredFluidType(levelAccessor, pos);
+        }
+        
+        // Otherwise just use cache
+        return getFluidFromCache(pos);
+    }
+    
+    /**
      * Get stored fluid type for client-side rendering.
      * This is called from the BlockRenderDispatcher mixin.
      * Optimized: Only uses cache lookup for fast rendering.
@@ -188,8 +205,24 @@ public class HotbathWaterloggingHelper {
         
         customFluidIdCache.put(pos.asLong(), customFluidId);
         
-        // For now, also store as regular fluid using a placeholder
-        // Full implementation would need server-side storage
+        // Sync to all clients
+        if (level instanceof ServerLevel) {
+            WaterloggingNetworking.syncCustomFluidIdToAllPlayers(pos, customFluidId);
+        }
+    }
+    
+    /**
+     * Update client-side custom fluid ID cache.
+     * This is called when a sync packet is received from the server.
+     */
+    public static void updateClientCustomFluidIdCache(BlockPos pos, ResourceLocation customFluidId) {
+        if (pos == null) return;
+        
+        if (customFluidId == null) {
+            customFluidIdCache.remove(pos.asLong());
+        } else {
+            customFluidIdCache.put(pos.asLong(), customFluidId);
+        }
     }
     
     /**
@@ -205,11 +238,29 @@ public class HotbathWaterloggingHelper {
     }
     
     /**
-     * Remove the custom fluid ID for a position.
+     * Remove the custom fluid ID for a position (local only, no sync).
      */
     public static void removeCustomFluidId(BlockPos pos) {
         if (pos != null) {
             customFluidIdCache.remove(pos.asLong());
+        }
+    }
+    
+    /**
+     * Remove the custom fluid ID for a position and sync to all clients.
+     * Use this when replacing a custom fluid with a non-custom fluid.
+     * 
+     * @param level The level accessor
+     * @param pos The block position
+     */
+    public static void removeCustomFluidId(LevelAccessor level, BlockPos pos) {
+        if (pos == null) return;
+        
+        customFluidIdCache.remove(pos.asLong());
+        
+        // Sync removal to all clients by sending null
+        if (level instanceof ServerLevel) {
+            WaterloggingNetworking.syncCustomFluidIdToAllPlayers(pos, null);
         }
     }
     
@@ -498,6 +549,35 @@ public class HotbathWaterloggingHelper {
             if (customFluidId != null) {
                 storeCustomFluidId(level, pos, customFluidId);
             }
+        } else {
+            // Not a dynamic custom fluid - clear any previously stored custom ID
+            // This is important when replacing a custom fluid with a built-in hotBath fluid
+            removeCustomFluidId(level, pos);
+        }
+    }
+    
+    /**
+     * Create the appropriate bucket item for a stored fluid.
+     * Handles both built-in hotBath fluids and dynamic custom fluids.
+     * 
+     * @param fluid The stored fluid
+     * @param pos The block position (to look up custom fluid ID)
+     * @return The bucket ItemStack, or empty if none found
+     */
+    public static net.minecraft.world.item.ItemStack createBucketForFluid(Fluid fluid, BlockPos pos) {
+        // Check if this is a dynamic custom fluid
+        if (isDynamicCustomFluid(fluid)) {
+            ResourceLocation customFluidId = getCustomFluidId(pos);
+            if (customFluidId != null) {
+                // Create a custom fluid bucket with the correct fluid ID
+                return com.crabmod.hotbath.custom_fluid.CustomFluidNBTHelper.createStack(
+                        com.crabmod.hotbath.custom_fluid.CustomFluidItems.CUSTOM_FLUID_BUCKET.get(), customFluidId);
+            }
+            // Fallback to empty bucket if no custom ID stored
+            return net.minecraft.world.item.ItemStack.EMPTY;
+        } else {
+            // Built-in hotBath fluid - use standard bucket
+            return new net.minecraft.world.item.ItemStack(fluid.getBucket());
         }
     }
 }

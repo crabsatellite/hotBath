@@ -207,3 +207,57 @@
 - [ ] 浸泡 15 秒移除所有负面效果及不祥之兆
 - [ ] 浸泡 15 秒获得力量 I (20 秒)
 - [ ] 隐藏进度 [玫瑰体香]：浸泡 100 次获得 100 经验
+
+---
+
+## 6. 自定义数据包物品测试 (Custom Datapack Items Test)
+
+测试通过数据包定义的自定义流体及其对应物品
+
+### 6.1 前置条件
+
+1. 将 `datapacks/hotbath_example_fluids` 文件夹复制到世界的 `datapacks` 文件夹中
+2. 在游戏中运行 `/reload` 加载数据包
+
+**获取测试物品（把 `golden_bath` 换成其他流体名）：**
+
+```
+/give @p hotbath:custom_fluid_bucket{CustomFluidId:"hotbath:golden_bath"} 1
+/give @p hotbath:custom_fluid_bottle{CustomFluidId:"hotbath:golden_bath"} 16
+/give @p hotbath:custom_fluid_splash_bottle{CustomFluidId:"hotbath:golden_bath"} 16
+```
+
+**可用的示例流体名称：**
+
+- `golden_bath` - 黄金浴（金色）
+- `enchanted_bath` - 附魔浴（青金石蓝色）
+- `slime_bath` - 史莱姆浴（绿色）
+- `blazing_bath` - 烈焰浴（橙色）
+- `ender_bath` - 末影浴（紫色）
+- `milk_tea` - 奶茶浴（奶白色，不透明，提供饱食度）
+- `silent_spring` - 寂静之泉（深色，无粒子效果，隐身+夜视）
+
+### 6.2 基础测试
+
+- [ ] 自定义流体桶可以放置液体
+- [ ] 放置的液体颜色正确
+- [ ] 自定义流体瓶可以饮用并获得效果
+- [ ] 喷溅型瓶可以投掷并产生粒子效果
+- [ ] 粒子颜色与液体颜色一致
+
+### 6.3 新增液体特性测试
+
+#### 6.3.1 奶茶浴 (Milk Tea)
+
+- [ ] 液体颜色为奶白色
+- [ ] 液体不透明（opacity=1.0）
+- [ ] 饮用后恢复饱食度（nutrition=4）
+- [ ] 浸泡后获得饱和和速度效果
+
+#### 6.3.2 寂静之泉 (Silent Spring)
+
+- [ ] 液体颜色为深色
+- [ ] 无蒸汽粒子（show_steam=false）
+- [ ] 无气泡粒子（show_bubbles=false）
+- [ ] 喷溅瓶无彩色粒子效果（show_particles=false）
+- [ ] 浸泡后获得隐身和夜视效果

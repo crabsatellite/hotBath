@@ -60,33 +60,13 @@ public abstract class FlowingFluidMixin {
         }
         
         // This is a waterlogged block with a hotBath fluid
-        // Handle the tick specially to avoid destroying the block
-        FlowingFluid fluid = (FlowingFluid) (Object) this;
+        // For waterlogged blocks, the fluid is ALWAYS treated as a source
+        // So we don't need to check for adjacent sources - just prevent vanilla tick
+        // from destroying the block or changing the fluid state
         
-        // Verify the ticking fluid matches the stored fluid
-        if (!fluid.isSame(storedFluid)) {
-            // Different fluid is ticking - this shouldn't happen normally
-            // Let vanilla handle it to avoid unexpected behavior
-            return;
-        }
-        
-        // Check if the fluid should remain or be removed
-        boolean hasAdjacentSource = hotbath$hasAdjacentSourceOrAbove(fluid, level, pos);
-        
-        if (!hasAdjacentSource) {
-            // The fluid should disappear - just set WATERLOGGED to false
-            // DON'T replace the block with air!
-            if (!level.isClientSide()) {
-                level.setBlock(pos, blockState.setValue(BlockStateProperties.WATERLOGGED, false), 3);
-                HotbathWaterloggingHelper.removeFluidType(level, pos);
-            }
-            ci.cancel();
-            return;
-        }
-        
-        // Fluid should stay - for waterlogged blocks, source state is always maintained
-        // Schedule next tick and let spread happen (spread() is safe due to our spreadTo hook)
-        // Don't cancel - let vanilla's spread() run at the end of tick()
+        // Cancel vanilla tick to prevent block destruction
+        // The fluid stays as-is (source state) in the waterlogged block
+        ci.cancel();
     }
     
     /**

@@ -13,8 +13,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayDeque;
 import java.util.HashSet;
@@ -28,6 +31,7 @@ import java.util.Set;
  */
 public class CustomFluidBlockEntity extends BlockEntity {
     
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomFluidBlockEntity.class);
     private static final String TAG_FLUID_ID = "FluidId";
     
     @Nullable
@@ -42,12 +46,41 @@ public class CustomFluidBlockEntity extends BlockEntity {
      * Also updates all connected flowing fluid blocks.
      */
     public void setFluidId(@Nullable ResourceLocation fluidId) {
+        ResourceLocation oldFluidId = this.fluidId;
         this.fluidId = fluidId;
         setChanged();
         if (level != null && !level.isClientSide) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
             // Update all connected flowing fluid blocks
             updateConnectedFluidBlocks(fluidId);
+            
+            // If the fluid ID changed, schedule tick updates for neighbors
+            // so they can re-evaluate if they still have a valid source
+            boolean idChanged = (oldFluidId == null && fluidId != null)
+                    || (oldFluidId != null && !oldFluidId.equals(fluidId));
+            if (idChanged) {
+                scheduleNeighborFluidUpdates();
+            }
+        }
+    }
+    
+    /**
+     * Schedule tick updates for neighboring flowing fluid blocks.
+     * This ensures they re-evaluate their state when the source fluid ID changes.
+     */
+    private void scheduleNeighborFluidUpdates() {
+        if (level == null || level.isClientSide) return;
+        
+        for (Direction direction : Direction.values()) {
+            BlockPos neighborPos = worldPosition.relative(direction);
+            FluidState neighborFluid = level.getFluidState(neighborPos);
+            
+            // Schedule tick for all non-source fluids
+            if (!neighborFluid.isEmpty() && !neighborFluid.isSource()) {
+                level.scheduleTick(neighborPos, neighborFluid.getType(), 1);
+                LOGGER.debug("Scheduled fluid tick for neighbor at {} due to fluidId change at {}", 
+                        neighborPos, worldPosition);
+            }
         }
     }
     
@@ -143,6 +176,36 @@ public class CustomFluidBlockEntity extends BlockEntity {
         return getFluidDefinition()
                 .map(CustomFluidDefinition::isHot)
                 .orElse(false);
+    }
+    
+    /**
+     * Checks if steam particles should be shown for this fluid.
+     * Steam is shown when temperature >= HOT_TEMPERATURE_THRESHOLD (35°C) AND show_steam is true.
+     */
+    public boolean shouldShowSteam() {
+        return getFluidDefinition()
+                .map(def -> def.isHot() && def.showSteam())
+                .orElse(false);
+    }
+    
+    /**
+     * Checks if general particles (splash, drip, etc.) should be shown for this fluid.
+     * Controlled by the show_particles setting in the fluid definition.
+     */
+    public boolean shouldShowParticles() {
+        return getFluidDefinition()
+                .map(CustomFluidDefinition::showParticles)
+                .orElse(true);
+    }
+    
+    /**
+     * Checks if bubble particles should be shown for this fluid.
+     * Controlled by the show_bubbles setting in the fluid definition.
+     */
+    public boolean shouldShowBubbles() {
+        return getFluidDefinition()
+                .map(CustomFluidDefinition::showBubbles)
+                .orElse(true);
     }
     
     /**

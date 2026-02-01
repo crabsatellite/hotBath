@@ -9,7 +9,6 @@ import com.crabmod.hotbath.registers.ItemRegister;
 import com.crabmod.hotbath.registers.ParticleRegister;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -90,26 +89,21 @@ public class ThrownBathWater extends ThrowableItemProjectile {
     public void handleEntityEvent(byte id) {
         if (id == 3) {
             ItemStack stack = this.getItem();
-            SimpleParticleType particleType = ParticleTypes.SPLASH; // Default
-            SimpleParticleType bubbleParticleType = null;
 
             if (stack.getItem() instanceof SplashBathWaterBottleItem splashItem) {
-                particleType = splashItem.getParticleType();
-                bubbleParticleType = splashItem.getBubbleParticleType();
-
                 int color = splashItem.getColor();
                 double r = ((color >> 16) & 0xFF) / 255.0;
                 double g = ((color >> 8) & 0xFF) / 255.0;
                 double b = (color & 0xFF) / 255.0;
 
-                SimpleParticleType effectParticle = splashItem.getEffectParticleType();
-                // Effect particles (reduced count)
-                for(int k = 0; k < 20; ++k) {
-                    double d3 = this.random.nextDouble() * 2.0D;
+                // Effect particles using vanilla ENTITY_EFFECT with dynamic color (like vanilla potion)
+                // In 1.20.1 Forge, ENTITY_EFFECT uses speed parameters as RGB color
+                for(int k = 0; k < 100; ++k) {
+                    double d3 = this.random.nextDouble() * 4.0D;
                     double d4 = this.random.nextDouble() * Math.PI * 2.0D;
                     double d5 = Math.cos(d4) * d3;
                     double d7 = Math.sin(d4) * d3;
-                    this.level().addParticle(effectParticle, this.getX() + d5 * 0.1D, this.getY() + 0.3D, this.getZ() + d7 * 0.1D, r, g, b);
+                    this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + d5 * 0.1D, this.getY() + 0.3D, this.getZ() + d7 * 0.1D, r, g, b);
                 }
 
                 // Steam particles - Concentrated Center (Rising faster)
@@ -139,24 +133,10 @@ public class ThrownBathWater extends ThrowableItemProjectile {
                         this.getZ() + offsetZ, 
                         0.0D, 0.02D + this.random.nextDouble() * 0.03D, 0.0D);
                 }
-
-                for(int i = 0; i < 16; ++i) {
-                    double d0 = (this.random.nextDouble() * 2.0D - 1.0D) * 0.5D;
-                    double d1 = (this.random.nextDouble() * 2.0D - 1.0D) * 0.5D;
-                    this.level().addParticle(particleType, this.getX() + d0, this.getY() + 0.2D, this.getZ() + d1, d0, 0.2D, d1);
-                }
             } else {
+                // Default splash particles
                 for(int i = 0; i < 8; ++i) {
-                    this.level().addParticle(particleType, this.getX(), this.getY() + 0.2D, this.getZ(), 
-                        ((double)this.random.nextFloat() - 0.5D) * 0.08D, 
-                        ((double)this.random.nextFloat() - 0.5D) * 0.08D, 
-                        ((double)this.random.nextFloat() - 0.5D) * 0.08D);
-                }
-            }
-
-            if (bubbleParticleType != null) {
-                for(int i = 0; i < 8; ++i) {
-                    this.level().addParticle(bubbleParticleType, this.getX(), this.getY() + 0.2D, this.getZ(), 
+                    this.level().addParticle(ParticleTypes.SPLASH, this.getX(), this.getY() + 0.2D, this.getZ(), 
                         ((double)this.random.nextFloat() - 0.5D) * 0.08D, 
                         ((double)this.random.nextFloat() - 0.5D) * 0.08D, 
                         ((double)this.random.nextFloat() - 0.5D) * 0.08D);

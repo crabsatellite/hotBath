@@ -33,9 +33,6 @@ public class HotBathMixinPlugin implements IMixinConfigPlugin {
     
     // List of waterlogging-related mixin class names (without package)
     private static final Set<String> WATERLOGGING_MIXINS = Set.of(
-        "SimpleWaterloggedBlockMixin",
-        "LevelFluidStateMixin",
-        "FlowingFluidMixin",
         "StairBlockMixin", "SlabBlockMixin", "TrapDoorBlockMixin", "FenceBlockMixin",
         "FenceGateBlockMixin", "WallBlockMixin", "LadderBlockMixin", "ChainBlockMixin",
         "LanternBlockMixin", "CampfireBlockMixin", "SignBlockMixin", "ConduitBlockMixin",
@@ -45,16 +42,7 @@ public class HotBathMixinPlugin implements IMixinConfigPlugin {
         "MangrovePropaguleBlockMixin", "MangroveRootsBlockMixin", "SculkSensorBlockMixin",
         "SculkShriekerBlockMixin", "SculkVeinBlockMixin", "GlowLichenBlockMixin",
         "CandleBlockMixin", "DecoratedPotBlockMixin", "ChestBlockMixin", "EnderChestBlockMixin",
-        "LeavesBlockMixin", "LightBlockMixin", "BarrierBlockMixin",
-        "SeagrassBlockMixin", "KelpBlockMixin", "KelpPlantBlockMixin", "TallSeagrassBlockMixin",
-        "BaseCoralPlantTypeBlockMixin", "BaseCoralWallFanBlockMixin",
-        "CoralPlantBlockMixin", "CoralFanBlockMixin", "CoralWallFanBlockMixin"
-    );
-    
-    // Client-side waterlogging mixins
-    private static final Set<String> CLIENT_WATERLOGGING_MIXINS = Set.of(
-        "BlockRenderDispatcherMixin",
-        "LiquidBlockRendererMixin"
+        "LeavesBlockMixin", "LightBlockMixin", "BarrierBlockMixin", "LevelFluidStateMixin"
     );
     
     static {
@@ -150,11 +138,9 @@ public class HotBathMixinPlugin implements IMixinConfigPlugin {
             return false;
         }
         
-        // If waterlogging is disabled, disable waterlogging-related mixins
-        if (!waterloggingEnabled) {
-            if (WATERLOGGING_MIXINS.contains(simpleName) || CLIENT_WATERLOGGING_MIXINS.contains(simpleName)) {
-                return false;
-            }
+        // If waterlogging is disabled, only disable waterlogging-related mixins
+        if (!waterloggingEnabled && WATERLOGGING_MIXINS.contains(simpleName)) {
+            return false;
         }
         
         return true;
