@@ -1,6 +1,7 @@
 package com.crabmod.hotbath.mixin.twilightforest;
 
 import com.crabmod.hotbath.compat.CompatManager;
+import com.crabmod.hotbath.compat.twilightforest.TFFlaskColorHelper;
 import com.crabmod.hotbath.custom_fluid.CustomFluidAPI;
 import com.crabmod.hotbath.custom_fluid.CustomFluidBottleItem;
 import com.crabmod.hotbath.custom_fluid.CustomFluidDataComponents;
@@ -118,6 +119,32 @@ public class BrittleFlaskItemMixin {
     }
 
     /**
+     * Inject into finishUsingItem to apply HotBath effects.
+     * Directly calls BathWaterEffects methods to ensure identical behavior to drinking bottles directly.
+     */
+    @Inject(method = "finishUsingItem", at = @At("HEAD"))
+    private void hotbath$applyHotBathEffects(ItemStack stack, net.minecraft.world.level.Level level, 
+            net.minecraft.world.entity.LivingEntity entity, CallbackInfoReturnable<ItemStack> cir) {
+        if (level.isClientSide()) return;
+        
+        try {
+            PotionFlaskComponent flaskContents = stack.getOrDefault(
+                    TFDataComponents.POTION_FLASK_CONTENTS, PotionFlaskComponent.EMPTY);
+            
+            // Check if this is a HotBath fluid (has customColor but no base potion)
+            if (flaskContents.potion().customColor().isPresent() && flaskContents.potion().potion().isEmpty()) {
+                int color = flaskContents.potion().customColor().get();
+                
+                // Apply the complete bath effect based on color
+                // This calls the exact same methods as drinking the bottle directly
+                TFFlaskColorHelper.applyEffectByColor(entity, color);
+            }
+        } catch (Throwable e) {
+            CompatManager.reportRuntimeError("twilightforest", "BrittleFlaskItemMixin.finishUsingItem", e);
+        }
+    }
+
+    /**
      * Handle adding a custom fluid bottle to the flask.
      */
     @Unique
@@ -152,8 +179,8 @@ public class BrittleFlaskItemMixin {
             }
         }
         
-        // Update flask contents
-        hotbath$updateFlaskContents(flaskStack, flaskContents, customPotionContents);
+        // Update flask contents (handles stack separation)
+        hotbath$updateFlaskContents(flaskStack, flaskContents, customPotionContents, player);
         player.playSound(TFSounds.FLASK_FILL.get(), (flaskContents.doses() + 1) * 0.25F, 
                 player.level().getRandom().nextFloat() * 0.1F + 0.9F);
         
@@ -187,8 +214,8 @@ public class BrittleFlaskItemMixin {
             }
         }
         
-        // Update flask contents
-        hotbath$updateFlaskContents(flaskStack, flaskContents, customPotionContents);
+        // Update flask contents (handles stack separation)
+        hotbath$updateFlaskContents(flaskStack, flaskContents, customPotionContents, player);
         player.playSound(TFSounds.FLASK_FILL.get(), (flaskContents.doses() + 1) * 0.25F, 
                 player.level().getRandom().nextFloat() * 0.1F + 0.9F);
         
@@ -256,10 +283,11 @@ public class BrittleFlaskItemMixin {
 
     /**
      * Update the flask contents with a new dose.
+     * Handles stack separation: if multiple flasks are stacked, separates one for filling.
      */
     @Unique
     private void hotbath$updateFlaskContents(ItemStack flaskStack, PotionFlaskComponent oldContents, 
-            PotionContents newContents) {
+            PotionContents newContents, Player player) {
         PotionFlaskComponent newFlaskContents = new PotionFlaskComponent(
                 newContents,
                 oldContents.doses() + 1,
@@ -267,7 +295,22 @@ public class BrittleFlaskItemMixin {
                 oldContents.breakable()
         );
         
-        flaskStack.set(TFDataComponents.POTION_FLASK_CONTENTS, newFlaskContents);
+        // Handle stack separation like vanilla TF does
+        if (flaskStack.getCount() > 1) {
+            // Create a copy with count 1
+            ItemStack copy = flaskStack.copyWithCount(1);
+            // Shrink the original stack
+            flaskStack.shrink(1);
+            // Apply the new contents to the copy
+            copy.set(TFDataComponents.POTION_FLASK_CONTENTS, newFlaskContents);
+            // Give the filled flask to player
+            if (!player.getInventory().add(copy)) {
+                player.drop(copy, false);
+            }
+        } else {
+            // Single flask, just update in place
+            flaskStack.set(TFDataComponents.POTION_FLASK_CONTENTS, newFlaskContents);
+        }
     }
 
     /**
@@ -286,26 +329,17 @@ public class BrittleFlaskItemMixin {
 
     /**
      * Create PotionContents from a legacy bath water bottle item.
+     * Uses TFFlaskColorHelper to get the correct color from FluidsColor.
+     * Only stores the color - effects are applied via finishUsingItem calling BathWaterEffects directly.
+     * This avoids duplicate effect application and ensures identical behavior to drinking bottles.
      */
     @Unique
     private PotionContents hotbath$createPotionContentsFromLegacyBottle(Item bottleItem) {
-        // Map legacy bath bottles to their colors and create effects
-        // The actual effects will be applied when drinking from the flask
-        
-        if (bottleItem == ItemRegister.HOT_WATER_BOTTLE.get()) {
-            return new PotionContents(Optional.empty(), Optional.of(0xE0FFFF), List.of());
-        } else if (bottleItem == ItemRegister.HONEY_BATH_BOTTLE.get()) {
-            return new PotionContents(Optional.empty(), Optional.of(0xFFB300), List.of());
-        } else if (bottleItem == ItemRegister.MILK_BATH_BOTTLE.get()) {
-            return new PotionContents(Optional.empty(), Optional.of(0xFFFAF0), List.of());
-        } else if (bottleItem == ItemRegister.HERBAL_BATH_BOTTLE.get()) {
-            return new PotionContents(Optional.empty(), Optional.of(0x2B8B57), List.of());
-        } else if (bottleItem == ItemRegister.PEONY_BATH_BOTTLE.get()) {
-            return new PotionContents(Optional.empty(), Optional.of(0xFFB6C1), List.of());
-        } else if (bottleItem == ItemRegister.ROSE_BATH_BOTTLE.get()) {
-            return new PotionContents(Optional.empty(), Optional.of(0xFF69B4), List.of());
+        // Use TFFlaskColorHelper to get the color for this bottle type
+        int color = TFFlaskColorHelper.getColorForBottle(bottleItem);
+        if (color != -1) {
+            return new PotionContents(Optional.empty(), Optional.of(color), List.of());
         }
-        
         return null;
     }
 }
