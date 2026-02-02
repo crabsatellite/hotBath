@@ -52,6 +52,7 @@ public record CustomFluidDefinition(
         int luminosity,
         float opacity,
         int nutrition,
+        int thirst,
         boolean showParticles,
         boolean showBubbles,
         boolean showSteam,
@@ -78,7 +79,7 @@ public record CustomFluidDefinition(
     // Helper record for first group of fields (up to 16)
     private record BaseFields(
             ResourceLocation id, int color, float temperature, int viscosity, int density,
-            int luminosity, float opacity, int nutrition,
+            int luminosity, float opacity, int nutrition, int thirst,
             boolean showParticles, boolean showBubbles, boolean showSteam,
             List<EffectEntry> effects, int triggerTimeSeconds,
             ResourceLocation textureStill, ResourceLocation textureFlowing
@@ -97,6 +98,7 @@ public record CustomFluidDefinition(
                     Codec.INT.optionalFieldOf("luminosity", 2).forGetter(BaseFields::luminosity),
                     Codec.FLOAT.optionalFieldOf("opacity", 1.0f).forGetter(BaseFields::opacity),
                     Codec.INT.optionalFieldOf("nutrition", 0).forGetter(BaseFields::nutrition),
+                    Codec.INT.optionalFieldOf("thirst", 4).forGetter(BaseFields::thirst),
                     Codec.BOOL.optionalFieldOf("show_particles", true).forGetter(BaseFields::showParticles),
                     Codec.BOOL.optionalFieldOf("show_bubbles", true).forGetter(BaseFields::showBubbles),
                     Codec.BOOL.optionalFieldOf("show_steam", true).forGetter(BaseFields::showSteam),
@@ -119,26 +121,7 @@ public record CustomFluidDefinition(
             ).apply(instance, ExtraFields::new)
     );
     
-    public static final Codec<CustomFluidDefinition> CODEC = Codec.pair(
-            BASE_CODEC, EXTRA_CODEC
-    ).xmap(
-            pair -> new CustomFluidDefinition(
-                    pair.getFirst().id, pair.getFirst().color, pair.getFirst().temperature,
-                    pair.getFirst().viscosity, pair.getFirst().density, pair.getFirst().luminosity,
-                    pair.getFirst().opacity, pair.getFirst().nutrition,
-                    pair.getFirst().showParticles, pair.getFirst().showBubbles, pair.getFirst().showSteam,
-                    pair.getFirst().effects, pair.getFirst().triggerTimeSeconds,
-                    pair.getFirst().textureStill, pair.getFirst().textureFlowing,
-                    pair.getSecond().nameKey, pair.getSecond().translations
-            ),
-            def -> com.mojang.datafixers.util.Pair.of(
-                    new BaseFields(def.id, def.color, def.temperature, def.viscosity, def.density,
-                            def.luminosity, def.opacity, def.nutrition,
-                            def.showParticles, def.showBubbles, def.showSteam,
-                            def.effects, def.triggerTimeSeconds, def.textureStill, def.textureFlowing),
-                    new ExtraFields(def.nameKey, def.translations)
-            )
-    );
+    public static final Codec<CustomFluidDefinition> CODEC = Codec.pair(\n            BASE_CODEC, EXTRA_CODEC\n    ).xmap(\n            pair -> new CustomFluidDefinition(\n                    pair.getFirst().id, pair.getFirst().color, pair.getFirst().temperature,\n                    pair.getFirst().viscosity, pair.getFirst().density, pair.getFirst().luminosity,\n                    pair.getFirst().opacity, pair.getFirst().nutrition, pair.getFirst().thirst,\n                    pair.getFirst().showParticles, pair.getFirst().showBubbles, pair.getFirst().showSteam,\n                    pair.getFirst().effects, pair.getFirst().triggerTimeSeconds,\n                    pair.getFirst().textureStill, pair.getFirst().textureFlowing,\n                    pair.getSecond().nameKey, pair.getSecond().translations\n            ),\n            def -> com.mojang.datafixers.util.Pair.of(\n                    new BaseFields(def.id, def.color, def.temperature, def.viscosity, def.density,\n                            def.luminosity, def.opacity, def.nutrition, def.thirst,\n                            def.showParticles, def.showBubbles, def.showSteam,\n                            def.effects, def.triggerTimeSeconds, def.textureStill, def.textureFlowing),\n                    new ExtraFields(def.nameKey, def.translations)\n            )\n    );
 
     /**
      * Gets the translation key for this fluid's name.

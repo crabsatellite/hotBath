@@ -61,6 +61,25 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
     }
     
     /**
+     * Checks if this custom fluid at the given position is considered "hot".
+     * Looks up the BlockEntity to get the fluid definition and checks its temperature.
+     * Only hot fluids (temperature >= 35°C) cause damage to ice mobs.
+     * 
+     * @param level The level
+     * @param pos The position of the fluid block
+     * @return true if the fluid at this position is hot
+     */
+    @Override
+    protected boolean isHotBath(Level level, BlockPos pos) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof CustomFluidBlockEntity customBe) {
+            // Use isHot() which correctly defaults to false if no definition found
+            return customBe.isHot();
+        }
+        return false; // Default to cold if BlockEntity not found
+    }
+    
+    /**
      * Gets the light emission value for this fluid block based on the stored fluid definition.
      * This allows each custom fluid to have its own luminosity value.
      */

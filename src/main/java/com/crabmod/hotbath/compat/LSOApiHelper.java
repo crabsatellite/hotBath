@@ -171,10 +171,24 @@ public class LSOApiHelper {
     }
     
     /**
-     * Add thirst and saturation to player.
+     * Add thirst and saturation to player using default values.
      */
     public static void addThirst(Player player) {
         ThirstUtil.takeDrink(player, HYDRATION, SATURATION);
+    }
+    
+    /**
+     * Add thirst and saturation to player with custom thirst value.
+     */
+    public static void addThirst(Player player, int thirst) {
+        ThirstUtil.takeDrink(player, thirst, SATURATION);
+    }
+    
+    /**
+     * Add thirst and saturation to player with custom values.
+     */
+    public static void addThirst(Player player, int thirst, float saturation) {
+        ThirstUtil.takeDrink(player, thirst, saturation);
     }
     
     /**

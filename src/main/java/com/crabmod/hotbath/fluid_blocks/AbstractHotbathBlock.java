@@ -65,6 +65,19 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
     protected boolean isHotBath() {
         return true; // Built-in bath fluids are always hot
     }
+    
+    /**
+     * Checks if this bath fluid at the given position is considered "hot".
+     * This method can be overridden by subclasses that need position-based checks
+     * (like DynamicCustomFluidBlock which uses BlockEntity to store temperature).
+     * 
+     * @param level The level
+     * @param pos The position of the fluid block
+     * @return true if this is a hot bath at this position
+     */
+    protected boolean isHotBath(Level level, BlockPos pos) {
+        return isHotBath(); // Default to the simple check
+    }
 
     private static boolean isNonTropicalAquatic(Entity entity) {
         return (entity instanceof AbstractFish && !(entity instanceof TropicalFish)) || entity instanceof Squid;
@@ -80,7 +93,7 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
         
         // Twilight Forest ice mobs take damage in hot bath (1 damage per second)
         // Only damage if this is a hot bath (temperature >= 35°C)
-        if (isHotBath() && com.crabmod.hotbath.compat.TwilightForestIntegration.isTwilightForestIceMob(entity)) {
+        if (isHotBath(level, pos) && com.crabmod.hotbath.compat.TwilightForestIntegration.isTwilightForestIceMob(entity)) {
             // Only damage every 20 ticks (1 second) using entity tick count
             if (entity.tickCount % 20 == 0) {
                 entity.hurt(level.damageSources().magic(), 1.0F);

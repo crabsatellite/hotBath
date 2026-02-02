@@ -7,9 +7,15 @@ import net.minecraftforge.fml.ModList;
  */
 public class ToughAsNailsIntegration {
     private static final String TAN_MOD_ID = "toughasnails";
+    
+    // Cache the result to avoid repeated ModList lookups
+    private static Boolean cachedLoaded = null;
 
     public static boolean isToughAsNailsLoaded() {
-        return ModList.get().isLoaded(TAN_MOD_ID);
+        if (cachedLoaded == null) {
+            cachedLoaded = ModList.get().isLoaded(TAN_MOD_ID);
+        }
+        return cachedLoaded;
     }
 }
 
