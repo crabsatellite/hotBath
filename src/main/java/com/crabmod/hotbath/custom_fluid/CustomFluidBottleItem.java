@@ -91,15 +91,17 @@ public class CustomFluidBottleItem extends Item {
      * Only applies warming effects if the fluid is defined as hot.
      */
     private void applyTemperatureEffects(Player player, CustomFluidDefinition definition) {
+        // Apply thirst effects for all fluids (not just hot ones)
+        applyThirstEffects(player, definition);
+        
         // Only apply temperature effects if the fluid is hot
         if (!definition.isHot()) {
             return;
         }
         
-        // Apply ToughAsNails temperature effect
+        // Apply ToughAsNails temperature effect (warming only)
         if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {
             BathWaterBottleTANModifier.applyWarmEffect(player);
-            ToughAsNailsThirstHelper.restoreThirst(player);
         }
         
         // Apply Cold Sweat temperature effect
@@ -111,6 +113,20 @@ public class CustomFluidBottleItem extends Item {
         if (LegendarySurvivalOverhaulIntegration.isLSOLoaded()) {
             BathWaterBottleLSOModifier.applyWarmEffect(player);
         }
+    }
+    
+    /**
+     * Applies thirst restoration effects for compatible mods.
+     * This applies to all custom fluids regardless of temperature.
+     * Uses the thirst value from the fluid definition.
+     */
+    private void applyThirstEffects(Player player, CustomFluidDefinition definition) {
+        // Apply ToughAsNails thirst restoration with fluid's thirst value
+        if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {
+            ToughAsNailsThirstHelper.restoreThirst(player, definition);
+        }
+        
+        // LSO thirst is handled via LSOThirstHandler event
     }
 
     @Override

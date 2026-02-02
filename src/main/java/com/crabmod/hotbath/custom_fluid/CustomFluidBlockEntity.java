@@ -169,12 +169,14 @@ public class CustomFluidBlockEntity extends BlockEntity {
     
     /**
      * Gets the fluid definition for the stored fluid ID.
+     * Uses getFluidId() which attempts to recover the ID from waterlogging storage if needed.
      */
     public Optional<CustomFluidDefinition> getFluidDefinition() {
-        if (fluidId == null) {
+        ResourceLocation id = getFluidId();
+        if (id == null) {
             return Optional.empty();
         }
-        return CustomFluidRegistry.getDefinition(fluidId);
+        return CustomFluidRegistry.getDefinition(id);
     }
     
     /**
