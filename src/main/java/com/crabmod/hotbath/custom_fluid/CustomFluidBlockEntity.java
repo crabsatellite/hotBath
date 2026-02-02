@@ -293,4 +293,19 @@ public class CustomFluidBlockEntity extends BlockEntity {
         super.handleUpdateTag(tag, registries);
         loadAdditional(tag, registries);
     }
+    
+    /**
+     * Called when the BlockEntity is loaded (both on initial placement and world reload).
+     * This is the appropriate place to trigger light updates since the fluidId has been loaded.
+     */
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        if (level != null && fluidId != null) {
+            // Schedule a light update for this block to ensure proper light propagation
+            // This is crucial when the world is reloaded - the fluid's light needs to be recalculated
+            // to illuminate surrounding blocks properly
+            level.getLightEngine().checkBlock(worldPosition);
+        }
+    }
 }
