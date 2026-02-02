@@ -121,7 +121,26 @@ public record CustomFluidDefinition(
             ).apply(instance, ExtraFields::new)
     );
     
-    public static final Codec<CustomFluidDefinition> CODEC = Codec.pair(\n            BASE_CODEC, EXTRA_CODEC\n    ).xmap(\n            pair -> new CustomFluidDefinition(\n                    pair.getFirst().id, pair.getFirst().color, pair.getFirst().temperature,\n                    pair.getFirst().viscosity, pair.getFirst().density, pair.getFirst().luminosity,\n                    pair.getFirst().opacity, pair.getFirst().nutrition, pair.getFirst().thirst,\n                    pair.getFirst().showParticles, pair.getFirst().showBubbles, pair.getFirst().showSteam,\n                    pair.getFirst().effects, pair.getFirst().triggerTimeSeconds,\n                    pair.getFirst().textureStill, pair.getFirst().textureFlowing,\n                    pair.getSecond().nameKey, pair.getSecond().translations\n            ),\n            def -> com.mojang.datafixers.util.Pair.of(\n                    new BaseFields(def.id, def.color, def.temperature, def.viscosity, def.density,\n                            def.luminosity, def.opacity, def.nutrition, def.thirst,\n                            def.showParticles, def.showBubbles, def.showSteam,\n                            def.effects, def.triggerTimeSeconds, def.textureStill, def.textureFlowing),\n                    new ExtraFields(def.nameKey, def.translations)\n            )\n    );
+    public static final Codec<CustomFluidDefinition> CODEC = Codec.pair(
+            BASE_CODEC, EXTRA_CODEC
+    ).xmap(
+            pair -> new CustomFluidDefinition(
+                    pair.getFirst().id, pair.getFirst().color, pair.getFirst().temperature,
+                    pair.getFirst().viscosity, pair.getFirst().density, pair.getFirst().luminosity,
+                    pair.getFirst().opacity, pair.getFirst().nutrition, pair.getFirst().thirst,
+                    pair.getFirst().showParticles, pair.getFirst().showBubbles, pair.getFirst().showSteam,
+                    pair.getFirst().effects, pair.getFirst().triggerTimeSeconds,
+                    pair.getFirst().textureStill, pair.getFirst().textureFlowing,
+                    pair.getSecond().nameKey, pair.getSecond().translations
+            ),
+            def -> com.mojang.datafixers.util.Pair.of(
+                    new BaseFields(def.id, def.color, def.temperature, def.viscosity, def.density,
+                            def.luminosity, def.opacity, def.nutrition, def.thirst,
+                            def.showParticles, def.showBubbles, def.showSteam,
+                            def.effects, def.triggerTimeSeconds, def.textureStill, def.textureFlowing),
+                    new ExtraFields(def.nameKey, def.translations)
+            )
+    );
 
     /**
      * Gets the translation key for this fluid's name.
@@ -218,6 +237,7 @@ public record CustomFluidDefinition(
         private int luminosity = 2;
         private float opacity = 1.0f;
         private int nutrition = 0;
+        private int thirst = 0;
         private boolean showParticles = true;
         private boolean showBubbles = true;
         private boolean showSteam = true;
@@ -264,6 +284,11 @@ public record CustomFluidDefinition(
         
         public Builder nutrition(int nutrition) {
             this.nutrition = nutrition;
+            return this;
+        }
+        
+        public Builder thirst(int thirst) {
+            this.thirst = thirst;
             return this;
         }
 
@@ -320,7 +345,7 @@ public record CustomFluidDefinition(
         public CustomFluidDefinition build() {
             return new CustomFluidDefinition(
                     id, color, temperature, viscosity, density, luminosity,
-                    opacity, nutrition,
+                    opacity, nutrition, thirst,
                     showParticles, showBubbles, showSteam,
                     effects, triggerTimeSeconds,
                     textureStill, textureFlowing, nameKey, translations

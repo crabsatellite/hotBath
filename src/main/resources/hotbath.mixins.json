@@ -6,6 +6,7 @@
   "refmap": "hotbath.refmap.json",
   "plugin": "com.crabmod.hotbath.mixin.HotBathMixinPlugin",
   "mixins": [
+    "accessor.ItemAccessor",
     "BottleItemMixin",
     "FishingHookMixin",
     "LevelFluidStateMixin",

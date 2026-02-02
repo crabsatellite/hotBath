@@ -10,6 +10,7 @@ import com.crabmod.hotbath.fluid_blocks.HotWaterBlock;
 import com.crabmod.hotbath.fluid_blocks.MilkBathBlock;
 import com.crabmod.hotbath.fluid_blocks.PeonyBathBlock;
 import com.crabmod.hotbath.fluid_blocks.RoseBathBlock;
+import com.crabmod.hotbath.mixin.accessor.ItemAccessor;
 import com.crabmod.hotbath.registers.ItemRegister;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -63,7 +64,7 @@ public class BottleItemMixin {
         ItemStack itemStack = player.getItemInHand(hand);
         
         // Perform raytrace to find the block the player is looking at (same as vanilla)
-        BlockHitResult hitResult = Item.getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
+        BlockHitResult hitResult = ItemAccessor.invokeGetPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
         
         if (hitResult.getType() != HitResult.Type.BLOCK) {
             return; // Let vanilla handle it

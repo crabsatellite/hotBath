@@ -45,6 +45,14 @@ public class HotBathMixinPlugin implements IMixinConfigPlugin {
         "LeavesBlockMixin", "LightBlockMixin", "BarrierBlockMixin", "LevelFluidStateMixin"
     );
     
+    // List of LSO-related mixin class names (without package)
+    private static final Set<String> LSO_MIXINS = Set.of(
+        "ThirstConsumableListenerMixin"
+    );
+    
+    // Cached mod detection results
+    private static Boolean lsoLoaded = null;
+    
     static {
         checkConfig();
     }
@@ -94,6 +102,23 @@ public class HotBathMixinPlugin implements IMixinConfigPlugin {
     }
     
     /**
+     * Check if Legendary Survival Overhaul mod is loaded.
+     * Uses class detection since Forge ModList is not available at mixin load time.
+     */
+    private static boolean isLSOLoaded() {
+        if (lsoLoaded == null) {
+            try {
+                Class.forName("sfiomn.legendarysurvivaloverhaul.common.listeners.ThirstConsumableListener");
+                lsoLoaded = true;
+                System.out.println("[HotBath] LSO detected - enabling LSO integration mixins");
+            } catch (ClassNotFoundException e) {
+                lsoLoaded = false;
+            }
+        }
+        return lsoLoaded;
+    }
+    
+    /**
      * Check if compatibility mode is enabled.
      * @return true if compatibility mode is enabled
      */
@@ -140,6 +165,11 @@ public class HotBathMixinPlugin implements IMixinConfigPlugin {
         
         // If waterlogging is disabled, only disable waterlogging-related mixins
         if (!waterloggingEnabled && WATERLOGGING_MIXINS.contains(simpleName)) {
+            return false;
+        }
+        
+        // LSO mixins should only be applied if LSO is loaded
+        if (LSO_MIXINS.contains(simpleName) && !isLSOLoaded()) {
             return false;
         }
         
