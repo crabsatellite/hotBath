@@ -4,10 +4,11 @@ import com.crabmod.hotbath.HotBath;
 import com.crabmod.hotbath.HotBathConfig;
 import com.crabmod.hotbath.events.enter_fluid_events.PeonyBathEvents;
 import com.crabmod.hotbath.fluid_blocks.IInsideAreaTracker;
-import com.crabmod.hotbath.fluid_details.BaseFluidType;
 import com.crabmod.hotbath.util.AdvancementHelper;
 import com.crabmod.hotbath.util.HealthRegenHandler;
+import com.crabmod.hotbath.util.HotbathFluidHelper;
 import com.crabmod.hotbath.util.HungerRegenHandler;
+import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +19,6 @@ import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.fluids.FluidType;
 
 import java.util.Map;
 import java.util.UUID;
@@ -255,29 +255,47 @@ public class DirtinessHandler {
     }
     
     /**
-     * Check if player is standing in a hot bath fluid
+     * Check if player is standing in a hot bath fluid.
+     * This includes:
+     * - Built-in hot bath fluids (hot water, honey bath, milk bath, herbal bath, peony bath, rose bath)
+     * - Custom fluids from data packs (DynamicCustomFluid)
+     * - Waterlogged blocks containing stored hotbath fluids
      */
     private static boolean isInHotBathFluid(ServerPlayer player) {
         // Check the block at player's feet position
         BlockPos feetPos = player.blockPosition();
-        FluidState fluidState = player.level().getFluidState(feetPos);
-        
-        if (!fluidState.isEmpty()) {
-            FluidType fluidType = fluidState.getFluidType();
-            if (fluidType instanceof BaseFluidType) {
-                return true;
-            }
+        if (isHotbathFluidAtPosition(player, feetPos)) {
+            return true;
         }
         
         // Also check slightly above (for eye-level immersion)
         BlockPos eyePos = BlockPos.containing(player.getEyePosition());
-        FluidState eyeFluidState = player.level().getFluidState(eyePos);
+        if (isHotbathFluidAtPosition(player, eyePos)) {
+            return true;
+        }
         
-        if (!eyeFluidState.isEmpty()) {
-            FluidType eyeFluidType = eyeFluidState.getFluidType();
-            if (eyeFluidType instanceof BaseFluidType) {
+        return false;
+    }
+    
+    /**
+     * Check if there's a hotbath fluid at the given position.
+     * Checks both direct fluid blocks and waterlogged blocks with stored hotbath fluids.
+     */
+    private static boolean isHotbathFluidAtPosition(ServerPlayer player, BlockPos pos) {
+        FluidState fluidState = player.level().getFluidState(pos);
+        
+        // Check if the fluid itself is a hotbath fluid (built-in or custom)
+        if (!fluidState.isEmpty()) {
+            if (HotbathFluidHelper.isHotbathFluid(fluidState.getType())) {
                 return true;
             }
+        }
+        
+        // Check for waterlogged blocks with stored hotbath fluids
+        net.minecraft.world.level.material.Fluid storedFluid = 
+                HotbathWaterloggingHelper.getStoredFluidType(player.level(), pos);
+        if (storedFluid != null && HotbathFluidHelper.isHotbathFluid(storedFluid)) {
+            return true;
         }
         
         return false;
