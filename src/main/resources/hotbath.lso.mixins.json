@@ -1,0 +1,12 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "com.crabmod.hotbath.mixin.lso",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "com.crabmod.hotbath.mixin.lso.LsoMixinPlugin",
+  "mixins": ["ThirstConsumableListenerMixin"],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

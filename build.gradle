@@ -86,6 +86,7 @@ mixin {
     config 'hotbath.alexscaves.mixins.json'
     config 'hotbath.sodium.mixins.json'
     config 'hotbath.twilightforest.mixins.json'
+    config 'hotbath.lso.mixins.json'
 }
 
 repositories {
