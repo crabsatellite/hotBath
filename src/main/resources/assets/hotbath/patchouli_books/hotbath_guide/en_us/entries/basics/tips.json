@@ -12,11 +12,6 @@
       "type": "patchouli:text",
       "title": "hotbath.entry.tips.interactions.title",
       "text": "hotbath.entry.tips.interactions"
-    },
-    {
-      "type": "patchouli:text",
-      "title": "hotbath.entry.tips.recommendations.title",
-      "text": "hotbath.entry.tips.recommendations"
     }
   ]
 }

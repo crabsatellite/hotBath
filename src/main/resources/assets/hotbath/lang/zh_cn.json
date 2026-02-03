@@ -162,11 +162,9 @@
   "hotbath.entry.bath_herb.obtain": "$(li)在$(thing)新手级农民村民$()处用10个绿宝石购买$(li)在$(thing)流浪商人$()处用15个绿宝石购买$(br2)遇到时记得多囤一些！",
 
   "hotbath.entry.tips.name": "提示与注意",
-  "hotbath.entry.tips.page1": "$(l)重要注意事项：$()$(br2)$(li)$(thing)水生生物$()：热带鱼以外的鱼类和章鱼在浴液中会受到伤害$(li)$(thing)不会生成$()：水中生物不会自然生成$(li)$(thing)放置限制$()：珊瑚、潮涌核心、海草无法放置在浴液中$(li)$(thing)钓鱼$()：无法在浴液中钓鱼",
+  "hotbath.entry.tips.page1": "$(l)重要注意事项：$()$(br2)$(li)$(thing)水生生物$()：不会在浴液中自然生成，且热带鱼以外的鱼类和章鱼在浴液中会受到伤害。$(li)$(thing)放置限制$()：地表植物、睡莲、海草、海龟蛋无法放置在浴液中，且珊瑚植物放置其中一会后会变成失活珊瑚。$(li)$(thing)钓鱼$()：在浴液中钓鱼不会钓到任何东西。",
   "hotbath.entry.tips.interactions.title": "流体交互",
-  "hotbath.entry.tips.interactions": "$(li)$(thing)气泡柱$()：灵魂沙产生上升气泡，岩浆块产生下沉气泡$(li)$(thing)自定义粒子$()：气泡和滴水粒子颜色与液体一致$(li)$(thing)Fluidlogged模组$()：强烈推荐！让浴液可以与楼梯、台阶等方块共存",
-  "hotbath.entry.tips.recommendations.title": "推荐模组",
-  "hotbath.entry.tips.recommendations": "$(li)$(thing)Fluidlogged$()：在楼梯、台阶等方块中沐浴$(li)$(thing)Cold Sweat$()：完整的温度系统联动$(li)$(thing)Tough As Nails$()：口渴管理$(li)$(thing)JEI$()：配方查看$(li)$(thing)REI$()：替代配方查看器",
+  "hotbath.entry.tips.interactions": "$(li)$(thing)气泡柱$()：灵魂沙产生上升气泡，岩浆块产生下沉气泡$(li)$(thing)自定义粒子$()：气泡和滴水粒子颜色与液体一致",
 
   "hotbath.entry.hot_water.name": "热水",
   "hotbath.entry.hot_water.page1": "$(item)热水$()是所有浴液的基础。简单却有效，它能洗去疲惫并提供速度加成。",
