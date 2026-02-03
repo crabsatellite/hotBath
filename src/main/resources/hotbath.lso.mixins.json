@@ -7,6 +7,6 @@
   "plugin": "com.crabmod.hotbath.mixin.HotBathMixinPlugin",
   "mixins": ["ThirstConsumableListenerMixin"],
   "injectors": {
-    "defaultRequire": 1
+    "defaultRequire": 0
   }
 }
