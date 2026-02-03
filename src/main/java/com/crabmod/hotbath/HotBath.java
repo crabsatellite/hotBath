@@ -11,8 +11,9 @@ import com.crabmod.hotbath.compat.AlexsMobsCompat;
 import com.crabmod.hotbath.compat.AlexsMobsIntegration;
 import com.crabmod.hotbath.compat.AlexsCavesCompat;
 import com.crabmod.hotbath.compat.AlexsCavesIntegration;
-import com.crabmod.hotbath.compat.CreateCompat;
-import com.crabmod.hotbath.compat.CreateIntegration;
+// TODO: Create mod integration - temporarily disabled
+// import com.crabmod.hotbath.compat.CreateCompat;
+// import com.crabmod.hotbath.compat.CreateIntegration;
 import com.crabmod.hotbath.compat.TwilightForestCompat;
 import com.crabmod.hotbath.compat.TwilightForestIntegration;
 import com.crabmod.hotbath.compat.FarmersDelightCompat;
@@ -193,12 +194,13 @@ public class HotBath {
             SereneSeasonsCompat::init
         );
         
-        CompatManager.registerCompat(
-            "create",
-            "Create",
-            CreateIntegration::isCreateLoaded,
-            CreateCompat::init
-        );
+        // TODO: Create mod integration - temporarily disabled
+        // CompatManager.registerCompat(
+        //     "create",
+        //     "Create",
+        //     CreateIntegration::isCreateLoaded,
+        //     CreateCompat::init
+        // );
     }
     
     private void registerBrewingRecipes(final FMLCommonSetupEvent event) {
