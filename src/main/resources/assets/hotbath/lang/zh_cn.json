@@ -126,7 +126,7 @@
 
   "hotbath.entry.shower_core.name": "✨ Shower Core（推荐）",
   "hotbath.entry.shower_core.bathtub.title": "浴缸",
-  "hotbath.entry.shower_core.bathtub": "$(l)Shower Core$() 添加了33种不同款式的精美$(thing)浴缸$()！$(br2)$(li)木质款式：橡木、白桦、云杉、丛林木、金合欢、深色橡木、红树、樱花、绯红、诡异、竹$(li)石质款式：石头、圆石$(li)金属款式：铁、金、铜、钻石$(li)染色款式：全部16种染料颜色$(br2)浴缸与热水澡的浴液完美配合！",
+  "hotbath.entry.shower_core.bathtub": "$(l)Shower Core$() 添加了33种不同款式的精美$(thing)浴缸$()!$(br2)$(li)木质款式：全部11种木材$(li)石质款式：石头、圆石$(li)金属款式：铁、金、铜、钻石$(li)染色款式：全邐16种颜色$(br2)浴缸与热水澡的浴液完美配合！",
   "hotbath.entry.shower_core.shower.title": "淋浴头",
   "hotbath.entry.shower_core.shower": "提供两种淋浴头：$(br2)$(thing)紧凑型淋浴头$() - 经典手持式$(br)$(thing)雨淋淋浴头$() - 奢华顶喷式$(br2)两者都有与浴缸相同的33种款式可选。安装在墙上，享受清爽淋浴！",
   "hotbath.entry.shower_core.duck.title": "小黄鸭 🦆",
@@ -218,7 +218,7 @@
   "hotbath.entry.bottles.rose": "获得$(thing)力量 I$() 45秒。",
 
   "hotbath.entry.splash_bottles.name": "喷溅型浴水瓶",
-  "hotbath.entry.splash_bottles.page1": "喷溅型浴水瓶可以像药水一样投掷！在酿造台中用任意浴水瓶与火药酿造即可制作喷溅版本。所有喷溅瓶还会给予$(thing)抗寒 II$() 30秒。",
+  "hotbath.entry.splash_bottles.page1": "喷溅型浴水瓶可以像药水一样投掷！在酿造台中用任意浴水瓶与火药酿造即可制作喷溅版本。",
   "hotbath.entry.splash.hot_water.title": "喷溅型热水瓶",
   "hotbath.entry.splash.hot_water": "获得$(thing)速度 II$() 30秒。",
   "hotbath.entry.splash.honey.title": "喷溅型蜂蜜浴水瓶",
@@ -331,7 +331,7 @@
   "hotbath.entry.custom_example.name": "示例",
   "hotbath.entry.custom_example.page1": "热水澡包含一个示例数据包，其中有$(thing)7种自定义液体$()。查看模组数据包目录中的$(thing)hotbath_example_fluids$()文件夹来了解它们的工作原理！",
   "hotbath.entry.custom_example.golden.title": "黄金浴",
-  "hotbath.entry.custom_example.golden": "奢华的金色浴液，提供$(thing)生命恢复 II$()和$(thing)伤害吸收 II$()。使用温暖的金色(#FFD700)，10秒后触发效果。适合皇室成员！",
+  "hotbath.entry.custom_example.golden": "奢华的金色浴液，提供$(thing)生命恢复 II$()和$(thing)伤害吸收 II$()。使用温暖的金色，10秒后触发效果。适合皇室成员！",
   "hotbath.entry.custom_example.slime.title": "史莱姆浴",
   "hotbath.entry.custom_example.slime": "弹性史莱姆绿色浴液，提供$(thing)跳跃提升 III$()和$(thing)缓降$()。粘度更高，营造黏糊糊的感觉！",
   "hotbath.entry.custom_example.blazing.title": "烈焰浴",
