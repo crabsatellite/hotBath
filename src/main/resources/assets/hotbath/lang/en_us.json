@@ -266,7 +266,7 @@
   "hotbath.entry.other_compat.name": "Other Integrations",
   "hotbath.entry.other_compat.page1": "Hot Bath integrates with many more mods! Check the detailed entries for each supported mod in this category.",
   "hotbath.entry.other_compat.mods.title": "Quick Reference",
-  "hotbath.entry.other_compat.mods": "$(li)$(l)Alex's Mobs$(): Raccoons, monkeys, dirtiness$(li)$(l)Alex's Caves$(): Gummy bears, radiation cure$(li)$(l)Twilight Forest$(): Frosted removal, fireflies$(li)$(l)Farmer's Delight$(): Comfort effect$(li)$(l)Serene Seasons$(): Winter resistance boost$(li)$(l)Create$(): Fluid pipe support",
+  "hotbath.entry.other_compat.mods": "$(li)$(l)Alex's Mobs$(): Raccoons, monkeys, dirtiness$(li)$(l)Alex's Caves$(): Gummy bears, radiation cure$(li)$(l)Twilight Forest$(): Frosted removal, fireflies$(li)$(l)Farmer's Delight$(): Comfort effect$(li)$(l)Serene Seasons$(): Winter resistance boost",
 
   "hotbath.entry.alexs_mobs.name": "Alex's Mobs",
   "hotbath.entry.alexs_mobs.page1": "$(l)Alex's Mobs$() integration adds realistic animal behaviors and the $(thing)Dirtiness$() system for bug attraction.",
