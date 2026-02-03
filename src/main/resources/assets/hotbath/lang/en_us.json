@@ -255,7 +255,7 @@
   "hotbath.entry.lso.name": "Legendary Survival Overhaul",
   "hotbath.entry.lso.page1": "$(l)Legendary Survival Overhaul$() provides the most comprehensive integration with advanced temperature, thirst, and cold resistance mechanics.",
   "hotbath.entry.lso.temperature.title": "Temperature Warming",
-  "hotbath.entry.lso.temperature": "$(li)Hot baths warm players toward the comfortable $(thing)27°C$() zone$(li)Prevents shivering and hypothermia$(li)Applied via LSO's modifier system$(li)Only hot baths (≥35°C) provide warming",
+  "hotbath.entry.lso.temperature": "$(li)Hot baths warm players toward the comfortable zone$(li)Prevents shivering and hypothermia$(li)Applied via LSO's modifier system$(li)Only hot baths (≥35°C) provide warming",
   "hotbath.entry.lso.resistance.title": "Cold Resistance",
   "hotbath.entry.lso.resistance": "$(li)After $(thing)10 seconds$() of bathing, you gain $(thing)Cold Resistance III$()$(li)Effect $(thing)accumulates$() with more bathing time$(li)Maximum duration: $(thing)5 minutes$()$(li)$(thing)Cold Immunity$() buff for 10s after leaving$(li)Prevents immediate re-freezing!",
   "hotbath.entry.lso.thirst.title": "Thirst & Bottles",
