@@ -220,7 +220,7 @@
   "hotbath.entry.bottles.rose": "Grants $(thing)Strength I$() for 45 seconds.",
 
   "hotbath.entry.splash_bottles.name": "Splash Bottles",
-  "hotbath.entry.splash_bottles.page1": "Splash bottles can be thrown like potions! Brew any bath water bottle with gunpowder in a brewing stand to create splash versions. All splash bottles also grant $(thing)Cold Resistance II$() for 30 seconds.",
+  "hotbath.entry.splash_bottles.page1": "Splash bottles can be thrown like potions! Brew any bath water bottle with gunpowder in a brewing stand to create splash versions.",
   "hotbath.entry.splash.hot_water.title": "Splash Hot Water",
   "hotbath.entry.splash.hot_water": "Grants $(thing)Speed II$() for 30 seconds.",
   "hotbath.entry.splash.honey.title": "Splash Honey Bath",
@@ -333,7 +333,7 @@
   "hotbath.entry.custom_example.name": "Examples",
   "hotbath.entry.custom_example.page1": "Hot Bath includes an example data pack with $(thing)7 custom fluids$(). Check the $(thing)hotbath_example_fluids$() folder in the mod's data pack directory to see how they work!",
   "hotbath.entry.custom_example.golden.title": "Golden Bath",
-  "hotbath.entry.custom_example.golden": "A luxurious gold-colored bath that provides $(thing)Regeneration II$() and $(thing)Absorption II$(). Uses warm gold color (#FFD700), triggers after 10s. Perfect for royalty!",
+  "hotbath.entry.custom_example.golden": "A luxurious gold-colored bath that provides $(thing)Regeneration II$() and $(thing)Absorption II$(). Uses warm gold color, triggers after 10s. Perfect for royalty!",
   "hotbath.entry.custom_example.slime.title": "Slime Bath",
   "hotbath.entry.custom_example.slime": "A bouncy slime-green bath that provides $(thing)Jump Boost III$() and $(thing)Slow Falling$(). Has higher viscosity for that slimy feel!",
   "hotbath.entry.custom_example.blazing.title": "Blazing Bath",
