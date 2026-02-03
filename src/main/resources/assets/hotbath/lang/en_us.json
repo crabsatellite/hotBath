@@ -313,9 +313,7 @@
   "hotbath.entry.custom_structure.name": "File Structure",
   "hotbath.entry.custom_structure.page1": "Custom fluids are defined in data packs. Place your JSON files in the correct folders for the game to recognize them.",
   "hotbath.entry.custom_structure.datapack.title": "Data Pack Structure",
-  "hotbath.entry.custom_structure.datapack": "Place fluid definitions in:$(br2)$(8)data/<namespace>/hotbath/custom_fluids/<name>.json$()$(br2)Example:$(br)$(8)data/mypack/hotbath/custom_fluids/golden_bath.json$()",
-  "hotbath.entry.custom_structure.resourcepack.title": "Resource Pack (Optional)",
-  "hotbath.entry.custom_structure.resourcepack": "For custom translations, add lang files to a resource pack. The fluid JSON can also include inline translations.",
+  "hotbath.entry.custom_structure.datapack": "Place fluid definitions in:$(br2)$(8)data/<namespace>/hotbath/custom_fluids/<name>.json$()$(br2)Example:$(br)$(8)data/mypack/hotbath/custom_fluids/golden_bath.json$()$(br2)$(Translation files (optional): For custom translations, add lang files to a resource pack. The fluid JSON can also include inline translations.",
 
   "hotbath.entry.custom_json.name": "JSON Format",
   "hotbath.entry.custom_json.page1": "Each custom fluid is defined by a JSON file with various properties. All fields except $(thing)id$() are optional and have sensible defaults.",
