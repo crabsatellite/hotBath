@@ -311,9 +311,7 @@
   "hotbath.entry.custom_structure.name": "文件结构",
   "hotbath.entry.custom_structure.page1": "自定义液体在数据包中定义。将JSON文件放在正确的文件夹中，游戏才能识别它们。",
   "hotbath.entry.custom_structure.datapack.title": "数据包结构",
-  "hotbath.entry.custom_structure.datapack": "将液体定义放在：$(br2)$(8)data/<命名空间>/hotbath/custom_fluids/<名称>.json$()$(br2)示例：$(br)$(8)data/mypack/hotbath/custom_fluids/golden_bath.json$()",
-  "hotbath.entry.custom_structure.resourcepack.title": "资源包（可选）",
-  "hotbath.entry.custom_structure.resourcepack": "如需自定义翻译，可将lang文件添加到资源包中。液体JSON也可以包含内联翻译。",
+  "hotbath.entry.custom_structure.datapack": "将液体定义放在：$(br2)$(8)data/<命名空间>/hotbath/custom_fluids/<名称>.json$()$(br2)示例：$(br)$(8)data/mypack/hotbath/custom_fluids/golden_bath.json$()$(br2)$(翻译文件（可选）：如需自定义翻译，可将lang文件添加到资源包中。液体JSON也可以包含内联翻译。",
 
   "hotbath.entry.custom_json.name": "JSON格式",
   "hotbath.entry.custom_json.page1": "每个自定义液体由一个JSON文件定义，包含各种属性。除了$(thing)id$()之外，所有字段都是可选的，并有合理的默认值。",

@@ -12,11 +12,6 @@
       "type": "patchouli:text",
       "title": "hotbath.entry.custom_structure.datapack.title",
       "text": "hotbath.entry.custom_structure.datapack"
-    },
-    {
-      "type": "patchouli:text",
-      "title": "hotbath.entry.custom_structure.resourcepack.title",
-      "text": "hotbath.entry.custom_structure.resourcepack"
     }
   ]
 }
