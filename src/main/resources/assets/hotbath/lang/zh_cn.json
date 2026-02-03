@@ -253,7 +253,7 @@
   "hotbath.entry.lso.name": "Legendary Survival Overhaul",
   "hotbath.entry.lso.page1": "$(l)Legendary Survival Overhaul$()提供最全面的联动，包括高级温度、口渴和抗寒机制。",
   "hotbath.entry.lso.temperature.title": "温度升温",
-  "hotbath.entry.lso.temperature": "$(li)热浴将玩家温度提升至舒适的$(thing)27°C$()区域$(li)防止颤抖和低温症$(li)通过LSO的修改器系统实现$(li)只有热浴（≥35°C）提供升温",
+  "hotbath.entry.lso.temperature": "$(li)热浴将玩家温度提升至舒适区域$(li)防止颤抖和低温症$(li)通过LSO的修改器系统实现$(li)只有热浴（≥35°C）提供升温",
   "hotbath.entry.lso.resistance.title": "抗寒累积",
   "hotbath.entry.lso.resistance": "$(li)泡澡$(thing)10秒$()后，获得$(thing)抗寒 III$()$(li)效果随泡澡时间$(thing)累积$()$(li)最大持续时间：$(thing)5分钟$()$(li)离开后$(thing)寒冷免疫$()增益持续10秒$(li)防止立即再次冻结！",
   "hotbath.entry.lso.thirst.title": "口渴与浴水瓶",
