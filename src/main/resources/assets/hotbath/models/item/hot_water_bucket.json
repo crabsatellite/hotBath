@@ -1,6 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "hotbath:item/hot_water_bucket"
-    }
-}

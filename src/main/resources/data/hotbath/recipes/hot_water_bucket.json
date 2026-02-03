@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "item": "minecraft:water_bucket"
-  },
-  "result": "hotbath:hot_water_bucket",
-  "experience": 0.35,
-  "cookingtime": 200
-}
