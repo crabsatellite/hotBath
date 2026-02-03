@@ -341,7 +341,7 @@
   "hotbath.entry.custom_example.enchanted.title": "附魔浴",
   "hotbath.entry.custom_example.enchanted": "带来好运的神秘青金蓝浴液。提供$(thing)幸运 II$()和$(thing)夜视$()。亮度8营造魔法氛围。下地牢前泡一泡绝佳！",
   "hotbath.entry.custom_example.milk_tea.title": "奶茶浴",
-  "hotbath.entry.custom_example.milk_tea": "温暖舒适的奶茶浴，使用$(thing)opacity$()设置营造奶油质感。提供$(thing)饱和$()和$(thing)速度$()。还有$(thing)nutrition: 4$() - 可以喝哦！",
+  "hotbath.entry.custom_example.milk_tea": "温暖舒适的奶茶浴，使用$(thing)不透明度$()设置营造奶油质感。提供$(thing)饱和$()和$(thing)速度$()。还有$(thing)营养$() - 可以喝哦！",
   "hotbath.entry.custom_example.silent.title": "寂静温泉",
   "hotbath.entry.custom_example.silent": "神秘温泉，没有任何粒子、气泡或蒸汽。提供$(thing)隐身$()和$(thing)夜视$()。展示如何禁用所有视觉效果，营造宁静体验。"
 }
