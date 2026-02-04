@@ -224,13 +224,6 @@ public class DirtinessData {
     }
     
     /**
-     * Get the max dirty start time for debugging.
-     */
-    public long getMaxDirtyStartTime() {
-        return maxDirtyStartTime;
-    }
-    
-    /**
      * Initialize for a new player
      */
     public void initialize(long currentGameTime, long playerSeed) {
