@@ -63,7 +63,7 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
      * 
      * @return true if this is a hot bath (default for built-in bath fluids)
      */
-    protected boolean isHotBath() {
+    public boolean isHotBath() {
         return true; // Built-in bath fluids are always hot
     }
     
@@ -76,7 +76,7 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
      * @param pos The position of the fluid block
      * @return true if this is a hot bath at this position
      */
-    protected boolean isHotBath(Level level, BlockPos pos) {
+    public boolean isHotBath(Level level, BlockPos pos) {
         return isHotBath(); // Default to the simple check
     }
 

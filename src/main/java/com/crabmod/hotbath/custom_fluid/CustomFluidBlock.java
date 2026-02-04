@@ -58,7 +58,7 @@ public class CustomFluidBlock extends AbstractHotbathBlock implements IInsideAre
      * @return true if temperature >= HOT_TEMPERATURE_THRESHOLD
      */
     @Override
-    protected boolean isHotBath() {
+    public boolean isHotBath() {
         return definition.isHot();
     }
 

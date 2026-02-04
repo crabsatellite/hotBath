@@ -71,7 +71,7 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
      * @return true if the fluid at this position is hot
      */
     @Override
-    protected boolean isHotBath(Level level, BlockPos pos) {
+    public boolean isHotBath(Level level, BlockPos pos) {
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof CustomFluidBlockEntity customBe) {
             // Use isHot() which correctly defaults to false if no definition found
