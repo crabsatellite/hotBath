@@ -1,7 +1,6 @@
 package com.crabmod.hotbath.custom_fluid;
 
 import com.crabmod.hotbath.registers.CustomFluidBlocksRegister;
-import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -85,16 +84,8 @@ public class CustomFluidBucketItem extends Item {
                         // Waterlog the block
                         level.setBlock(pos, clickedState.setValue(BlockStateProperties.WATERLOGGED, true), 3);
                     }
-                    // Whether it was already waterlogged or not, update the fluid type
-                    // This allows replacing existing water/fluid with custom fluid
-                    
-                    // Store the fluid type (DYNAMIC_FLUID for rendering)
-                    HotbathWaterloggingHelper.storeFluidType(level, pos, 
-                            DynamicFluidRegistry.DYNAMIC_FLUID_STILL.get());
-                    
-                    // Store the custom fluid ID for this waterlogged position
-                    // This triggers network sync and client re-render
-                    HotbathWaterloggingHelper.storeCustomFluidId(level, pos, definition.id());
+                    // Waterlogging with custom fluids is now handled by GlitchCore library
+                    // We only set the waterlogged state, the library handles fluid type storage
                     
                     level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
                     level.gameEvent(player, GameEvent.FLUID_PLACE, pos);

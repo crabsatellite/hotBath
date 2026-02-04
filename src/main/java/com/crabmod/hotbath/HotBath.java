@@ -110,12 +110,7 @@ public class HotBath {
         // Register custom fluid networking
         CustomFluidNetworking.register();
         
-        // Register waterlogging networking (only if waterlogging is enabled)
-        if (HotBathConfig.isWaterloggingEnabled()) {
-            com.crabmod.hotbath.waterlogging.WaterloggingNetworking.register();
-        } else {
-            LOGGER.info("Waterlogging disabled - waterlogging networking not registered.");
-        }
+        // Note: Waterlogging is now handled by GlitchCore library
 
         // Skip all mod integrations if disabled
         if (!HotBathConfig.isModIntegrationsEnabled()) {

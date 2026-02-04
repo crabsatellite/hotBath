@@ -2,7 +2,6 @@ package com.crabmod.hotbath.custom_fluid;
 
 import com.crabmod.hotbath.fluid_details.FluidsColor;
 import com.crabmod.hotbath.fluid_details.FluidsTexture;
-import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
@@ -69,16 +68,10 @@ public class DynamicFluidType extends FluidType {
     
     /**
      * Gets the CustomFluidDefinition from waterlogging storage (for waterlogged blocks).
+     * Note: Waterlogging support is now handled by GlitchCore library.
      */
     private static Optional<CustomFluidDefinition> getDefinitionFromWaterlogging(BlockAndTintGetter getter, BlockPos pos) {
-        BlockState state = getter.getBlockState(pos);
-        if (state.hasProperty(BlockStateProperties.WATERLOGGED) 
-                && state.getValue(BlockStateProperties.WATERLOGGED)) {
-            ResourceLocation customFluidId = HotbathWaterloggingHelper.getCustomFluidId(pos);
-            if (customFluidId != null) {
-                return CustomFluidAPI.getFluidDefinition(customFluidId);
-            }
-        }
+        // Waterlogging is now handled by GlitchCore library
         return Optional.empty();
     }
     
@@ -160,27 +153,10 @@ public class DynamicFluidType extends FluidType {
     
     /**
      * Gets the color from waterlogging storage (for waterlogged blocks).
-     * Applies the opacity from the fluid definition to the alpha channel.
+     * Note: Waterlogging support is now handled by GlitchCore library.
      */
     private static int getColorFromWaterlogging(BlockAndTintGetter getter, BlockPos pos) {
-        // Check if this is a waterlogged block with our custom fluid
-        BlockState state = getter.getBlockState(pos);
-        if (state.hasProperty(BlockStateProperties.WATERLOGGED) 
-                && state.getValue(BlockStateProperties.WATERLOGGED)) {
-            // Get the custom fluid ID from waterlogging storage
-            ResourceLocation customFluidId = HotbathWaterloggingHelper.getCustomFluidId(pos);
-            if (customFluidId != null) {
-                // Look up the fluid definition to get its color and opacity
-                Optional<CustomFluidDefinition> defOpt = CustomFluidAPI.getFluidDefinition(customFluidId);
-                if (defOpt.isPresent()) {
-                    CustomFluidDefinition def = defOpt.get();
-                    int color = def.color();
-                    float opacity = def.opacity();
-                    int alpha = (int)(opacity * 255) & 0xFF;
-                    return (alpha << 24) | (color & 0x00FFFFFF);
-                }
-            }
-        }
+        // Waterlogging is now handled by GlitchCore library
         return -1; // No color found
     }
 

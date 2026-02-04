@@ -1,6 +1,5 @@
 package com.crabmod.hotbath.custom_fluid;
 
-import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -51,15 +50,7 @@ public abstract class DynamicCustomFluid extends ForgeFlowingFluid {
             fluidId = sourceFluidBe.getFluidId();
         }
         
-        // If not found in BlockEntity, try waterlogging storage
-        // This handles the case when fluid spreads from a waterlogged block
-        if (fluidId == null) {
-            BlockState sourceState = level.getBlockState(sourcePos);
-            if (sourceState.hasProperty(BlockStateProperties.WATERLOGGED) 
-                    && sourceState.getValue(BlockStateProperties.WATERLOGGED)) {
-                fluidId = HotbathWaterloggingHelper.getCustomFluidId(sourcePos);
-            }
-        }
+        // Waterlogging is handled by GlitchCore library
         
         // Call parent to place the fluid block
         super.spreadTo(level, pos, blockState, direction, fluidState);
@@ -95,22 +86,13 @@ public abstract class DynamicCustomFluid extends ForgeFlowingFluid {
     }
     
     /**
-     * Get the customFluidId at a position (from BlockEntity or waterlogging storage).
+     * Get the customFluidId at a position from BlockEntity.
      */
     private static ResourceLocation getCustomFluidIdAt(BlockGetter level, BlockPos pos) {
-        // Try BlockEntity first
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof CustomFluidBlockEntity customBe) {
             return customBe.getFluidId();
         }
-        
-        // Try waterlogging storage
-        BlockState state = level.getBlockState(pos);
-        if (state.hasProperty(BlockStateProperties.WATERLOGGED) 
-                && state.getValue(BlockStateProperties.WATERLOGGED)) {
-            return HotbathWaterloggingHelper.getCustomFluidId(pos);
-        }
-        
         return null;
     }
     

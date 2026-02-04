@@ -2,7 +2,6 @@ package com.crabmod.hotbath.custom_fluid;
 
 import com.crabmod.hotbath.fluid_blocks.AbstractHotbathBlock;
 import com.crabmod.hotbath.fluid_blocks.IInsideAreaTracker;
-import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -108,21 +107,7 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
             return;
         }
         
-        // Check if there's a stored custom fluid ID from waterlogging at this position
-        // This handles the case when a waterlogged block is broken and fluid is released
-        ResourceLocation customFluidId = HotbathWaterloggingHelper.getCustomFluidId(pos);
-        if (customFluidId != null) {
-            BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof CustomFluidBlockEntity customBe) {
-                // Only set if the BlockEntity doesn't already have a fluid ID
-                if (customBe.getFluidId() == null) {
-                    customBe.setFluidId(customFluidId);
-                }
-            }
-            // Clean up the waterlogging storage since we've moved the fluid to a regular block
-            HotbathWaterloggingHelper.removeFluidType(level, pos);
-            HotbathWaterloggingHelper.removeFromClientCache(pos);
-        }
+        // Waterlogging is now handled by GlitchCore library
         
         // Schedule tick updates for neighboring flowing fluids
         // This ensures they re-evaluate their sources when a new source is placed

@@ -8,7 +8,6 @@ import com.crabmod.hotbath.util.AdvancementHelper;
 import com.crabmod.hotbath.util.HealthRegenHandler;
 import com.crabmod.hotbath.util.HotbathFluidHelper;
 import com.crabmod.hotbath.util.HungerRegenHandler;
-import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -285,7 +284,6 @@ public class DirtinessHandler {
     
     /**
      * Check if there's a hotbath fluid at the given position.
-     * Checks both direct fluid blocks and waterlogged blocks with stored hotbath fluids.
      */
     private static boolean isHotbathFluidAtPosition(ServerPlayer player, BlockPos pos) {
         FluidState fluidState = player.level().getFluidState(pos);
@@ -295,13 +293,6 @@ public class DirtinessHandler {
             if (HotbathFluidHelper.isHotbathFluid(fluidState.getType())) {
                 return true;
             }
-        }
-        
-        // Check for waterlogged blocks with stored hotbath fluids
-        net.minecraft.world.level.material.Fluid storedFluid = 
-                HotbathWaterloggingHelper.getStoredFluidType(player.level(), pos);
-        if (storedFluid != null && HotbathFluidHelper.isHotbathFluid(storedFluid)) {
-            return true;
         }
         
         return false;

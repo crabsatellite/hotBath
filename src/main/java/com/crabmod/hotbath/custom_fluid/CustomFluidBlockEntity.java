@@ -1,7 +1,6 @@
 package com.crabmod.hotbath.custom_fluid;
 
 import com.crabmod.hotbath.registers.BlockEntityRegister;
-import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -143,19 +142,9 @@ public class CustomFluidBlockEntity extends BlockEntity {
     
     /**
      * Gets the fluid ID stored in this block.
-     * If fluidId is null, attempts to recover it from waterlogging storage.
      */
     @Nullable
     public ResourceLocation getFluidId() {
-        if (fluidId != null) {
-            return fluidId;
-        }
-        // Fallback: check waterlogging storage for custom fluid ID
-        // This prevents brief flash of default color when waterlogged block is broken
-        ResourceLocation storedId = HotbathWaterloggingHelper.getCustomFluidId(worldPosition);
-        if (storedId != null) {
-            this.fluidId = storedId;
-        }
         return fluidId;
     }
     
