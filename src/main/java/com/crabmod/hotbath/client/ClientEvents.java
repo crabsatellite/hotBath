@@ -4,6 +4,7 @@ import com.crabmod.hotbath.HotBath;
 import com.crabmod.hotbath.client.particle.CustomDripParticle;
 import com.crabmod.hotbath.client.particle.FlyParticle;
 import com.crabmod.hotbath.client.particle.HotBathBubbleParticle;
+import com.crabmod.hotbath.custom_fluid.DynamicFluidRegistry;
 import com.crabmod.hotbath.particles.SteamParticle;
 import com.crabmod.hotbath.registers.EntityRegister;
 import com.crabmod.hotbath.registers.FluidsRegister;
@@ -36,6 +37,10 @@ public class ClientEvents {
         ItemBlockRenderTypes.setRenderLayer(FluidsRegister.PEONY_BATH_FLOWING.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(FluidsRegister.ROSE_BATH_FLUID.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(FluidsRegister.ROSE_BATH_FLOWING.get(), RenderType.translucent());
+        
+        // Dynamic custom fluids (data pack fluids) - need translucent rendering for transparency
+        ItemBlockRenderTypes.setRenderLayer(DynamicFluidRegistry.DYNAMIC_FLUID_STILL.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(DynamicFluidRegistry.DYNAMIC_FLUID_FLOWING.get(), RenderType.translucent());
     }
 
     @SubscribeEvent

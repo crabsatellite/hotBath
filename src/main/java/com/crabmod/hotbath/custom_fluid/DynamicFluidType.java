@@ -122,14 +122,12 @@ public class DynamicFluidType extends FluidType {
     private static int getColorFromBlockEntity(BlockAndTintGetter getter, BlockPos pos) {
         BlockEntity be = getter.getBlockEntity(pos);
         if (be instanceof CustomFluidBlockEntity customBe) {
-            int color = customBe.getFluidColor();
-            if (color != 0) {
-                // Get opacity from definition, default to 1.0 (fully opaque)
-                float opacity = customBe.getFluidDefinition()
-                        .map(CustomFluidDefinition::opacity)
-                        .orElse(1.0f);
-                int alpha = (int)(opacity * 255) & 0xFF;
-                return (alpha << 24) | (color & 0x00FFFFFF);
+            ResourceLocation fluidId = customBe.getFluidId();
+            if (fluidId != null) {
+                // Get color directly from registry to avoid potential issues
+                return CustomFluidRegistry.getRuntimeData(fluidId)
+                        .map(data -> data.getColorARGB())
+                        .orElse(-1);
             }
         }
         return -1; // No color found
