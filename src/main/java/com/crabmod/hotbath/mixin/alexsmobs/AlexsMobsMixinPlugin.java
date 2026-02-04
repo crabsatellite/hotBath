@@ -1,6 +1,7 @@
 package com.crabmod.hotbath.mixin.alexsmobs;
 
 import com.crabmod.hotbath.mixin.HotBathMixinPlugin;
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -12,23 +13,31 @@ import java.util.Set;
  * Mixin plugin that conditionally loads Alex's Mobs mixins only when:
  * 1. The mod is present
  * 2. Compatibility mode is NOT enabled
+ * 
+ * Uses FMLLoader instead of Class.forName to avoid early class loading issues.
  */
 public class AlexsMobsMixinPlugin implements IMixinConfigPlugin {
     
-    private static boolean alexsMobsLoaded = false;
+    private static Boolean alexsMobsLoaded = null;
     
-    static {
-        try {
-            Class.forName("com.github.alexthe666.alexsmobs.AlexsMobs");
-            alexsMobsLoaded = true;
-        } catch (ClassNotFoundException e) {
-            alexsMobsLoaded = false;
+    private static boolean checkAlexsMobsPresent() {
+        if (alexsMobsLoaded == null) {
+            try {
+                alexsMobsLoaded = FMLLoader.getLoadingModList().getModFileById("alexsmobs") != null;
+                if (alexsMobsLoaded) {
+                    System.out.println("[HotBath] Alex's Mobs detected via FMLLoader - integration mixins enabled");
+                }
+            } catch (Throwable t) {
+                alexsMobsLoaded = false;
+                System.out.println("[HotBath] Error checking for Alex's Mobs: " + t.getMessage());
+            }
         }
+        return alexsMobsLoaded;
     }
     
     @Override
     public void onLoad(String mixinPackage) {
-        // No initialization needed
+        checkAlexsMobsPresent();
     }
     
     @Override
@@ -43,7 +52,7 @@ public class AlexsMobsMixinPlugin implements IMixinConfigPlugin {
             return false;
         }
         // Only apply mixins if Alex's Mobs is loaded
-        return alexsMobsLoaded;
+        return checkAlexsMobsPresent();
     }
     
     @Override

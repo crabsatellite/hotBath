@@ -144,12 +144,12 @@ dependencies {
     // ColdSweat - Temperature and season mod (optional dependency)
     // compileOnly for API access, runtimeOnly to have it in dev environment
     compileOnly fg.deobf("curse.maven:cold-sweat-506194:7492468")
-    // runtimeOnly fg.deobf("curse.maven:cold-sweat-506194:7492468")
+    runtimeOnly fg.deobf("curse.maven:cold-sweat-506194:7492468")
 
     // GlitchCore - Library mod for waterlogging support (replaces custom waterlogging mixins)
-    // Project ID: 955399 - Use newer version with waterlogging support
+    // Project ID: 955399 - Required by Cold Sweat
     compileOnly fg.deobf("curse.maven:glitchcore-955399:5787839")
-    // runtimeOnly fg.deobf("curse.maven:glitchcore-955399:5787839")
+    runtimeOnly fg.deobf("curse.maven:glitchcore-955399:5787839")
 
     // ToughAsNails - Temperature and thirst mod (optional dependency)
     // Project ID: 246391 - Disabled runtime: triggers Forge early class loading bug
@@ -157,9 +157,9 @@ dependencies {
     // runtimeOnly fg.deobf("curse.maven:tough-as-nails-246391:4750298")
 
     // Legendary Survival Overhaul - Temperature and survival overhaul mod (optional dependency)
-    // Project ID: 840254 - Disabled runtime: triggers Forge early class loading bug
+    // Project ID: 840254 - Testing runtime after MixinPlugin fix
     compileOnly fg.deobf("curse.maven:legendary-survival-overhaul-840254:6550305")
-    // runtimeOnly fg.deobf("curse.maven:legendary-survival-overhaul-840254:6550305")
+    runtimeOnly fg.deobf("curse.maven:legendary-survival-overhaul-840254:6550305")
 
     // Create - Disabled runtime: Flywheel causes AbstractClientPlayer early loading
     compileOnly fg.deobf("curse.maven:create-328085:7178761")
@@ -182,39 +182,39 @@ dependencies {
     // runtimeOnly fg.deobf("curse.maven:obscure-api-638417:7171906")
 
     // Alex's Mobs - Animal/creature mod (optional dependency for fly attraction integration)
-    // Project ID: 426558 - Disabled runtime: Citadel triggers Forge early class loading bug
+    // Project ID: 426558 - Testing runtime after MixinPlugin fix
     compileOnly fg.deobf("curse.maven:alexs-mobs-426558:5698791")
-    // runtimeOnly fg.deobf("curse.maven:alexs-mobs-426558:5698791")
+    runtimeOnly fg.deobf("curse.maven:alexs-mobs-426558:5698791")
     
     // Citadel - Library mod required by Alex's Mobs and Alex's Caves
-    // Project ID: 331936 - Disabled runtime: triggers Forge early class loading bug (LevelMixin)
+    // Project ID: 331936 - Testing runtime after MixinPlugin fix
     compileOnly fg.deobf("curse.maven:citadel-331936:7476570")
-    // runtimeOnly fg.deobf("curse.maven:citadel-331936:7476570")
+    runtimeOnly fg.deobf("curse.maven:citadel-331936:7476570")
 
     // Alex's Caves - Cave biome and creature mod (optional dependency)
-    // Project ID: 924854 - Disabled runtime: requires Citadel which triggers bug
+    // Project ID: 924854 - Testing runtime after MixinPlugin fix
     compileOnly fg.deobf("curse.maven:alexs-caves-924854:5848216")
-    // runtimeOnly fg.deobf("curse.maven:alexs-caves-924854:5848216")
+    runtimeOnly fg.deobf("curse.maven:alexs-caves-924854:5848216")
 
     // Twilight Forest - Fantasy dimension mod (optional dependency)
-    // Project ID: 227639 - Disabled runtime: triggers Forge early class loading bug
+    // Project ID: 227639 - Testing runtime after MixinPlugin fix
     compileOnly fg.deobf("curse.maven:the-twilight-forest-227639:5468648")
-    // runtimeOnly fg.deobf("curse.maven:the-twilight-forest-227639:5468648")
+    runtimeOnly fg.deobf("curse.maven:the-twilight-forest-227639:5468648")
 
     // Farmer's Delight - Cooking and farming mod (optional dependency)
-    // Project ID: 398521 - Disabled runtime due to mixin loading conflict
+    // Project ID: 398521 - Testing runtime after MixinPlugin fix
     compileOnly fg.deobf("curse.maven:farmers-delight-398521:6917255")
-    // runtimeOnly fg.deobf("curse.maven:farmers-delight-398521:6917255")
+    runtimeOnly fg.deobf("curse.maven:farmers-delight-398521:6917255")
 
     // Serene Seasons - Season mod (optional dependency)
-    // Project ID: 291874 - Disabled: requires GlitchCore which causes issues
-    // compileOnly fg.deobf("curse.maven:serene-seasons-291874:6398227")
-    // runtimeOnly fg.deobf("curse.maven:serene-seasons-291874:6398227")
+    // Project ID: 291874 - Requires GlitchCore
+    compileOnly fg.deobf("curse.maven:serene-seasons-291874:6398227")
+    runtimeOnly fg.deobf("curse.maven:serene-seasons-291874:6398227")
 
     // Patchouli - Guide book mod (optional dependency)
-    // Project ID: 306770 - Disabled runtime: triggers Forge early class loading bug (Screen)
+    // Project ID: 306770 - Testing runtime
     compileOnly fg.deobf("curse.maven:patchouli-306770:6164575")
-    // runtimeOnly fg.deobf("curse.maven:patchouli-306770:6164575")
+    runtimeOnly fg.deobf("curse.maven:patchouli-306770:6164575")
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
