@@ -73,10 +73,6 @@ public class DirtinessOverlayRenderer extends RenderLayer<AbstractClientPlayer, 
         float dirtiness = DirtinessClientData.getDirtiness(player.getUUID());
         if (dirtiness < MIN_DIRTINESS) return;
         
-        // Calculate base alpha based on dirtiness level
-        float baseAlpha = calculateAlpha(dirtiness);
-        if (baseAlpha < 0.01f) return;
-        
         // Get the dirt seed for this player's current dirtiness cycle
         long seed = DirtinessClientData.getDirtSeed(player.getUUID());
         // Fallback to UUID-based seed if no seed is set
@@ -153,31 +149,23 @@ public class DirtinessOverlayRenderer extends RenderLayer<AbstractClientPlayer, 
         effectiveDirtiness *= intensityMultiplier;
         if (effectiveDirtiness < MIN_DIRTINESS) return;
         
-        float alpha = calculateAlpha(effectiveDirtiness);
+        // Calculate alpha directly from effective dirtiness for clear gradient
+        // Linear mapping: alpha increases proportionally with dirtiness
+        float alpha = Math.min(0.95f, effectiveDirtiness * 0.95f);
         
-        // Use brown/dirt color tint - pack into ARGB integer
-        // Slightly darker color for more visible dirt
+        // Use white color (1,1,1) to let the texture's own color show through
+        // The texture itself contains the brown/dirt coloring
+        // Only alpha controls the visibility/intensity
+        float r = 1.0f;
+        float g = 1.0f;
+        float b = 1.0f;
+        
         // Get vertex consumer for this part's render
-        // In 1.20, ModelPart.render() does not take a color parameter, so we use RenderType with alpha
         VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityTranslucent(dirtTexture));
         
-        // Render the part's cubes with dirt overlay
-        // part.render() already handles translateAndRotate internally
-        // Note: In 1.20, color is not supported directly; alpha is applied through the texture
-        part.render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY);
-    }
-    
-    /**
-     * Calculate alpha value based on dirtiness.
-     * Uses a curve that makes dirt gradually appear.
-     */
-    private float calculateAlpha(float dirtiness) {
-        // Smooth curve: dirt becomes more visible as dirtiness increases
-        // Higher alpha values for more visible dirt
-        // At 0.1 dirtiness -> ~0.18 alpha
-        // At 0.5 dirtiness -> ~0.60 alpha  
-        // At 1.0 dirtiness -> ~0.90 alpha
-        return Math.min(0.90f, dirtiness * 0.6f + dirtiness * dirtiness * 0.4f);
+        // Render the part's cubes with dirt overlay including color and alpha
+        // In 1.20.1 Forge, ModelPart.render() accepts RGBA float parameters
+        part.render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, r, g, b, alpha);
     }
     
     // Keep methods for compatibility with other code (no longer needed but kept for API stability)

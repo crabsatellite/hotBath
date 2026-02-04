@@ -78,6 +78,10 @@ public class DirtinessNetworking {
                 // Client side handling
                 net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
                 if (mc.player != null) {
+                    // Debug log
+                    com.crabmod.hotbath.HotBath.LOGGER.info("[Network Debug] Received packet - Dirtiness: {}, HasFlies: {}", 
+                        packet.dirtiness, packet.hasFlies);
+                    
                     DirtinessClientData.setDirtiness(
                             mc.player.getUUID(),
                             packet.dirtiness,
@@ -144,6 +148,12 @@ public class DirtinessNetworking {
             long gameTime = player.level().getGameTime();
             float dirtiness = data.getDirtiness(gameTime);
             boolean hasFlies = data.shouldSpawnFlies(gameTime);
+            long maxDirtyStart = data.getMaxDirtyStartTime();
+            long ticksAtMax = data.getTicksAtMaxDirty(gameTime);
+            
+            // Debug log on server
+            com.crabmod.hotbath.HotBath.LOGGER.info("[Network Debug] Sending - Dirtiness: {}, HasFlies: {}, maxDirtyStart: {}, gameTime: {}, ticksAtMax: {}, required: {}", 
+                dirtiness, hasFlies, maxDirtyStart, gameTime, ticksAtMax, DirtinessData.TICKS_AT_MAX_FOR_FLIES);
             
             // Send to self
             CHANNEL.sendTo(

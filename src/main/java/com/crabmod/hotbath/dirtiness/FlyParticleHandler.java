@@ -49,10 +49,20 @@ public class FlyParticleHandler {
             if (!(player instanceof AbstractClientPlayer clientPlayer)) continue;
             
             // Check if this player should have flies
-            if (!DirtinessClientData.hasFlies(clientPlayer.getUUID())) continue;
+            boolean hasFlies = DirtinessClientData.hasFlies(clientPlayer.getUUID());
+            
+            // Debug logging every 5 seconds
+            if (tickCounter % 100 == 0) {
+                float dirtiness = DirtinessClientData.getDirtiness(clientPlayer.getUUID());
+                HotBath.LOGGER.info("[Fly Debug] Player: {}, Dirtiness: {}, HasFlies: {}", 
+                    clientPlayer.getName().getString(), dirtiness, hasFlies);
+            }
+            
+            if (!hasFlies) continue;
             
             // Spawn flies around this player
             spawnFliesAroundPlayer(clientPlayer);
+            HotBath.LOGGER.info("[Fly Debug] Spawning flies around: {}", clientPlayer.getName().getString());
         }
     }
     

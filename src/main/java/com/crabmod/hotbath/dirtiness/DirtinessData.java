@@ -203,7 +203,9 @@ public class DirtinessData {
      * @return true if flies should spawn around this player
      */
     public boolean shouldSpawnFlies(long currentGameTime) {
-        if (maxDirtyStartTime <= 0) {
+        // maxDirtyStartTime == 0 means not tracking (not at 100%)
+        // maxDirtyStartTime can be negative in new worlds, which is valid
+        if (maxDirtyStartTime == 0) {
             return false;
         }
         return (currentGameTime - maxDirtyStartTime) >= TICKS_AT_MAX_FOR_FLIES;
@@ -214,10 +216,18 @@ public class DirtinessData {
      * Returns 0 if not currently at max.
      */
     public long getTicksAtMaxDirty(long currentGameTime) {
-        if (maxDirtyStartTime <= 0) {
+        // maxDirtyStartTime == 0 means not tracking
+        if (maxDirtyStartTime == 0) {
             return 0;
         }
         return currentGameTime - maxDirtyStartTime;
+    }
+    
+    /**
+     * Get the max dirty start time for debugging.
+     */
+    public long getMaxDirtyStartTime() {
+        return maxDirtyStartTime;
     }
     
     /**
