@@ -38,9 +38,9 @@ public class CustomFluidClientEvents {
                 }
                 return 0xFF4FC3F7; // Default light blue
             } else if (tintIndex == 2) {
-                // Smoke layer - only visible for hot fluids
+                // Smoke layer - only visible for hot fluids with showSteam enabled
                 CustomFluidDefinition definition = CustomFluidDataComponents.getFluidDefinition(stack);
-                if (definition != null && definition.isHot()) {
+                if (definition != null && definition.isHot() && definition.showSteam()) {
                     return 0xFFFFFFFF; // Full white = visible
                 }
                 return 0x00FFFFFF; // Fully transparent = hidden
@@ -58,9 +58,9 @@ public class CustomFluidClientEvents {
                 }
                 return 0xFF4FC3F7; // Default light blue
             } else if (tintIndex == 2) {
-                // Smoke layer - only visible for hot fluids
+                // Smoke layer - only visible for hot fluids with showSteam enabled
                 CustomFluidDefinition definition = CustomFluidDataComponents.getFluidDefinition(stack);
-                if (definition != null && definition.isHot()) {
+                if (definition != null && definition.isHot() && definition.showSteam()) {
                     return 0xFFFFFFFF; // Full white = visible
                 }
                 return 0x00FFFFFF; // Fully transparent = hidden
@@ -78,9 +78,9 @@ public class CustomFluidClientEvents {
                 }
                 return 0xFF4FC3F7; // Default light blue
             } else if (tintIndex == 2) {
-                // Smoke layer - only visible for hot fluids
+                // Smoke layer - only visible for hot fluids with showSteam enabled
                 CustomFluidDefinition definition = CustomFluidDataComponents.getFluidDefinition(stack);
-                if (definition != null && definition.isHot()) {
+                if (definition != null && definition.isHot() && definition.showSteam()) {
                     return 0xFFFFFFFF; // Full white = visible
                 }
                 return 0x00FFFFFF; // Fully transparent = hidden

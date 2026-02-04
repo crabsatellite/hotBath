@@ -122,9 +122,10 @@ public class CustomFluidBlock extends AbstractHotbathBlock implements IInsideAre
         // Call parent for bubble column and underwater effects
         super.animateTick(stateIn, worldIn, pos, rand);
         
-        // Generate steam particles only for hot fluids (temperature >= threshold)
-        // Steam is a visual indicator that the fluid is hot
-        if (definition.isHot()) {
+        // Generate steam particles only when:
+        // 1. The fluid is hot (temperature >= threshold) AND
+        // 2. The showSteam setting is enabled in the definition
+        if (definition.isHot() && definition.showSteam()) {
             generateCustomSteamParticles(worldIn, pos, rand);
         }
     }
@@ -176,8 +177,9 @@ public class CustomFluidBlock extends AbstractHotbathBlock implements IInsideAre
 
     /**
      * Gets whether steam should be shown for this fluid.
+     * Steam is shown when temperature >= HOT_TEMPERATURE_THRESHOLD (35°C) AND show_steam is true.
      */
     public boolean shouldShowSteam() {
-        return definition.showSteam();
+        return definition.isHot() && definition.showSteam();
     }
 }
