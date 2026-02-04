@@ -18,8 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayDeque;
 import java.util.HashSet;
@@ -33,7 +31,6 @@ import java.util.Set;
  */
 public class CustomFluidBlockEntity extends BlockEntity {
     
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomFluidBlockEntity.class);
     private static final String TAG_FLUID_ID = "FluidId";
     
     @Nullable
@@ -85,7 +82,6 @@ public class CustomFluidBlockEntity extends BlockEntity {
                     && !neighborFluid.isSource()) {
                 // Schedule a tick for this flowing fluid to recalculate its state
                 level.scheduleTick(neighborPos, neighborFluid.getType(), 1);
-                LOGGER.debug("Scheduled tick for flowing fluid at {} due to source ID change at {}", neighborPos, pos);
             }
         }
     }
@@ -273,13 +269,15 @@ public class CustomFluidBlockEntity extends BlockEntity {
             loadAdditional(tag, lookupProvider);
         }
         
-        // If fluid ID changed, trigger re-render
+        // If fluid ID changed, trigger re-render and light update
         if (level != null && level.isClientSide) {
             boolean fluidChanged = (oldFluidId == null && fluidId != null) 
                     || (oldFluidId != null && !oldFluidId.equals(fluidId));
             if (fluidChanged) {
                 // Force chunk re-render for fluid color update
                 level.setBlocksDirty(worldPosition, Blocks.AIR.defaultBlockState(), getBlockState());
+                // Also update light level
+                scheduleLightUpdate();
             }
         }
     }
@@ -287,11 +285,29 @@ public class CustomFluidBlockEntity extends BlockEntity {
     /**
      * Called on client when chunk is loaded and BlockEntity data is received.
      * handleUpdateTag is for initial chunk load, onDataPacket is for updates.
+     * This fixes the issue where custom fluids with luminosity > 0 would lose their light
+     * after rejoining a server.
      */
     @Override
     public void handleUpdateTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
         super.handleUpdateTag(tag, registries);
         loadAdditional(tag, registries);
+        // After loading the tag, schedule a light update
+        scheduleLightUpdate();
+    }
+    
+    /**
+     * Schedules a light update for this block position.
+     * Called after fluid data is loaded/synced to ensure proper light emission.
+     */
+    private void scheduleLightUpdate() {
+        if (level != null && fluidId != null) {
+            Optional<CustomFluidDefinition> defOpt = getFluidDefinition();
+            if (defOpt.isPresent() && defOpt.get().luminosity() > 2) {
+                // Trigger light engine to recompute light at this position
+                level.getLightEngine().checkBlock(worldPosition);
+            }
+        }
     }
     
     /**
@@ -301,11 +317,10 @@ public class CustomFluidBlockEntity extends BlockEntity {
     @Override
     public void onLoad() {
         super.onLoad();
-        if (level != null && fluidId != null) {
-            // Schedule a light update for this block to ensure proper light propagation
-            // This is crucial when the world is reloaded - the fluid's light needs to be recalculated
-            // to illuminate surrounding blocks properly
-            level.getLightEngine().checkBlock(worldPosition);
+        scheduleLightUpdate();
+        // Also mark the block for update on server side
+        if (level != null && !level.isClientSide && fluidId != null) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
     }
 }
