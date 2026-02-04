@@ -3,10 +3,12 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "minecraft:item/bucket",
-    "layer1": "hotbath:item/custom_fluid_bucket_overlay",
-    "layer2": "hotbath:item/custom_bucket_smoke"
+    "layer1": "hotbath:item/custom_fluid_bucket_overlay"
   },
-  "render_types": {
-    "minecraft:translucent": [2]
-  }
+  "overrides": [
+    {
+      "predicate": { "hotbath:hot_steam": 1 },
+      "model": "hotbath:item/custom_fluid_bucket_with_smoke"
+    }
+  ]
 }

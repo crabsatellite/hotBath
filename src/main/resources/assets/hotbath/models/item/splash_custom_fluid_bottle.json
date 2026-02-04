@@ -3,10 +3,12 @@
   "parent": "minecraft:item/generated",
   "textures": {
     "layer0": "minecraft:item/potion_overlay",
-    "layer1": "minecraft:item/splash_potion",
-    "layer2": "hotbath:item/custom_splash_smoke"
+    "layer1": "minecraft:item/splash_potion"
   },
-  "render_types": {
-    "minecraft:translucent": [2]
-  }
+  "overrides": [
+    {
+      "predicate": { "hotbath:hot_steam": 1 },
+      "model": "hotbath:item/splash_custom_fluid_bottle_with_smoke"
+    }
+  ]
 }

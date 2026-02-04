@@ -4,7 +4,6 @@ import com.crabmod.hotbath.util.CustomFluidHandler;
 import com.momosoftworks.coldsweat.api.temperature.modifier.TempModifier;
 import com.momosoftworks.coldsweat.api.util.Temperature;
 import com.momosoftworks.coldsweat.util.world.WorldHelper;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -34,7 +33,6 @@ public class HotBathImmersionModifier extends TempModifier {
         }
 
         Level level = entity.level();
-        BlockPos pos = entity.blockPosition();
 
         // Check if the entity is inside a HOT bath block (not just any bath block)
         // This will return false for custom fluids with temperature < 35°C
@@ -49,7 +47,7 @@ public class HotBathImmersionModifier extends TempModifier {
             double targetTempMC = Temperature.convert(bathTempC, Temperature.Units.C, Temperature.Units.MC, true);
 
             // Get the natural biome temperature at this position
-            double worldTempMC = WorldHelper.getBiomeTemperature(level, level.getBiome(pos));
+            double worldTempMC = WorldHelper.getBiomeTemperature(level, level.getBiome(entity.blockPosition()));
 
             // Use the higher of the two temperatures
             // If the world is hotter (e.g. desert at noon), use that.
@@ -64,13 +62,3 @@ public class HotBathImmersionModifier extends TempModifier {
         return temp -> temp;
     }
 }
-
-
-
-
-
-
-
-
-
-

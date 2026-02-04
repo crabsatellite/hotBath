@@ -1,0 +1,9 @@
+{
+  "loader": "forge:item_layers",
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/bucket",
+    "layer1": "hotbath:item/custom_fluid_bucket_overlay",
+    "layer2": "hotbath:item/custom_bucket_smoke"
+  }
+}
