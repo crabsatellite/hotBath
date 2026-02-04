@@ -150,7 +150,6 @@ public class CustomFluidBlockEntity extends BlockEntity {
     
     /**
      * Gets the fluid definition for the stored fluid ID.
-     * Uses getFluidId() which attempts to recover the ID from waterlogging storage if needed.
      */
     public Optional<CustomFluidDefinition> getFluidDefinition() {
         ResourceLocation id = getFluidId();

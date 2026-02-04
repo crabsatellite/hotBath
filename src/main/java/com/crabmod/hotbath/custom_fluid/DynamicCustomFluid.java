@@ -32,7 +32,6 @@ public abstract class DynamicCustomFluid extends ForgeFlowingFluid {
     /**
      * Override spreadTo to copy BlockEntity data from source to new flowing block.
      * This ensures flowing fluid maintains the same color as the source.
-     * Also checks waterlogging storage for custom fluid ID when spreading from waterlogged blocks.
      */
     @Override
     protected void spreadTo(@NotNull LevelAccessor level, @NotNull BlockPos pos, 
@@ -41,16 +40,14 @@ public abstract class DynamicCustomFluid extends ForgeFlowingFluid {
         // Get the source position (where the fluid is spreading FROM)
         BlockPos sourcePos = pos.relative(direction.getOpposite());
         
-        // Get fluid data from the source block - check BlockEntity first, then waterlogging storage
+        // Get fluid data from the source block's BlockEntity
         ResourceLocation fluidId = null;
         
-        // Try to get from BlockEntity first
+        // Try to get from BlockEntity
         BlockEntity sourceBe = level.getBlockEntity(sourcePos);
         if (sourceBe instanceof CustomFluidBlockEntity sourceFluidBe) {
             fluidId = sourceFluidBe.getFluidId();
         }
-        
-        // Waterlogging is handled by GlitchCore library
         
         // Call parent to place the fluid block
         super.spreadTo(level, pos, blockState, direction, fluidState);

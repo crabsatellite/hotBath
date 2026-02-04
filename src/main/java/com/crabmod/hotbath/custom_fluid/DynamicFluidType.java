@@ -24,14 +24,12 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * A FluidType that supports dynamic per-block coloring based on BlockEntity data
- * or waterlogging storage.
+ * A FluidType that supports dynamic per-block coloring based on BlockEntity data.
  * This allows each placed fluid block to have its own color based on the 
- * CustomFluidDefinition stored in its BlockEntity or waterlogging data.
+ * CustomFluidDefinition stored in its BlockEntity.
  * 
  * Both source and flowing fluid blocks have BlockEntities that store the fluid ID,
  * as the DynamicCustomFluid.spreadTo() method propagates this data when fluid spreads.
- * For waterlogged blocks, the custom fluid ID is stored in the waterlogging helper.
  * 
  * Uses grayscale textures that are tinted with the fluid's color for proper coloring.
  */
@@ -67,24 +65,10 @@ public class DynamicFluidType extends FluidType {
     }
     
     /**
-     * Gets the CustomFluidDefinition from waterlogging storage (for waterlogged blocks).
-     * Note: Waterlogging support is now handled by GlitchCore library.
-     */
-    private static Optional<CustomFluidDefinition> getDefinitionFromWaterlogging(BlockAndTintGetter getter, BlockPos pos) {
-        // Waterlogging is now handled by GlitchCore library
-        return Optional.empty();
-    }
-    
-    /**
      * Gets the CustomFluidDefinition for the fluid at the given position.
-     * Checks BlockEntity first, then waterlogging storage.
      */
     private static Optional<CustomFluidDefinition> getDefinition(BlockAndTintGetter getter, BlockPos pos) {
-        Optional<CustomFluidDefinition> def = getDefinitionFromBlockEntity(getter, pos);
-        if (def.isPresent()) {
-            return def;
-        }
-        return getDefinitionFromWaterlogging(getter, pos);
+        return getDefinitionFromBlockEntity(getter, pos);
     }
     
     // ==================== Dynamic Property Overrides ====================
@@ -150,15 +134,6 @@ public class DynamicFluidType extends FluidType {
         }
         return -1; // No color found
     }
-    
-    /**
-     * Gets the color from waterlogging storage (for waterlogged blocks).
-     * Note: Waterlogging support is now handled by GlitchCore library.
-     */
-    private static int getColorFromWaterlogging(BlockAndTintGetter getter, BlockPos pos) {
-        // Waterlogging is now handled by GlitchCore library
-        return -1; // No color found
-    }
 
     @Override
     public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
@@ -184,22 +159,14 @@ public class DynamicFluidType extends FluidType {
             }
 
             /**
-             * Gets the tint color based on the BlockEntity at the given position,
-             * or from waterlogging storage for waterlogged blocks.
+             * Gets the tint color based on the BlockEntity at the given position.
              * Both source and flowing fluid blocks have BlockEntities with color data,
              * as DynamicCustomFluid.spreadTo() propagates the data when fluid spreads.
-             * For waterlogged blocks, the color is retrieved from waterlogging storage.
              */
             @Override
             public int getTintColor(FluidState state, BlockAndTintGetter getter, BlockPos pos) {
-                // First try to get color from BlockEntity (for DynamicCustomFluidBlock)
+                // Try to get color from BlockEntity (for DynamicCustomFluidBlock)
                 int color = getColorFromBlockEntity(getter, pos);
-                if (color != -1) {
-                    return color;
-                }
-                
-                // Then try to get color from waterlogging storage (for waterlogged blocks)
-                color = getColorFromWaterlogging(getter, pos);
                 if (color != -1) {
                     return color;
                 }

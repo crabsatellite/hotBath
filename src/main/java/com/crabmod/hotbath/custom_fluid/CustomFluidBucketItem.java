@@ -39,7 +39,6 @@ import java.util.Optional;
  *   <li>Right-click on a block to place the fluid</li>
  *   <li>Returns an empty bucket after use</li>
  *   <li>Displays the custom fluid name and color</li>
- *   <li>Supports waterlogging blocks</li>
  * </ul>
  */
 public class CustomFluidBucketItem extends Item {
@@ -81,11 +80,9 @@ public class CustomFluidBucketItem extends Item {
                 
                 if (!level.isClientSide) {
                     if (!isAlreadyWaterlogged) {
-                        // Waterlog the block
+                        // Waterlog the block with vanilla water behavior
                         level.setBlock(pos, clickedState.setValue(BlockStateProperties.WATERLOGGED, true), 3);
                     }
-                    // Waterlogging with custom fluids is now handled by GlitchCore library
-                    // We only set the waterlogged state, the library handles fluid type storage
                     
                     level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
                     level.gameEvent(player, GameEvent.FLUID_PLACE, pos);

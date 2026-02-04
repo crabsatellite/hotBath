@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * Bath bucket with custom tooltip and support for waterlogging blocks.
+ * Bath bucket with custom tooltip.
  * This class overrides emptyContents to properly call placeLiquid for hotBath fluids,
  * since vanilla BucketItem only calls placeLiquid for Fluids.WATER.
  */
@@ -51,7 +51,7 @@ public class BathBucketItem extends BucketItem {
     }
     
     /**
-     * Override emptyContents to properly handle waterlogging with hotBath fluids.
+     * Override emptyContents to properly handle hotBath fluids.
      * The vanilla implementation only calls placeLiquid for Fluids.WATER,
      * but we need it to work for all hotBath fluids.
      */

@@ -109,8 +109,6 @@ public class HotBath {
         
         // Register custom fluid networking
         CustomFluidNetworking.register();
-        
-        // Note: Waterlogging is now handled by GlitchCore library
 
         // Skip all mod integrations if disabled
         if (!HotBathConfig.isModIntegrationsEnabled()) {

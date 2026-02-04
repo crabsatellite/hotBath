@@ -41,7 +41,6 @@ import java.util.function.Supplier;
  *   <li>Generates steam particles only when fluid is hot (temperature >= threshold)</li>
  *   <li>Applies effects from the stored fluid definition</li>
  *   <li>Supports tinted rendering based on fluid color</li>
- *   <li>Recovers custom fluid ID from waterlogging storage when created from broken waterlogged blocks</li>
  * </ul>
  */
 public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements EntityBlock, IInsideAreaTracker {
@@ -95,8 +94,6 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
     
     /**
      * Called when this block is placed in the world.
-     * Checks if there was a stored custom fluid ID in waterlogging storage at this position,
-     * which happens when a waterlogged block is broken and releases the fluid.
      */
     @Override
     public void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, 
@@ -106,8 +103,6 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
         if (level.isClientSide) {
             return;
         }
-        
-        // Waterlogging is now handled by GlitchCore library
         
         // Schedule tick updates for neighboring flowing fluids
         // This ensures they re-evaluate their sources when a new source is placed

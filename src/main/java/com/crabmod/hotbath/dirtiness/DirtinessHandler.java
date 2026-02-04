@@ -264,7 +264,6 @@ public class DirtinessHandler {
      * This includes:
      * - Built-in hot bath fluids (hot water, honey bath, milk bath, herbal bath, peony bath, rose bath)
      * - Custom fluids from data packs (DynamicCustomFluid)
-     * - Waterlogged blocks containing stored hotbath fluids
      */
     private static boolean isInHotBathFluid(ServerPlayer player) {
         // Check the block at player's feet position
