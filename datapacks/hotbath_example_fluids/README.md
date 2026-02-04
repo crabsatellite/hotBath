@@ -54,6 +54,8 @@ This works automatically for any custom fluid defined in data packs.
 | `hotbath:slime_bath`     | Slime Green  | Slime Ball    | Jump Boost III, Slow Falling   |
 | `hotbath:blazing_bath`   | Blaze Orange | Blaze Powder  | Fire Resistance, Strength II   |
 | `hotbath:ender_bath`     | Ender Purple | Ender Pearl   | Invisibility, Speed III        |
+| `hotbath:milk_tea`       | Creamy Brown | -             | Saturation, Speed              |
+| `hotbath:silent_spring`  | Dark Gray    | -             | Invisibility, Night Vision     |
 
 ## Structure
 
@@ -69,7 +71,9 @@ hotbath_example_fluids/
 │               ├── enchanted_bath.json
 │               ├── slime_bath.json
 │               ├── blazing_bath.json
-│               └── ender_bath.json
+│               ├── ender_bath.json
+│               ├── milk_tea.json
+│               └── silent_spring.json
 └── assets/
     └── hotbath/
         └── lang/                  # Translations
