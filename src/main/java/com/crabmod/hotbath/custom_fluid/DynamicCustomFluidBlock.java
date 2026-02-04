@@ -120,7 +120,6 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
             // Schedule tick for all non-source fluids
             if (!neighborFluid.isEmpty() && !neighborFluid.isSource()) {
                 level.scheduleTick(neighborPos, neighborFluid.getType(), 1);
-                LOGGER.debug("Scheduled fluid tick for neighbor at {} (direction: {})", neighborPos, direction);
             }
         }
     }

@@ -15,8 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayDeque;
 import java.util.HashSet;
@@ -30,7 +28,6 @@ import java.util.Set;
  */
 public class CustomFluidBlockEntity extends BlockEntity {
     
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomFluidBlockEntity.class);
     private static final String TAG_FLUID_ID = "FluidId";
     
     @Nullable
@@ -77,8 +74,6 @@ public class CustomFluidBlockEntity extends BlockEntity {
             // Schedule tick for all non-source fluids
             if (!neighborFluid.isEmpty() && !neighborFluid.isSource()) {
                 level.scheduleTick(neighborPos, neighborFluid.getType(), 1);
-                LOGGER.debug("Scheduled fluid tick for neighbor at {} due to fluidId change at {}", 
-                        neighborPos, worldPosition);
             }
         }
     }
@@ -225,6 +220,22 @@ public class CustomFluidBlockEntity extends BlockEntity {
         }
     }
     
+    /**
+     * Called when the BlockEntity is fully loaded into the world.
+     * This ensures light emission is properly updated after world load,
+     * fixing the issue where custom fluids with luminosity > 0 would lose their light
+     * after quitting and rejoining the game (single player).
+     */
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        scheduleLightUpdate();
+        // Also mark the block for update on server side
+        if (level != null && !level.isClientSide && fluidId != null) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+    }
+    
     @Override
     public @NotNull CompoundTag getUpdateTag() {
         CompoundTag tag = super.getUpdateTag();
@@ -232,6 +243,33 @@ public class CustomFluidBlockEntity extends BlockEntity {
             tag.putString(TAG_FLUID_ID, fluidId.toString());
         }
         return tag;
+    }
+    
+    /**
+     * Called on the client when receiving the initial sync data from the server.
+     * This is called when a chunk is loaded or when a player joins the server.
+     */
+    @Override
+    public void handleUpdateTag(@NotNull CompoundTag tag) {
+        super.handleUpdateTag(tag);
+        // After loading the tag, schedule a light update
+        // This fixes the issue where custom fluids with luminosity > 0 would lose their light
+        // after rejoining a server
+        scheduleLightUpdate();
+    }
+    
+    /**
+     * Schedules a light update for this block position.
+     * Called after fluid data is loaded/synced to ensure proper light emission.
+     */
+    private void scheduleLightUpdate() {
+        if (level != null && fluidId != null) {
+            Optional<CustomFluidDefinition> defOpt = getFluidDefinition();
+            if (defOpt.isPresent() && defOpt.get().luminosity() > 2) {
+                // Trigger light engine to recompute light at this position
+                level.getLightEngine().checkBlock(worldPosition);
+            }
+        }
     }
     
     @Nullable
@@ -248,13 +286,15 @@ public class CustomFluidBlockEntity extends BlockEntity {
             load(tag);
         }
         
-        // If fluid ID changed, trigger re-render
+        // If fluid ID changed, trigger re-render and light update
         if (level != null && level.isClientSide) {
             boolean fluidChanged = (oldFluidId == null && fluidId != null) 
                     || (oldFluidId != null && !oldFluidId.equals(fluidId));
             if (fluidChanged) {
                 // Force chunk re-render for fluid color update
                 level.setBlocksDirty(worldPosition, Blocks.AIR.defaultBlockState(), getBlockState());
+                // Also update light level
+                scheduleLightUpdate();
             }
         }
     }
