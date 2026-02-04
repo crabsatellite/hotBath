@@ -14,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -83,11 +84,18 @@ public class AlexsCavesEventHandler {
         
         // Check if gummy bear is in hot bath fluid
         BlockPos pos = gummyBear.blockPosition();
-        BlockState state = gummyBear.level().getBlockState(pos);
+        Level level = gummyBear.level();
+        BlockState state = level.getBlockState(pos);
         
-        if (state.getBlock() instanceof AbstractHotbathBlock) {
-            // Hot water melts candy! Deal 0.5 damage per second
-            gummyBear.hurt(gummyBear.level().damageSources().magic(), 0.5F);
+        if (state.getBlock() instanceof AbstractHotbathBlock hotbathBlock) {
+            // Only damage if the fluid is actually hot (temperature >= 35°C)
+            // This allows cool custom fluids (non-hot springs/medicine baths) to be safe
+            // For DynamicCustomFluidBlock, this will check the BlockEntity's fluid temperature
+            // For other hotbath blocks, this will return true (all built-in baths are hot)
+            if (hotbathBlock.isHotBath(level, pos)) {
+                // Hot water melts candy! Deal 0.5 damage per second
+                gummyBear.hurt(level.damageSources().magic(), 0.5F);
+            }
         }
     }
     

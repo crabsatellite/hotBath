@@ -160,7 +160,7 @@ public class CustomFluidBlockEntity extends BlockEntity {
     }
     
     /**
-     * Checks if the stored fluid is hot (temperature >= threshold).
+     * Checks if the stored fluid is hot (temperature >= 35°C threshold).
      */
     public boolean isHot() {
         return getFluidDefinition()

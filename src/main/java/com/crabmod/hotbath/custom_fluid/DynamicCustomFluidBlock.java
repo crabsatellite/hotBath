@@ -24,8 +24,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +43,6 @@ import java.util.function.Supplier;
  */
 public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements EntityBlock, IInsideAreaTracker {
     
-    private static final Logger LOGGER = LoggerFactory.getLogger(DynamicCustomFluidBlock.class);
     private static final int TICKS_PER_SECOND = 20;
 
     public DynamicCustomFluidBlock(Supplier<? extends FlowingFluid> fluidSupplier, Properties properties) {
@@ -61,20 +58,22 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
     /**
      * Checks if this custom fluid at the given position is considered "hot".
      * Looks up the BlockEntity to get the fluid definition and checks its temperature.
-     * Only hot fluids (temperature >= 35°C) cause damage to ice mobs.
+     * Only hot fluids (temperature >= 35°C) cause damage to ice mobs and gummy bears.
      * 
      * @param level The level
      * @param pos The position of the fluid block
-     * @return true if the fluid at this position is hot
+     * @return true if the fluid at this position is hot (temperature >= 35°C)
      */
     @Override
-    protected boolean isHotBath(Level level, BlockPos pos) {
+    public boolean isHotBath(Level level, BlockPos pos) {
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof CustomFluidBlockEntity customBe) {
-            // Use isHot() which correctly defaults to false if no definition found
+            // Check if the fluid definition exists and has hot temperature
             return customBe.isHot();
         }
-        return false; // Default to cold if BlockEntity not found
+        // BlockEntity not found - this can happen for flowing fluid blocks that haven't synced yet
+        // Default to cold (safe) to avoid unintended damage
+        return false;
     }
     
     /**

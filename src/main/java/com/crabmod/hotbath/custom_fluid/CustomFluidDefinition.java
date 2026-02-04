@@ -184,10 +184,11 @@ public record CustomFluidDefinition(
     }
 
     /**
-     * Whether this fluid should be considered "hot" (temperature >= 30°C).
+     * Whether this fluid should be considered "hot" (temperature >= 35°C).
+     * Hot fluids cause damage to ice mobs and GummyBear from Alex's Caves.
      */
     public boolean isHot() {
-        return temperature >= 30.0f;
+        return temperature >= 35.0f;
     }
 
     /**

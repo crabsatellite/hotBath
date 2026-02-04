@@ -75,7 +75,7 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
      * @param pos The position of the fluid block
      * @return true if this is a hot bath at this position
      */
-    protected boolean isHotBath(Level level, BlockPos pos) {
+    public boolean isHotBath(Level level, BlockPos pos) {
         return isHotBath(); // Default to the simple check
     }
 
