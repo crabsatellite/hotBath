@@ -89,108 +89,75 @@ public class CustomFluidClientEvents {
         event.registerEntityRenderer(EntityRegister.THROWN_CUSTOM_FLUID_BOTTLE.get(), ThrownItemRenderer::new);
     }
     
-    /**
-     * Flag indicating that light updates are pending.
-     * This is set when updateAllCustomFluidLights() is called but the level is not ready.
-     * The LightUpdateHandler will check this flag on each client tick.
-     */
+    // Light update scheduling state
     private static volatile boolean pendingLightUpdate = false;
     private static int pendingTickDelay = 0;
-    private static final int LIGHT_UPDATE_DELAY_TICKS = 20; // Wait 1 second after level is ready
     
     /**
-     * Requests an update of light emission for all loaded custom fluid blocks.
-     * The actual update will be performed after the level is fully loaded.
-     * This fixes the issue where custom fluids with luminosity > 0 would lose their light
-     * after quitting and rejoining the game.
+     * Schedules light updates for all custom fluid blocks after registry sync.
      */
     public static void updateAllCustomFluidLights() {
         pendingLightUpdate = true;
-        pendingTickDelay = LIGHT_UPDATE_DELAY_TICKS;
-        HotBath.LOGGER.debug("Scheduled custom fluid light update");
+        pendingTickDelay = 20; // 1 second delay
     }
     
     /**
-     * Actually performs the light update for all custom fluid blocks.
-     * Called from the tick handler when the level is ready.
+     * Performs the actual light update for all loaded custom fluid blocks.
      */
-    static void performLightUpdate() {
+    private static void performLightUpdate() {
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
         Player player = minecraft.player;
         
         if (level == null || player == null) {
-            return; // Still not ready, will retry on next tick
+            return;
         }
         
         pendingLightUpdate = false;
-        pendingTickDelay = 0;
-        
         int updatedCount = 0;
-        
-        // Get render distance to determine how many chunks to check
         int renderDistance = minecraft.options.renderDistance().get();
         ChunkPos playerChunkPos = new ChunkPos(player.blockPosition());
         
-        // Iterate through chunks within render distance
         for (int dx = -renderDistance; dx <= renderDistance; dx++) {
             for (int dz = -renderDistance; dz <= renderDistance; dz++) {
-                int chunkX = playerChunkPos.x + dx;
-                int chunkZ = playerChunkPos.z + dz;
+                LevelChunk chunk = level.getChunkSource().getChunkNow(playerChunkPos.x + dx, playerChunkPos.z + dz);
+                if (chunk == null) continue;
                 
-                LevelChunk chunk = level.getChunkSource().getChunkNow(chunkX, chunkZ);
-                if (chunk == null) {
-                    continue;
-                }
-                
-                Map<BlockPos, BlockEntity> blockEntities = chunk.getBlockEntities();
-                for (Map.Entry<BlockPos, BlockEntity> entry : blockEntities.entrySet()) {
-                    if (entry.getValue() instanceof CustomFluidBlockEntity customBe) {
-                        // Update light for all custom fluid blocks that have a fluid ID
-                        // We don't check luminosity here because the registry is now populated
-                        // and getLightEmission() will return the correct value
-                        if (customBe.getFluidId() != null) {
-                            level.getLightEngine().checkBlock(entry.getKey());
-                            updatedCount++;
-                        }
+                for (Map.Entry<BlockPos, BlockEntity> entry : chunk.getBlockEntities().entrySet()) {
+                    if (entry.getValue() instanceof CustomFluidBlockEntity customBe && customBe.getFluidId() != null) {
+                        level.getLightEngine().checkBlock(entry.getKey());
+                        updatedCount++;
                     }
                 }
             }
         }
         
         if (updatedCount > 0) {
-            HotBath.LOGGER.debug("Updated light for {} custom fluid blocks after sync", updatedCount);
+            HotBath.LOGGER.debug("Updated light for {} custom fluid blocks", updatedCount);
         }
     }
     
     /**
-     * Client tick event handler for processing pending light updates.
-     * This is in a separate inner class registered to the FORGE event bus.
+     * Client tick handler for processing pending light updates.
      */
     @Mod.EventBusSubscriber(modid = HotBath.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
     public static class LightUpdateHandler {
         @SubscribeEvent
         public static void onClientTick(TickEvent.ClientTickEvent event) {
-            if (event.phase != TickEvent.Phase.END) {
-                return;
-            }
-            
-            if (!pendingLightUpdate) {
+            if (event.phase != TickEvent.Phase.END || !pendingLightUpdate) {
                 return;
             }
             
             Minecraft minecraft = Minecraft.getInstance();
             if (minecraft.level == null || minecraft.player == null) {
-                return; // Level not ready yet, keep waiting
+                return;
             }
             
-            // Countdown the delay to give chunks time to fully load
             if (pendingTickDelay > 0) {
                 pendingTickDelay--;
                 return;
             }
             
-            // Level is ready and delay has passed, perform the update
             performLightUpdate();
         }
     }
