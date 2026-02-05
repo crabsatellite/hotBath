@@ -106,6 +106,11 @@ public class CustomFluidNetworking {
                 }
                 
                 HotBath.LOGGER.info("Client registered {} custom fluids from server", successCount);
+                
+                // After registering all fluids, update light for all loaded custom fluid blocks
+                // This fixes the issue where fluids with luminosity > 0 would lose their light
+                // after quitting and rejoining the game
+                CustomFluidClientEvents.updateAllCustomFluidLights();
             });
             ctx.get().setPacketHandled(true);
         }

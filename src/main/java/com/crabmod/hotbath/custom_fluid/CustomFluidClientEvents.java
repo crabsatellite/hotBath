@@ -1,13 +1,23 @@
 package com.crabmod.hotbath.custom_fluid;
 
 import com.crabmod.hotbath.HotBath;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import com.crabmod.hotbath.registers.EntityRegister;
+
+import java.util.Map;
 
 /**
  * Client-side event handlers for custom fluid rendering.
@@ -77,5 +87,111 @@ public class CustomFluidClientEvents {
     @SubscribeEvent
     public static void onRegisterEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EntityRegister.THROWN_CUSTOM_FLUID_BOTTLE.get(), ThrownItemRenderer::new);
+    }
+    
+    /**
+     * Flag indicating that light updates are pending.
+     * This is set when updateAllCustomFluidLights() is called but the level is not ready.
+     * The LightUpdateHandler will check this flag on each client tick.
+     */
+    private static volatile boolean pendingLightUpdate = false;
+    private static int pendingTickDelay = 0;
+    private static final int LIGHT_UPDATE_DELAY_TICKS = 20; // Wait 1 second after level is ready
+    
+    /**
+     * Requests an update of light emission for all loaded custom fluid blocks.
+     * The actual update will be performed after the level is fully loaded.
+     * This fixes the issue where custom fluids with luminosity > 0 would lose their light
+     * after quitting and rejoining the game.
+     */
+    public static void updateAllCustomFluidLights() {
+        pendingLightUpdate = true;
+        pendingTickDelay = LIGHT_UPDATE_DELAY_TICKS;
+        HotBath.LOGGER.debug("Scheduled custom fluid light update");
+    }
+    
+    /**
+     * Actually performs the light update for all custom fluid blocks.
+     * Called from the tick handler when the level is ready.
+     */
+    static void performLightUpdate() {
+        Minecraft minecraft = Minecraft.getInstance();
+        ClientLevel level = minecraft.level;
+        Player player = minecraft.player;
+        
+        if (level == null || player == null) {
+            return; // Still not ready, will retry on next tick
+        }
+        
+        pendingLightUpdate = false;
+        pendingTickDelay = 0;
+        
+        int updatedCount = 0;
+        
+        // Get render distance to determine how many chunks to check
+        int renderDistance = minecraft.options.renderDistance().get();
+        ChunkPos playerChunkPos = new ChunkPos(player.blockPosition());
+        
+        // Iterate through chunks within render distance
+        for (int dx = -renderDistance; dx <= renderDistance; dx++) {
+            for (int dz = -renderDistance; dz <= renderDistance; dz++) {
+                int chunkX = playerChunkPos.x + dx;
+                int chunkZ = playerChunkPos.z + dz;
+                
+                LevelChunk chunk = level.getChunkSource().getChunkNow(chunkX, chunkZ);
+                if (chunk == null) {
+                    continue;
+                }
+                
+                Map<BlockPos, BlockEntity> blockEntities = chunk.getBlockEntities();
+                for (Map.Entry<BlockPos, BlockEntity> entry : blockEntities.entrySet()) {
+                    if (entry.getValue() instanceof CustomFluidBlockEntity customBe) {
+                        // Update light for all custom fluid blocks that have a fluid ID
+                        // We don't check luminosity here because the registry is now populated
+                        // and getLightEmission() will return the correct value
+                        if (customBe.getFluidId() != null) {
+                            level.getLightEngine().checkBlock(entry.getKey());
+                            updatedCount++;
+                        }
+                    }
+                }
+            }
+        }
+        
+        if (updatedCount > 0) {
+            HotBath.LOGGER.debug("Updated light for {} custom fluid blocks after sync", updatedCount);
+        }
+    }
+    
+    /**
+     * Client tick event handler for processing pending light updates.
+     * This is in a separate inner class registered to the FORGE event bus.
+     */
+    @Mod.EventBusSubscriber(modid = HotBath.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+    public static class LightUpdateHandler {
+        @SubscribeEvent
+        public static void onClientTick(TickEvent.ClientTickEvent event) {
+            if (event.phase != TickEvent.Phase.END) {
+                return;
+            }
+            
+            if (!pendingLightUpdate) {
+                return;
+            }
+            
+            Minecraft minecraft = Minecraft.getInstance();
+            if (minecraft.level == null || minecraft.player == null) {
+                return; // Level not ready yet, keep waiting
+            }
+            
+            // Countdown the delay to give chunks time to fully load
+            if (pendingTickDelay > 0) {
+                pendingTickDelay--;
+                return;
+            }
+            
+            // Level is ready and delay has passed, perform the update
+            performLightUpdate();
+        }
     }
 }

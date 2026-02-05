@@ -2,6 +2,7 @@ package com.crabmod.hotbath.client;
 
 import com.crabmod.hotbath.HotBath;
 import com.crabmod.hotbath.client.particle.CustomDripParticle;
+import com.crabmod.hotbath.client.particle.FlyParticle;
 import com.crabmod.hotbath.client.particle.HotBathBubbleParticle;
 import com.crabmod.hotbath.custom_fluid.CustomFluidDefinition;
 import com.crabmod.hotbath.custom_fluid.CustomFluidItems;

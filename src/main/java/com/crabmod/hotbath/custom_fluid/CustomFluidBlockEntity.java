@@ -261,14 +261,19 @@ public class CustomFluidBlockEntity extends BlockEntity {
     /**
      * Schedules a light update for this block position.
      * Called after fluid data is loaded/synced to ensure proper light emission.
+     * 
+     * We always trigger the light update if fluidId is present, because:
+     * 1. The CustomFluidRegistry might not be populated yet when this is called during world load
+     * 2. The light engine will call getLightEmission() which will return the correct value
+     *    once the registry is populated
+     * 3. This fixes the issue where custom fluids with luminosity > 0 would lose their light
+     *    after quitting and rejoining the game (single player)
      */
     private void scheduleLightUpdate() {
         if (level != null && fluidId != null) {
-            Optional<CustomFluidDefinition> defOpt = getFluidDefinition();
-            if (defOpt.isPresent() && defOpt.get().luminosity() > 2) {
-                // Trigger light engine to recompute light at this position
-                level.getLightEngine().checkBlock(worldPosition);
-            }
+            // Always trigger light engine to recompute light at this position
+            // The getLightEmission() in DynamicCustomFluidBlock will be called during the update
+            level.getLightEngine().checkBlock(worldPosition);
         }
     }
     
