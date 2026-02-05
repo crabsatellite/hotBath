@@ -164,7 +164,7 @@
   "hotbath.entry.bath_herb.obtain": "$(li)Buy from $(thing)Novice Farmer Villagers$() for 10 emeralds$(li)Buy from $(thing)Wandering Traders$() for 15 emeralds$(br2)Stock up when you find them!",
 
   "hotbath.entry.tips.name": "Tips & Notes",
-  "hotbath.entry.tips.page1": "$(l)Important Notes:$()$(br2)$(li)$(thing)Aquatic Life$(): Aquatic creatures won't spawn naturally in bath fluids, and fish (except tropical fish) and squids take damage in bath fluids.$(li)$(thing)Placement Restrictions$(): Surface plants, lily pads, seagrass, and turtle eggs cannot be placed in bath fluids. Coral plants will become dead coral shortly after being placed.$(li)$(thing)Fishing$(): Fishing in bath fluids will not catch anything.",
+  "hotbath.entry.tips.page1": "When using bath fluids, please note:$(br)$(li)$(thing)Aquatic Life$(): Aquatic creatures won't spawn naturally in bath fluids, and fish (except tropical fish) and squids take damage in bath fluids.$(li)$(thing)Placement Restrictions$(): Surface plants, lily pads, seagrass, and turtle eggs cannot be placed in bath fluids. Coral plants will become dead coral shortly after being placed.$(li)$(thing)Fishing$(): Fishing in bath fluids will not catch anything.",
   "hotbath.entry.tips.interactions.title": "Fluid Interactions",
   "hotbath.entry.tips.interactions": "$(li)$(thing)Bubble Columns$(): Soul Sand creates upward bubbles, Magma Blocks create downward bubbles$(li)$(thing)Custom Particles$(): Bubbles and drip particles match the fluid color",
 
