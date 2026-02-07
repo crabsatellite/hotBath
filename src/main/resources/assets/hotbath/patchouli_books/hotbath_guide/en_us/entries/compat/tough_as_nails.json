@@ -7,13 +7,13 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "flag": "hotbath:toughasnails_disabled",
-      "title": "hotbath.compat.disabled.title",
-      "text": "hotbath.compat.disabled.tough_as_nails"
+      "text": "hotbath.entry.tough_as_nails.page1"
     },
     {
       "type": "patchouli:text",
-      "text": "hotbath.entry.tough_as_nails.page1"
+      "flag": "hotbath:toughasnails_disabled",
+      "title": "hotbath.compat.disabled.title",
+      "text": "hotbath.compat.disabled.tough_as_nails"
     },
     {
       "type": "patchouli:text",

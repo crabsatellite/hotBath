@@ -8,7 +8,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "title": "hotbath.compat.not_installed.title",
+      "title": "hotbath.entry.alexs_mobs.name",
       "text": "hotbath.compat.not_installed.alexs_mobs"
     }
   ]
