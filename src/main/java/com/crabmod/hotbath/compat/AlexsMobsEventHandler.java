@@ -75,6 +75,7 @@ public class AlexsMobsEventHandler {
     
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
+        CompatManager.safeEventCall("alexsmobs", "onPlayerTick", () -> {
         // Only process on server side
         if (event.getEntity().level().isClientSide()) return;
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
@@ -103,6 +104,7 @@ public class AlexsMobsEventHandler {
         if (dirtiness >= 0.8f) {
             makeCockroachesLoiter(player, dirtiness);
         }
+        });
     }
     
     /**
@@ -212,6 +214,7 @@ public class AlexsMobsEventHandler {
      */
     @SubscribeEvent
     public static void onEntityTick(EntityTickEvent.Post event) {
+        CompatManager.safeEventCall("alexsmobs", "onEntityTick", () -> {
         // Only process capuchin monkeys on server side
         if (event.getEntity().level().isClientSide()) return;
         if (!(event.getEntity() instanceof EntityCapuchinMonkey monkey)) return;
@@ -264,6 +267,7 @@ public class AlexsMobsEventHandler {
                 attractToHotSpring(monkey);
             }
         }
+        });
     }
     
     /**

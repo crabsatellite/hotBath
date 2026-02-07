@@ -55,26 +55,23 @@ public class AlexsCavesEventHandler {
      */
     @SubscribeEvent
     public static void onGummyBearTick(EntityTickEvent.Post event) {
-        if (event.getEntity().level().isClientSide()) return;
-        if (!(event.getEntity() instanceof GummyBearEntity gummyBear)) return;
-        
-        // Only check every second for performance
-        if (gummyBear.tickCount % GUMMY_DAMAGE_INTERVAL != 0) return;
-        
-        // Check if gummy bear is in hot bath fluid
-        BlockPos pos = gummyBear.blockPosition();
-        BlockState state = gummyBear.level().getBlockState(pos);
-        
-        if (state.getBlock() instanceof AbstractHotbathBlock hotbathBlock) {
-            // Only damage if the fluid is actually hot (temperature >= 35°C)
-            // This allows cool custom fluids (non-hot springs/medicine baths) to be safe
-            // For DynamicCustomFluidBlock, this will check the BlockEntity's fluid temperature
-            // For other hotbath blocks, this will return true (all built-in baths are hot)
-            if (hotbathBlock.isHotBath(gummyBear.level(), pos)) {
-                // Hot water melts candy! Deal 0.5 damage per second
-                gummyBear.hurt(gummyBear.level().damageSources().magic(), 0.5F);
+        CompatManager.safeEventCall("alexscaves", "onGummyBearTick", () -> {
+            if (event.getEntity().level().isClientSide()) return;
+            if (!(event.getEntity() instanceof GummyBearEntity gummyBear)) return;
+            
+            // Only check every second for performance
+            if (gummyBear.tickCount % GUMMY_DAMAGE_INTERVAL != 0) return;
+            
+            // Check if gummy bear is in hot bath fluid
+            BlockPos pos = gummyBear.blockPosition();
+            BlockState state = gummyBear.level().getBlockState(pos);
+            
+            if (state.getBlock() instanceof AbstractHotbathBlock hotbathBlock) {
+                if (hotbathBlock.isHotBath(gummyBear.level(), pos)) {
+                    gummyBear.hurt(gummyBear.level().damageSources().magic(), 0.5F);
+                }
             }
-        }
+        });
     }
     
     // ==================== Radiation Cure in Herbal Bath ====================
@@ -85,40 +82,36 @@ public class AlexsCavesEventHandler {
      */
     @SubscribeEvent
     public static void onLivingEntityTick(EntityTickEvent.Post event) {
-        if (event.getEntity().level().isClientSide()) return;
-        if (!(event.getEntity() instanceof LivingEntity living)) return;
-        
-        // Only check every 5 seconds for performance
-        if (living.tickCount % RADIATION_CURE_INTERVAL != 0) return;
-        
-        // Check if entity has IRRADIATED effect
-        MobEffectInstance radiation = living.getEffect(ACEffectRegistry.IRRADIATED);
-        if (radiation == null) return;
-        
-        // Check if entity is in herbal bath
-        BlockPos pos = living.blockPosition();
-        BlockState state = living.level().getBlockState(pos);
-        
-        if (state.getBlock() instanceof HerbalBathBlock) {
-            int currentLevel = radiation.getAmplifier();
-            int duration = radiation.getDuration();
+        CompatManager.safeEventCall("alexscaves", "onLivingEntityTick", () -> {
+            if (event.getEntity().level().isClientSide()) return;
+            if (!(event.getEntity() instanceof LivingEntity living)) return;
             
-            // Remove current effect
-            living.removeEffect(ACEffectRegistry.IRRADIATED);
+            if (living.tickCount % RADIATION_CURE_INTERVAL != 0) return;
             
-            // If level > 0, apply reduced level effect
-            if (currentLevel > 0) {
-                living.addEffect(new MobEffectInstance(
-                        ACEffectRegistry.IRRADIATED,
-                        duration,
-                        currentLevel - 1,
-                        false,
-                        true,
-                        true
-                ));
+            MobEffectInstance radiation = living.getEffect(ACEffectRegistry.IRRADIATED);
+            if (radiation == null) return;
+            
+            BlockPos pos = living.blockPosition();
+            BlockState state = living.level().getBlockState(pos);
+            
+            if (state.getBlock() instanceof HerbalBathBlock) {
+                int currentLevel = radiation.getAmplifier();
+                int duration = radiation.getDuration();
+                
+                living.removeEffect(ACEffectRegistry.IRRADIATED);
+                
+                if (currentLevel > 0) {
+                    living.addEffect(new MobEffectInstance(
+                            ACEffectRegistry.IRRADIATED,
+                            duration,
+                            currentLevel - 1,
+                            false,
+                            true,
+                            true
+                    ));
+                }
             }
-            // If level was 0, effect is fully removed (already done above)
-        }
+        });
     }
     
     // ==================== Gammaroach Attraction to Dirty Players ====================
@@ -129,6 +122,7 @@ public class AlexsCavesEventHandler {
      */
     @SubscribeEvent
     public static void onPlayerTickForGammaroach(PlayerTickEvent.Post event) {
+        CompatManager.safeEventCall("alexscaves", "onPlayerTickForGammaroach", () -> {
         if (event.getEntity().level().isClientSide()) return;
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         
@@ -190,6 +184,7 @@ public class AlexsCavesEventHandler {
                 }
             }
         }
+        });
     }
     
     // ==================== Raycat Hot Spring Sitting ====================
@@ -200,19 +195,18 @@ public class AlexsCavesEventHandler {
      */
     @SubscribeEvent
     public static void onRaycatTick(EntityTickEvent.Post event) {
-        if (event.getEntity().level().isClientSide()) return;
-        if (!(event.getEntity() instanceof RaycatEntity raycat)) return;
-        
-        // Create adapter for Raycat (same interface as vanilla Cat)
-        HotSpringCatBehavior.SittableEntity adapter = createRaycatAdapter(raycat);
-        
-        // Process sitting behavior using shared logic
-        boolean isSitting = HotSpringCatBehavior.processCatTick(raycat, adapter);
-        
-        // If not sitting, try to attract to hot spring
-        if (!isSitting) {
-            HotSpringCatBehavior.attractToHotSpring(raycat, adapter);
-        }
+        CompatManager.safeEventCall("alexscaves", "onRaycatTick", () -> {
+            if (event.getEntity().level().isClientSide()) return;
+            if (!(event.getEntity() instanceof RaycatEntity raycat)) return;
+            
+            HotSpringCatBehavior.SittableEntity adapter = createRaycatAdapter(raycat);
+            
+            boolean isSitting = HotSpringCatBehavior.processCatTick(raycat, adapter);
+            
+            if (!isSitting) {
+                HotSpringCatBehavior.attractToHotSpring(raycat, adapter);
+            }
+        });
     }
     
     /**

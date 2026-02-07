@@ -45,47 +45,47 @@ public class BathWaterBottleColdSweatModifier extends TempModifier {
 
     @Override
     protected Function<Double, Double> calculate(LivingEntity entity, Temperature.Trait trait) {
-        // We only modify the WORLD temperature trait
-        if (trait != Temperature.Trait.WORLD) {
-            return temp -> temp;
-        }
-
-        // Only apply to players
-        if (!(entity instanceof Player player)) {
-            return temp -> temp;
-        }
-
-        UUID playerUUID = player.getUUID();
-        Long expireTime = WARM_PLAYERS.get(playerUUID);
-        
-        if (expireTime != null) {
-            long currentTime = System.currentTimeMillis();
-            
-            // Check if effect has expired
-            if (currentTime > expireTime) {
-                WARM_PLAYERS.remove(playerUUID);
-                return temp -> temp;
+        return CompatManager.safeEventCall("cold_sweat", "BathWaterBottleColdSweatModifier.calculate", () -> {
+            // We only modify the WORLD temperature trait
+            if (trait != Temperature.Trait.WORLD) {
+                return (Function<Double, Double>) (temp -> temp);
             }
-            
-            // Effect is still active
-            Level level = entity.level();
-            BlockPos pos = entity.blockPosition();
-            
-            // Calculate target temperature in Minecraft units
-            double targetTempMC = Temperature.convert(TARGET_TEMP_C, Temperature.Units.C, Temperature.Units.MC, true);
-            
-            // Get the current world temperature
-            double worldTempMC = WorldHelper.getBiomeTemperature(level, level.getBiome(pos));
-            
-            // Only apply if target temperature is higher than world temperature
-            // If the environment is already warmer, no effect
-            if (targetTempMC > worldTempMC) {
-                // Return a function that returns the target temperature
-                return temp -> Math.max(temp, targetTempMC);
+
+            // Only apply to players
+            if (!(entity instanceof Player player)) {
+                return (Function<Double, Double>) (temp -> temp);
             }
-        }
-        
-        // No active effect or environment is warmer
-        return temp -> temp;
+
+            UUID playerUUID = player.getUUID();
+            Long expireTime = WARM_PLAYERS.get(playerUUID);
+
+            if (expireTime != null) {
+                long currentTime = System.currentTimeMillis();
+
+                // Check if effect has expired
+                if (currentTime > expireTime) {
+                    WARM_PLAYERS.remove(playerUUID);
+                    return (Function<Double, Double>) (temp -> temp);
+                }
+
+                // Effect is still active
+                Level level = entity.level();
+                BlockPos pos = entity.blockPosition();
+
+                // Calculate target temperature in Minecraft units
+                double targetTempMC = Temperature.convert(TARGET_TEMP_C, Temperature.Units.C, Temperature.Units.MC, true);
+
+                // Get the current world temperature
+                double worldTempMC = WorldHelper.getBiomeTemperature(level, level.getBiome(pos));
+
+                // Only apply if target temperature is higher than world temperature
+                if (targetTempMC > worldTempMC) {
+                    return (Function<Double, Double>) (temp -> Math.max(temp, targetTempMC));
+                }
+            }
+
+            // No active effect or environment is warmer
+            return (Function<Double, Double>) (temp -> temp);
+        }, temp -> temp);
     }
 }

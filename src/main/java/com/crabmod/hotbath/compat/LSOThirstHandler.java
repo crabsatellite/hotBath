@@ -17,27 +17,29 @@ public class LSOThirstHandler {
 
     @SubscribeEvent
     public static void onItemFinishUse(LivingEntityUseItemEvent.Finish event) {
-        // Only process on server side
-        if (event.getEntity().level().isClientSide()) {
-            return;
-        }
-
-        // Only process for players
-        if (!(event.getEntity() instanceof Player player)) {
-            return;
-        }
-
-        ItemStack stack = event.getItem();
-        // Handle built-in bath water bottles (use default thirst)
-        if (stack.getItem() instanceof BathWaterBottleItem) {
-            LSOApiHelper.addThirst(player);
-        }
-        // Handle custom fluid bottles (use definition's thirst value)
-        else if (stack.getItem() instanceof CustomFluidBottleItem) {
-            CustomFluidDefinition definition = CustomFluidDataComponents.getFluidDefinition(stack);
-            if (definition != null && definition.thirst() > 0) {
-                LSOApiHelper.addThirst(player, definition.thirst());
+        CompatManager.safeEventCall("legendarysurvivaloverhaul", "onItemFinishUse", () -> {
+            // Only process on server side
+            if (event.getEntity().level().isClientSide()) {
+                return;
             }
-        }
+
+            // Only process for players
+            if (!(event.getEntity() instanceof Player player)) {
+                return;
+            }
+
+            ItemStack stack = event.getItem();
+            // Handle built-in bath water bottles (use default thirst)
+            if (stack.getItem() instanceof BathWaterBottleItem) {
+                LSOApiHelper.addThirst(player);
+            }
+            // Handle custom fluid bottles (use definition's thirst value)
+            else if (stack.getItem() instanceof CustomFluidBottleItem) {
+                CustomFluidDefinition definition = CustomFluidDataComponents.getFluidDefinition(stack);
+                if (definition != null && definition.thirst() > 0) {
+                    LSOApiHelper.addThirst(player, definition.thirst());
+                }
+            }
+        });
     }
 }

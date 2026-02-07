@@ -37,18 +37,18 @@ public class SereneSeasonsEventHandler {
     
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
-        if (event.getEntity().level().isClientSide()) return;
-        if (!(event.getEntity() instanceof ServerPlayer player)) return;
-        
-        // Check if player is in a HOT bath block (temperature >= 35°C for custom fluids)
-        boolean isInBath = CustomFluidHandler.isPlayerInHotBath(player);
-        
-        if (isInBath) {
-            // Apply winter resistance buff every 2 seconds while in hot bath
-            if (player.tickCount % BUFF_APPLY_INTERVAL == 0) {
-                applyWinterBuff(player);
+        CompatManager.safeEventCall("sereneseasons", "onPlayerTick", () -> {
+            if (event.getEntity().level().isClientSide()) return;
+            if (!(event.getEntity() instanceof ServerPlayer player)) return;
+            
+            boolean isInBath = CustomFluidHandler.isPlayerInHotBath(player);
+            
+            if (isInBath) {
+                if (player.tickCount % BUFF_APPLY_INTERVAL == 0) {
+                    applyWinterBuff(player);
+                }
             }
-        }
+        });
     }
     
     /**

@@ -11,9 +11,12 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 import org.slf4j.Logger;
 
+import net.neoforged.neoforge.common.NeoForge;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -51,15 +54,17 @@ public class CompatManager {
         public final String displayName;
         public final BooleanSupplier isLoaded;
         public final Runnable initializer;
+        public final String[] requiredApiClasses;
         public volatile boolean initialized = false;
         public volatile boolean enabled = true;
         public volatile String modVersion = "unknown";
         
-        public CompatInfo(String modId, String displayName, BooleanSupplier isLoaded, Runnable initializer) {
+        public CompatInfo(String modId, String displayName, BooleanSupplier isLoaded, Runnable initializer, String... requiredApiClasses) {
             this.modId = modId;
             this.displayName = displayName;
             this.isLoaded = isLoaded;
             this.initializer = initializer;
+            this.requiredApiClasses = requiredApiClasses;
         }
     }
     
@@ -100,10 +105,139 @@ public class CompatManager {
     }
     
     /**
-     * Register a compat module for safe initialization
+     * Register a compat module for safe initialization.
      */
     public static void registerCompat(String modId, String displayName, BooleanSupplier isLoaded, Runnable initializer) {
         REGISTERED_COMPATS.put(modId, new CompatInfo(modId, displayName, isLoaded, initializer));
+    }
+    
+    /**
+     * Register a compat module with required API class verification.
+     * The requiredApiClasses will be checked via Class.forName() BEFORE the initializer runs.
+     * If any class is missing, the compat will be disabled with a detailed diagnostic.
+     * 
+     * @param modId The mod ID
+     * @param displayName Display name for logging
+     * @param isLoaded Check if the mod is loaded
+     * @param initializer The initialization logic
+     * @param requiredApiClasses Fully qualified class names to verify before init (e.g. "com.example.api.SomeClass")
+     */
+    public static void registerCompat(String modId, String displayName, BooleanSupplier isLoaded, Runnable initializer, String... requiredApiClasses) {
+        REGISTERED_COMPATS.put(modId, new CompatInfo(modId, displayName, isLoaded, initializer, requiredApiClasses));
+    }
+    
+    /**
+     * Safely register event handler classes on the NeoForge EVENT_BUS for a compat module.
+     * This method should be called from within a compat's init() method instead of
+     * calling NeoForge.EVENT_BUS.register() directly.
+     * 
+     * It verifies each handler class can be loaded (catches NoClassDefFoundError from
+     * missing mod API dependencies in static initializers or field declarations)
+     * and provides detailed diagnostics on failure.
+     * 
+     * @param modId The mod ID this registration belongs to
+     * @param handlerClasses The event handler classes to register
+     */
+    public static void registerEventHandlers(String modId, Class<?>... handlerClasses) {
+        for (Class<?> handlerClass : handlerClasses) {
+            try {
+                // Trigger class loading to verify all dependencies are available
+                // This catches NoClassDefFoundError if the handler references missing mod API classes
+                Class.forName(handlerClass.getName(), true, handlerClass.getClassLoader());
+                NeoForge.EVENT_BUS.register(handlerClass);
+                LOGGER.debug("  Registered event handler: {}", handlerClass.getSimpleName());
+            } catch (Throwable e) {
+                LOGGER.error("Failed to register event handler {} for compat module '{}'", 
+                    handlerClass.getSimpleName(), modId);
+                LOGGER.error("  Error: {} - {}", e.getClass().getName(), e.getMessage());
+                throw new RuntimeException("Event handler registration failed: " + handlerClass.getSimpleName(), e);
+            }
+        }
+    }
+    
+    /**
+     * Verify that required API classes from an external mod are available.
+     * This should be called early (e.g., during init) to fail fast with a clear message
+     * rather than crashing later at runtime with a confusing NoClassDefFoundError.
+     * 
+     * @param modId The mod ID whose API is being verified
+     * @param classNames Fully qualified class names to check
+     * @throws RuntimeException if any class is not found, with detailed diagnostic info
+     */
+    public static void verifyApiClasses(String modId, String... classNames) {
+        List<String> missing = new ArrayList<>();
+        for (String className : classNames) {
+            try {
+                Class.forName(className);
+            } catch (ClassNotFoundException e) {
+                missing.add(className);
+            }
+        }
+        if (!missing.isEmpty()) {
+            String modVersion = getModVersion(modId);
+            StringBuilder sb = new StringBuilder();
+            sb.append("API verification failed for mod '").append(modId)
+              .append("' (version: ").append(modVersion).append("). Missing classes:\n");
+            for (String cls : missing) {
+                sb.append("  - ").append(cls).append("\n");
+            }
+            sb.append("The installed version of this mod may have changed its API.");
+            LOGGER.error(sb.toString());
+            throw new RuntimeException(sb.toString());
+        }
+        LOGGER.debug("API verification passed for '{}': all {} classes found.", modId, classNames.length);
+    }
+    
+    /**
+     * Execute an event handler callback safely within a compat context.
+     * Use this in @SubscribeEvent methods to wrap the entire method body.
+     * If an error occurs, it will be caught, logged with full diagnostics,
+     * and the compat module will be disabled. Subsequent calls will be no-ops.
+     * 
+     * Usage example:
+     * <pre>
+     * {@code @SubscribeEvent}
+     * public static void onPlayerTick(PlayerTickEvent.Post event) {
+     *     CompatManager.safeEventCall("alexsmobs", "onPlayerTick", () -> {
+     *         // actual event handling logic here
+     *     });
+     * }
+     * </pre>
+     * 
+     * @param modId The mod ID for the compat module
+     * @param eventName Name of the event/method for logging
+     * @param action The actual event handling logic
+     */
+    public static void safeEventCall(String modId, String eventName, Runnable action) {
+        if (!isCompatEnabled(modId)) {
+            return; // Already disabled, skip silently
+        }
+        try {
+            action.run();
+        } catch (Throwable e) {
+            handleRuntimeError(modId, eventName, e);
+        }
+    }
+    
+    /**
+     * Execute an event handler callback safely with a return value.
+     * 
+     * @param modId The mod ID for the compat module
+     * @param eventName Name of the event/method for logging
+     * @param action The actual event handling logic
+     * @param defaultValue Value to return if compat is disabled or error occurs
+     * @return The result of the action, or defaultValue on failure
+     */
+    public static <T> T safeEventCall(String modId, String eventName, Supplier<T> action, T defaultValue) {
+        if (!isCompatEnabled(modId)) {
+            return defaultValue;
+        }
+        try {
+            return action.get();
+        } catch (Throwable e) {
+            handleRuntimeError(modId, eventName, e);
+            return defaultValue;
+        }
     }
     
     /**
@@ -139,6 +273,12 @@ public class CompatManager {
             compat.displayName, compat.modVersion);
         
         try {
+            // Verify required API classes before running the initializer
+            if (compat.requiredApiClasses != null && compat.requiredApiClasses.length > 0) {
+                LOGGER.debug("Verifying {} API classes for {}...", compat.requiredApiClasses.length, compat.displayName);
+                verifyApiClasses(compat.modId, compat.requiredApiClasses);
+            }
+            
             compat.initializer.run();
             compat.initialized = true;
             LOGGER.info("{} integration initialized successfully.", compat.displayName);
@@ -164,10 +304,32 @@ public class CompatManager {
         LOGGER.error("========================================");
         LOGGER.error("HOT BATH COMPAT ERROR: {} integration DISABLED", compat.displayName);
         LOGGER.error("Mod: {} (version: {})", compat.modId, compat.modVersion);
-        LOGGER.error("Error: {}", error.getMessage());
-        LOGGER.error("This may be due to an API change in the target mod.");
+        LOGGER.error("Hot Bath version: {}", getHotBathVersion());
+        LOGGER.error("Minecraft version: {}", getMinecraftVersion());
+        LOGGER.error("Error type: {}", error.getClass().getName());
+        LOGGER.error("Error message: {}", error.getMessage());
+        
+        // Classify the error for easier debugging
+        if (error instanceof NoClassDefFoundError || error instanceof ClassNotFoundException) {
+            LOGGER.error("DIAGNOSIS: A required class from {} was not found.", compat.displayName);
+            LOGGER.error("  This usually means the mod's API has changed in this version.");
+            LOGGER.error("  Missing class: {}", error.getMessage());
+        } else if (error instanceof NoSuchMethodError || error instanceof NoSuchFieldError) {
+            LOGGER.error("DIAGNOSIS: A method/field in {}'s API was removed or renamed.", compat.displayName);
+            LOGGER.error("  The mod's API is incompatible with this version of Hot Bath.");
+            LOGGER.error("  Changed API element: {}", error.getMessage());
+        } else if (error instanceof AbstractMethodError) {
+            LOGGER.error("DIAGNOSIS: {} added new abstract methods that Hot Bath hasn't implemented.", compat.displayName);
+            LOGGER.error("  Method: {}", error.getMessage());
+        } else {
+            LOGGER.error("DIAGNOSIS: Unexpected error during initialization.");
+        }
+        
         LOGGER.error("Please report this issue at: {}", GITHUB_ISSUES_URL);
-        LOGGER.error("Stack trace:", error);
+        LOGGER.error("Full stack trace:", error);
+        if (error.getCause() != null) {
+            LOGGER.error("Root cause: {} - {}", error.getCause().getClass().getName(), error.getCause().getMessage());
+        }
         LOGGER.error("========================================");
     }
     
@@ -229,7 +391,12 @@ public class CompatManager {
      */
     private static void handleRuntimeError(String modId, String operationName, Throwable error) {
         CompatInfo compat = REGISTERED_COMPATS.get(modId);
-        if (compat == null) return;
+        if (compat == null) {
+            LOGGER.error("HOT BATH RUNTIME ERROR: Unknown compat module '{}' reported error in operation '{}'", modId, operationName);
+            LOGGER.error("Error: {} - {}", error.getClass().getName(), error.getMessage());
+            LOGGER.error("Stack trace:", error);
+            return;
+        }
         
         // Disable the compat
         compat.enabled = false;
@@ -246,10 +413,35 @@ public class CompatManager {
         LOGGER.error("HOT BATH RUNTIME ERROR: {} integration DISABLED", compat.displayName);
         LOGGER.error("Operation: {}", operationName);
         LOGGER.error("Mod: {} (version: {})", modId, compat.modVersion);
-        LOGGER.error("Error: {}", error.getMessage());
+        LOGGER.error("Hot Bath version: {}", getHotBathVersion());
+        LOGGER.error("Minecraft version: {}", getMinecraftVersion());
+        LOGGER.error("Error type: {}", error.getClass().getName());
+        LOGGER.error("Error message: {}", error.getMessage());
+        
+        // Classify the error for easier debugging
+        if (error instanceof NoClassDefFoundError || error instanceof ClassNotFoundException) {
+            LOGGER.error("DIAGNOSIS: A required class from {} was not found at runtime.", compat.displayName);
+            LOGGER.error("  Missing class: {}", error.getMessage());
+            LOGGER.error("  This may indicate the mod version has changed its internal class structure.");
+        } else if (error instanceof NoSuchMethodError || error instanceof NoSuchFieldError) {
+            LOGGER.error("DIAGNOSIS: An API method/field in {} was removed or its signature changed.", compat.displayName);
+            LOGGER.error("  Changed API element: {}", error.getMessage());
+        } else if (error instanceof AbstractMethodError) {
+            LOGGER.error("DIAGNOSIS: {} requires new methods that Hot Bath hasn't implemented yet.", compat.displayName);
+            LOGGER.error("  Method: {}", error.getMessage());
+        } else if (error instanceof NullPointerException) {
+            LOGGER.error("DIAGNOSIS: NullPointerException during {} operation.", operationName);
+            LOGGER.error("  This may indicate the mod's data/state was not available when expected.");
+        } else {
+            LOGGER.error("DIAGNOSIS: Unexpected runtime error during {} operation.", operationName);
+        }
+        
         LOGGER.error("The integration has been disabled to prevent further crashes.");
         LOGGER.error("Please report this issue at: {}", GITHUB_ISSUES_URL);
-        LOGGER.error("Stack trace:", error);
+        LOGGER.error("Full stack trace:", error);
+        if (error.getCause() != null) {
+            LOGGER.error("Root cause: {} - {}", error.getCause().getClass().getName(), error.getCause().getMessage());
+        }
         LOGGER.error("========================================");
         
         // Update Patchouli flags to reflect the disabled compat
@@ -314,6 +506,14 @@ public class CompatManager {
         MutableComponent versionInfo = Component.translatable("hotbath.compat.warning.version", error.modVersion)
             .withStyle(ChatFormatting.GRAY);
         player.sendSystemMessage(versionInfo);
+        
+        // Error type and message for debugging
+        MutableComponent errorDetail = Component.literal("  ")
+            .append(Component.literal("Error: ")
+                .withStyle(ChatFormatting.RED))
+            .append(Component.literal(error.errorMessage)
+                .withStyle(ChatFormatting.GRAY));
+        player.sendSystemMessage(errorDetail);
         
         // Possible cause
         MutableComponent cause = Component.translatable("hotbath.compat.warning.api_change", error.modId)

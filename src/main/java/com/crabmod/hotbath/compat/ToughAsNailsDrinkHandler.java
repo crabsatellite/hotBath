@@ -20,25 +20,26 @@ public class ToughAsNailsDrinkHandler {
      */
     @SubscribeEvent
     public static void onItemUseFinish(LivingEntityUseItemEvent.Finish event) {
-        // Only process on server side
-        if (event.getEntity().level().isClientSide()) {
-            return;
-        }
-        
-        // Only process for players
-        if (!(event.getEntity() instanceof Player player)) {
-            return;
-        }
-        
-        // Check if player is in any hot bath block
-        // For custom fluids, only applies if temperature >= 35°C
-        if (CustomFluidHandler.isPlayerInHotBath(player)) {
-            BathWaterEffects.applyTemperatureEffectsOnly(player);
-            
-            // If LSO is loaded, also restore thirst
-            if (LegendarySurvivalOverhaulIntegration.isLSOLoaded()) {
-                LSOApiHelper.addThirst(player);
+        CompatManager.safeEventCall("toughasnails", "onItemUseFinish", () -> {
+            // Only process on server side
+            if (event.getEntity().level().isClientSide()) {
+                return;
             }
-        }
+            
+            // Only process for players
+            if (!(event.getEntity() instanceof Player player)) {
+                return;
+            }
+            
+            // Check if player is in any hot bath block
+            if (CustomFluidHandler.isPlayerInHotBath(player)) {
+                BathWaterEffects.applyTemperatureEffectsOnly(player);
+                
+                // If LSO is loaded, also restore thirst
+                if (LegendarySurvivalOverhaulIntegration.isLSOLoaded()) {
+                    LSOApiHelper.addThirst(player);
+                }
+            }
+        });
     }
 }

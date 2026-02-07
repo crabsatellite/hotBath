@@ -8,14 +8,18 @@ public class ToughAsNailsEventHandler {
 
     @SubscribeEvent
     public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
-        cleanup(event.getEntity());
+        CompatManager.safeEventCall("toughasnails", "onPlayerLogout", () -> {
+            cleanup(event.getEntity());
+        });
     }
 
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.Clone event) {
-        if (event.isWasDeath()) {
-            cleanup(event.getEntity());
-        }
+        CompatManager.safeEventCall("toughasnails", "onPlayerRespawn", () -> {
+            if (event.isWasDeath()) {
+                cleanup(event.getEntity());
+            }
+        });
     }
 
     private static void cleanup(Player player) {

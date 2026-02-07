@@ -57,30 +57,29 @@ public class TwilightForestEventHandler {
     
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
-        if (event.getEntity().level().isClientSide()) return;
-        if (!(event.getEntity() instanceof ServerPlayer player)) return;
-        
-        // Check if player is in a HOT bath (temperature >= 35°C for custom fluids)
-        boolean isInBath = CustomFluidHandler.isPlayerInHotBath(player);
-        UUID playerId = player.getUUID();
-        
-        if (isInBath) {
-            // Remove Frosted effect every second while in hot bath
-            if (player.tickCount % EFFECT_CHECK_INTERVAL == 0) {
-                removeFrostedEffect(player);
+        CompatManager.safeEventCall("twilightforest", "onPlayerTick", () -> {
+            if (event.getEntity().level().isClientSide()) return;
+            if (!(event.getEntity() instanceof ServerPlayer player)) return;
+            
+            boolean isInBath = CustomFluidHandler.isPlayerInHotBath(player);
+            UUID playerId = player.getUUID();
+            
+            if (isInBath) {
+                if (player.tickCount % EFFECT_CHECK_INTERVAL == 0) {
+                    removeFrostedEffect(player);
+                }
+                
+                playerWasInBath.put(playerId, true);
+            } else {
+                playerWasInBath.put(playerId, false);
             }
             
-            playerWasInBath.put(playerId, true);
-        } else {
-            playerWasInBath.put(playerId, false);
-        }
-        
-        // Spawn firefly particles in Twilight Forest dimension
-        if (player.tickCount % PARTICLE_SPAWN_INTERVAL == 0) {
-            if (isInTwilightForest(player.level())) {
-                spawnFireflyParticles(player);
+            if (player.tickCount % PARTICLE_SPAWN_INTERVAL == 0) {
+                if (isInTwilightForest(player.level())) {
+                    spawnFireflyParticles(player);
+                }
             }
-        }
+        });
     }
     
     /**

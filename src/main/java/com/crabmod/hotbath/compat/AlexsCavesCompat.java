@@ -1,7 +1,6 @@
 package com.crabmod.hotbath.compat;
 
 import com.mojang.logging.LogUtils;
-import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 
 /**
@@ -13,7 +12,7 @@ public class AlexsCavesCompat {
 
     public static void init() {
         LOGGER.info("Initializing Alex's Caves compatibility...");
-        NeoForge.EVENT_BUS.register(AlexsCavesEventHandler.class);
+        CompatManager.registerEventHandlers("alexscaves", AlexsCavesEventHandler.class);
         LOGGER.info("Alex's Caves event handler registered.");
     }
 }

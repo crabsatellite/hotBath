@@ -1,7 +1,6 @@
 package com.crabmod.hotbath.compat;
 
 import com.mojang.logging.LogUtils;
-import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 
 /**
@@ -13,7 +12,7 @@ public class FarmersDelightCompat {
 
     public static void init() {
         LOGGER.info("Initializing Farmer's Delight compatibility...");
-        NeoForge.EVENT_BUS.register(FarmersDelightEventHandler.class);
+        CompatManager.registerEventHandlers("farmersdelight", FarmersDelightEventHandler.class);
         LOGGER.info("Farmer's Delight event handler registered.");
     }
 }

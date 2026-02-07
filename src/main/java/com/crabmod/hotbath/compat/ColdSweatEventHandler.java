@@ -18,28 +18,28 @@ public class ColdSweatEventHandler {
 
     @SubscribeEvent
     public static void onTempModifierRegister(TempModifierRegisterEvent event) {
-        try {
+        CompatManager.safeEventCall("cold_sweat", "onTempModifierRegister", () -> {
             LOGGER.info("Registering Hot Bath temperature modifiers with Cold Sweat...");
             event.register(ResourceLocation.parse("hotbath:immersion"), HotBathImmersionModifier::new);
             event.register(ResourceLocation.parse("hotbath:bottle"), BathWaterBottleColdSweatModifier::new);
             LOGGER.info("Successfully registered Hot Bath temperature modifiers!");
-        } catch (Exception e) {
-            LOGGER.error("Failed to register Hot Bath modifiers with Cold Sweat: {}", e.getMessage(), e);
-        }
+        });
     }
 
     @SubscribeEvent
     public static void onDefaultModifiers(DefaultTempModifiersEvent event) {
-        event.addModifier(
-                Temperature.Trait.WORLD,
-                new HotBathImmersionModifier(),
-                Placement.LAST.noDuplicates(Matcher.SAME_CLASS)
-        );
-        
-        event.addModifier(
-                Temperature.Trait.WORLD,
-                new BathWaterBottleColdSweatModifier(),
-                Placement.LAST.noDuplicates(Matcher.SAME_CLASS)
-        );
+        CompatManager.safeEventCall("cold_sweat", "onDefaultModifiers", () -> {
+            event.addModifier(
+                    Temperature.Trait.WORLD,
+                    new HotBathImmersionModifier(),
+                    Placement.LAST.noDuplicates(Matcher.SAME_CLASS)
+            );
+            
+            event.addModifier(
+                    Temperature.Trait.WORLD,
+                    new BathWaterBottleColdSweatModifier(),
+                    Placement.LAST.noDuplicates(Matcher.SAME_CLASS)
+            );
+        });
     }
 }

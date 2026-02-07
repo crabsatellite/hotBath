@@ -32,18 +32,18 @@ public class FarmersDelightEventHandler {
     
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
-        if (event.getEntity().level().isClientSide()) return;
-        if (!(event.getEntity() instanceof ServerPlayer player)) return;
-        
-        // Check if player is in a HOT bath block (temperature >= 35°C for custom fluids)
-        boolean isInBath = CustomFluidHandler.isPlayerInHotBath(player);
-        
-        if (isInBath) {
-            // Apply Comfort effect every 2 seconds while in hot bath
-            if (player.tickCount % EFFECT_APPLY_INTERVAL == 0) {
-                grantComfortEffect(player);
+        CompatManager.safeEventCall("farmersdelight", "onPlayerTick", () -> {
+            if (event.getEntity().level().isClientSide()) return;
+            if (!(event.getEntity() instanceof ServerPlayer player)) return;
+            
+            boolean isInBath = CustomFluidHandler.isPlayerInHotBath(player);
+            
+            if (isInBath) {
+                if (player.tickCount % EFFECT_APPLY_INTERVAL == 0) {
+                    grantComfortEffect(player);
+                }
             }
-        }
+        });
     }
     
     /**
