@@ -54,30 +54,32 @@ public class TwilightForestEventHandler {
     
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
-        if (event.player.level().isClientSide()) return;
-        if (!(event.player instanceof ServerPlayer player)) return;
-        
-        boolean isInBath = CustomFluidHandler.isPlayerInHotBathBlock(player);
-        UUID playerId = player.getUUID();
-        
-        if (isInBath) {
-            // Remove Frosted effect every second while in hot bath
-            if (player.tickCount % EFFECT_CHECK_INTERVAL == 0) {
-                removeFrostedEffect(player);
+        CompatManager.safeEventCall("twilightforest", "onPlayerTick", () -> {
+            if (event.phase != TickEvent.Phase.END) return;
+            if (event.player.level().isClientSide()) return;
+            if (!(event.player instanceof ServerPlayer player)) return;
+            
+            boolean isInBath = CustomFluidHandler.isPlayerInHotBathBlock(player);
+            UUID playerId = player.getUUID();
+            
+            if (isInBath) {
+                // Remove Frosted effect every second while in hot bath
+                if (player.tickCount % EFFECT_CHECK_INTERVAL == 0) {
+                    removeFrostedEffect(player);
+                }
+                
+                playerWasInBath.put(playerId, true);
+            } else {
+                playerWasInBath.put(playerId, false);
             }
             
-            playerWasInBath.put(playerId, true);
-        } else {
-            playerWasInBath.put(playerId, false);
-        }
-        
-        // Spawn firefly particles in Twilight Forest dimension
-        if (player.tickCount % PARTICLE_SPAWN_INTERVAL == 0) {
-            if (isInTwilightForest(player.level())) {
-                spawnFireflyParticles(player);
+            // Spawn firefly particles in Twilight Forest dimension
+            if (player.tickCount % PARTICLE_SPAWN_INTERVAL == 0) {
+                if (isInTwilightForest(player.level())) {
+                    spawnFireflyParticles(player);
+                }
             }
-        }
+        });
     }
     
     /**

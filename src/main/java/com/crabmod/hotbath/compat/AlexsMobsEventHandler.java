@@ -68,34 +68,36 @@ public class AlexsMobsEventHandler {
     
     @SubscribeEvent
     public static void onPlayerTick(LivingEvent.LivingTickEvent event) {
-        // Only process on server side for players
-        if (event.getEntity().level().isClientSide()) return;
-        if (!(event.getEntity() instanceof ServerPlayer player)) return;
-        
-        // Check if dirtiness system is enabled
-        if (!HotBathConfig.isDirtinessEnabled()) return;
-        
-        // Only check every CHECK_INTERVAL ticks for performance
-        if (player.tickCount % CHECK_INTERVAL != 0) return;
-        
-        // Get dirtiness data
-        DirtinessData data = DirtinessCapability.getOrNull(player);
-        if (data == null) return;
-        
-        long gameTime = player.level().getGameTime();
-        boolean hasFlies = data.shouldSpawnFlies(gameTime);
-        float dirtiness = data.getDirtiness(gameTime);
-        
-        // Handle fly attraction (only when player has flies - extremely dirty)
-        if (hasFlies) {
-            attractFlies(player);
-            makeMosquitoesAggressive(player);
-        }
-        
-        // Handle cockroach loitering (when player is at least 80% dirty)
-        if (dirtiness >= 0.8f) {
-            makeCockroachesLoiter(player, dirtiness);
-        }
+        CompatManager.safeEventCall("alexsmobs", "onPlayerTick", () -> {
+            // Only process on server side for players
+            if (event.getEntity().level().isClientSide()) return;
+            if (!(event.getEntity() instanceof ServerPlayer player)) return;
+            
+            // Check if dirtiness system is enabled
+            if (!HotBathConfig.isDirtinessEnabled()) return;
+            
+            // Only check every CHECK_INTERVAL ticks for performance
+            if (player.tickCount % CHECK_INTERVAL != 0) return;
+            
+            // Get dirtiness data
+            DirtinessData data = DirtinessCapability.getOrNull(player);
+            if (data == null) return;
+            
+            long gameTime = player.level().getGameTime();
+            boolean hasFlies = data.shouldSpawnFlies(gameTime);
+            float dirtiness = data.getDirtiness(gameTime);
+            
+            // Handle fly attraction (only when player has flies - extremely dirty)
+            if (hasFlies) {
+                attractFlies(player);
+                makeMosquitoesAggressive(player);
+            }
+            
+            // Handle cockroach loitering (when player is at least 80% dirty)
+            if (dirtiness >= 0.8f) {
+                makeCockroachesLoiter(player, dirtiness);
+            }
+        });
     }
     
     /**
@@ -200,24 +202,26 @@ public class AlexsMobsEventHandler {
      */
     @SubscribeEvent
     public static void onEntityTick(LivingEvent.LivingTickEvent event) {
-        // Only process capuchin monkeys on server side
-        if (event.getEntity().level().isClientSide()) return;
-        if (!(event.getEntity() instanceof EntityCapuchinMonkey monkey)) return;
-        
-        // Only check every MONKEY_CHECK_INTERVAL ticks for performance
-        if (monkey.tickCount % MONKEY_CHECK_INTERVAL != 0) return;
-        
-        // Check if monkey is already in hot spring
-        if (isInHotSpring(monkey)) {
-            applyHotSpringBuff(monkey);
-        } else {
-            // Check if monkey just left hot spring (was sitting but not tamed)
-            if (monkey.isSitting() && !monkey.isTame() && !monkey.isOrderedToSit()) {
-                handleMonkeyLeavingHotSpring(monkey);
+        CompatManager.safeEventCall("alexsmobs", "onEntityTick", () -> {
+            // Only process capuchin monkeys on server side
+            if (event.getEntity().level().isClientSide()) return;
+            if (!(event.getEntity() instanceof EntityCapuchinMonkey monkey)) return;
+            
+            // Only check every MONKEY_CHECK_INTERVAL ticks for performance
+            if (monkey.tickCount % MONKEY_CHECK_INTERVAL != 0) return;
+            
+            // Check if monkey is already in hot spring
+            if (isInHotSpring(monkey)) {
+                applyHotSpringBuff(monkey);
+            } else {
+                // Check if monkey just left hot spring (was sitting but not tamed)
+                if (monkey.isSitting() && !monkey.isTame() && !monkey.isOrderedToSit()) {
+                    handleMonkeyLeavingHotSpring(monkey);
+                }
+                // Try to attract monkey to nearby hot spring
+                attractToHotSpring(monkey);
             }
-            // Try to attract monkey to nearby hot spring
-            attractToHotSpring(monkey);
-        }
+        });
     }
     
     /**

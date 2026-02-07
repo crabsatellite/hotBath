@@ -22,43 +22,41 @@ public class HotBathImmersionModifier extends TempModifier {
 
     @Override
     protected Function<Double, Double> calculate(LivingEntity entity, Temperature.Trait trait) {
-        // We only modify the WORLD temperature trait
-        if (trait != Temperature.Trait.WORLD) {
-            return temp -> temp;
-        }
-
-        // Only apply to players (CustomFluidHandler methods expect Player type)
-        if (!(entity instanceof Player player)) {
-            return temp -> temp;
-        }
-
-        Level level = entity.level();
-
-        // Check if the entity is inside a HOT bath block (not just any bath block)
-        // This will return false for custom fluids with temperature < 35°C
-        if (CustomFluidHandler.isPlayerInHotBath(player)) {
-            // Get the actual bath temperature (may vary for custom fluids)
-            float bathTempC = CustomFluidHandler.getBathTemperature(player);
-            if (bathTempC <= 0) {
-                return temp -> temp; // No valid temperature found
+        return CompatManager.safeEventCall("cold_sweat", "HotBathImmersionModifier.calculate", () -> {
+            // We only modify the WORLD temperature trait
+            if (trait != Temperature.Trait.WORLD) {
+                return (Function<Double, Double>) (temp -> temp);
             }
-            
-            // Calculate target temperature in Minecraft units
-            double targetTempMC = Temperature.convert(bathTempC, Temperature.Units.C, Temperature.Units.MC, true);
 
-            // Get the natural biome temperature at this position
-            double worldTempMC = WorldHelper.getBiomeTemperature(level, level.getBiome(entity.blockPosition()));
+            // Only apply to players (CustomFluidHandler methods expect Player type)
+            if (!(entity instanceof Player player)) {
+                return (Function<Double, Double>) (temp -> temp);
+            }
 
-            // Use the higher of the two temperatures
-            // If the world is hotter (e.g. desert at noon), use that.
-            // Otherwise, use the bath temperature.
-            double finalTemp = Math.max(targetTempMC, worldTempMC);
+            Level level = entity.level();
 
-            // Return a function that ignores the input temperature and returns our fixed value
-            return temp -> finalTemp;
-        }
+            // Check if the entity is inside a HOT bath block
+            if (CustomFluidHandler.isPlayerInHotBath(player)) {
+                // Get the actual bath temperature (may vary for custom fluids)
+                float bathTempC = CustomFluidHandler.getBathTemperature(player);
+                if (bathTempC <= 0) {
+                    return (Function<Double, Double>) (temp -> temp);
+                }
+                
+                // Calculate target temperature in Minecraft units
+                double targetTempMC = Temperature.convert(bathTempC, Temperature.Units.C, Temperature.Units.MC, true);
 
-        // If not inside a hot bath, return identity function (no change)
-        return temp -> temp;
+                // Get the natural biome temperature at this position
+                double worldTempMC = WorldHelper.getBiomeTemperature(level, level.getBiome(entity.blockPosition()));
+
+                // Use the higher of the two temperatures
+                double finalTemp = Math.max(targetTempMC, worldTempMC);
+
+                return (Function<Double, Double>) (temp -> finalTemp);
+            }
+
+            // If not inside a hot bath, return identity function (no change)
+            return (Function<Double, Double>) (temp -> temp);
+        }, temp -> temp);
     }
 }

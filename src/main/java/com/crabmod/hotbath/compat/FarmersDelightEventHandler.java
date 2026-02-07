@@ -31,19 +31,21 @@ public class FarmersDelightEventHandler {
     
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
-        if (event.player.level().isClientSide()) return;
-        if (!(event.player instanceof ServerPlayer player)) return;
-        
-        // Check if player is in any hot bath block
-        boolean isInBath = CustomFluidHandler.isPlayerInHotBathBlock(player);
-        
-        if (isInBath) {
-            // Apply Comfort effect every 2 seconds while in hot bath
-            if (player.tickCount % EFFECT_APPLY_INTERVAL == 0) {
-                grantComfortEffect(player);
+        CompatManager.safeEventCall("farmersdelight", "onPlayerTick", () -> {
+            if (event.phase != TickEvent.Phase.END) return;
+            if (event.player.level().isClientSide()) return;
+            if (!(event.player instanceof ServerPlayer player)) return;
+            
+            // Check if player is in any hot bath block
+            boolean isInBath = CustomFluidHandler.isPlayerInHotBathBlock(player);
+            
+            if (isInBath) {
+                // Apply Comfort effect every 2 seconds while in hot bath
+                if (player.tickCount % EFFECT_APPLY_INTERVAL == 0) {
+                    grantComfortEffect(player);
+                }
             }
-        }
+        });
     }
     
     /**

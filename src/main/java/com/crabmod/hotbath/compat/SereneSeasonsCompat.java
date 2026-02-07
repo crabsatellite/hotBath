@@ -1,7 +1,6 @@
 package com.crabmod.hotbath.compat;
 
 import com.mojang.logging.LogUtils;
-import net.minecraftforge.common.MinecraftForge;
 import org.slf4j.Logger;
 
 /**
@@ -13,7 +12,7 @@ public class SereneSeasonsCompat {
 
     public static void init() {
         LOGGER.info("Initializing Serene Seasons compatibility...");
-        MinecraftForge.EVENT_BUS.register(SereneSeasonsEventHandler.class);
+        CompatManager.registerEventHandlers("sereneseasons", SereneSeasonsEventHandler.class);
         LOGGER.info("Serene Seasons event handler registered.");
     }
 }

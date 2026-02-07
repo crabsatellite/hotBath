@@ -1,13 +1,17 @@
 package com.crabmod.hotbath.compat;
 
-import net.minecraftforge.common.MinecraftForge;
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
 
 public class ColdSweatCompat {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     public static void init() {
-        MinecraftForge.EVENT_BUS.register(ColdSweatEventHandler.class);
+        LOGGER.info("Initializing Cold Sweat compatibility...");
+        CompatManager.registerEventHandlers("cold_sweat", ColdSweatEventHandler.class);
+        LOGGER.info("Cold Sweat event handler registered.");
     }
 }
-
 
 
 

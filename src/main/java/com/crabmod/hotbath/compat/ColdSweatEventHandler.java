@@ -1,6 +1,5 @@
 package com.crabmod.hotbath.compat;
 
-import com.mojang.logging.LogUtils;
 import com.momosoftworks.coldsweat.api.event.core.init.DefaultTempModifiersEvent;
 import com.momosoftworks.coldsweat.api.event.core.registry.TempModifierRegisterEvent;
 import com.momosoftworks.coldsweat.api.util.Temperature;
@@ -8,40 +7,36 @@ import com.momosoftworks.coldsweat.api.util.placement.Matcher;
 import com.momosoftworks.coldsweat.api.util.placement.Placement;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.slf4j.Logger;
 
 /**
  * Event handler for Cold Sweat integration
  */
 public class ColdSweatEventHandler {
-    private static final Logger LOGGER = LogUtils.getLogger();
 
     @SubscribeEvent
     @SuppressWarnings("removal")
     public static void onTempModifierRegister(TempModifierRegisterEvent event) {
-        try {
-            LOGGER.info("Registering Hot Bath temperature modifiers with Cold Sweat...");
+        CompatManager.safeEventCall("cold_sweat", "onTempModifierRegister", () -> {
             event.register(new ResourceLocation("hotbath:immersion"), HotBathImmersionModifier::new);
             event.register(new ResourceLocation("hotbath:bottle"), BathWaterBottleColdSweatModifier::new);
-            LOGGER.info("Successfully registered Hot Bath temperature modifiers!");
-        } catch (Exception e) {
-            LOGGER.error("Failed to register Hot Bath modifiers with Cold Sweat: {}", e.getMessage(), e);
-        }
+        });
     }
 
     @SubscribeEvent
     public static void onDefaultModifiers(DefaultTempModifiersEvent event) {
-        event.addModifier(
-                Temperature.Trait.WORLD,
-                new HotBathImmersionModifier(),
-                Placement.LAST.noDuplicates(Matcher.SAME_CLASS)
-        );
-        
-        event.addModifier(
-                Temperature.Trait.WORLD,
-                new BathWaterBottleColdSweatModifier(),
-                Placement.LAST.noDuplicates(Matcher.SAME_CLASS)
-        );
+        CompatManager.safeEventCall("cold_sweat", "onDefaultModifiers", () -> {
+            event.addModifier(
+                    Temperature.Trait.WORLD,
+                    new HotBathImmersionModifier(),
+                    Placement.LAST.noDuplicates(Matcher.SAME_CLASS)
+            );
+            
+            event.addModifier(
+                    Temperature.Trait.WORLD,
+                    new BathWaterBottleColdSweatModifier(),
+                    Placement.LAST.noDuplicates(Matcher.SAME_CLASS)
+            );
+        });
     }
 }
 

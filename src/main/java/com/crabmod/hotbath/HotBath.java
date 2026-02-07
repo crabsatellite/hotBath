@@ -132,52 +132,78 @@ public class HotBath {
      */
     private void registerCompatModules() {
         CompatManager.registerCompat(
-            "coldsweat",
+            "cold_sweat",
             "Cold Sweat",
             ColdSweatIntegration::isColdSweatLoaded,
-            ColdSweatCompat::init
+            ColdSweatCompat::init,
+            "com.momosoftworks.coldsweat.api.temperature.modifier.TempModifier",
+            "com.momosoftworks.coldsweat.api.util.Temperature",
+            "com.momosoftworks.coldsweat.api.event.core.registry.TempModifierRegisterEvent",
+            "com.momosoftworks.coldsweat.api.event.core.init.DefaultTempModifiersEvent",
+            "com.momosoftworks.coldsweat.util.world.WorldHelper",
+            "com.momosoftworks.coldsweat.api.util.placement.Matcher",
+            "com.momosoftworks.coldsweat.api.util.placement.Placement"
         );
         
         CompatManager.registerCompat(
             "toughasnails",
             "Tough As Nails",
             ToughAsNailsIntegration::isToughAsNailsLoaded,
-            ToughAsNailsCompat::init
+            ToughAsNailsCompat::init,
+            "toughasnails.api.temperature.TemperatureHelper",
+            "toughasnails.api.temperature.IPlayerTemperatureModifier",
+            "toughasnails.api.temperature.TemperatureLevel",
+            "toughasnails.api.thirst.ThirstHelper",
+            "toughasnails.api.thirst.IThirst"
         );
         
         CompatManager.registerCompat(
             "legendarysurvivaloverhaul",
             "Legendary Survival Overhaul",
             LegendarySurvivalOverhaulIntegration::isLSOLoaded,
-            LSOCompat::init
+            LSOCompat::init,
+            "sfiomn.legendarysurvivaloverhaul.api.temperature.TemperatureUtil",
+            "sfiomn.legendarysurvivaloverhaul.api.thirst.ThirstUtil",
+            "sfiomn.legendarysurvivaloverhaul.registry.MobEffectRegistry"
         );
         
         CompatManager.registerCompat(
             "alexsmobs",
             "Alex's Mobs",
             AlexsMobsIntegration::isAlexsMobsLoaded,
-            AlexsMobsCompat::init
+            AlexsMobsCompat::init,
+            "com.github.alexthe666.alexsmobs.entity.EntityCapuchinMonkey",
+            "com.github.alexthe666.alexsmobs.entity.EntityCockroach",
+            "com.github.alexthe666.alexsmobs.entity.EntityCrimsonMosquito",
+            "com.github.alexthe666.alexsmobs.entity.EntityFly"
         );
         
         CompatManager.registerCompat(
             "alexscaves",
             "Alex's Caves",
             AlexsCavesIntegration::isAlexsCavesLoaded,
-            AlexsCavesCompat::init
+            AlexsCavesCompat::init,
+            "com.github.alexmodguy.alexscaves.server.entity.living.GammaroachEntity",
+            "com.github.alexmodguy.alexscaves.server.entity.living.GummyBearEntity",
+            "com.github.alexmodguy.alexscaves.server.entity.living.RaycatEntity",
+            "com.github.alexmodguy.alexscaves.server.potion.ACEffectRegistry"
         );
         
         CompatManager.registerCompat(
             "twilightforest",
             "Twilight Forest",
             TwilightForestIntegration::isTwilightForestLoaded,
-            TwilightForestCompat::init
+            TwilightForestCompat::init,
+            "twilightforest.init.TFMobEffects",
+            "twilightforest.init.TFParticleType"
         );
         
         CompatManager.registerCompat(
             "farmersdelight",
             "Farmer's Delight",
             FarmersDelightIntegration::isFarmersDelightLoaded,
-            FarmersDelightCompat::init
+            FarmersDelightCompat::init,
+            "vectorwing.farmersdelight.common.registry.ModEffects"
         );
         
         CompatManager.registerCompat(

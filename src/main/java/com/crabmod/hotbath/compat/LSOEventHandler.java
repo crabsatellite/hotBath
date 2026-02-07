@@ -21,16 +21,18 @@ public class LSOEventHandler {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
-        Player player = event.player;
-        
-        // Only process on server side
-        if (player.level().isClientSide()) {
-            return;
-        }
+        CompatManager.safeEventCall("legendarysurvivaloverhaul", "onPlayerTick", () -> {
+            if (event.phase != TickEvent.Phase.END) return;
+            Player player = event.player;
+            
+            // Only process on server side
+            if (player.level().isClientSide()) {
+                return;
+            }
 
-        // Tick the immersion modifier to apply/remove hot bath effects
-        HotBathImmersionLSOModifier.tick(player);
+            // Tick the immersion modifier to apply/remove hot bath effects
+            HotBathImmersionLSOModifier.tick(player);
+        });
     }
     
     /**
@@ -38,12 +40,14 @@ public class LSOEventHandler {
      */
     @SubscribeEvent
     public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
-        Player player = event.getEntity();
-        UUID playerUUID = player.getUUID();
-        
-        HotBathImmersionLSOModifier.cleanup(player);
-        LSOApiHelper.cleanupPlayerCache(player);
-        cleanupAllCaches(playerUUID);
+        CompatManager.safeEventCall("legendarysurvivaloverhaul", "onPlayerLogout", () -> {
+            Player player = event.getEntity();
+            UUID playerUUID = player.getUUID();
+            
+            HotBathImmersionLSOModifier.cleanup(player);
+            LSOApiHelper.cleanupPlayerCache(player);
+            cleanupAllCaches(playerUUID);
+        });
     }
     
     /**
@@ -52,15 +56,17 @@ public class LSOEventHandler {
      */
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
-        // Only clean up on death (not dimension change)
-        if (event.isWasDeath()) {
-            Player original = event.getOriginal();
-            UUID playerUUID = original.getUUID();
-            
-            HotBathImmersionLSOModifier.cleanup(original);
-            LSOApiHelper.cleanupPlayerCache(original);
-            cleanupAllCaches(playerUUID);
-        }
+        CompatManager.safeEventCall("legendarysurvivaloverhaul", "onPlayerClone", () -> {
+            // Only clean up on death (not dimension change)
+            if (event.isWasDeath()) {
+                Player original = event.getOriginal();
+                UUID playerUUID = original.getUUID();
+                
+                HotBathImmersionLSOModifier.cleanup(original);
+                LSOApiHelper.cleanupPlayerCache(original);
+                cleanupAllCaches(playerUUID);
+            }
+        });
     }
     
     /**

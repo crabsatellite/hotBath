@@ -4,8 +4,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class ToughAsNailsCompat {
     public static void init() {
-        MinecraftForge.EVENT_BUS.register(ToughAsNailsDrinkHandler.class);
-        MinecraftForge.EVENT_BUS.register(ToughAsNailsEventHandler.class);
+        CompatManager.registerEventHandlers("toughasnails", ToughAsNailsDrinkHandler.class, ToughAsNailsEventHandler.class);
         ToughAsNailsRegistration.init();
     }
 }

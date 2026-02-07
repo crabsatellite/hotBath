@@ -55,25 +55,27 @@ public class AlexsCavesEventHandler {
      */
     @SubscribeEvent
     public static void onLivingTick(LivingEvent.LivingTickEvent event) {
-        if (event.getEntity().level().isClientSide()) return;
-        
-        LivingEntity entity = event.getEntity();
-        
-        // Handle GummyBear melting
-        if (entity instanceof GummyBearEntity gummyBear) {
-            handleGummyBear(gummyBear);
-        }
-        // Handle Gammaroach for players
-        else if (entity instanceof ServerPlayer player) {
-            handleGammaroachAttraction(player);
-        }
-        // Handle Raycat hot spring sitting
-        else if (entity instanceof RaycatEntity raycat) {
-            handleRaycat(raycat);
-        }
-        
-        // Handle radiation cure for any living entity
-        handleRadiationCure(entity);
+        CompatManager.safeEventCall("alexscaves", "onLivingTick", () -> {
+            if (event.getEntity().level().isClientSide()) return;
+            
+            LivingEntity entity = event.getEntity();
+            
+            // Handle GummyBear melting
+            if (entity instanceof GummyBearEntity gummyBear) {
+                handleGummyBear(gummyBear);
+            }
+            // Handle Gammaroach for players
+            else if (entity instanceof ServerPlayer player) {
+                handleGammaroachAttraction(player);
+            }
+            // Handle Raycat hot spring sitting
+            else if (entity instanceof RaycatEntity raycat) {
+                handleRaycat(raycat);
+            }
+            
+            // Handle radiation cure for any living entity
+            handleRadiationCure(entity);
+        });
     }
     
     // ==================== GummyBear Melting ====================
