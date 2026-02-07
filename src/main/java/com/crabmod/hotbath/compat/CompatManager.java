@@ -365,18 +365,6 @@ public class CompatManager {
     }
     
     /**
-     * Report a runtime error from an integration class that handles its own try-catch.
-     * This is useful for performance-critical code paths that can't use safeExecute.
-     * 
-     * @param modId The mod ID for the compat
-     * @param operationName Name of the operation that failed
-     * @param error The error that occurred
-     */
-    public static void reportRuntimeError(String modId, String operationName, Throwable error) {
-        handleRuntimeError(modId, operationName, error);
-    }
-    
-    /**
      * Handle a runtime error in a compat module
      */
     private static void handleRuntimeError(String modId, String operationName, Throwable error) {
@@ -390,7 +378,7 @@ public class CompatManager {
         
         // Disable the compat
         compat.enabled = false;
-        
+
         CompatError compatError = new CompatError(
             compat.displayName,
             modId,
@@ -398,7 +386,7 @@ public class CompatManager {
             error
         );
         DISABLED_COMPATS.put(modId, compatError);
-        
+
         LOGGER.error("========================================");
         LOGGER.error("HOT BATH RUNTIME ERROR: {} integration DISABLED", compat.displayName);
         LOGGER.error("Operation: {}", operationName);
@@ -433,6 +421,22 @@ public class CompatManager {
             LOGGER.error("Root cause: {} - {}", error.getCause().getClass().getName(), error.getCause().getMessage());
         }
         LOGGER.error("========================================");
+
+        // Update Patchouli flags to reflect the disabled compat
+        PatchouliCompat.updateCompatFlags();
+    }
+
+    /**
+     * Report a runtime error from an integration module.
+     * Called by integration classes that handle their own try-catch for performance.
+     * This is the preferred method for hot-path code.
+     *
+     * @param modId The mod ID
+     * @param operationName Name of the operation that failed
+     * @param error The error that occurred
+     */
+    public static void reportRuntimeError(String modId, String operationName, Throwable error) {
+        handleRuntimeError(modId, operationName, error);
     }
     
     /**
