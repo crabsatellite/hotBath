@@ -7,13 +7,13 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "flag": "hotbath:alexsmobs_disabled",
-      "title": "hotbath.compat.disabled.title",
-      "text": "hotbath.compat.disabled.alexs_mobs"
+      "text": "hotbath.entry.alexs_mobs.page1"
     },
     {
       "type": "patchouli:text",
-      "text": "hotbath.entry.alexs_mobs.page1"
+      "flag": "hotbath:alexsmobs_disabled",
+      "title": "hotbath.compat.disabled.title",
+      "text": "hotbath.compat.disabled.alexs_mobs"
     },
     {
       "type": "patchouli:text",

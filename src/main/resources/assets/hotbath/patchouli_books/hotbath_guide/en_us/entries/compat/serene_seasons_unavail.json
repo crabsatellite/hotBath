@@ -8,7 +8,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "title": "hotbath.compat.not_installed.title",
+      "title": "hotbath.entry.serene_seasons.name",
       "text": "hotbath.compat.not_installed.serene_seasons"
     }
   ]

@@ -8,7 +8,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "title": "hotbath.compat.not_installed.title",
+      "title": "hotbath.entry.lso.name",
       "text": "hotbath.compat.not_installed.lso"
     }
   ]
