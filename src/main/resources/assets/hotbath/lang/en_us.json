@@ -252,7 +252,7 @@
   "hotbath.entry.tough_as_nails.bottles.title": "Bottle Integration",
   "hotbath.entry.tough_as_nails.bottles": "$(li)Drinking bath bottles provides warming effect$(li)Splash bottles apply effects to nearby entities$(li)Both types provide Cold Resistance buff",
 
-  "hotbath.entry.lso.name": "Legendary Survival Overhaul",
+  "hotbath.entry.lso.name": "LSO",
   "hotbath.entry.lso.page1": "$(l)Legendary Survival Overhaul$() provides the most comprehensive integration with advanced temperature, thirst, and cold resistance mechanics.",
   "hotbath.entry.lso.temperature.title": "Temperature Warming",
   "hotbath.entry.lso.temperature": "$(li)Hot baths warm players toward the comfortable zone$(li)Prevents shivering and hypothermia$(li)Applied via LSO's modifier system$(li)Only hot baths (≥35°C) provide warming",
