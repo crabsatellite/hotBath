@@ -116,7 +116,7 @@
   "hotbath.compat.not_installed.title": "⚠ 模组未安装",
   "hotbath.compat.not_installed.cold_sweat": "$(8)Cold Sweat 未安装$()$(br2)安装 $(l)Cold Sweat$() 模组以解锁$(thing)完整的温度系统联动$()。$(br2)功能预览：$(li)浴池温度与体温交互$(li)寒冷生物群系中的保温$(li)浴水瓶提供升温效果",
   "hotbath.compat.not_installed.tough_as_nails": "$(8)Tough As Nails 未安装$()$(br2)安装 $(l)Tough As Nails$() 模组以解锁$(thing)温度与口渴联动$()。$(br2)功能预览：$(li)浴池中恢复口渴值$(li)温度等级调节$(li)在浴池中直接饮水",
-  "hotbath.compat.not_installed.legendary_survival": "$(8)Legendary Survival Overhaul 未安装$()$(br2)安装 $(l)LSO$() 模组以解锁$(thing)高级生存联动$()。$(br2)功能预览：$(li)抗寒效果累积$(li)热饮增益$(li)温度修改器系统",
+  "hotbath.compat.not_installed.lso": "$(8)Legendary Survival Overhaul 未安装$()$(br2)安装 $(l)LSO$() 模组以解锁$(thing)高级生存联动$()。$(br2)功能预览：$(li)抗寒效果累积$(li)热饮增益$(li)温度修改器系统",
   "hotbath.compat.not_installed.alexs_mobs": "$(8)Alex's Mobs 未安装$()$(br2)安装 $(l)Alex's Mobs$() 模组以解锁$(thing)生物行为联动$()。$(br2)功能预览：$(li)浣熊在温水中洗物品$(li)温泉猴子行为$(li)污渍度系统与虫子",
   "hotbath.compat.not_installed.alexs_caves": "$(8)Alex's Caves 未安装$()$(br2)安装 $(l)Alex's Caves$() 模组以解锁$(thing)洞穴生物联动$()。$(br2)功能预览：$(li)软糖熊融化$(li)草药浴治愈辐射$(li)伽马蟑螂行为",
   "hotbath.compat.not_installed.farmers_delight": "$(8)Farmer's Delight 未安装$()$(br2)安装 $(l)Farmer's Delight$() 模组以解锁$(thing)舒适效果$()。$(br2)功能预览：$(li)泡澡时获得舒适效果$(li)缓慢恢复生命值$(li)无需饱腹也能恢复",
@@ -250,7 +250,7 @@
   "hotbath.entry.tough_as_nails.bottles.title": "浴水瓶联动",
   "hotbath.entry.tough_as_nails.bottles": "$(li)饮用浴水瓶提供升温效果$(li)喷溅瓶对附近实体施加效果$(li)两种类型都提供抗寒增益",
 
-  "hotbath.entry.lso.name": "Legendary Survival Overhaul",
+  "hotbath.entry.lso.name": "传奇生存大修 (LSO)",
   "hotbath.entry.lso.page1": "$(l)Legendary Survival Overhaul$()提供最全面的联动，包括高级温度、口渴和抗寒机制。",
   "hotbath.entry.lso.temperature.title": "温度升温",
   "hotbath.entry.lso.temperature": "$(li)热浴将玩家温度提升至舒适区域$(li)防止颤抖和低温症$(li)通过LSO的修改器系统实现$(li)只有热浴（≥35°C）提供升温",
