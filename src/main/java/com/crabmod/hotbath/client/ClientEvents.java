@@ -1,6 +1,7 @@
 package com.crabmod.hotbath.client;
 
 import com.crabmod.hotbath.HotBath;
+import com.crabmod.hotbath.client.particle.ColoredDripParticle;
 import com.crabmod.hotbath.client.particle.CustomDripParticle;
 import com.crabmod.hotbath.client.particle.FlyParticle;
 import com.crabmod.hotbath.client.particle.HotBathBubbleParticle;
@@ -149,6 +150,11 @@ public class ClientEvents {
             sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, null, null));
         event.registerSpriteSet(ParticleRegister.LANDING_ROSE_BATH.get(), 
             sprite -> new CustomDripParticle.Factory(sprite, net.minecraft.world.level.material.Fluids.WATER, null, null));
+
+        // Dynamic colored drip particles (for DynamicFluidType - color via speed params)
+        event.registerSpriteSet(ParticleRegister.DRIPPING_DYNAMIC.get(), ColoredDripParticle.HangingFactory::new);
+        event.registerSpriteSet(ParticleRegister.FALLING_DYNAMIC.get(), ColoredDripParticle.FallingFactory::new);
+        event.registerSpriteSet(ParticleRegister.LANDING_DYNAMIC.get(), ColoredDripParticle.LandingFactory::new);
 
         // Fly particle for extremely dirty players
         event.registerSpriteSet(ParticleRegister.FLY.get(), FlyParticle.Factory::new);

@@ -1,5 +1,6 @@
 package com.crabmod.hotbath.mixin.alexsmobs;
 
+import com.crabmod.hotbath.custom_fluid.DynamicCustomFluidBlock;
 import com.crabmod.hotbath.fluid_blocks.AbstractHotbathBlock;
 import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
 import com.github.alexthe666.alexsmobs.entity.ai.RaccoonAIWash;
@@ -48,7 +49,8 @@ public class RaccoonAIWashMixin {
         // Only check block state if position changed (caching)
         if (!waterPos.equals(hotbath$lastWaterPos)) {
             hotbath$lastWaterPos = waterPos;
-            hotbath$isInHotBath = raccoon.level().getBlockState(waterPos).getBlock() instanceof AbstractHotbathBlock;
+            var block = raccoon.level().getBlockState(waterPos).getBlock();
+            hotbath$isInHotBath = block instanceof AbstractHotbathBlock || block instanceof DynamicCustomFluidBlock;
         }
         
         // Apply speed bonus if in hot bath

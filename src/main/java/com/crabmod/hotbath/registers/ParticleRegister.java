@@ -107,6 +107,14 @@ public class ParticleRegister {
     public static final RegistryObject<SimpleParticleType> LANDING_ROSE_BATH =
             PARTICLE_TYPES.register("landing_rose_bath", () -> new SimpleParticleType(false));
 
+    // Dynamic colored drip particles (for DynamicFluidType - color passed via speed params)
+    public static final RegistryObject<SimpleParticleType> DRIPPING_DYNAMIC =
+            PARTICLE_TYPES.register("dripping_dynamic", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> FALLING_DYNAMIC =
+            PARTICLE_TYPES.register("falling_dynamic", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> LANDING_DYNAMIC =
+            PARTICLE_TYPES.register("landing_dynamic", () -> new SimpleParticleType(false));
+
     // Fly particle for extremely dirty players
     public static final RegistryObject<SimpleParticleType> FLY =
             PARTICLE_TYPES.register("fly", () -> new SimpleParticleType(false));

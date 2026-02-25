@@ -15,10 +15,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -66,36 +64,8 @@ public class CustomFluidBucketItem extends Item {
         
         if (hitResult.getType() == HitResult.Type.BLOCK) {
             BlockPos pos = hitResult.getBlockPos();
-            BlockState clickedState = level.getBlockState(pos);
-            
-            // Check if the clicked block can be waterlogged
-            if (clickedState.getBlock() instanceof SimpleWaterloggedBlock
-                    && clickedState.hasProperty(BlockStateProperties.WATERLOGGED)) {
-                
-                boolean isAlreadyWaterlogged = clickedState.getValue(BlockStateProperties.WATERLOGGED);
-                
-                if (!level.mayInteract(player, pos)) {
-                    return InteractionResultHolder.fail(stack);
-                }
-                
-                if (!level.isClientSide) {
-                    if (!isAlreadyWaterlogged) {
-                        // Waterlog the block with vanilla water behavior
-                        level.setBlock(pos, clickedState.setValue(BlockStateProperties.WATERLOGGED, true), 3);
-                    }
-                    
-                    level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
-                    level.gameEvent(player, GameEvent.FLUID_PLACE, pos);
-                }
-                
-                // Return empty bucket
-                if (!player.getAbilities().instabuild) {
-                    return InteractionResultHolder.sidedSuccess(new ItemStack(Items.BUCKET), level.isClientSide());
-                }
-                return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
-            }
-            
-            // Normal fluid placement
+
+            // Place fluid block at adjacent position (no waterlogging support in 1.20.1)
             BlockPos placePos = pos.relative(hitResult.getDirection());
             
             if (!level.mayInteract(player, pos) || !player.mayUseItemAt(placePos, hitResult.getDirection(), stack)) {

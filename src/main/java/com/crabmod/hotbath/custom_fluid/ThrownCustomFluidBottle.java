@@ -97,8 +97,11 @@ public class ThrownCustomFluidBottle extends ThrowableItemProjectile {
         if (id == 3) {
             ItemStack stack = this.getItem();
             CustomFluidDefinition definition = CustomFluidNBTHelper.getFluidDefinition(stack);
-            
-            int color = definition != null ? definition.color() : 0x45E1E9;
+
+            // Get color from NBT first (always available on client via entity data sync)
+            // Falls back to definition.color() or default cyan if NBT not present
+            int nbtColor = CustomFluidNBTHelper.getFluidColor(stack);
+            int color = nbtColor != -1 ? nbtColor : (definition != null ? definition.color() : 0x45E1E9);
             double r = ((color >> 16) & 0xFF) / 255.0;
             double g = ((color >> 8) & 0xFF) / 255.0;
             double b = (color & 0xFF) / 255.0;

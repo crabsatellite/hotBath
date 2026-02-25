@@ -10,6 +10,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -52,7 +53,19 @@ public class DynamicFluidType extends FluidType {
     public DynamicFluidType(Properties properties) {
         super(properties);
     }
-    
+
+    /**
+     * Override to allow water-breathing entities (like tropical fish) to survive in dynamic custom fluids.
+     * Entities that can breathe underwater won't drown in our fluid.
+     */
+    @Override
+    public boolean canDrownIn(LivingEntity entity) {
+        if (entity.canBreatheUnderwater()) {
+            return false;
+        }
+        return super.canDrownIn(entity);
+    }
+
     /**
      * Gets the CustomFluidDefinition from the BlockEntity at the given position.
      */

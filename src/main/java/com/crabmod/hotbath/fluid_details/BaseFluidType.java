@@ -91,17 +91,9 @@ public class BaseFluidType extends FluidType {
         return super.canDrownIn(entity);
     }
 
-    /*
-    @Override
-    public @Nullable FluidType.DripstoneDripInfo getDripInfo() {
-        // Default chance is 0.17578125F (same as water)
-        // We return our custom particle and fluid
-        if (dripParticle != null) {
-            return new FluidType.DripstoneDripInfo(0.17578125F, dripParticle.get(), fluidSupplier != null ? fluidSupplier.get().defaultFluidState().createLegacyBlock().getBlock() : null);
-        }
-        return super.getDripInfo();
+    public ParticleOptions getDripParticle() {
+        return dripParticle != null ? dripParticle.get() : null;
     }
-    */
 
     @Override
     public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {

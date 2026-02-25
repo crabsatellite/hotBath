@@ -49,13 +49,16 @@ public class CustomFluidBlockEntity extends BlockEntity {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
             // Update all connected flowing fluid blocks
             updateConnectedFluidBlocks(fluidId);
-            
+
             // If the fluid ID changed, schedule tick updates for neighbors
             // so they can re-evaluate if they still have a valid source
             boolean idChanged = (oldFluidId == null && fluidId != null)
                     || (oldFluidId != null && !oldFluidId.equals(fluidId));
             if (idChanged) {
                 scheduleNeighborFluidUpdates();
+                // Trigger server-side light recalculation when fluid ID changes
+                // Without this, the light engine keeps the stale cached value
+                scheduleLightUpdate();
             }
         }
     }

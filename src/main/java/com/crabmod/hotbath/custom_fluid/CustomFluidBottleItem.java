@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * A drinkable bottle that can contain any custom fluid defined in data packs.
@@ -63,13 +62,13 @@ public class CustomFluidBottleItem extends Item {
         
         if (entity instanceof Player player && !player.getAbilities().instabuild) {
             stack.shrink(1);
-            ItemStack emptyBottle = new ItemStack(Items.GLASS_BOTTLE);
-            if (!player.getInventory().add(emptyBottle)) {
-                player.drop(emptyBottle, false);
+            if (stack.isEmpty()) {
+                return new ItemStack(Items.GLASS_BOTTLE);
             }
+            player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));
         }
-        
-        return stack.isEmpty() ? new ItemStack(Items.GLASS_BOTTLE) : stack;
+
+        return stack;
     }
     
     /**
@@ -155,22 +154,31 @@ public class CustomFluidBottleItem extends Item {
         
         CustomFluidDefinition definition = CustomFluidNBTHelper.getFluidDefinition(stack);
         if (definition != null) {
-            // List effects
-            for (CustomFluidDefinition.EffectEntry effect : definition.effects()) {
-                String effectName = effect.effect().toString();
-                int amplifier = effect.amplifier() + 1; // Display level (1-based)
-                int durationSeconds = effect.duration() / 20;
-                
-                tooltip.add(Component.translatable("tooltip.hotbath.effect_entry",
-                        effectName, amplifier, durationSeconds)
-                        .withStyle(ChatFormatting.BLUE));
-            }
-            
-            if (definition.effects().isEmpty()) {
-                tooltip.add(Component.translatable("tooltip.hotbath.no_effects")
-                        .withStyle(ChatFormatting.GRAY));
+            // Show effects using the same approach as SplashCustomFluidBottleItem
+            List<MobEffectInstance> effects = definition.createEffectInstances();
+            for (MobEffectInstance effect : effects) {
+                String effectName = effect.getEffect().getDescriptionId();
+                int amplifier = effect.getAmplifier();
+                int durationSeconds = effect.getDuration() / 20;
+
+                String level_str = amplifier > 0 ? " " + toRoman(amplifier + 1) : "";
+                tooltip.add(Component.translatable(effectName)
+                        .append(level_str)
+                        .append(" (" + durationSeconds + "s)")
+                        .withStyle(effect.getEffect().isBeneficial() ? ChatFormatting.BLUE : ChatFormatting.RED));
             }
         }
+    }
+
+    private static String toRoman(int number) {
+        return switch (number) {
+            case 1 -> "I";
+            case 2 -> "II";
+            case 3 -> "III";
+            case 4 -> "IV";
+            case 5 -> "V";
+            default -> String.valueOf(number);
+        };
     }
 
     /**

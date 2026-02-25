@@ -1,5 +1,6 @@
 package com.crabmod.hotbath.util;
 
+import com.crabmod.hotbath.custom_fluid.DynamicFluidRegistry;
 import com.crabmod.hotbath.registers.FluidsRegister;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -80,7 +81,11 @@ public class HotbathFluidHelper {
         cache.add(FluidsRegister.PEONY_BATH_FLOWING.get());
         cache.add(FluidsRegister.ROSE_BATH_FLUID.get());
         cache.add(FluidsRegister.ROSE_BATH_FLOWING.get());
-        
+
+        // Add dynamic custom fluids
+        cache.add(DynamicFluidRegistry.DYNAMIC_FLUID_STILL.get());
+        cache.add(DynamicFluidRegistry.DYNAMIC_FLUID_FLOWING.get());
+
         return cache;
     }
     

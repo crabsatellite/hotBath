@@ -14,7 +14,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FlowingFluid;
@@ -68,15 +67,10 @@ public class BathBucketItem extends BucketItem {
         boolean canReplace = blockState.canBeReplaced(content);
         
         // Check if we can place liquid here
+        // Note: No waterlogging support - hotBath fluids place as full fluid blocks only
         boolean canPlace;
         if (!blockState.isAir() && !canReplace) {
-            // Check if block can accept this liquid via LiquidBlockContainer
-            if (block instanceof LiquidBlockContainer container 
-                    && container.canPlaceLiquid(level, pos, blockState, content)) {
-                canPlace = true;
-            } else {
-                canPlace = false;
-            }
+            canPlace = false;
         } else {
             canPlace = true;
         }
@@ -89,14 +83,6 @@ public class BathBucketItem extends BucketItem {
         // Handle nether evaporation
         if (level.dimensionType().ultraWarm() && content.is(FluidTags.WATER)) {
             playEvaporationEffects(level, pos, player);
-            return true;
-        }
-        
-        // KEY FIX: Call placeLiquid for LiquidBlockContainer blocks (not just for WATER)
-        if (block instanceof LiquidBlockContainer container 
-                && container.canPlaceLiquid(level, pos, blockState, content)) {
-            container.placeLiquid(level, pos, blockState, flowingFluid.getSource(false));
-            this.playEmptySound(player, level, pos);
             return true;
         }
         
