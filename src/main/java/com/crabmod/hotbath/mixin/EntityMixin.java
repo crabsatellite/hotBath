@@ -1,5 +1,6 @@
 package com.crabmod.hotbath.mixin;
 
+import com.crabmod.hotbath.custom_fluid.DynamicFluidType;
 import com.crabmod.hotbath.fluid_details.BaseFluidType;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
@@ -33,11 +34,11 @@ public abstract class EntityMixin {
     @Inject(method = "isInWater", at = @At("HEAD"), cancellable = true)
     private void hotbath$isInWaterInHotBath(CallbackInfoReturnable<Boolean> cir) {
         FluidType fluidType = this.getMaxHeightFluidType();
-        if (fluidType instanceof BaseFluidType) {
+        if (fluidType instanceof BaseFluidType || fluidType instanceof DynamicFluidType) {
             cir.setReturnValue(true);
         }
     }
-    
+
     /**
      * Make isEyeInFluid(FluidTags.WATER) return true when entity's eyes are in a hotBath fluid.
      * This is used by fish movement control and other water-related checks.
@@ -46,7 +47,7 @@ public abstract class EntityMixin {
     private void hotbath$isEyeInFluidInHotBath(TagKey<Fluid> fluidTag, CallbackInfoReturnable<Boolean> cir) {
         if (fluidTag == FluidTags.WATER) {
             FluidType eyeFluidType = this.getEyeInFluidType();
-            if (eyeFluidType instanceof BaseFluidType) {
+            if (eyeFluidType instanceof BaseFluidType || eyeFluidType instanceof DynamicFluidType) {
                 cir.setReturnValue(true);
             }
         }
