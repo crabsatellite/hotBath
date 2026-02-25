@@ -194,14 +194,16 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
             if (direction > 0) {
                  if (bubbleParticle == null) bubbleParticle = ParticleTypes.BUBBLE_COLUMN_UP;
 
-                 worldIn.addParticle(bubbleParticle, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0D, 0.04D, 0.0D);
+                 // Use addAlwaysVisibleParticle so bubbles are visible through the water surface from above
+                 worldIn.addAlwaysVisibleParticle(bubbleParticle, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0D, 0.04D, 0.0D);
+                 worldIn.addAlwaysVisibleParticle(bubbleParticle, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 0.0D, 0.04D, 0.0D);
                  if (rand.nextInt(200) == 0) {
                      worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), net.minecraft.sounds.SoundEvents.BUBBLE_COLUMN_UPWARDS_AMBIENT, net.minecraft.sounds.SoundSource.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
                  }
             } else {
                  if (bubbleParticle == null) bubbleParticle = ParticleTypes.CURRENT_DOWN;
 
-                 worldIn.addParticle(bubbleParticle, pos.getX() + 0.5D, pos.getY() + 0.8D, pos.getZ() + 0.5D, 0.0D, -0.04D, 0.0D);
+                 worldIn.addAlwaysVisibleParticle(bubbleParticle, pos.getX() + 0.5D, pos.getY() + 0.8D, pos.getZ() + 0.5D, 0.0D, -0.04D, 0.0D);
                  if (rand.nextInt(200) == 0) {
                      worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), net.minecraft.sounds.SoundEvents.BUBBLE_COLUMN_WHIRLPOOL_AMBIENT, net.minecraft.sounds.SoundSource.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
                  }
