@@ -35,38 +35,43 @@ public class HerbalBathBlock extends AbstractHotbathBlock implements IInsideArea
             return;
         }
 
-        if (!(entity instanceof ServerPlayer player)) {
-            // Check if entity is undead (using MobType check for 1.20 compatibility)
-            if (entity instanceof LivingEntity livingEntity && livingEntity.getMobType() == MobType.UNDEAD) {
-                if (entity.tickCount % 20 == 0) {
-                    entity.hurt(level.damageSources().magic(), 0.5F);
-                }
-            }
+        // Unified logic: track ALL living entities with the same tracker
+        if (!(entity instanceof LivingEntity livingEntity) || !livingEntity.isAlive()) {
             return;
         }
 
-        if (!player.isAlive()) {
-            return;
+        // Undead take damage in herbal bath
+        if (livingEntity.getMobType() == MobType.UNDEAD) {
+            if (entity.tickCount % 20 == 0) {
+                entity.hurt(level.damageSources().magic(), 0.5F);
+            }
         }
-        InsideAreaResult result = trackInside(player);
+
+        // Same tracking logic for players and mobs
+        InsideAreaResult result = trackInside(entity);
 
         if (!result.shouldProcess()) {
             return;
         }
 
+        // Negative effect removal for ALL living entities (after 15 seconds)
+        if (result.stayedTicks() >= 15 * TICK_NUMBER) {
+            EffectRemovalHandler.removeNegativeEffects(livingEntity);
+        }
+
+        // Player-only features below
+        if (!(entity instanceof ServerPlayer player)) {
+            return;
+        }
+
         HealthRegenHandler.regenHealth(0.25F, 2, player);
 
-        // Only check advancement on first enter to avoid redundant checks
         if (result.isFirstEnter() && result.totalEnterCount() >= ENTERED_TRIGGER_COUNT) {
             AdvancementHelper.tryAwardAdvancement(player, ADVANCEMENT_ID, "code_triggered");
         }
 
         if (result.stayedTicks() >= EFFECT_TRIGGER_SECONDS * TICK_NUMBER) {
             ResistanceBoostHandler.applyResistanceBoost(10, player);
-        }
-
-        if (result.stayedTicks() >= 15 * TICK_NUMBER) {
-            EffectRemovalHandler.removeNegativeEffects(player);
         }
     }
 }

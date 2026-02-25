@@ -11,6 +11,8 @@ import com.github.alexmodguy.alexscaves.server.entity.living.GummyBearEntity;
 import com.github.alexmodguy.alexscaves.server.entity.living.RaycatEntity;
 import com.github.alexmodguy.alexscaves.server.potion.ACEffectRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.protocol.game.ClientboundRemoveMobEffectPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -106,22 +108,26 @@ public class AlexsCavesEventHandler {
     private static void handleRadiationCure(LivingEntity living) {
         // Only check every 5 seconds for performance
         if (living.tickCount % RADIATION_CURE_INTERVAL != 0) return;
-        
+
         // Check if entity has IRRADIATED effect
         MobEffectInstance radiation = living.getEffect(ACEffectRegistry.IRRADIATED.get());
         if (radiation == null) return;
-        
+
         // Check if entity is in herbal bath
         BlockPos pos = living.blockPosition();
         BlockState state = living.level().getBlockState(pos);
-        
+
         if (state.getBlock() instanceof HerbalBathBlock) {
             int currentLevel = radiation.getAmplifier();
             int duration = radiation.getDuration();
             
-            // Remove current effect
+            // Remove current effect and sync to clients for non-player entities
             living.removeEffect(ACEffectRegistry.IRRADIATED.get());
-            
+            if (!(living instanceof ServerPlayer) && living.level() instanceof ServerLevel serverLevel) {
+                serverLevel.getChunkSource().broadcastAndSend(living,
+                        new ClientboundRemoveMobEffectPacket(living.getId(), ACEffectRegistry.IRRADIATED.get()));
+            }
+
             // If level > 0, apply reduced level effect
             if (currentLevel > 0) {
                 living.addEffect(new MobEffectInstance(

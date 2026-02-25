@@ -1,6 +1,7 @@
 package com.crabmod.hotbath.fluid_blocks;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 
 import java.util.Map;
 import java.util.UUID;
@@ -37,20 +38,21 @@ public interface IInsideAreaTracker {
         return 10;
     }
 
-    default InsideAreaResult trackInside(ServerPlayer player) {
+    /**
+     * Track any entity inside the area (players, mobs, etc.)
+     */
+    default InsideAreaResult trackInside(Entity entity) {
         String key = getAreaKey();
-        UUID playerUUID = player.getUUID();
-        int currentTick = player.tickCount;
-        
-        // Get or create the area-specific cache
-        Map<UUID, AreaState> playerCache = AREA_STATE_CACHE.computeIfAbsent(key, k -> new ConcurrentHashMap<>());
-        AreaState state = playerCache.get(playerUUID);
-        
+        UUID entityUUID = entity.getUUID();
+        int currentTick = entity.tickCount;
+
+        Map<UUID, AreaState> cache = AREA_STATE_CACHE.computeIfAbsent(key, k -> new ConcurrentHashMap<>());
+        AreaState state = cache.get(entityUUID);
+
         int lastInsideTick = state != null ? state.lastInsideTick() : 0;
         int stayedTime = state != null ? state.stayedTime() : 0;
         int enterCount = state != null ? state.enterCount() : 0;
 
-        // Same tick check - don't process again
         if (lastInsideTick == currentTick) {
             return new InsideAreaResult(false, false, stayedTime, enterCount);
         }
@@ -69,9 +71,7 @@ public interface IInsideAreaTracker {
             newStayedTime = stayedTime + 1;
         }
 
-        // Update cache (single write instead of multiple NBT writes)
-        playerCache.put(playerUUID, new AreaState(currentTick, newStayedTime, newEnterCount));
-
+        cache.put(entityUUID, new AreaState(currentTick, newStayedTime, newEnterCount));
         return new InsideAreaResult(isFirstEnter, true, newStayedTime, newEnterCount);
     }
 
