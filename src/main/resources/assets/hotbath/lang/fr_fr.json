@@ -37,7 +37,6 @@
   "item.hotbath.splash_rose_bath_bottle": "Bouteille de Bain à la Rose Jetable",
   "item.hotbath.splash_rose_bath_bottle.desc": "Romance liquide, livrée à grande vitesse. Accorde la force de mille épines. Rien ne dit 'je tiens à toi' comme un visage plein d'eau de rose.",
   "fluid.hotbath.hot_water_block": "Bloc d'Eau Chaude",
-
   "item.hotbath.custom_fluid_bucket": "Seau de %s",
   "item.hotbath.custom_fluid_bucket.desc": "Un seau de liquide de bain personnalisé.",
   "item.hotbath.custom_fluid_bucket.tooltip": "Contient: %s",
@@ -48,7 +47,6 @@
   "item.hotbath.splash_custom_fluid_bottle.desc": "Une bouteille de liquide de bain personnalisé jetable.",
   "item.hotbath.splash_custom_fluid_bottle.tooltip": "Contient: %s",
   "item.hotbath.custom_fluid.unknown": "Liquide Inconnu",
-
   "item.hotbath.bath_herb": "Herbe de Bain",
   "item.hotbath.bath_herb.desc": "Herbes mystérieuses d'Extrême-Orient, pulsant d'une énergie ancienne. On dit qu'elles harmonisent le flux intérieur et nettoient la lassitude de l'âme.",
   "itemGroup.hotbath.hotbath_tab": "Bain Chaud",
@@ -65,21 +63,19 @@
   "hotbath.advancement.something_smells": "\"Populaire !\"",
   "hotbath.advancement.something_smells.desc": "Tu devrais peut-être prendre un bain.",
   "hotbath_tab": "Bain Chaud",
-
   "commands.hotbath.dirtiness.get": "Saleté: %s%% (%s)",
   "commands.hotbath.dirtiness.get.flies_active": " [MOUCHES ACTIVES]",
   "commands.hotbath.dirtiness.get.max_dirty": " [Saleté max: %s/%s ticks]",
   "commands.hotbath.dirtiness.set": "Saleté réglée à %s%%",
   "commands.hotbath.dirtiness.clean": "Vous êtes maintenant propre!",
   "commands.hotbath.dirtiness.flies": "Mouches activées! Vous êtes extrêmement sale (100%% depuis 2+ jours)",
-
   "hotbath.compat.warning.title": "⚠ Avertissement de compatibilité",
   "hotbath.compat.warning.disabled": "intégration désactivée en raison d'une erreur.",
   "hotbath.compat.warning.version": "  Version du mod: %s",
   "hotbath.compat.warning.api_change": "  Cela peut être dû à un changement d'API dans %s.",
   "hotbath.compat.warning.report": "[Cliquez ici pour signaler ce problème]",
   "hotbath.compat.warning.report.hover": "Ouvrir la page GitHub Issues",
-
   "hotbath.book.name": "Balneum Manuale",
-  "hotbath.book.landing_text": "Bienvenue dans le Balneum Manuale ! Faites une pause dans vos aventures et plongez dans un bain chaud relaxant. Ce manuel couvre tout, des liquides de base aux systèmes de liquides personnalisés avancés."
+  "hotbath.book.landing_text": "Bienvenue dans le Balneum Manuale ! Faites une pause dans vos aventures et plongez dans un bain chaud relaxant. Ce manuel couvre tout, des liquides de base aux systèmes de liquides personnalisés avancés.",
+  "tooltip.hotbath.duration": " (%ss)"
 }

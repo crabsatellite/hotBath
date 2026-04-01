@@ -37,7 +37,6 @@
   "item.hotbath.splash_rose_bath_bottle": "Взрывная бутылка с розовой ванной",
   "item.hotbath.splash_rose_bath_bottle.desc": "Жидкая романтика, доставленная на высокой скорости. Дарует силу тысячи шипов. Ничто не говорит 'ты мне небезразличен' так, как лицо, полное розовой воды.",
   "fluid.hotbath.hot_water_block": "Блок горячей воды",
-
   "item.hotbath.custom_fluid_bucket": "Ведро %s",
   "item.hotbath.custom_fluid_bucket.desc": "Ведро с пользовательской жидкостью для ванны.",
   "item.hotbath.custom_fluid_bucket.tooltip": "Содержит: %s",
@@ -48,7 +47,6 @@
   "item.hotbath.splash_custom_fluid_bottle.desc": "Метательная бутылка с пользовательской жидкостью для ванны.",
   "item.hotbath.splash_custom_fluid_bottle.tooltip": "Содержит: %s",
   "item.hotbath.custom_fluid.unknown": "Неизвестная жидкость",
-
   "item.hotbath.bath_herb": "Трава для ванны",
   "item.hotbath.bath_herb.desc": "Таинственные травы с Дальнего Востока, пульсирующие древней энергией. Говорят, они гармонизируют внутренний поток и очищают душу от усталости.",
   "itemGroup.hotbath.hotbath_tab": "Горячая ванна",
@@ -65,21 +63,19 @@
   "hotbath.advancement.something_smells": "«Любимчик!»",
   "hotbath.advancement.something_smells.desc": "Может, стоит принять ванну?",
   "hotbath_tab": "Горячая ванна",
-
   "commands.hotbath.dirtiness.get": "Грязь: %s%% (%s)",
   "commands.hotbath.dirtiness.get.flies_active": " [МУХИ АКТИВНЫ]",
   "commands.hotbath.dirtiness.get.max_dirty": " [Макс. грязь: %s/%s тиков]",
   "commands.hotbath.dirtiness.set": "Грязь установлена на %s%%",
   "commands.hotbath.dirtiness.clean": "Теперь вы чисты!",
   "commands.hotbath.dirtiness.flies": "Мухи включены! Вы очень грязный (100%% более 2 дней)",
-
   "hotbath.compat.warning.title": "⚠ Предупреждение о совместимости",
   "hotbath.compat.warning.disabled": "интеграция отключена из-за ошибки.",
   "hotbath.compat.warning.version": "  Версия мода: %s",
   "hotbath.compat.warning.api_change": "  Это может быть вызвано изменением API в %s.",
   "hotbath.compat.warning.report": "[Нажмите здесь, чтобы сообщить о проблеме]",
   "hotbath.compat.warning.report.hover": "Открыть страницу GitHub Issues",
-
   "hotbath.book.name": "Balneum Manuale",
-  "hotbath.book.landing_text": "Добро пожаловать в Balneum Manuale! Отдохните от приключений и насладитесь расслабляющей горячей ванной. Это руководство охватывает всё: от базовых жидкостей до продвинутых систем пользовательских жидкостей."
+  "hotbath.book.landing_text": "Добро пожаловать в Balneum Manuale! Отдохните от приключений и насладитесь расслабляющей горячей ванной. Это руководство охватывает всё: от базовых жидкостей до продвинутых систем пользовательских жидкостей.",
+  "tooltip.hotbath.duration": " (%sс)"
 }

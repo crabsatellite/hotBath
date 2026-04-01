@@ -3,6 +3,8 @@ package com.crabmod.hotbath.compat;
 import com.crabmod.hotbath.HotBathConfig;
 import com.crabmod.hotbath.dirtiness.DirtinessAttachment;
 import com.crabmod.hotbath.dirtiness.DirtinessData;
+import com.crabmod.hotbath.custom_fluid.CustomFluidBlockEntity;
+import com.crabmod.hotbath.custom_fluid.DynamicCustomFluidBlock;
 import com.crabmod.hotbath.fluid_blocks.AbstractHotbathBlock;
 import com.github.alexthe666.alexsmobs.entity.EntityCapuchinMonkey;
 import com.github.alexthe666.alexsmobs.entity.EntityCockroach;
@@ -13,6 +15,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -362,11 +366,28 @@ public class AlexsMobsEventHandler {
     }
     
     /**
-     * Check if a monkey is currently in a hot spring fluid.
+     * Check if a monkey is currently in a valid hot spring fluid.
+     * For DynamicCustomFluidBlock, requires the fluid definition to exist and be hot (>= 35°C).
+     * Orphaned blocks (data pack removed) will NOT be treated as hot springs.
      */
     private static boolean isInHotSpring(EntityCapuchinMonkey monkey) {
-        BlockPos pos = monkey.blockPosition();
-        BlockState state = monkey.level().getBlockState(pos);
+        return isHotSpringBlockAt(monkey.level(), monkey.blockPosition());
+    }
+
+    /**
+     * Check if a block at the given position is a valid hot spring.
+     * For DynamicCustomFluidBlock, requires the fluid definition to exist and be hot.
+     * For built-in bath types, always returns true.
+     */
+    private static boolean isHotSpringBlockAt(Level level, BlockPos pos) {
+        BlockState state = level.getBlockState(pos);
+        if (state.getBlock() instanceof DynamicCustomFluidBlock) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof CustomFluidBlockEntity customBe) {
+                return customBe.isHot();
+            }
+            return false;
+        }
         return state.getBlock() instanceof AbstractHotbathBlock;
     }
     
@@ -452,8 +473,7 @@ public class AlexsMobsEventHandler {
             if (cacheValid) {
                 // If cached result exists, verify it's still a hot spring
                 if (cached.result() != null) {
-                    BlockState state = monkey.level().getBlockState(cached.result());
-                    if (state.getBlock() instanceof AbstractHotbathBlock) {
+                    if (isHotSpringBlockAt(monkey.level(), cached.result())) {
                         return cached.result();
                     }
                     // Hot spring was removed, invalidate cache
@@ -490,9 +510,8 @@ public class AlexsMobsEventHandler {
                     
                     for (int y = -2; y <= 2; y++) {
                         BlockPos checkPos = center.offset(x, y, z);
-                        BlockState state = monkey.level().getBlockState(checkPos);
-                        
-                        if (state.getBlock() instanceof AbstractHotbathBlock) {
+
+                        if (isHotSpringBlockAt(monkey.level(), checkPos)) {
                             double dist = center.distSqr(checkPos);
                             if (dist < nearestDist) {
                                 nearestDist = dist;

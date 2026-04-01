@@ -36,7 +36,6 @@
   "item.hotbath.splash_rose_bath_bottle": "投擲用薔薇湯入り瓶",
   "item.hotbath.splash_rose_bath_bottle.desc": "高速で届く液体のロマンス。千の棘のような力を与える。顔に薔薇水を浴びせることほど「気にかけている」と伝える方法はない。",
   "fluid.hotbath.hot_water_block": "お湯ブロック",
-
   "item.hotbath.custom_fluid_bucket": "%sバケツ",
   "item.hotbath.custom_fluid_bucket.desc": "カスタム入浴液の入ったバケツ。",
   "item.hotbath.custom_fluid_bucket.tooltip": "内容物: %s",
@@ -47,7 +46,6 @@
   "item.hotbath.splash_custom_fluid_bottle.desc": "投擲可能なカスタム入浴液のスプラッシュボトル。",
   "item.hotbath.splash_custom_fluid_bottle.tooltip": "内容物: %s",
   "item.hotbath.custom_fluid.unknown": "未知の液体",
-
   "item.hotbath.bath_herb": "入浴用薬草",
   "item.hotbath.bath_herb.desc": "遥か東方より伝わりし神秘の薬草。古の気が宿っており、浸かる者の脈を整え、魂の澱を浄化すると言われている。",
   "itemGroup.hotbath.hotbath_tab": "ホットバス",
@@ -63,21 +61,19 @@
   "hotbath.advancement.rose_body_fragrance.desc": "長く浸かり続けることで、体から香りが漂い、蝶や蜂を引き寄せる偉業を成し遂げる。",
   "hotbath.advancement.something_smells": "「モテモテ」",
   "hotbath.advancement.something_smells.desc": "お風呂に入った方がいいかも。",
-
   "commands.hotbath.dirtiness.get": "汚れ度: %s%% (%s)",
   "commands.hotbath.dirtiness.get.flies_active": " [ハエ発生中]",
   "commands.hotbath.dirtiness.get.max_dirty": " [最大汚れ: %s/%s ティック]",
   "commands.hotbath.dirtiness.set": "汚れ度を %s%% に設定しました",
   "commands.hotbath.dirtiness.clean": "あなたは今、清潔です！",
   "commands.hotbath.dirtiness.flies": "ハエを有効化！あなたは非常に汚れています（100%%が2日以上続いています）",
-
   "hotbath.compat.warning.title": "⚠ 互換性警告",
   "hotbath.compat.warning.disabled": "の統合がエラーにより無効化されました。",
   "hotbath.compat.warning.version": "  Modバージョン: %s",
   "hotbath.compat.warning.api_change": "  これは %s のAPI変更が原因の可能性があります。",
   "hotbath.compat.warning.report": "[ここをクリックして問題を報告]",
   "hotbath.compat.warning.report.hover": "GitHub Issuesページを開く",
-
   "hotbath.book.name": "バルネウム浴場書",
-  "hotbath.book.landing_text": "バルネウム浴場書へようこそ！冒険の疲れを癒すためにリラックスできる熱いお風呂に浸かりましょう。このガイドブックでは、基本的な液体から高度なカスタム液体システムまで、すべてを網羅しています。"
+  "hotbath.book.landing_text": "バルネウム浴場書へようこそ！冒険の疲れを癒すためにリラックスできる熱いお風呂に浸かりましょう。このガイドブックでは、基本的な液体から高度なカスタム液体システムまで、すべてを網羅しています。",
+  "tooltip.hotbath.duration": " (%s秒)"
 }

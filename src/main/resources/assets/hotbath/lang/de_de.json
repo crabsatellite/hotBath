@@ -37,7 +37,6 @@
   "item.hotbath.splash_rose_bath_bottle": "Wurf-Rosenbadflasche",
   "item.hotbath.splash_rose_bath_bottle.desc": "Flüssige Romantik, mit hoher Geschwindigkeit geliefert. Gewährt die Stärke von tausend Dornen. Nichts sagt 'Ich mag dich' wie ein Gesicht voller Rosenwasser.",
   "fluid.hotbath.hot_water_block": "Heißwasserblock",
-
   "item.hotbath.custom_fluid_bucket": "%s Eimer",
   "item.hotbath.custom_fluid_bucket.desc": "Ein Eimer mit individueller Badeflüssigkeit.",
   "item.hotbath.custom_fluid_bucket.tooltip": "Enthält: %s",
@@ -48,7 +47,6 @@
   "item.hotbath.splash_custom_fluid_bottle.desc": "Eine werfbare Spritzflasche mit individueller Badeflüssigkeit.",
   "item.hotbath.splash_custom_fluid_bottle.tooltip": "Enthält: %s",
   "item.hotbath.custom_fluid.unknown": "Unbekannte Flüssigkeit",
-
   "item.hotbath.bath_herb": "Badekraut",
   "item.hotbath.bath_herb.desc": "Geheimnisvolle Kräuter aus dem Fernen Osten, die vor alter Energie pulsieren. Es heißt, sie harmonisieren den inneren Fluss und reinigen die Müdigkeit der Seele.",
   "itemGroup.hotbath.hotbath_tab": "Heißes Bad",
@@ -65,21 +63,19 @@
   "hotbath.advancement.something_smells": "Hier riecht's komisch…",
   "hotbath.advancement.something_smells.desc": "Vielleicht solltest du mal baden.",
   "hotbath_tab": "Heißes Bad",
-
   "commands.hotbath.dirtiness.get": "Verschmutzung: %s%% (%s)",
   "commands.hotbath.dirtiness.get.flies_active": " [FLIEGEN AKTIV]",
   "commands.hotbath.dirtiness.get.max_dirty": " [Max. Verschmutzung: %s/%s Ticks]",
   "commands.hotbath.dirtiness.set": "Verschmutzung auf %s%% gesetzt",
   "commands.hotbath.dirtiness.clean": "Du bist jetzt sauber!",
   "commands.hotbath.dirtiness.flies": "Fliegen aktiviert! Du bist jetzt extrem schmutzig (100%% seit 2+ Tagen)",
-
   "hotbath.compat.warning.title": "⚠ Kompatibilitätswarnung",
   "hotbath.compat.warning.disabled": "Integration wurde wegen eines Fehlers deaktiviert.",
   "hotbath.compat.warning.version": "  Mod-Version: %s",
   "hotbath.compat.warning.api_change": "  Dies könnte auf eine API-Änderung in %s zurückzuführen sein.",
   "hotbath.compat.warning.report": "[Hier klicken, um das Problem zu melden]",
   "hotbath.compat.warning.report.hover": "GitHub Issues-Seite öffnen",
-
   "hotbath.book.name": "Balneum Manuale",
-  "hotbath.book.landing_text": "Willkommen zum Balneum Manuale! Machen Sie eine Pause von Ihren Abenteuern und genießen Sie ein entspannendes heißes Bad. Dieses Handbuch behandelt alles von grundlegenden Flüssigkeiten bis hin zu fortgeschrittenen benutzerdefinierten Flüssigkeitssystemen."
+  "hotbath.book.landing_text": "Willkommen zum Balneum Manuale! Machen Sie eine Pause von Ihren Abenteuern und genießen Sie ein entspannendes heißes Bad. Dieses Handbuch behandelt alles von grundlegenden Flüssigkeiten bis hin zu fortgeschrittenen benutzerdefinierten Flüssigkeitssystemen.",
+  "tooltip.hotbath.duration": " (%ss)"
 }

@@ -35,7 +35,6 @@
   "item.hotbath.splash_peony_bath_bottle.desc": "A botanical airstrike. Bestows good fortune upon impact. Luck has never been this fragrant... or this sudden.",
   "item.hotbath.splash_rose_bath_bottle": "Splash Rose Bath Bottle",
   "item.hotbath.splash_rose_bath_bottle.desc": "Liquid romance, delivered at high velocity. Grants the strength of a thousand thorns. Nothing says 'I care' like a face full of rose water.",
-
   "item.hotbath.custom_fluid_bucket": "%s Bucket",
   "item.hotbath.custom_fluid_bucket.desc": "A bucket of custom bath fluid.",
   "item.hotbath.custom_fluid_bucket.tooltip": "Contains: %s",
@@ -46,10 +45,9 @@
   "item.hotbath.splash_custom_fluid_bottle.desc": "A throwable splash bottle of custom bath fluid.",
   "item.hotbath.splash_custom_fluid_bottle.tooltip": "Contains: %s",
   "item.hotbath.custom_fluid.unknown": "Unknown Fluid",
-
   "tooltip.hotbath.temperature": "Temperature: %s",
+  "tooltip.hotbath.duration": " (%ss)",
   "tooltip.hotbath.effects_count": "Effects: %d",
-
   "fluid.hotbath.hot_water_block": "Hot Water Block",
   "item.hotbath.bath_herb": "Bath Herb",
   "item.hotbath.bath_herb.desc": "Mysterious herbs from the Far East, pulsating with ancient energy. It is said to harmonize one's inner flow and cleanse the weariness of the soul.",
@@ -67,21 +65,18 @@
   "hotbath.advancement.something_smells": "Something Smells...",
   "hotbath.advancement.something_smells.desc": "You might want to take a bath.",
   "hotbath_tab": "Hot Bath",
-
   "commands.hotbath.dirtiness.get": "Dirtiness: %s%% (%s)",
   "commands.hotbath.dirtiness.get.flies_active": " [FLIES ACTIVE]",
   "commands.hotbath.dirtiness.get.max_dirty": " [Max dirty: %s/%s ticks]",
   "commands.hotbath.dirtiness.set": "Set dirtiness to %s%%",
   "commands.hotbath.dirtiness.clean": "You are now clean!",
   "commands.hotbath.dirtiness.flies": "Flies enabled! You are now extremely dirty (100%% for 2+ days)",
-
   "hotbath.compat.warning.title": "⚠ Compatibility Warning",
   "hotbath.compat.warning.disabled": "integration disabled due to error.",
   "hotbath.compat.warning.version": "  Mod version: %s",
   "hotbath.compat.warning.api_change": "  This may be due to an API change in %s.",
   "hotbath.compat.warning.report": "[Click here to report this issue]",
   "hotbath.compat.warning.report.hover": "Open GitHub Issues page",
-
   "hotbath.compat.disabled.title": "⚠ Integration Disabled",
   "hotbath.compat.disabled.cold_sweat": "$(c)Warning:$() The $(l)Cold Sweat$() integration has been $(c)disabled$() due to a compatibility error.$(br2)The features described in this entry are $(c)NOT currently working$().$(br2)This may be caused by a mod version mismatch. Please check the game log for details and report the issue on GitHub.",
   "hotbath.compat.disabled.tough_as_nails": "$(c)Warning:$() The $(l)Tough As Nails$() integration has been $(c)disabled$() due to a compatibility error.$(br2)The features described in this entry are $(c)NOT currently working$().$(br2)This may be caused by a mod version mismatch. Please check the game log for details and report the issue on GitHub.",
@@ -91,7 +86,6 @@
   "hotbath.compat.disabled.farmers_delight": "$(c)Warning:$() The $(l)Farmer's Delight$() integration has been $(c)disabled$() due to a compatibility error.$(br2)The features described in this entry are $(c)NOT currently working$().$(br2)This may be caused by a mod version mismatch. Please check the game log for details and report the issue on GitHub.",
   "hotbath.compat.disabled.twilight_forest": "$(c)Warning:$() The $(l)Twilight Forest$() integration has been $(c)disabled$() due to a compatibility error.$(br2)The features described in this entry are $(c)NOT currently working$().$(br2)This may be caused by a mod version mismatch. Please check the game log for details and report the issue on GitHub.",
   "hotbath.compat.disabled.serene_seasons": "$(c)Warning:$() The $(l)Serene Seasons$() integration has been $(c)disabled$() due to a compatibility error.$(br2)The features described in this entry are $(c)NOT currently working$().$(br2)This may be caused by a mod version mismatch. Please check the game log for details and report the issue on GitHub.",
-
   "hotbath.compat.not_installed.title": "⚪ Mod Not Installed",
   "hotbath.compat.not_installed.cold_sweat": "$(7)Cold Sweat$() is not installed.$(br2)Install this mod to unlock temperature management features:$(br)$(li)Bath fluids maintain body temperature at ~37°C$(li)Bottles increase body temperature$(li)Perfect for surviving cold biomes!",
   "hotbath.compat.not_installed.tough_as_nails": "$(7)Tough As Nails$() is not installed.$(br2)Install this mod to unlock:$(br)$(li)Warming effects when bathing$(li)Thirst restoration by drinking bath water$(li)Temperature regulation for survival",
@@ -102,7 +96,6 @@
   "hotbath.compat.not_installed.twilight_forest": "$(7)Twilight Forest$() is not installed.$(br2)Install this mod for dimension features:$(br)$(li)Remove Frosted effect with hot baths$(li)Firefly particles in the Twilight dimension",
   "hotbath.compat.not_installed.serene_seasons": "$(7)Serene Seasons$() is not installed.$(br2)Install this mod for seasonal bonuses:$(br)$(li)Winter bathing grants Resistance$(li)Mid-winter bonus Regeneration$(li)Melt nearby ice and snow",
   "hotbath.compat.not_installed.shower_core": "$(7)Shower Core$() is not installed.$(br2)Install this mod to expand your bathing experience with:$(br)$(li)$(thing)Bathtubs$() - Stylish tubs in 33 variants$(li)$(thing)Shower Heads$() - Compact & Rain styles$(li)$(thing)Rubber Ducks$() - Cute floating companions!$(br2)Perfect companion mod for Hot Bath!",
-
   "hotbath.entry.shower_core.name": "✨ Shower Core (Recommended)",
   "hotbath.entry.shower_core.bathtub.title": "Bathtubs",
   "hotbath.entry.shower_core.bathtub": "$(l)Shower Core$() adds beautiful $(thing)bathtubs$() in 33 different styles!$(br2)$(li)Wood variants: Oak, Birch, Spruce, Jungle, Acacia, Dark Oak, Mangrove, Cherry, Crimson, Warped, Bamboo$(li)Stone variants: Stone, Cobblestone$(li)Metal variants: Iron, Gold, Copper, Diamond$(li)Colored variants: All 16 dye colors$(br2)Bathtubs work perfectly with Hot Bath fluids!",
@@ -110,11 +103,9 @@
   "hotbath.entry.shower_core.shower": "Two types of shower heads available:$(br2)$(thing)Compact Shower Head$() - Classic handheld style$(br)$(thing)Rain Shower Head$() - Luxurious overhead rainfall$(br2)Both come in the same 33 style variants as bathtubs. Mount them on walls and enjoy a refreshing shower!",
   "hotbath.entry.shower_core.duck.title": "Rubber Ducks 🦆",
   "hotbath.entry.shower_core.duck": "The cutest addition to your bath!$(br2)$(li)Place on water, ground, or bathtubs$(li)Push them around with right-click$(li)They float and bob realistically$(li)Pick up with Shift + Right-click$(br2)No bath is complete without a rubber duck friend!",
-
   "hotbath.book.name": "Balneum Manuale",
   "hotbath.book.subtitle": "1st Edition",
   "hotbath.book.landing_text": "Welcome to the Balneum Manuale! Take a break from your adventures and soak in a relaxing hot bath. This book covers everything from basic fluids to advanced custom fluid systems.",
-
   "hotbath.category.basics.name": "Getting Started",
   "hotbath.category.basics.desc": "Learn the basics of Hot Bath mod and how to get started.",
   "hotbath.category.fluids.name": "Bath Fluids",
@@ -133,10 +124,8 @@
   "hotbath.category.advancements.desc": "All advancements and achievements in Hot Bath mod.",
   "hotbath.category.custom_fluids.name": "Custom Fluids",
   "hotbath.category.custom_fluids.desc": "Create your own bath fluids using data packs!",
-
   "hotbath.entry.adv_hot_bath.name": "Hot Bath",
   "hotbath.entry.adv_hot_bath.page1": "$(l)Hot Bath$() - \"Start your day with a hot bath\"$(br2)$(thing)Trigger:$() Obtain a Hot Water Bucket$(br)$(thing)Reward:$() 10 XP + All bath recipes unlocked$(br2)This is your first advancement! Simply craft or smelt a water bucket to get hot water and you'll unlock all the special bath recipes.",
-
   "hotbath.entry.adv_challenges.name": "Bath Challenges",
   "hotbath.entry.adv_challenges.page1": "These $(thing)Challenge$() advancements require dedication and repeated bathing. Each one tracks your cumulative soaks in a specific bath type!",
   "hotbath.entry.adv_challenges.foot.title": "Foot Health",
@@ -147,63 +136,52 @@
   "hotbath.entry.adv_challenges.chronic": "\"Those with weak health should soak more\"$(br2)$(thing)Requirement:$() Soak in Herbal Bath $(thing)100 times$()$(br)$(thing)Reward:$() 100 XP$(br2)Traditional medicine at its finest!",
   "hotbath.entry.adv_challenges.rose.title": "Rose Body Fragrance",
   "hotbath.entry.adv_challenges.rose": "\"Only through long immersion and cultivation can you achieve true body fragrance\"$(br2)$(thing)Requirement:$() Soak in Rose Bath $(thing)100 times$()$(br)$(thing)Reward:$() 100 XP$(br2)Become irresistible with natural rose scent!",
-
   "hotbath.entry.adv_hidden.name": "Hidden Achievements",
   "hotbath.entry.adv_hidden.page1": "Some advancements are $(thing)hidden$() - they won't appear until you discover them on your own!$(br2)$(8)Keep exploring and see what happens...$()",
-
   "hotbath.entry.introduction.name": "Introduction",
   "hotbath.entry.introduction.page1": "Welcome to $(l:hotbath:basics/introduction)Hot Bath$(/l)! This mod adds relaxing and therapeutic bath fluids to Minecraft. Each bath type provides unique buffs and healing effects when you soak in them.$(br2)Whether you need to recover health, remove negative effects, or just warm up, we have the perfect bath for you!",
   "hotbath.entry.introduction.page2.title": "Basic Mechanics",
   "hotbath.entry.introduction.page2": "$(li)Bathing for 15 seconds triggers special effects$(li)Different fluids provide different buffs$(li)Fluids restore health over time$(li)Soul Sand creates upward bubbles$(li)Magma Blocks create downward bubbles$(li)Custom particles match fluid colors",
   "hotbath.entry.introduction.page3.title": "Getting Started",
   "hotbath.entry.introduction.page3": "$(li)Start by smelting a $(item)Water Bucket$() in a furnace to get $(item)Hot Water$()$(li)Build a pool using any non-flammable blocks$(li)Pour your hot water and hop in!$(li)Upgrade to special baths by crafting with ingredients$(li)Check the $(l:hotbath:fluids/hot_water)Fluids$(/l) category for all bath types",
-
   "hotbath.entry.bath_herb.name": "Bath Herb",
   "hotbath.entry.bath_herb.page1": "$(item)Bath Herb$() is a mysterious ingredient from the Far East, essential for creating the Herbal Bath. These ancient herbs pulse with healing energy.",
   "hotbath.entry.bath_herb.obtain.title": "How to Obtain",
   "hotbath.entry.bath_herb.obtain": "$(li)Buy from $(thing)Novice Farmer Villagers$() for 10 emeralds$(li)Buy from $(thing)Wandering Traders$() for 15 emeralds$(br2)Stock up when you find them!",
-
   "hotbath.entry.tips.name": "Tips & Notes",
   "hotbath.entry.tips.page1": "When using bath fluids, please note:$(br)$(li)$(thing)Aquatic Life$(): Aquatic creatures won't spawn naturally in bath fluids, and fish (except tropical fish) and squids take damage in bath fluids.$(li)$(thing)Placement Restrictions$(): Surface plants, lily pads, seagrass, and turtle eggs cannot be placed in bath fluids. Coral plants will become dead coral shortly after being placed.$(li)$(thing)Fishing$(): Fishing in bath fluids will not catch anything.",
   "hotbath.entry.tips.interactions.title": "Fluid Interactions",
   "hotbath.entry.tips.interactions": "$(li)$(thing)Bubble Columns$(): Soul Sand creates upward bubbles, Magma Blocks create downward bubbles$(li)$(thing)Custom Particles$(): Bubbles and drip particles match the fluid color",
-
   "hotbath.entry.hot_water.name": "Hot Water",
   "hotbath.entry.hot_water.page1": "$(item)Hot Water$() is the foundation of all bath fluids. Simple yet effective, it washes away fatigue and provides a speed boost.",
   "hotbath.entry.hot_water.recipe": "Smelt a water bucket in any furnace to create hot water.",
   "hotbath.entry.hot_water.effects.title": "Effects",
   "hotbath.entry.hot_water.effects": "$(li)Bathing for 15s grants $(thing)Speed I$() (20s)$(br)$(li)$(thing)Hidden Achievement$(): [Foot Health] - Bathe 100 times for 100 XP",
-
   "hotbath.entry.milk_bath.name": "Milk Bath",
   "hotbath.entry.milk_bath.page1": "$(item)Milk Bath$() - The legendary beauty treatment! This creamy bath removes negative effects and restores both health and hunger.",
   "hotbath.entry.milk_bath.recipe": "Combine hot water with a milk bucket.",
   "hotbath.entry.milk_bath.effects.title": "Effects",
   "hotbath.entry.milk_bath.effects": "$(li)Restores $(thing)Health$() (0.25/2s)$(br)$(li)Restores $(thing)Hunger$() (1/15s)$(br)$(li)Bathing 15s removes all negative effects (except Bad Luck)$(br)$(li)$(thing)Hidden Achievement$(): [Milk Skin] - Bathe 100 times for 100 XP",
-
   "hotbath.entry.herbal_bath.name": "Herbal Bath",
   "hotbath.entry.herbal_bath.page1": "$(item)Herbal Bath$() - Ancient wisdom in liquid form! This therapeutic bath provides resistance and damages undead creatures.",
   "hotbath.entry.herbal_bath.recipe": "Combine hot water with 2 Bath Herbs.",
   "hotbath.entry.herbal_bath.effects.title": "Effects",
   "hotbath.entry.herbal_bath.effects": "$(li)Restores $(thing)Health$() (0.25/2s)$(br)$(li)Bathing 15s removes $(thing)ALL$() negative effects$(br)$(li)Bathing 5s grants $(thing)Resistance I$() (10s)$(br)$(li)Damages Undead mobs (0.5/s)$(br)$(li)$(thing)Hidden Achievement$(): [Chronic Invalid] - Bathe 100 times for 100 XP",
-
   "hotbath.entry.honey_bath.name": "Honey Bath",
   "hotbath.entry.honey_bath.page1": "$(item)Honey Bath$() - Cleopatra's beauty secret! This sticky bath provides absorption and restores hunger quickly, but slows you down.",
   "hotbath.entry.honey_bath.recipe": "Combine hot water with a honeycomb block.",
   "hotbath.entry.honey_bath.effects.title": "Effects",
   "hotbath.entry.honey_bath.effects": "$(li)Restores $(thing)Health$() (0.25/s) and $(thing)Hunger$() (1/4s)$(br)$(li)Gives $(thing)Slowness I$() while bathing$(br)$(li)Bathing 15s removes negative effects (except Slowness/Bad Luck)$(br)$(li)Bathing 15s grants $(thing)Absorption II$() (20s)",
-
   "hotbath.entry.peony_bath.name": "Peony Bath",
   "hotbath.entry.peony_bath.page1": "$(item)Peony Bath$() - Gift from the king of flowers! This elegant bath provides knockback resistance and eventually grants luck.",
   "hotbath.entry.peony_bath.recipe": "Combine hot water with 2 peonies.",
   "hotbath.entry.peony_bath.effects.title": "Effects",
   "hotbath.entry.peony_bath.effects": "$(li)Restores $(thing)Health$() (0.25/2s)$(br)$(li)Bathing 15s removes negative effects and Bad Omen$(br)$(li)Bathing 15s grants $(thing)Knockback Resistance$() (+0.05, 30s)$(br)$(li)Bathing 15s grants $(thing)Attack Speed$() (+10%, 15s)$(br)$(li)$(thing)Special$(): After 50 baths, grants $(thing)Luck I$() (45s)",
-
   "hotbath.entry.rose_bath.name": "Rose Bath",
   "hotbath.entry.rose_bath.page1": "$(item)Rose Bath$() - A romantic treat! This fragrant bath provides strength and removes the Bad Omen effect.",
   "hotbath.entry.rose_bath.recipe": "Combine hot water with 8 rose bushes.",
   "hotbath.entry.rose_bath.effects.title": "Effects",
   "hotbath.entry.rose_bath.effects": "$(li)Restores $(thing)Health$() (0.25/s)$(br)$(li)Bathing 15s removes negative effects and Bad Omen$(br)$(li)Bathing 15s grants $(thing)Strength I$() (20s)$(br)$(li)$(thing)Hidden Achievement$(): [Rose Body Fragrance] - Bathe 100 times for 100 XP",
-
   "hotbath.entry.drinkable_bottles.name": "Drinkable Bottles",
   "hotbath.entry.drinkable_bottles.page1": "Bath water can be bottled for portable use! Right-click any bath fluid with a glass bottle to collect it. These bottles provide effects when consumed.",
   "hotbath.entry.bottles.hot_water.title": "Hot Water Bottle",
@@ -218,7 +196,6 @@
   "hotbath.entry.bottles.peony": "Carries an elegant floral scent. Can bath water be this fragrant?$(br2)$(l)Effect$(): Grants $(thing)Luck I$() for 45 seconds.",
   "hotbath.entry.bottles.rose.title": "Rose Bath Bottle",
   "hotbath.entry.bottles.rose": "Rich rose aroma is intoxicating. Irresistible urge to take a sip...$(br2)$(l)Effect$(): Grants $(thing)Strength I$() for 45 seconds.",
-
   "hotbath.entry.splash_bottles.name": "Splash Bottles",
   "hotbath.entry.splash_bottles.page1": "Splash bottles can be thrown like potions! Brew any bath water bottle with gunpowder in a brewing stand to create splash versions.",
   "hotbath.entry.splash.hot_water.title": "Splash Hot Water",
@@ -233,7 +210,6 @@
   "hotbath.entry.splash.peony": "A botanical airstrike. Bestows good fortune upon impact.$(br2)$(l)Effect$(): Grants $(thing)Luck II$() for 30 seconds.",
   "hotbath.entry.splash.rose.title": "Splash Rose Bath",
   "hotbath.entry.splash.rose": "Liquid romance, delivered at high velocity. Grants the strength of a thousand thorns.$(br2)$(l)Effect$(): Grants $(thing)Strength II$() for 30 seconds.",
-
   "hotbath.entry.cold_sweat.name": "Cold Sweat",
   "hotbath.entry.cold_sweat.page1": "$(l)Cold Sweat$() provides the deepest temperature integration. Hot baths intelligently interact with the mod's temperature system.",
   "hotbath.entry.cold_sweat.immersion.title": "Bath Immersion",
@@ -242,7 +218,6 @@
   "hotbath.entry.cold_sweat.bottles": "$(li)Drinking bath water bottles increases body temperature$(li)Splash bottles apply temperature effects in an area$(li)Both regular and splash bottles provide Cold Resistance II for 30 seconds",
   "hotbath.entry.cold_sweat.custom.title": "Custom Fluids",
   "hotbath.entry.cold_sweat.custom": "$(li)Custom fluids with $(thing)temperature ≥ 35°C$() work with Cold Sweat$(li)The fluid's temperature value is converted to Minecraft units$(li)Lower temperature custom fluids are ignored by the temperature system",
-
   "hotbath.entry.tough_as_nails.name": "Tough As Nails",
   "hotbath.entry.tough_as_nails.page1": "$(l)Tough As Nails$() integration provides temperature regulation and thirst management through hot baths.",
   "hotbath.entry.tough_as_nails.temperature.title": "Temperature Control",
@@ -251,7 +226,6 @@
   "hotbath.entry.tough_as_nails.thirst": "$(li)Right-click with empty hand in bath to drink$(li)Hand drinking restores thirst$(li)Bath water bottles also restore thirst when consumed",
   "hotbath.entry.tough_as_nails.bottles.title": "Bottle Integration",
   "hotbath.entry.tough_as_nails.bottles": "$(li)Drinking bath bottles provides warming effect$(li)Splash bottles apply effects to nearby entities$(li)Both types provide Cold Resistance buff",
-
   "hotbath.entry.lso.name": "LSO",
   "hotbath.entry.lso.page1": "$(l)Legendary Survival Overhaul$() provides the most comprehensive integration with advanced temperature, thirst, and cold resistance mechanics.",
   "hotbath.entry.lso.temperature.title": "Temperature Warming",
@@ -260,12 +234,10 @@
   "hotbath.entry.lso.resistance": "$(li)After $(thing)10 seconds$() of bathing, you gain $(thing)Cold Resistance III$()$(li)Effect $(thing)accumulates$() with more bathing time$(li)Maximum duration: $(thing)5 minutes$()$(li)$(thing)Cold Immunity$() buff for 10s after leaving$(li)Prevents immediate re-freezing!",
   "hotbath.entry.lso.thirst.title": "Thirst & Bottles",
   "hotbath.entry.lso.thirst": "$(li)Drinking in bath restores $(thing)5 thirst$() + $(thing)0.5 saturation$()$(li)Bath bottles provide $(thing)Hot Drink$() effect (Level I)$(li)Drinking while bathing gives boosted $(thing)Hot Drink III$()$(li)Helps maintain body temperature!",
-
   "hotbath.entry.other_compat.name": "Other Integrations",
   "hotbath.entry.other_compat.page1": "Hot Bath integrates with many more mods! Check the detailed entries for each supported mod in this category.",
   "hotbath.entry.other_compat.mods.title": "Quick Reference",
   "hotbath.entry.other_compat.mods": "$(li)$(l)Alex's Mobs$(): Raccoons, monkeys, dirtiness$(li)$(l)Alex's Caves$(): Gummy bears, radiation cure$(li)$(l)Twilight Forest$(): Frosted removal, fireflies$(li)$(l)Farmer's Delight$(): Comfort effect$(li)$(l)Serene Seasons$(): Winter resistance boost",
-
   "hotbath.entry.alexs_mobs.name": "Alex's Mobs",
   "hotbath.entry.alexs_mobs.page1": "$(l)Alex's Mobs$() integration adds realistic animal behaviors and the $(thing)Dirtiness$() system for bug attraction.",
   "hotbath.entry.alexs_mobs.raccoon.title": "Raccoon Washing",
@@ -274,7 +246,6 @@
   "hotbath.entry.alexs_mobs.capuchin": "$(li)$(thing)Capuchin Monkeys$() are attracted to hot springs$(li)They will sit and soak like Japanese macaques!$(li)Monkeys in hot springs receive $(thing)Regeneration$() buff$(li)Easier to tame while relaxing in warm water",
   "hotbath.entry.alexs_mobs.dirtiness.title": "Dirtiness & Bugs",
   "hotbath.entry.alexs_mobs.dirtiness": "$(li)When extremely dirty, $(thing)Flies$() swarm around you$(li)$(thing)Crimson Mosquitoes$() become aggressive$(li)$(thing)Cockroaches$() loiter at 3-6 blocks distance$(li)Take a bath to become clean and bug-free!",
-
   "hotbath.entry.alexs_caves.name": "Alex's Caves",
   "hotbath.entry.alexs_caves.page1": "$(l)Alex's Caves$() integration includes candy melting, radiation curing, and cave creature interactions.",
   "hotbath.entry.alexs_caves.gummy.title": "Gummy Bear Melting",
@@ -285,12 +256,10 @@
   "hotbath.entry.alexs_caves.gammaroach": "$(li)$(thing)Gammaroaches$() are attracted to dirty players$(br)$(li)At 80%%+ dirtiness, they approach cautiously$(br)$(li)With fly status (extreme dirt), they become $(thing)aggressive$()!$(br)$(li)Bath regularly to avoid nuclear cockroach attacks!",
   "hotbath.entry.alexs_caves.raycat.title": "Raycat Rest",
   "hotbath.entry.alexs_caves.raycat": "$(li)$(thing)Raycats$() enjoy sitting near hot springs$(br)$(li)Uses shared cat behavior system$(br)$(li)They find warm spots relaxing",
-
   "hotbath.entry.farmers_delight.name": "Farmer's Delight",
   "hotbath.entry.farmers_delight.page1": "$(l)Farmer's Delight$() integration provides the $(thing)Comfort$() effect while bathing.",
   "hotbath.entry.farmers_delight.comfort.title": "Comfort Effect",
   "hotbath.entry.farmers_delight.comfort": "$(li)While in any hot bath, you gain $(thing)Comfort I$()$(li)Effect refreshes every 2 seconds$(li)Comfort provides $(thing)slow regeneration$() (1 HP / 4 seconds)$(li)Works regardless of hunger level!$(li)Perfect for relaxing after a hard day of farming",
-
   "hotbath.entry.twilight_forest.name": "Twilight Forest",
   "hotbath.entry.twilight_forest.page1": "$(l)Twilight Forest$() integration provides frost protection and atmospheric effects.",
   "hotbath.entry.twilight_forest.frosted.title": "Frosted Cure",
@@ -299,22 +268,18 @@
   "hotbath.entry.twilight_forest.firefly": "$(li)In the $(thing)Twilight Forest dimension$(), firefly particles spawn around bath pools$(li)Creates magical atmosphere$(li)Particles appear every 0.5 seconds$(li)Within 8 blocks of the bath",
   "hotbath.entry.twilight_forest.ice_mobs.title": "Ice Mob Damage",
   "hotbath.entry.twilight_forest.ice_mobs": "$(li)$(c)Ice creatures$() take damage in hot baths!$(li)Affected mobs: $(thing)Ice Crystal$(), $(thing)Stable/Unstable Ice Core$()$(li)$(thing)Snow Guardian$() and $(thing)Snow Queen$() boss$(li)1 damage every second$(li)The hot water melts them away!",
-
   "hotbath.entry.serene_seasons.name": "Serene Seasons",
   "hotbath.entry.serene_seasons.page1": "$(l)Serene Seasons$() integration provides seasonal bonuses and ice/snow melting.",
   "hotbath.entry.serene_seasons.winter.title": "Winter Bonuses",
   "hotbath.entry.serene_seasons.winter": "$(li)During $(thing)Winter$(), bathing grants extra $(thing)Resistance$()$(li)$(thing)Early/Late Winter$(): Resistance I$(li)$(thing)Mid Winter$(): Resistance II + Regeneration I$(li)Effects last 10 seconds, refreshed every 2s$(li)Hot baths also melt nearby ice and snow!",
-
   "hotbath.entry.custom_overview.name": "Overview",
   "hotbath.entry.custom_overview.page1": "Hot Bath supports $(thing)data-driven custom fluids$()! You can create your own bath liquids with unique colors, effects, and properties using data packs.",
   "hotbath.entry.custom_overview.features.title": "Features",
   "hotbath.entry.custom_overview.features": "$(li)Custom colors and visual effects$(li)Configurable potion effects$(li)Adjustable trigger time$(li)Temperature and viscosity settings$(li)Multi-language support$(li)Automatic bucket and bottle items$(li)Works with brewing stands",
-
   "hotbath.entry.custom_structure.name": "File Structure",
   "hotbath.entry.custom_structure.page1": "Custom fluids are defined in data packs. Place your JSON files in the correct folders for the game to recognize them.",
   "hotbath.entry.custom_structure.datapack.title": "Data Pack Structure",
   "hotbath.entry.custom_structure.datapack": "Place fluid definitions in:$(br2)$(8)data/<namespace>/hotbath/custom_fluids/<name>.json$()$(br2)Example:$(br)$(8)data/mypack/hotbath/custom_fluids/golden_bath.json$()$(br2)$(Translation files (optional): For custom translations, add lang files to a resource pack. The fluid JSON can also include inline translations.",
-
   "hotbath.entry.custom_json.name": "JSON Format",
   "hotbath.entry.custom_json.page1": "Each custom fluid is defined by a JSON file with various properties. All fields except $(thing)id$() are optional and have sensible defaults.",
   "hotbath.entry.custom_json.fields.title": "Basic Fields",
@@ -327,7 +292,6 @@
   "hotbath.entry.custom_json.effects": "Effects are defined as an array of objects:$(br2)$(li)$(thing)effect$(): Potion effect ID$(li)$(thing)duration$(): Duration in ticks$(li)$(thing)amplifier$(): Effect level (0 = I)$(li)$(thing)ambient$(): Show subtle particles$(li)$(thing)show_particles$(): Show effect particles$(li)$(thing)show_icon$(): Show HUD icon",
   "hotbath.entry.custom_json.translations.title": "Translations",
   "hotbath.entry.custom_json.translations": "Include a $(thing)translations$() object in your JSON:$(br2)$(li)$(thing)en_us$(), $(thing)zh_cn$(), etc.: Fluid name$(li)$(thing)en_us.desc$(), $(thing)zh_cn.desc$(), etc.: Description$(br2)HotBath automatically reads these translations when loading the fluid - no resource pack needed!",
-
   "hotbath.entry.custom_example.name": "Examples",
   "hotbath.entry.custom_example.page1": "Hot Bath includes an example data pack with $(thing)7 custom fluids$(). Check the $(thing)hotbath_example_fluids$() folder in the mod's data pack directory to see how they work!",
   "hotbath.entry.custom_example.golden.title": "Golden Bath",

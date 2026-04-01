@@ -49,6 +49,8 @@
     "fr_fr.desc": "Un bain enchanté mystique qui apporte la bonne fortune",
     "lzh.desc": "神秘附魔之湯，招致吉祥",
     "pt_br.desc": "Um banho encantado místico que traz boa sorte",
-    "ru_ru.desc": "Мистическая зачарованная ванна, приносящая удачу"
+    "ru_ru.desc": "Мистическая зачарованная ванна, приносящая удачу",
+    "zh_hk": "附魔浴",
+    "zh_hk.desc": "神秘的附魔浴，帶來好運"
   }
 }

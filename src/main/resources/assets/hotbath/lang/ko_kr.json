@@ -37,7 +37,6 @@
   "item.hotbath.splash_rose_bath_bottle": "투척용 장미 목욕 병",
   "item.hotbath.splash_rose_bath_bottle.desc": "고속으로 배달되는 액체 로맨스. 천 개의 가시 같은 힘을 부여합니다. 장미 물을 얼굴에 맞는 것만큼 '난 널 신경 써'라고 말하는 것은 없습니다.",
   "fluid.hotbath.hot_water_block": "뜨거운 물 블록",
-
   "item.hotbath.custom_fluid_bucket": "%s 양동이",
   "item.hotbath.custom_fluid_bucket.desc": "맞춤형 목욕 액체가 든 양동이.",
   "item.hotbath.custom_fluid_bucket.tooltip": "내용물: %s",
@@ -48,7 +47,6 @@
   "item.hotbath.splash_custom_fluid_bottle.desc": "던질 수 있는 맞춤형 목욕 액체 스플래시 병.",
   "item.hotbath.splash_custom_fluid_bottle.tooltip": "내용물: %s",
   "item.hotbath.custom_fluid.unknown": "알 수 없는 액체",
-
   "item.hotbath.bath_herb": "목욕 약초",
   "item.hotbath.bath_herb.desc": "극동에서 온 신비한 약초로, 고대의 에너지가 고동칩니다. 내면의 흐름을 조화시키고 영혼의 피로를 씻어낸다고 합니다.",
   "itemGroup.hotbath.hotbath_tab": "뜨거운 목욕",
@@ -65,21 +63,19 @@
   "hotbath.advancement.something_smells": "「인기인」",
   "hotbath.advancement.something_smells.desc": "목욕을 해야 할 것 같아요.",
   "hotbath_tab": "뜨거운 목욕",
-
   "commands.hotbath.dirtiness.get": "더러움: %s%% (%s)",
   "commands.hotbath.dirtiness.get.flies_active": " [파리 발생]",
   "commands.hotbath.dirtiness.get.max_dirty": " [최대 더러움: %s/%s 틱]",
   "commands.hotbath.dirtiness.set": "더러움을 %s%%로 설정했습니다",
   "commands.hotbath.dirtiness.clean": "이제 깨끗해졌습니다!",
   "commands.hotbath.dirtiness.flies": "파리 활성화! 매우 더럽습니다 (100%%가 2일 이상 지속)",
-
   "hotbath.compat.warning.title": "⚠ 호환성 경고",
   "hotbath.compat.warning.disabled": "통합이 오류로 인해 비활성화되었습니다.",
   "hotbath.compat.warning.version": "  모드 버전: %s",
   "hotbath.compat.warning.api_change": "  이것은 %s의 API 변경 때문일 수 있습니다.",
   "hotbath.compat.warning.report": "[여기를 클릭하여 문제 보고]",
   "hotbath.compat.warning.report.hover": "GitHub Issues 페이지 열기",
-
   "hotbath.book.name": "발네움 욕장서",
-  "hotbath.book.landing_text": "발네움 욕장서에 오신 것을 환영합니다! 모험의 피로를 풀기 위해 편안한 뜨거운 목욕을 즐겨보세요. 이 가이드북은 기본 액체부터 고급 맞춤 액체 시스템까지 모든 것을 다룹니다."
+  "hotbath.book.landing_text": "발네움 욕장서에 오신 것을 환영합니다! 모험의 피로를 풀기 위해 편안한 뜨거운 목욕을 즐겨보세요. 이 가이드북은 기본 액체부터 고급 맞춤 액체 시스템까지 모든 것을 다룹니다.",
+  "tooltip.hotbath.duration": " (%s초)"
 }

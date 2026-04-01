@@ -37,16 +37,24 @@ public class HotBathImmersionModifier extends TempModifier {
             Level level = entity.level();
             BlockPos pos = entity.blockPosition();
 
-            // Check if the entity is inside a HOT bath block
-            if (CustomFluidHandler.isPlayerInHotBath(player)) {
+            // Check if the entity is inside any bath block (hot or cold)
+            if (CustomFluidHandler.isPlayerInHotBathBlock(player)) {
                 float bathTempC = CustomFluidHandler.getBathTemperature(player);
                 if (bathTempC <= 0) {
                     return (Function<Double, Double>) (temp -> temp);
                 }
-                
+
                 double targetTempMC = Temperature.convert(bathTempC, Temperature.Units.C, Temperature.Units.MC, true);
                 double worldTempMC = WorldHelper.getBiomeTemperature(level, level.getBiome(pos));
-                double finalTemp = Math.max(targetTempMC, worldTempMC);
+
+                double finalTemp;
+                if (bathTempC >= 35.0f) {
+                    // Hot baths: use the higher of bath or biome temperature (warming effect)
+                    finalTemp = Math.max(targetTempMC, worldTempMC);
+                } else {
+                    // Cold baths: use the bath temperature directly (cooling effect)
+                    finalTemp = targetTempMC;
+                }
 
                 return (Function<Double, Double>) (temp -> finalTemp);
             }

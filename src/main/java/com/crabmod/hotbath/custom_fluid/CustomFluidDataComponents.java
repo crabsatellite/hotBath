@@ -3,8 +3,11 @@ package com.crabmod.hotbath.custom_fluid;
 import com.crabmod.hotbath.HotBath;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.component.CustomData;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -79,7 +82,49 @@ public class CustomFluidDataComponents {
                 return null;
             }
         }
-        return null;
+
+        // Fallback: migrate legacy 1.20.1 NBT format from minecraft:custom_data.
+        // When worlds upgrade from 1.20.1 → 1.21.1, old item NBT
+        // {HotbathCustomFluid:{FluidId:"hotbath:golden_bath"}} is placed into custom_data.
+        return migrateLegacyData(stack);
+    }
+
+    /**
+     * Checks minecraft:custom_data for the legacy 1.20.1 NBT format and migrates it
+     * to the new Data Component format. The item will be saved in the new format on next save.
+     */
+    private static ResourceLocation migrateLegacyData(net.minecraft.world.item.ItemStack stack) {
+        CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+        if (customData == null) return null;
+
+        CompoundTag tag = customData.copyTag();
+        if (!tag.contains("HotbathCustomFluid")) return null;
+
+        CompoundTag fluidTag = tag.getCompound("HotbathCustomFluid");
+        String legacyId = fluidTag.getString("FluidId");
+        if (legacyId.isEmpty()) return null;
+
+        try {
+            ResourceLocation fluidId = ResourceLocation.parse(legacyId);
+
+            // Migrate to new components
+            CustomFluidRegistry.getDefinition(fluidId).ifPresent(def -> setFluid(stack, def));
+            if (stack.get(CUSTOM_FLUID_ID.get()) == null) {
+                stack.set(CUSTOM_FLUID_ID.get(), legacyId);
+            }
+
+            // Clean up legacy data
+            tag.remove("HotbathCustomFluid");
+            if (tag.isEmpty()) {
+                stack.remove(DataComponents.CUSTOM_DATA);
+            } else {
+                stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+            }
+
+            return fluidId;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**

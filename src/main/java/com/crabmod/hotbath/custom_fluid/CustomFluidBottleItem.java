@@ -176,7 +176,7 @@ public class CustomFluidBottleItem extends Item {
                 String level = amplifier > 0 ? " " + toRoman(amplifier + 1) : "";
                 tooltipComponents.add(Component.translatable(effectName)
                         .append(level)
-                        .append(" (" + durationSeconds + "s)")
+                        .append(Component.translatable("tooltip.hotbath.duration", durationSeconds))
                         .withStyle(effect.getEffect().value().isBeneficial() ? ChatFormatting.BLUE : ChatFormatting.RED));
             }
         }

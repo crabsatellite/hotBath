@@ -36,7 +36,6 @@
   "item.hotbath.splash_rose_bath_bottle": "投擲用玫瑰湯瓶",
   "item.hotbath.splash_rose_bath_bottle.desc": "極速浪漫。賦千棘之力。滿面玫瑰水，以此表關切。",
   "fluid.hotbath.hot_water_block": "熱湯方塊",
-
   "item.hotbath.custom_fluid_bucket": "%s桶",
   "item.hotbath.custom_fluid_bucket.desc": "盛放自定義浴液之桶。",
   "item.hotbath.custom_fluid_bucket.tooltip": "內含: %s",
@@ -47,7 +46,6 @@
   "item.hotbath.splash_custom_fluid_bottle.desc": "可擲之自定義浴液瓶。",
   "item.hotbath.splash_custom_fluid_bottle.tooltip": "內含: %s",
   "item.hotbath.custom_fluid.unknown": "未知之液",
-
   "item.hotbath.bath_herb": "沐浴藥草",
   "item.hotbath.bath_herb.desc": "遠東秘草，古氣盎然。傳能調氣脈，滌魂乏。",
   "itemGroup.hotbath.hotbath_tab": "熱湯浴",
@@ -63,21 +61,19 @@
   "hotbath.advancement.rose_body_fragrance.desc": "久浴熏陶，方成體香，以招蜂引蝶。",
   "hotbath.advancement.something_smells": "「衆所趨也」",
   "hotbath.advancement.something_smells.desc": "汝當沐浴矣。",
-
   "commands.hotbath.dirtiness.get": "污穢: %s%% (%s)",
   "commands.hotbath.dirtiness.get.flies_active": " [蠅蟲滋生]",
   "commands.hotbath.dirtiness.get.max_dirty": " [至穢: %s/%s 刻]",
   "commands.hotbath.dirtiness.set": "污穢設為 %s%%",
   "commands.hotbath.dirtiness.clean": "汝今潔淨矣！",
   "commands.hotbath.dirtiness.flies": "蠅蟲已啟！汝今至穢也（百分百穢逾二日）",
-
   "hotbath.compat.warning.title": "⚠ 相容之警",
   "hotbath.compat.warning.disabled": "之銜接因誤而禁。",
   "hotbath.compat.warning.version": "  模組版本: %s",
   "hotbath.compat.warning.api_change": "  此或因 %s 之介面更迭所致。",
   "hotbath.compat.warning.report": "[點此稟報]",
   "hotbath.compat.warning.report.hover": "開啟 GitHub Issues 頁",
-
   "hotbath.book.name": "巴涅溫浴譜",
-  "hotbath.book.landing_text": "巴涅溫浴譜之序。冒險勞頓之餘，何妨泡湯解乏？此書盡載浴液之法，自尋常熱湯至精妙自製之方，無所不備。"
+  "hotbath.book.landing_text": "巴涅溫浴譜之序。冒險勞頓之餘，何妨泡湯解乏？此書盡載浴液之法，自尋常熱湯至精妙自製之方，無所不備。",
+  "tooltip.hotbath.duration": " (%s息)"
 }
