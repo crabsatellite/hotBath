@@ -89,18 +89,21 @@ public class CustomFluidClientEvents {
         event.registerEntityRenderer(EntityRegister.THROWN_CUSTOM_FLUID_BOTTLE.get(), ThrownItemRenderer::new);
     }
     
-    // Light update scheduling state
-    private static volatile boolean pendingLightUpdate = false;
+    // Light update scheduling state — runs multiple rounds to catch late-loading chunks
+    private static volatile int pendingLightRounds = 0;
     private static int pendingTickDelay = 0;
-    
+    private static final int LIGHT_UPDATE_ROUNDS = 3;
+    private static final int TICKS_BETWEEN_ROUNDS = 20; // 1 second
+
     /**
      * Schedules light updates for all custom fluid blocks after registry sync.
+     * Runs multiple rounds with increasing delays to handle chunks that load late.
      */
     public static void updateAllCustomFluidLights() {
-        pendingLightUpdate = true;
-        pendingTickDelay = 20; // 1 second delay
+        pendingLightRounds = LIGHT_UPDATE_ROUNDS;
+        pendingTickDelay = TICKS_BETWEEN_ROUNDS;
     }
-    
+
     /**
      * Performs the actual light update for all loaded custom fluid blocks.
      */
@@ -108,21 +111,20 @@ public class CustomFluidClientEvents {
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
         Player player = minecraft.player;
-        
+
         if (level == null || player == null) {
             return;
         }
-        
-        pendingLightUpdate = false;
+
         int updatedCount = 0;
         int renderDistance = minecraft.options.renderDistance().get();
         ChunkPos playerChunkPos = new ChunkPos(player.blockPosition());
-        
+
         for (int dx = -renderDistance; dx <= renderDistance; dx++) {
             for (int dz = -renderDistance; dz <= renderDistance; dz++) {
                 LevelChunk chunk = level.getChunkSource().getChunkNow(playerChunkPos.x + dx, playerChunkPos.z + dz);
                 if (chunk == null) continue;
-                
+
                 for (Map.Entry<BlockPos, BlockEntity> entry : chunk.getBlockEntities().entrySet()) {
                     if (entry.getValue() instanceof CustomFluidBlockEntity customBe && customBe.getFluidId() != null) {
                         level.getLightEngine().checkBlock(entry.getKey());
@@ -131,12 +133,13 @@ public class CustomFluidClientEvents {
                 }
             }
         }
-        
+
         if (updatedCount > 0) {
-            HotBath.LOGGER.debug("Updated light for {} custom fluid blocks", updatedCount);
+            HotBath.LOGGER.debug("Updated light for {} custom fluid blocks (round {})",
+                    updatedCount, LIGHT_UPDATE_ROUNDS - pendingLightRounds + 1);
         }
     }
-    
+
     /**
      * Client tick handler for processing pending light updates.
      */
@@ -144,21 +147,25 @@ public class CustomFluidClientEvents {
     public static class LightUpdateHandler {
         @SubscribeEvent
         public static void onClientTick(TickEvent.ClientTickEvent event) {
-            if (event.phase != TickEvent.Phase.END || !pendingLightUpdate) {
+            if (event.phase != TickEvent.Phase.END || pendingLightRounds <= 0) {
                 return;
             }
-            
+
             Minecraft minecraft = Minecraft.getInstance();
             if (minecraft.level == null || minecraft.player == null) {
                 return;
             }
-            
+
             if (pendingTickDelay > 0) {
                 pendingTickDelay--;
                 return;
             }
-            
+
             performLightUpdate();
+            pendingLightRounds--;
+            if (pendingLightRounds > 0) {
+                pendingTickDelay = TICKS_BETWEEN_ROUNDS;
+            }
         }
     }
 }

@@ -7,7 +7,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -31,8 +30,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
+import com.crabmod.hotbath.custom_fluid.CustomFluidBlockEntity;
+import com.crabmod.hotbath.custom_fluid.DynamicFluidType;
 import com.crabmod.hotbath.fluid_details.BaseFluidType;
+import com.crabmod.hotbath.registers.ParticleRegister;
 import net.minecraft.client.Minecraft;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fluids.FluidType;
 public abstract class AbstractHotbathBlock extends LiquidBlock {
     // Cache for bubble column direction to avoid repeated scans
@@ -181,27 +184,54 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
         }
 
         // Bubble column particles - only if shouldShowBubbles returns true
+        // Uses HotBathBubbleParticle (slow buoyancy) instead of vanilla particles to ensure
+        // bubbles are visible near the water surface on Forge 1.20.1 (workaround for MC-161917:
+        // Forge renders ALL particles after the translucent layer, depth-culling underwater particles)
         int direction = getBubbleColumnDirection(worldIn, pos);
         if (direction != 0 && shouldShowBubbles(worldIn, pos)) {
             FluidType fluidType = stateIn.getFluidState().getFluidType();
             ParticleOptions bubbleParticle = null;
+            boolean isDynamicColored = false;
+            double colorR = 1.0, colorG = 1.0, colorB = 1.0;
+
             if (fluidType instanceof BaseFluidType baseFluidType) {
                 bubbleParticle = baseFluidType.getBubbleParticle();
+            } else if (fluidType instanceof DynamicFluidType) {
+                // Dynamic custom fluid - use colored bubble with color from BlockEntity
+                BlockEntity be = worldIn.getBlockEntity(pos);
+                if (be instanceof CustomFluidBlockEntity customBe) {
+                    int color = customBe.getFluidColor();
+                    colorR = ((color >> 16) & 0xFF) / 255.0;
+                    colorG = ((color >> 8) & 0xFF) / 255.0;
+                    colorB = (color & 0xFF) / 255.0;
+                }
+                bubbleParticle = ParticleRegister.BUBBLE_DYNAMIC.get();
+                isDynamicColored = true;
             }
 
             if (direction > 0) {
-                 if (bubbleParticle == null) bubbleParticle = ParticleTypes.BUBBLE_COLUMN_UP;
-
-                 // Use addAlwaysVisibleParticle so bubbles are visible through the water surface from above
-                 worldIn.addAlwaysVisibleParticle(bubbleParticle, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0D, 0.04D, 0.0D);
-                 worldIn.addAlwaysVisibleParticle(bubbleParticle, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 0.0D, 0.04D, 0.0D);
+                 // Soul sand - upward bubbles
+                 if (bubbleParticle == null) bubbleParticle = ParticleRegister.HOT_WATER_BUBBLE.get();
+                 if (isDynamicColored) {
+                     worldIn.addAlwaysVisibleParticle(bubbleParticle, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, colorR, colorG, colorB);
+                     worldIn.addAlwaysVisibleParticle(bubbleParticle, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), colorR, colorG, colorB);
+                 } else {
+                     worldIn.addAlwaysVisibleParticle(bubbleParticle, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0D, 0.04D, 0.0D);
+                     worldIn.addAlwaysVisibleParticle(bubbleParticle, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 0.0D, 0.04D, 0.0D);
+                 }
                  if (rand.nextInt(200) == 0) {
                      worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), net.minecraft.sounds.SoundEvents.BUBBLE_COLUMN_UPWARDS_AMBIENT, net.minecraft.sounds.SoundSource.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
                  }
             } else {
-                 if (bubbleParticle == null) bubbleParticle = ParticleTypes.CURRENT_DOWN;
-
-                 worldIn.addAlwaysVisibleParticle(bubbleParticle, pos.getX() + 0.5D, pos.getY() + 0.8D, pos.getZ() + 0.5D, 0.0D, -0.04D, 0.0D);
+                 // Magma block - downward drag direction, increased particle density
+                 if (bubbleParticle == null) bubbleParticle = ParticleRegister.HOT_WATER_BUBBLE.get();
+                 if (isDynamicColored) {
+                     worldIn.addAlwaysVisibleParticle(bubbleParticle, pos.getX() + 0.5D, pos.getY() + 0.8D, pos.getZ() + 0.5D, colorR, colorG, colorB);
+                     worldIn.addAlwaysVisibleParticle(bubbleParticle, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), colorR, colorG, colorB);
+                 } else {
+                     worldIn.addAlwaysVisibleParticle(bubbleParticle, pos.getX() + 0.5D, pos.getY() + 0.8D, pos.getZ() + 0.5D, 0.0D, -0.04D, 0.0D);
+                     worldIn.addAlwaysVisibleParticle(bubbleParticle, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 0.0D, -0.04D, 0.0D);
+                 }
                  if (rand.nextInt(200) == 0) {
                      worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), net.minecraft.sounds.SoundEvents.BUBBLE_COLUMN_WHIRLPOOL_AMBIENT, net.minecraft.sounds.SoundSource.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
                  }

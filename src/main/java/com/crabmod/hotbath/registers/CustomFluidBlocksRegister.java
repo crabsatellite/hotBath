@@ -32,6 +32,10 @@ public class CustomFluidBlocksRegister {
                                     .strength(1000.0F)
                                     .isValidSpawn((state, level, pos, entityType) -> false)
                                     .noOcclusion()
+                                    // Non-zero base lightLevel so findBlockLightSources() detects these blocks.
+                                    // The actual per-fluid luminosity comes from DynamicCustomFluidBlock.getLightEmission()
+                                    // which the Forge-patched light engine calls with position context.
+                                    .lightLevel(state -> 2)
                     ));
 
     public static void register(IEventBus eventBus) {

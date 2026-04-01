@@ -83,7 +83,7 @@ public class CustomFluidHandler {
         
         // For built-in bath types, return default hot temperature
         if (block instanceof AbstractHotbathBlock) {
-            return 40.0f; // Default bath temperature
+            return 37.0f; // Default bath temperature
         }
         
         return 0;

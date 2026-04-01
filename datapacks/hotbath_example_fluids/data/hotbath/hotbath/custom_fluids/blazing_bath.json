@@ -8,7 +8,6 @@
   "luminosity": 12,
   "show_particles": true,
   "show_bubbles": false,
-
   "effects": [
     {
       "effect": "minecraft:fire_resistance",
@@ -50,6 +49,8 @@
     "fr_fr.desc": "Un bain ardent qui confère résistance au feu et force",
     "lzh.desc": "熾烈烈焰之湯，賜以抗火與力量之效",
     "pt_br.desc": "Um banho flamejante que concede resistência ao fogo e força",
-    "ru_ru.desc": "Пылающая горячая ванна, дающая огнеупорность и силу"
+    "ru_ru.desc": "Пылающая горячая ванна, дающая огнеупорность и силу",
+    "zh_hk": "烈焰浴",
+    "zh_hk.desc": "炙熱的烈焰浴，賦予火焰抵抗和力量效果"
   }
 }

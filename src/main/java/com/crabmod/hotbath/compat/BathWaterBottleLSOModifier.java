@@ -18,7 +18,7 @@ public class BathWaterBottleLSOModifier {
      */
     public static void applyWarmEffect(Player player) {
         // Check if player is in hot bath for boosted effect
-        boolean isBathing = CustomFluidHandler.isPlayerInHotBathBlock(player);
+        boolean isBathing = CustomFluidHandler.isPlayerInHotBath(player);
         
         LSOApiHelper.applyBottleTemperatureEffect(player, isBathing);
     }

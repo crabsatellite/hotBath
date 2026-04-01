@@ -133,16 +133,19 @@ public class CustomFluidBucketItem extends Item {
         
         CustomFluidDefinition definition = CustomFluidNBTHelper.getFluidDefinition(stack);
         if (definition != null) {
-            // Temperature
-            tooltip.add(Component.translatable("tooltip.hotbath.temperature", 
-                    String.format("%.1f", definition.temperature()))
-                    .withStyle(ChatFormatting.GRAY));
-            
+            // Show custom description if provided in translations
+            String descriptionKey = definition.getTranslationKey() + ".desc";
+            String translatedDesc = CustomFluidTranslationManager.getTranslation(descriptionKey);
+            if (!translatedDesc.equals(descriptionKey)) {
+                tooltip.add(Component.literal(translatedDesc)
+                        .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+            }
+
             // Effects count
             if (!definition.effects().isEmpty()) {
-                tooltip.add(Component.translatable("tooltip.hotbath.effects_count", 
+                tooltip.add(Component.translatable("tooltip.hotbath.effects_count",
                         definition.effects().size())
-                        .withStyle(ChatFormatting.BLUE));
+                        .withStyle(ChatFormatting.GREEN));
             }
         }
     }

@@ -4,13 +4,15 @@ import com.crabmod.hotbath.HotBath;
 import com.crabmod.hotbath.custom_fluid.CustomFluidBottleItem;
 import com.crabmod.hotbath.custom_fluid.CustomFluidDefinition;
 import com.crabmod.hotbath.custom_fluid.CustomFluidNBTHelper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
@@ -26,6 +28,9 @@ public class ToughAsNailsClientHandler {
 
     // ToughAsNails thirst icons texture
     private static final ResourceLocation TAN_ICONS = new ResourceLocation("toughasnails", "textures/gui/icons.png");
+
+    // ToughAsNails drinks tag - items in this tag already get TAN's native thirst tooltip
+    private static final TagKey<Item> TAN_DRINKS_TAG = ItemTags.create(new ResourceLocation("toughasnails", "drinks"));
 
     /**
      * Event handler for game events (FORGE bus)
@@ -43,6 +48,11 @@ public class ToughAsNailsClientHandler {
             }
 
             ItemStack stack = event.getItemStack();
+
+            // Skip items already in TAN's drinks tag - TAN's own tooltip handler covers them
+            if (stack.is(TAN_DRINKS_TAG)) {
+                return;
+            }
 
             // Check if it's a custom fluid bottle
             if (stack.getItem() instanceof CustomFluidBottleItem) {
@@ -94,26 +104,32 @@ public class ToughAsNailsClientHandler {
 
         @Override
         public int getWidth(Font font) {
-            return Mth.ceil(this.amount / 2.0F) * 8;
+            return (this.amount / 2) * 9;
         }
 
         @Override
         public void renderImage(Font font, int x, int y, GuiGraphics gui) {
+            gui.pose().pushPose();
+
             for (int i = 0; i < Mth.ceil(this.amount / 2.0F); i++) {
                 int dropletHalf = i * 2 + 1;
 
-                int startX = x + i * 8;
+                int startX = x + i * 8 - 1;
                 int startY = y;
 
-                // Draw full droplet if amount > dropletHalf
+                // Draw background droplet outline
+                gui.blit(TAN_ICONS, startX, startY, 9, 32, 9, 9, 256, 256);
+
                 if (this.amount > dropletHalf) {
-                    // Full droplet at UV (0, 41)
-                    gui.blit(TAN_ICONS, startX, startY, 0, 41, 8, 8, 256, 256);
+                    // Full droplet
+                    gui.blit(TAN_ICONS, startX, startY, 4 * 9, 32, 9, 9, 256, 256);
                 } else if (this.amount == dropletHalf) {
-                    // Half droplet at UV (8, 41)
-                    gui.blit(TAN_ICONS, startX, startY, 8, 41, 8, 8, 256, 256);
+                    // Half droplet
+                    gui.blit(TAN_ICONS, startX, startY, 9, 32 + 9, 9, 9, 256, 256);
                 }
             }
+
+            gui.pose().popPose();
         }
     }
 }

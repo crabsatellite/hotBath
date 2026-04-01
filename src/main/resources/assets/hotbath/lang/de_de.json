@@ -36,7 +36,6 @@
   "item.hotbath.splash_peony_bath_bottle.desc": "Ein botanischer Luftschlag. Gewährt Glück beim Aufprall. Glück war noch nie so duftend... oder so plötzlich.",
   "item.hotbath.splash_rose_bath_bottle": "Wurf-Rosenbadflasche",
   "item.hotbath.splash_rose_bath_bottle.desc": "Flüssige Romantik, mit hoher Geschwindigkeit geliefert. Gewährt die Stärke von tausend Dornen. Nichts sagt 'Ich mag dich' wie ein Gesicht voller Rosenwasser.",
-
   "item.hotbath.custom_fluid_bucket": "%s-Eimer",
   "item.hotbath.custom_fluid_bucket.desc": "Ein Eimer mit individueller Badeflüssigkeit.",
   "item.hotbath.custom_fluid_bucket.tooltip": "Enthält: %s",
@@ -47,10 +46,9 @@
   "item.hotbath.splash_custom_fluid_bottle.desc": "Eine werfbare Spritzflasche mit individueller Badeflüssigkeit.",
   "item.hotbath.splash_custom_fluid_bottle.tooltip": "Enthält: %s",
   "item.hotbath.custom_fluid.unknown": "Unbekannte Flüssigkeit",
-
   "tooltip.hotbath.temperature": "Temperatur: %s",
+  "tooltip.hotbath.duration": " (%ss)",
   "tooltip.hotbath.effects_count": "Effekte: %d",
-
   "fluid.hotbath.hot_water_block": "Heißwasserblock",
   "item.hotbath.bath_herb": "Badekraut",
   "item.hotbath.bath_herb.desc": "Geheimnisvolle Kräuter aus dem Fernen Osten, die vor alter Energie pulsieren. Es heißt, sie harmonisieren den inneren Fluss und reinigen die Müdigkeit der Seele.",
@@ -68,21 +66,18 @@
   "hotbath.advancement.something_smells": "Hier riecht's komisch...",
   "hotbath.advancement.something_smells.desc": "Vielleicht solltest du mal baden.",
   "hotbath_tab": "Heißes Bad",
-
   "commands.hotbath.dirtiness.get": "Verschmutzung: %s%% (%s)",
   "commands.hotbath.dirtiness.get.flies_active": " [FLIEGEN AKTIV]",
   "commands.hotbath.dirtiness.get.max_dirty": " [Max. Verschmutzung: %s/%s Ticks]",
   "commands.hotbath.dirtiness.set": "Verschmutzung auf %s%% gesetzt",
   "commands.hotbath.dirtiness.clean": "Du bist jetzt sauber!",
   "commands.hotbath.dirtiness.flies": "Fliegen aktiviert! Du bist jetzt extrem schmutzig (100%% seit 2+ Tagen)",
-
   "hotbath.compat.warning.title": "⚠ Kompatibilitätswarnung",
   "hotbath.compat.warning.disabled": "Integration wurde wegen eines Fehlers deaktiviert.",
   "hotbath.compat.warning.version": "  Mod-Version: %s",
   "hotbath.compat.warning.api_change": "  Dies könnte auf eine API-Änderung in %s zurückzuführen sein.",
   "hotbath.compat.warning.report": "[Hier klicken, um das Problem zu melden]",
   "hotbath.compat.warning.report.hover": "GitHub Issues-Seite öffnen",
-
   "hotbath.compat.disabled.title": "⚠ Integration deaktiviert",
   "hotbath.compat.disabled.cold_sweat": "$(c)Warnung:$() Die $(l)Cold Sweat$() Integration wurde $(c)deaktiviert$() aufgrund eines Kompatibilitätsfehlers.$(br2)Die in diesem Eintrag beschriebenen Funktionen funktionieren $(c)DERZEIT NICHT$().$(br2)Dies könnte durch eine Versionsinkompatibilität verursacht werden. Bitte überprüfe das Spielprotokoll für Details und melde das Problem auf GitHub.",
   "hotbath.compat.disabled.tough_as_nails": "$(c)Warnung:$() Die $(l)Tough As Nails$() Integration wurde $(c)deaktiviert$() aufgrund eines Kompatibilitätsfehlers.$(br2)Die in diesem Eintrag beschriebenen Funktionen funktionieren $(c)DERZEIT NICHT$().$(br2)Dies könnte durch eine Versionsinkompatibilität verursacht werden. Bitte überprüfe das Spielprotokoll für Details und melde das Problem auf GitHub.",
@@ -92,7 +87,6 @@
   "hotbath.compat.disabled.farmers_delight": "$(c)Warnung:$() Die $(l)Farmer's Delight$() Integration wurde $(c)deaktiviert$() aufgrund eines Kompatibilitätsfehlers.$(br2)Die in diesem Eintrag beschriebenen Funktionen funktionieren $(c)DERZEIT NICHT$().$(br2)Dies könnte durch eine Versionsinkompatibilität verursacht werden. Bitte überprüfe das Spielprotokoll für Details und melde das Problem auf GitHub.",
   "hotbath.compat.disabled.twilight_forest": "$(c)Warnung:$() Die $(l)Twilight Forest$() Integration wurde $(c)deaktiviert$() aufgrund eines Kompatibilitätsfehlers.$(br2)Die in diesem Eintrag beschriebenen Funktionen funktionieren $(c)DERZEIT NICHT$().$(br2)Dies könnte durch eine Versionsinkompatibilität verursacht werden. Bitte überprüfe das Spielprotokoll für Details und melde das Problem auf GitHub.",
   "hotbath.compat.disabled.serene_seasons": "$(c)Warnung:$() Die $(l)Serene Seasons$() Integration wurde $(c)deaktiviert$() aufgrund eines Kompatibilitätsfehlers.$(br2)Die in diesem Eintrag beschriebenen Funktionen funktionieren $(c)DERZEIT NICHT$().$(br2)Dies könnte durch eine Versionsinkompatibilität verursacht werden. Bitte überprüfe das Spielprotokoll für Details und melde das Problem auf GitHub.",
-
   "hotbath.compat.not_installed.title": "⚪ Mod nicht installiert",
   "hotbath.compat.not_installed.cold_sweat": "$(7)Cold Sweat$() ist nicht installiert.$(br2)Installiere diese Mod, um Temperaturmanagement-Funktionen freizuschalten:$(br)$(li)Badeflüssigkeiten halten die Körpertemperatur bei ~37°C$(li)Flaschen erhöhen die Körpertemperatur$(li)Perfekt zum Überleben in kalten Biomen!",
   "hotbath.compat.not_installed.tough_as_nails": "$(7)Tough As Nails$() ist nicht installiert.$(br2)Installiere diese Mod, um freizuschalten:$(br)$(li)Wärmeeffekte beim Baden$(li)Durstwiederherstellung durch Trinken von Badewasser$(li)Temperaturregulierung fürs Überleben",
@@ -103,7 +97,6 @@
   "hotbath.compat.not_installed.twilight_forest": "$(7)Twilight Forest$() ist nicht installiert.$(br2)Installiere diese Mod für Dimensionsfunktionen:$(br)$(li)Entferne Frosted-Effekt mit heißen Bädern$(li)Glühwürmchen-Partikel in der Twilight-Dimension",
   "hotbath.compat.not_installed.serene_seasons": "$(7)Serene Seasons$() ist nicht installiert.$(br2)Installiere diese Mod für saisonale Boni:$(br)$(li)Winterbaden gewährt Widerstand$(li)Mittwinter-Bonus Regeneration$(li)Schmelze nahes Eis und Schnee",
   "hotbath.compat.not_installed.shower_core": "$(7)Shower Core$() ist nicht installiert.$(br2)Installiere diese Mod, um dein Badeerlebnis zu erweitern mit:$(br)$(li)$(thing)Badewannen$() - Stylische Wannen in 33 Varianten$(li)$(thing)Duschköpfe$() - Kompakt- und Regen-Stile$(li)$(thing)Gummiente$() - Niedliche schwimmende Begleiter!$(br2)Perfekte Begleiter-Mod für Hot Bath!",
-
   "hotbath.entry.shower_core.name": "✨ Shower Core (Empfohlen)",
   "hotbath.entry.shower_core.bathtub.title": "Badewannen",
   "hotbath.entry.shower_core.bathtub": "$(l)Shower Core$() fügt wunderschöne $(thing)Badewannen$() in 33 verschiedenen Stilen hinzu!$(br2)$(li)Holzvarianten: Eiche, Birke, Fichte, Dschungel, Akazie, Schwarzeiche, Mangrove, Kirsche, Karmesin, Wirrholz, Bambus$(li)Steinvarianten: Stein, Bruchstein$(li)Metallvarianten: Eisen, Gold, Kupfer, Diamant$(li)Farbvarianten: Alle 16 Farbstofffarben$(br2)Badewannen funktionieren perfekt mit Hot Bath Flüssigkeiten!",
@@ -111,11 +104,9 @@
   "hotbath.entry.shower_core.shower": "Zwei Arten von Duschköpfen verfügbar:$(br2)$(thing)Kompakter Duschkopf$() - Klassischer Handstil$(br)$(thing)Regenduschkopf$() - Luxuriöser Überkopf-Regenfall$(br2)Beide gibt es in denselben 33 Stilvarianten wie Badewannen. Montiere sie an Wänden und genieße eine erfrischende Dusche!",
   "hotbath.entry.shower_core.duck.title": "Gummiente 🦆",
   "hotbath.entry.shower_core.duck": "Die niedlichste Ergänzung für dein Bad!$(br2)$(li)Platziere auf Wasser, Boden oder Badewannen$(li)Schiebe sie mit Rechtsklick herum$(li)Sie schwimmen und wippen realistisch$(li)Aufheben mit Shift + Rechtsklick$(br2)Kein Bad ist komplett ohne einen Gummiente-Freund!",
-
   "hotbath.book.name": "Balneum Manuale",
   "hotbath.book.subtitle": "1. Auflage",
   "hotbath.book.landing_text": "Willkommen beim Balneum Manuale! Mach eine Pause von deinen Abenteuern und entspanne in einem heißen Bad. Dieses Buch deckt alles ab, von grundlegenden Flüssigkeiten bis zu erweiterten benutzerdefinierten Flüssigkeitssystemen.",
-
   "hotbath.category.basics.name": "Erste Schritte",
   "hotbath.category.basics.desc": "Lerne die Grundlagen der Hot Bath Mod und wie man anfängt.",
   "hotbath.category.fluids.name": "Badeflüssigkeiten",
@@ -134,10 +125,8 @@
   "hotbath.category.advancements.desc": "Alle Fortschritte und Errungenschaften in der Hot Bath Mod.",
   "hotbath.category.custom_fluids.name": "Benutzerdefinierte Flüssigkeiten",
   "hotbath.category.custom_fluids.desc": "Erstelle deine eigenen Badeflüssigkeiten mit data packs!",
-
   "hotbath.entry.adv_hot_bath.name": "Heißes Bad",
   "hotbath.entry.adv_hot_bath.page1": "$(l)Heißes Bad$() - \"Beginne deinen Tag mit einem heißen Bad\"$(br2)$(thing)Auslöser:$() Erhalte einen Heißwassereimer$(br)$(thing)Belohnung:$() 10 EP + Alle Baderezepte freigeschaltet$(br2)Dies ist dein erster Fortschritt! Stelle einfach einen Wassereimer her oder schmelze ihn, um heißes Wasser zu erhalten, und du schaltest alle speziellen Baderezepte frei.",
-
   "hotbath.entry.adv_challenges.name": "Bad-Herausforderungen",
   "hotbath.entry.adv_challenges.page1": "Diese $(thing)Herausforderungs$()-Fortschritte erfordern Hingabe und wiederholtes Baden. Jeder verfolgt deine kumulativen Einweichungen in einem bestimmten Badtyp!",
   "hotbath.entry.adv_challenges.foot.title": "Fußgesundheit",
@@ -148,63 +137,52 @@
   "hotbath.entry.adv_challenges.chronic": "\"Diejenigen mit schwacher Gesundheit sollten mehr einweichen\"$(br2)$(thing)Anforderung:$() Einweichen in Kräuterbad $(thing)100 Mal$()$(br)$(thing)Belohnung:$() 100 EP$(br2)Traditionelle Medizin vom Feinsten!",
   "hotbath.entry.adv_challenges.rose.title": "Rosenkörperduft",
   "hotbath.entry.adv_challenges.rose": "\"Nur durch langes Eintauchen und Kultivierung kannst du wahren Körperduft erreichen\"$(br2)$(thing)Anforderung:$() Einweichen in Rosenbad $(thing)100 Mal$()$(br)$(thing)Belohnung:$() 100 EP$(br2)Werde unwiderstehlich mit natürlichem Rosenduft!",
-
   "hotbath.entry.adv_hidden.name": "Versteckte Errungenschaften",
   "hotbath.entry.adv_hidden.page1": "Einige Fortschritte sind $(thing)versteckt$() - sie erscheinen nicht, bis du sie selbst entdeckst!$(br2)$(8)Erkunde weiter und schau, was passiert...$()",
-
   "hotbath.entry.introduction.name": "Einführung",
   "hotbath.entry.introduction.page1": "Willkommen bei $(l:hotbath:basics/introduction)Hot Bath$(/l)! Diese Mod fügt entspannende und therapeutische Badeflüssigkeiten zu Minecraft hinzu. Jeder Badtyp bietet einzigartige Buffs und Heileffekte, wenn du darin einweichst.$(br2)Ob du Gesundheit wiederherstellen, negative Effekte entfernen oder dich einfach aufwärmen musst, wir haben das perfekte Bad für dich!",
   "hotbath.entry.introduction.page2.title": "Grundmechaniken",
   "hotbath.entry.introduction.page2": "$(li)Baden für 15 Sekunden löst spezielle Effekte aus$(li)Verschiedene Flüssigkeiten bieten verschiedene Buffs$(li)Flüssigkeiten stellen Gesundheit im Laufe der Zeit wieder her$(li)Seelensand erzeugt aufwärts gerichtete Blasen$(li)Magmablöcke erzeugen abwärts gerichtete Blasen$(li)Benutzerdefinierte Partikel passen zu den Flüssigkeitsfarben",
   "hotbath.entry.introduction.page3.title": "Erste Schritte",
   "hotbath.entry.introduction.page3": "$(li)Beginne, indem du einen $(item)Wassereimer$() in einem Ofen schmelzt, um $(item)Heißwasser$() zu erhalten$(li)Baue ein Becken mit nicht brennbaren Blöcken$(li)Gieße dein heißes Wasser ein und spring hinein!$(li)Upgrade zu speziellen Bädern durch Herstellen mit Zutaten$(li)Schau dir die $(l:hotbath:fluids/hot_water)Flüssigkeiten$(/l)-Kategorie für alle Badtypen an",
-
   "hotbath.entry.bath_herb.name": "Badekraut",
   "hotbath.entry.bath_herb.page1": "$(item)Badekraut$() ist eine geheimnisvolle Zutat aus dem Fernen Osten, wesentlich für die Herstellung des Kräuterbades. Diese alten Kräuter pulsieren vor Heilenergie.",
   "hotbath.entry.bath_herb.obtain.title": "Wie man es erhält",
   "hotbath.entry.bath_herb.obtain": "$(li)Kaufe von $(thing)Neulings-Bauern-Dorfbewohnern$() für 10 Smaragde$(li)Kaufe von $(thing)Wanderhändlern$() für 15 Smaragde$(br2)Besorge dir einen Vorrat, wenn du sie findest!",
-
   "hotbath.entry.tips.name": "Tipps & Hinweise",
   "hotbath.entry.tips.page1": "Bei der Verwendung von Badeflüssigkeiten beachte bitte:$(br)$(li)$(thing)Wasserleben$(): Wasserlebewesen spawnen nicht natürlich in Badeflüssigkeiten, und Fische (außer tropischen Fischen) und Tintenfische nehmen Schaden in Badeflüssigkeiten.$(li)$(thing)Platzierungsbeschränkungen$(): Oberflächenpflanzen, Seerosenblätter, Seegras und Schildkröteneier können nicht in Badeflüssigkeiten platziert werden. Korallenpflanzen werden kurz nach dem Platzieren zu toter Koralle.$(li)$(thing)Angeln$(): Angeln in Badeflüssigkeiten wird nichts fangen.",
   "hotbath.entry.tips.interactions.title": "Flüssigkeitsinteraktionen",
   "hotbath.entry.tips.interactions": "$(li)$(thing)Blasensäulen$(): Seelensand erzeugt aufwärts gerichtete Blasen, Magmablöcke erzeugen abwärts gerichtete Blasen$(li)$(thing)Benutzerdefinierte Partikel$(): Blasen und Tropfenpartikel passen zur Flüssigkeitsfarbe",
-
   "hotbath.entry.hot_water.name": "Heißes Wasser",
   "hotbath.entry.hot_water.page1": "$(item)Heißes Wasser$() ist die Grundlage aller Badeflüssigkeiten. Einfach, aber effektiv, wäscht es Müdigkeit weg und bietet einen Geschwindigkeitsbonus.",
   "hotbath.entry.hot_water.recipe": "Schmelze einen Wassereimer in einem beliebigen Ofen, um heißes Wasser zu erzeugen.",
   "hotbath.entry.hot_water.effects.title": "Effekte",
   "hotbath.entry.hot_water.effects": "$(li)Baden für 15s gewährt $(thing)Geschwindigkeit I$() (20s)$(br)$(li)$(thing)Versteckte Errungenschaft$(): [Fußgesundheit] - Bade 100 Mal für 100 EP",
-
   "hotbath.entry.milk_bath.name": "Milchbad",
   "hotbath.entry.milk_bath.page1": "$(item)Milchbad$() - Die legendäre Schönheitsbehandlung! Dieses cremige Bad entfernt negative Effekte und stellt sowohl Gesundheit als auch Hunger wieder her.",
   "hotbath.entry.milk_bath.recipe": "Kombiniere heißes Wasser mit einem Milcheimer.",
   "hotbath.entry.milk_bath.effects.title": "Effekte",
   "hotbath.entry.milk_bath.effects": "$(li)Stellt $(thing)Gesundheit$() wieder her (0.25/2s)$(br)$(li)Stellt $(thing)Hunger$() wieder her (1/15s)$(br)$(li)Baden 15s entfernt alle negativen Effekte (außer Pech)$(br)$(li)$(thing)Versteckte Errungenschaft$(): [Milchhaut] - Bade 100 Mal für 100 EP",
-
   "hotbath.entry.herbal_bath.name": "Kräuterbad",
   "hotbath.entry.herbal_bath.page1": "$(item)Kräuterbad$() - Alte Weisheit in flüssiger Form! Dieses therapeutische Bad bietet Widerstand und schadet untoten Kreaturen.",
   "hotbath.entry.herbal_bath.recipe": "Kombiniere heißes Wasser mit 2 Badekräutern.",
   "hotbath.entry.herbal_bath.effects.title": "Effekte",
   "hotbath.entry.herbal_bath.effects": "$(li)Stellt $(thing)Gesundheit$() wieder her (0.25/2s)$(br)$(li)Baden 15s entfernt $(thing)ALLE$() negativen Effekte$(br)$(li)Baden 5s gewährt $(thing)Widerstand I$() (10s)$(br)$(li)Schadet untoten Kreaturen (0.5/s)$(br)$(li)$(thing)Versteckte Errungenschaft$(): [Chronisch Krank] - Bade 100 Mal für 100 EP",
-
   "hotbath.entry.honey_bath.name": "Honigbad",
   "hotbath.entry.honey_bath.page1": "$(item)Honigbad$() - Kleopatras Schönheitsgeheimnis! Dieses klebrige Bad bietet Absorption und stellt schnell Hunger wieder her, aber verlangsamt dich.",
   "hotbath.entry.honey_bath.recipe": "Kombiniere heißes Wasser mit einem Honigwabenblock.",
   "hotbath.entry.honey_bath.effects.title": "Effekte",
   "hotbath.entry.honey_bath.effects": "$(li)Stellt $(thing)Gesundheit$() (0.25/s) und $(thing)Hunger$() (1/4s) wieder her$(br)$(li)Gibt $(thing)Langsamkeit I$() beim Baden$(br)$(li)Baden 15s entfernt negative Effekte (außer Langsamkeit/Pech)$(br)$(li)Baden 15s gewährt $(thing)Absorption II$() (20s)",
-
   "hotbath.entry.peony_bath.name": "Pfingstrosenbad",
   "hotbath.entry.peony_bath.page1": "$(item)Pfingstrosenbad$() - Geschenk des Königs der Blumen! Dieses elegante Bad bietet Rückstoßresistenz und gewährt schließlich Glück.",
   "hotbath.entry.peony_bath.recipe": "Kombiniere heißes Wasser mit 2 Pfingstrosen.",
   "hotbath.entry.peony_bath.effects.title": "Effekte",
   "hotbath.entry.peony_bath.effects": "$(li)Stellt $(thing)Gesundheit$() wieder her (0.25/2s)$(br)$(li)Baden 15s entfernt negative Effekte und Böses Omen$(br)$(li)Baden 15s gewährt $(thing)Rückstoßresistenz$() (+0.05, 30s)$(br)$(li)Baden 15s gewährt $(thing)Angriffsgeschwindigkeit$() (+10%, 15s)$(br)$(li)$(thing)Spezial$(): Nach 50 Bädern gewährt $(thing)Glück I$() (45s)",
-
   "hotbath.entry.rose_bath.name": "Rosenbad",
   "hotbath.entry.rose_bath.page1": "$(item)Rosenbad$() - Eine romantische Behandlung! Dieses duftende Bad bietet Stärke und entfernt den Böses Omen-Effekt.",
   "hotbath.entry.rose_bath.recipe": "Kombiniere heißes Wasser mit 8 Rosenbüschen.",
   "hotbath.entry.rose_bath.effects.title": "Effekte",
   "hotbath.entry.rose_bath.effects": "$(li)Stellt $(thing)Gesundheit$() wieder her (0.25/s)$(br)$(li)Baden 15s entfernt negative Effekte und Böses Omen$(br)$(li)Baden 15s gewährt $(thing)Stärke I$() (20s)$(br)$(li)$(thing)Versteckte Errungenschaft$(): [Rosenkörperduft] - Bade 100 Mal für 100 EP",
-
   "hotbath.entry.drinkable_bottles.name": "Trinkbare Flaschen",
   "hotbath.entry.drinkable_bottles.page1": "Badewasser kann in Flaschen abgefüllt werden! Rechtsklicke auf eine beliebige Badeflüssigkeit mit einer Glasflasche, um sie zu sammeln. Diese Flaschen bieten Effekte beim Konsumieren.",
   "hotbath.entry.bottles.hot_water.title": "Wärmflasche",
@@ -219,7 +197,6 @@
   "hotbath.entry.bottles.peony": "Trägt einen eleganten Blumenduft. Kann Badewasser so duftend sein?$(br2)$(l)Effekt$(): Gewährt $(thing)Glück I$() für 45 Sekunden.",
   "hotbath.entry.bottles.rose.title": "Rosenbadflasche",
   "hotbath.entry.bottles.rose": "Reicher Rosenduft ist berauschend. Unwiderstehlicher Drang, einen Schluck zu nehmen...$(br2)$(l)Effekt$(): Gewährt $(thing)Stärke I$() für 45 Sekunden.",
-
   "hotbath.entry.splash_bottles.name": "Wurfflaschen",
   "hotbath.entry.splash_bottles.page1": "Wurfflaschen können wie Tränke geworfen werden! Braue eine beliebige Badewasserflasche mit Schwarzpulver in einem Braustand, um Wurfversionen zu erstellen.",
   "hotbath.entry.splash.hot_water.title": "Wurf-Heißwasser",
@@ -234,7 +211,6 @@
   "hotbath.entry.splash.peony": "Ein botanischer Luftschlag. Gewährt Glück beim Aufprall.$(br2)$(l)Effekt$(): Gewährt $(thing)Glück II$() für 30 Sekunden.",
   "hotbath.entry.splash.rose.title": "Wurf-Rosenbad",
   "hotbath.entry.splash.rose": "Flüssige Romantik, mit hoher Geschwindigkeit geliefert. Gewährt die Stärke von tausend Dornen.$(br2)$(l)Effekt$(): Gewährt $(thing)Stärke II$() für 30 Sekunden.",
-
   "hotbath.entry.cold_sweat.name": "Cold Sweat",
   "hotbath.entry.cold_sweat.page1": "$(l)Cold Sweat$() bietet die tiefste Temperaturintegration. Heiße Bäder interagieren intelligent mit dem Temperatursystem der Mod.",
   "hotbath.entry.cold_sweat.immersion.title": "Bad-Eintauchen",
@@ -243,7 +219,6 @@
   "hotbath.entry.cold_sweat.bottles": "$(li)Das Trinken von Badewasserflaschen erhöht die Körpertemperatur$(li)Wurfflaschen wenden Temperatureffekte in einem Bereich an$(li)Sowohl normale als auch Wurfflaschen bieten Kältewiderstand II für 30 Sekunden",
   "hotbath.entry.cold_sweat.custom.title": "Benutzerdefinierte Flüssigkeiten",
   "hotbath.entry.cold_sweat.custom": "$(li)Benutzerdefinierte Flüssigkeiten mit $(thing)Temperatur ≥ 35°C$() funktionieren mit Cold Sweat$(li)Der Temperaturwert der Flüssigkeit wird in Minecraft-Einheiten umgewandelt$(li)Benutzerdefinierte Flüssigkeiten mit niedrigerer Temperatur werden vom Temperatursystem ignoriert",
-
   "hotbath.entry.tough_as_nails.name": "Tough As Nails",
   "hotbath.entry.tough_as_nails.page1": "$(l)Tough As Nails$() Integration bietet Temperaturregulierung und Durstmanagement durch heiße Bäder.",
   "hotbath.entry.tough_as_nails.temperature.title": "Temperaturkontrolle",
@@ -252,7 +227,6 @@
   "hotbath.entry.tough_as_nails.thirst": "$(li)Rechtsklick mit leerer Hand im Bad zum Trinken$(li)Handtrinken stellt Durst wieder her$(li)Badewasserflaschen stellen auch Durst beim Konsumieren wieder her",
   "hotbath.entry.tough_as_nails.bottles.title": "Flaschenintegration",
   "hotbath.entry.tough_as_nails.bottles": "$(li)Das Trinken von Badflaschen bietet Wärmeeffekt$(li)Wurfflaschen wenden Effekte auf nahe Entitäten an$(li)Beide Typen bieten Kältewiderstand-Buff",
-
   "hotbath.entry.lso.name": "LSO",
   "hotbath.entry.lso.page1": "$(l)Legendary Survival Overhaul$() bietet die umfassendste Integration mit erweiterten Temperatur-, Durst- und Kältewiderstandsmechaniken.",
   "hotbath.entry.lso.temperature.title": "Temperaturerwärmung",
@@ -261,12 +235,10 @@
   "hotbath.entry.lso.resistance": "$(li)Nach $(thing)10 Sekunden$() Baden erhältst du $(thing)Kältewiderstand III$()$(li)Effekt $(thing)sammelt sich an$() mit mehr Badezeit$(li)Maximale Dauer: $(thing)5 Minuten$()$(li)$(thing)Kälteimmunität$()-Buff für 10s nach dem Verlassen$(li)Verhindert sofortiges Wiedereinfrieren!",
   "hotbath.entry.lso.thirst.title": "Durst & Flaschen",
   "hotbath.entry.lso.thirst": "$(li)Trinken im Bad stellt $(thing)5 Durst$() + $(thing)0.5 Sättigung$() wieder her$(li)Badflaschen bieten $(thing)Heißgetränk$()-Effekt (Stufe I)$(li)Trinken beim Baden gibt verstärktes $(thing)Heißgetränk III$()$(li)Hilft, die Körpertemperatur zu halten!",
-
   "hotbath.entry.other_compat.name": "Weitere Integrationen",
   "hotbath.entry.other_compat.page1": "Hot Bath integriert sich mit vielen weiteren Mods! Schaue dir die detaillierten Einträge für jede unterstützte Mod in dieser Kategorie an.",
   "hotbath.entry.other_compat.mods.title": "Schnellreferenz",
   "hotbath.entry.other_compat.mods": "$(li)$(l)Alex's Mobs$(): Waschbären, Affen, Verschmutzung$(li)$(l)Alex's Caves$(): Gummibärchen, Strahlungsheilung$(li)$(l)Twilight Forest$(): Frosted-Entfernung, Glühwürmchen$(li)$(l)Farmer's Delight$(): Komfort-Effekt$(li)$(l)Serene Seasons$(): Winter-Widerstandsbonus",
-
   "hotbath.entry.alexs_mobs.name": "Alex's Mobs",
   "hotbath.entry.alexs_mobs.page1": "$(l)Alex's Mobs$() Integration fügt realistische Tierverhalten und das $(thing)Verschmutzungs$()-System für Ungeziefer-Anziehung hinzu.",
   "hotbath.entry.alexs_mobs.raccoon.title": "Waschbären-Waschen",
@@ -275,7 +247,6 @@
   "hotbath.entry.alexs_mobs.capuchin": "$(li)$(thing)Kapuzineraffen$() werden von heißen Quellen angezogen$(li)Sie werden sitzen und einweichen wie japanische Makaken!$(li)Affen in heißen Quellen erhalten $(thing)Regeneration$()-Buff$(li)Leichter zu zähmen, während sie sich in warmem Wasser entspannen",
   "hotbath.entry.alexs_mobs.dirtiness.title": "Verschmutzung & Ungeziefer",
   "hotbath.entry.alexs_mobs.dirtiness": "$(li)Wenn extrem schmutzig, schwärmen $(thing)Fliegen$() um dich herum$(li)$(thing)Karmesinrote Mücken$() werden aggressiv$(li)$(thing)Kakerlaken$() lungern in 3-6 Blöcken Entfernung herum$(li)Nimm ein Bad, um sauber und ungezieferfrei zu werden!",
-
   "hotbath.entry.alexs_caves.name": "Alex's Caves",
   "hotbath.entry.alexs_caves.page1": "$(l)Alex's Caves$() Integration umfasst Süßigkeiten-Schmelzen, Strahlungsheilung und Höhlenkreatur-Interaktionen.",
   "hotbath.entry.alexs_caves.gummy.title": "Gummibärchen-Schmelzen",
@@ -286,12 +257,10 @@
   "hotbath.entry.alexs_caves.gammaroach": "$(li)$(thing)Gammaroaches$() werden von schmutzigen Spielern angezogen$(br)$(li)Bei 80%%+ Verschmutzung nähern sie sich vorsichtig$(br)$(li)Mit Fliegenstatus (extreme Verschmutzung) werden sie $(thing)aggressiv$()!$(br)$(li)Bade regelmäßig, um nukleare Kakerlakenattacken zu vermeiden!",
   "hotbath.entry.alexs_caves.raycat.title": "Raycat-Ruhe",
   "hotbath.entry.alexs_caves.raycat": "$(li)$(thing)Raycats$() genießen es, in der Nähe von heißen Quellen zu sitzen$(br)$(li)Verwendet gemeinsames Katzenverhaltenssystem$(br)$(li)Sie finden warme Orte entspannend",
-
   "hotbath.entry.farmers_delight.name": "Farmer's Delight",
   "hotbath.entry.farmers_delight.page1": "$(l)Farmer's Delight$() Integration bietet den $(thing)Komfort$()-Effekt beim Baden.",
   "hotbath.entry.farmers_delight.comfort.title": "Komfort-Effekt",
   "hotbath.entry.farmers_delight.comfort": "$(li)Während du in einem heißen Bad bist, erhältst du $(thing)Komfort I$()$(li)Effekt erneuert sich alle 2 Sekunden$(li)Komfort bietet $(thing)langsame Regeneration$() (1 HP / 4 Sekunden)$(li)Funktioniert unabhängig vom Hungerlevel!$(li)Perfekt zum Entspannen nach einem harten Tag auf dem Bauernhof",
-
   "hotbath.entry.twilight_forest.name": "Twilight Forest",
   "hotbath.entry.twilight_forest.page1": "$(l)Twilight Forest$() Integration bietet Frostschutz und atmosphärische Effekte.",
   "hotbath.entry.twilight_forest.frosted.title": "Frosted-Heilung",
@@ -300,22 +269,18 @@
   "hotbath.entry.twilight_forest.firefly": "$(li)In der $(thing)Twilight Forest Dimension$() spawnen Glühwürmchen-Partikel um Badebecken$(li)Erzeugt magische Atmosphäre$(li)Partikel erscheinen alle 0.5 Sekunden$(li)Innerhalb von 8 Blöcken des Bades",
   "hotbath.entry.twilight_forest.ice_mobs.title": "Eis-Mob-Schaden",
   "hotbath.entry.twilight_forest.ice_mobs": "$(li)$(c)Eiskreaturen$() nehmen Schaden in heißen Bädern!$(li)Betroffene Kreaturen: $(thing)Eiskristall$(), $(thing)Stabiler/Unstabiler Eiskern$()$(li)$(thing)Schneewächter$() und $(thing)Schneekönigin$()-Boss$(li)1 Schaden pro Sekunde$(li)Das heiße Wasser schmilzt sie weg!",
-
   "hotbath.entry.serene_seasons.name": "Serene Seasons",
   "hotbath.entry.serene_seasons.page1": "$(l)Serene Seasons$() Integration bietet saisonale Boni und Eis/Schnee-Schmelzen.",
   "hotbath.entry.serene_seasons.winter.title": "Winter-Boni",
   "hotbath.entry.serene_seasons.winter": "$(li)Während des $(thing)Winters$() gewährt Baden extra $(thing)Widerstand$()$(li)$(thing)Früh-/Spätwinter$(): Widerstand I$(li)$(thing)Mittwinter$(): Widerstand II + Regeneration I$(li)Effekte dauern 10 Sekunden, erneuert alle 2s$(li)Heiße Bäder schmelzen auch nahes Eis und Schnee!",
-
   "hotbath.entry.custom_overview.name": "Übersicht",
   "hotbath.entry.custom_overview.page1": "Hot Bath unterstützt $(thing)datengesteuerte benutzerdefinierte Flüssigkeiten$()! Du kannst deine eigenen Badeflüssigkeiten mit einzigartigen Farben, Effekten und Eigenschaften mit data packs erstellen.",
   "hotbath.entry.custom_overview.features.title": "Funktionen",
   "hotbath.entry.custom_overview.features": "$(li)Benutzerdefinierte Farben und visuelle Effekte$(li)Konfigurierbare Trankeffekte$(li)Einstellbare Auslösezeit$(li)Temperatur- und Viskositätseinstellungen$(li)Mehrsprachige Unterstützung$(li)Automatische Eimer- und Flaschenitems$(li)Funktioniert mit Brauständern",
-
   "hotbath.entry.custom_structure.name": "Dateistruktur",
   "hotbath.entry.custom_structure.page1": "Benutzerdefinierte Flüssigkeiten werden in data packs definiert. Platziere deine JSON-Dateien in den richtigen Ordnern, damit das Spiel sie erkennt.",
   "hotbath.entry.custom_structure.datapack.title": "Data Pack Struktur",
   "hotbath.entry.custom_structure.datapack": "Platziere Flüssigkeitsdefinitionen in:$(br2)$(8)data/<namespace>/hotbath/custom_fluids/<name>.json$()$(br2)Beispiel:$(br)$(8)data/mypack/hotbath/custom_fluids/golden_bath.json$()$(br2)$(Übersetzungsdateien (optional): Für benutzerdefinierte Übersetzungen füge lang-Dateien zu einem resource pack hinzu. Die Flüssigkeits-JSON kann auch Inline-Übersetzungen enthalten.",
-
   "hotbath.entry.custom_json.name": "JSON-Format",
   "hotbath.entry.custom_json.page1": "Jede benutzerdefinierte Flüssigkeit wird durch eine JSON-Datei mit verschiedenen Eigenschaften definiert. Alle Felder außer $(thing)id$() sind optional und haben vernünftige Standardwerte.",
   "hotbath.entry.custom_json.fields.title": "Grundlegende Felder",
@@ -328,7 +293,6 @@
   "hotbath.entry.custom_json.effects": "Effekte werden als Array von Objekten definiert:$(br2)$(li)$(thing)effect$(): Trankeffekt-ID$(li)$(thing)duration$(): Dauer in Ticks$(li)$(thing)amplifier$(): Effektstufe (0 = I)$(li)$(thing)ambient$(): Zeige subtile Partikel$(li)$(thing)show_particles$(): Zeige Effektpartikel$(li)$(thing)show_icon$(): Zeige HUD-Symbol",
   "hotbath.entry.custom_json.translations.title": "Übersetzungen",
   "hotbath.entry.custom_json.translations": "Füge ein $(thing)translations$()-Objekt in deine JSON ein:$(br2)$(li)$(thing)en_us$(), $(thing)zh_cn$(), etc.: Flüssigkeitsname$(li)$(thing)en_us.desc$(), $(thing)zh_cn.desc$(), etc.: Beschreibung$(br2)HotBath liest diese Übersetzungen automatisch beim Laden der Flüssigkeit - kein resource pack benötigt!",
-
   "hotbath.entry.custom_example.name": "Beispiele",
   "hotbath.entry.custom_example.page1": "Hot Bath enthält ein Beispiel-data pack mit $(thing)7 benutzerdefinierten Flüssigkeiten$(). Schau dir den $(thing)hotbath_example_fluids$()-Ordner im data pack-Verzeichnis der Mod an, um zu sehen, wie sie funktionieren!",
   "hotbath.entry.custom_example.golden.title": "Goldbad",

@@ -31,6 +31,20 @@ public class CustomFluidSyncHandler {
     }
     
     /**
+     * Re-sync custom fluid definitions when a player changes dimension.
+     * Without this, the client's light engine loses custom fluid light emission
+     * because updateAllCustomFluidLights() is never triggered on dimension change.
+     */
+    @SubscribeEvent
+    public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            player.getServer().execute(() -> {
+                CustomFluidNetworking.syncToClient(player);
+            });
+        }
+    }
+
+    /**
      * Sync custom fluid definitions when data packs are synced (player join or /reload).
      * This is the recommended way to sync data pack content in Forge.
      */

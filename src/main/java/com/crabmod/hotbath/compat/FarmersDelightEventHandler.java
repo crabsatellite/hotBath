@@ -37,7 +37,7 @@ public class FarmersDelightEventHandler {
             if (!(event.player instanceof ServerPlayer player)) return;
             
             // Check if player is in any hot bath block
-            boolean isInBath = CustomFluidHandler.isPlayerInHotBathBlock(player);
+            boolean isInBath = CustomFluidHandler.isPlayerInHotBath(player);
             
             if (isInBath) {
                 // Apply Comfort effect every 2 seconds while in hot bath

@@ -154,7 +154,10 @@ public class CustomFluidBottleItem extends Item {
         
         CustomFluidDefinition definition = CustomFluidNBTHelper.getFluidDefinition(stack);
         if (definition != null) {
-            // Show effects using the same approach as SplashCustomFluidBottleItem
+            tooltip.add(Component.translatable("item.hotbath.custom_fluid_bottle.desc")
+                    .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+
+            // Show effects
             List<MobEffectInstance> effects = definition.createEffectInstances();
             for (MobEffectInstance effect : effects) {
                 String effectName = effect.getEffect().getDescriptionId();
@@ -164,7 +167,7 @@ public class CustomFluidBottleItem extends Item {
                 String level_str = amplifier > 0 ? " " + toRoman(amplifier + 1) : "";
                 tooltip.add(Component.translatable(effectName)
                         .append(level_str)
-                        .append(" (" + durationSeconds + "s)")
+                        .append(Component.translatable("tooltip.hotbath.duration", durationSeconds))
                         .withStyle(effect.getEffect().isBeneficial() ? ChatFormatting.BLUE : ChatFormatting.RED));
             }
         }

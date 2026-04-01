@@ -115,6 +115,10 @@ public class ParticleRegister {
     public static final RegistryObject<SimpleParticleType> LANDING_DYNAMIC =
             PARTICLE_TYPES.register("landing_dynamic", () -> new SimpleParticleType(false));
 
+    // Dynamic colored bubble particle (for DynamicFluidType - color passed via speed params)
+    public static final RegistryObject<SimpleParticleType> BUBBLE_DYNAMIC =
+            PARTICLE_TYPES.register("bubble_dynamic", () -> new SimpleParticleType(false));
+
     // Fly particle for extremely dirty players
     public static final RegistryObject<SimpleParticleType> FLY =
             PARTICLE_TYPES.register("fly", () -> new SimpleParticleType(false));

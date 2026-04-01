@@ -45,10 +45,9 @@
   "item.hotbath.splash_custom_fluid_bottle.desc": "一瓶可以投掷的自定义洗浴液体。",
   "item.hotbath.splash_custom_fluid_bottle.tooltip": "内含: %s",
   "item.hotbath.custom_fluid.unknown": "未知液体",
-
   "tooltip.hotbath.temperature": "温度: %s",
+  "tooltip.hotbath.duration": " (%s秒)",
   "tooltip.hotbath.effects_count": "效果: %d个",
-
   "fluid.hotbath.hot_water_block": "热水方块",
   "item.hotbath.bath_herb": "洗浴用药草",
   "item.hotbath.bath_herb.desc": "来自遥远东方的神秘草叶，散发着古老的气息。据说能调和体内的气脉，洗净灵魂的疲惫。",
@@ -66,21 +65,18 @@
   "hotbath.advancement.something_smells": "\"香饽饽\"",
   "hotbath.advancement.something_smells.desc": "你可能需要洗个澡了。",
   "hotbath_tab": "热水澡",
-
   "commands.hotbath.dirtiness.get": "污渍度: %s%% (%s)",
   "commands.hotbath.dirtiness.get.flies_active": " [苍蝇出没]",
   "commands.hotbath.dirtiness.get.max_dirty": " [最大污渍: %s/%s 刻]",
   "commands.hotbath.dirtiness.set": "已将污渍度设置为 %s%%",
   "commands.hotbath.dirtiness.clean": "你现在干干净净了！",
   "commands.hotbath.dirtiness.flies": "苍蝇已启用！你现在非常脏（100%%持续2天以上）",
-
   "hotbath.compat.warning.title": "⚠ 兼容性警告",
   "hotbath.compat.warning.disabled": "集成已因错误而禁用。",
   "hotbath.compat.warning.version": "  模组版本: %s",
   "hotbath.compat.warning.api_change": "  这可能是由于 %s 的API变更导致的。",
   "hotbath.compat.warning.report": "[点击此处报告问题]",
   "hotbath.compat.warning.report.hover": "打开 GitHub Issues 页面",
-
   "hotbath.compat.disabled.title": "⚠ 联动已禁用",
   "hotbath.compat.disabled.cold_sweat": "$(c)警告：$()$(l)冷汗$()联动因兼容性错误已被$(c)禁用$()。$(br2)本条目描述的功能$(c)目前不可用$()。$(br2)这可能是由于模组版本不匹配导致的。请查看游戏日志获取详情，并在GitHub上报告问题。",
   "hotbath.compat.disabled.tough_as_nails": "$(c)警告：$()$(l)意志坚定$()联动因兼容性错误已被$(c)禁用$()。$(br2)本条目描述的功能$(c)目前不可用$()。$(br2)这可能是由于模组版本不匹配导致的。请查看游戏日志获取详情，并在GitHub上报告问题。",
@@ -90,11 +86,9 @@
   "hotbath.compat.disabled.farmers_delight": "$(c)警告：$()$(l)农夫乐事$()联动因兼容性错误已被$(c)禁用$()。$(br2)本条目描述的功能$(c)目前不可用$()。$(br2)这可能是由于模组版本不匹配导致的。请查看游戏日志获取详情，并在GitHub上报告问题。",
   "hotbath.compat.disabled.twilight_forest": "$(c)警告：$()$(l)暮色森林$()联动因兼容性错误已被$(c)禁用$()。$(br2)本条目描述的功能$(c)目前不可用$()。$(br2)这可能是由于模组版本不匹配导致的。请查看游戏日志获取详情，并在GitHub上报告问题。",
   "hotbath.compat.disabled.serene_seasons": "$(c)警告：$()$(l)静谧四季$()联动因兼容性错误已被$(c)禁用$()。$(br2)本条目描述的功能$(c)目前不可用$()。$(br2)这可能是由于模组版本不匹配导致的。请查看游戏日志获取详情，并在GitHub上报告问题。",
-
   "hotbath.book.name": "巴涅温浴场手册",
   "hotbath.book.subtitle": "第一版",
   "hotbath.book.landing_text": "欢迎阅读巴涅温浴场手册！在紧张的冒险之余，来泡个舒服的热水澡吧。本书涵盖了从基础液体到高级自定义液体系统的所有内容。",
-
   "hotbath.category.basics.name": "入门指南",
   "hotbath.category.basics.desc": "了解热水澡模组的基础知识和如何开始。",
   "hotbath.category.fluids.name": "浴液种类",
@@ -113,7 +107,6 @@
   "hotbath.category.compat_world.desc": "与维度、农耕和季节模组的联动。",
   "hotbath.category.advancements.name": "成就与进度",
   "hotbath.category.advancements.desc": "热水澡模组的所有成就和进度。",
-
   "hotbath.compat.not_installed.title": "⚠ 模组未安装",
   "hotbath.compat.not_installed.cold_sweat": "$(8)冷汗 未安装$()$(br2)安装 $(l)冷汗 (Cold Sweat)$() 模组以解锁$(thing)完整的温度系统联动$()。$(br2)功能预览：$(li)浴池温度与体温交互$(li)寒冷生物群系中的保温$(li)浴水瓶提供升温效果",
   "hotbath.compat.not_installed.tough_as_nails": "$(8)意志坚定 未安装$()$(br2)安装 $(l)意志坚定 (TAN)$() 模组以解锁$(thing)温度与口渴联动$()。$(br2)功能预览：$(li)浴池中恢复口渴值$(li)温度等级调节$(li)在浴池中直接饮水",
@@ -124,7 +117,6 @@
   "hotbath.compat.not_installed.twilight_forest": "$(8)暮色森林 未安装$()$(br2)安装 $(l)暮色森林$() 模组以解锁$(thing)暮色森林联动$()。$(br2)功能预览：$(li)热浴移除冰冻效果$(li)暮色维度萤火虫粒子$(li)魔法氛围效果",
   "hotbath.compat.not_installed.serene_seasons": "$(8)静谧四季 未安装$()$(br2)安装 $(l)静谧四季$() 模组以解锁$(thing)季节联动$()。$(br2)功能预览：$(li)冬季额外抗性加成$(li)热浴融化附近冰雪$(li)季节性效果强化",
   "hotbath.compat.not_installed.shower_core": "$(8)Shower Core 未安装$()$(br2)安装 $(l)Shower Core$() 模组以拓展你的沐浴体验：$(br)$(li)$(thing)浴缸$() - 33种精美款式$(li)$(thing)淋浴头$() - 紧凑型与雨淋式$(li)$(thing)小黄鸭$() - 可爱的漂浮伙伴！$(br2)热水澡的完美伴侣模组！",
-
   "hotbath.entry.shower_core.name": "✨ Shower Core（推荐）",
   "hotbath.entry.shower_core.bathtub.title": "浴缸",
   "hotbath.entry.shower_core.bathtub": "$(l)Shower Core$() 添加了33种不同款式的精美$(thing)浴缸$()!$(br2)$(li)木质款式：全部11种木材$(li)石质款式：石头、圆石$(li)金属款式：铁、金、铜、钻石$(li)染色款式：全邐16种颜色$(br2)浴缸与热水澡的浴液完美配合！",
@@ -132,10 +124,8 @@
   "hotbath.entry.shower_core.shower": "提供两种淋浴头：$(br2)$(thing)紧凑型淋浴头$() - 经典手持式$(br)$(thing)雨淋淋浴头$() - 奢华顶喷式$(br2)两者都有与浴缸相同的33种款式可选。安装在墙上，享受清爽淋浴！",
   "hotbath.entry.shower_core.duck.title": "小黄鸭 🦆",
   "hotbath.entry.shower_core.duck": "浴室里最可爱的装饰！$(br2)$(li)可放置在水面、地面或浴缸上$(li)右键推动它们四处游动$(li)逼真的漂浮和摇摆效果$(li)Shift+右键拾取$(br2)没有小黄鸭的澡堂是不完整的！",
-
   "hotbath.entry.adv_hot_bath.name": "热水澡",
   "hotbath.entry.adv_hot_bath.page1": "$(l)热水澡$() - \"用热水澡开始你的一天\"$(br2)$(thing)触发条件：$()获得热水桶$(br)$(thing)奖励：$()10经验 + 解锁所有浴液配方$(br2)这是你的第一个成就！只需在熔炉中烧炼水桶获得热水，就能解锁所有特殊浴液配方。",
-
   "hotbath.entry.adv_challenges.name": "浴池挑战",
   "hotbath.entry.adv_challenges.page1": "这些$(thing)挑战$()成就需要你坚持不懈地泡澡。每个成就都会追踪你在特定浴液中的累计浸泡次数！",
   "hotbath.entry.adv_challenges.foot.title": "足力健",
@@ -146,63 +136,52 @@
   "hotbath.entry.adv_challenges.chronic": "\"体弱多病要多泡\"$(br2)$(thing)要求：$()在草药浴中浸泡$(thing)100次$()$(br)$(thing)奖励：$()100经验$(br2)传统中药养生的精髓！",
   "hotbath.entry.adv_challenges.rose.title": "玫瑰体香",
   "hotbath.entry.adv_challenges.rose": "\"只有长久的浸养与熏陶，才能体香大成\"$(br2)$(thing)要求：$()在玫瑰浴中浸泡$(thing)100次$()$(br)$(thing)奖励：$()100经验$(br2)让自己散发天然的玫瑰香气！",
-
   "hotbath.entry.adv_hidden.name": "隐藏成就",
   "hotbath.entry.adv_hidden.page1": "有些成就是$(thing)隐藏的$() - 在你自己发现之前不会显示！$(br2)$(8)继续探索，看看会发生什么……$()",
-
   "hotbath.entry.introduction.name": "简介",
   "hotbath.entry.introduction.page1": "欢迎来到$(l:hotbath:basics/introduction)热水澡$(/l)！这个模组为Minecraft添加了令人放松的治疗性浴液。每种浴液在你浸泡时都能提供独特的增益和治疗效果。$(br2)无论你是需要恢复生命、移除负面效果，还是仅仅想暖暖身子，我们都有适合你的浴汤！",
   "hotbath.entry.introduction.page2.title": "基本机制",
   "hotbath.entry.introduction.page2": "$(li)浸泡15秒触发特殊效果$(li)不同液体提供不同增益$(li)液体会随时间恢复生命值$(li)灵魂沙产生上升气泡$(li)岩浆块产生下沉气泡$(li)自定义粒子匹配液体颜色",
   "hotbath.entry.introduction.page3.title": "快速开始",
   "hotbath.entry.introduction.page3": "$(li)首先在熔炉中烧制$(item)水桶$()获得$(item)热水$()$(li)用任何不可燃方块建造一个池子$(li)倒入热水后跳进去享受！$(li)添加材料可升级为特殊浴液$(li)查看$(l:hotbath:fluids/hot_water)液体$(/l)分类了解所有浴液类型",
-
   "hotbath.entry.bath_herb.name": "洗浴用药草",
   "hotbath.entry.bath_herb.page1": "$(item)洗浴用药草$()是来自遥远东方的神秘材料，是制作草药浴的必需品。这些古老的药草散发着治愈的能量。",
   "hotbath.entry.bath_herb.obtain.title": "获取方式",
   "hotbath.entry.bath_herb.obtain": "$(li)在$(thing)新手级农民村民$()处用10个绿宝石购买$(li)在$(thing)流浪商人$()处用15个绿宝石购买$(br2)遇到时记得多囤一些！",
-
   "hotbath.entry.tips.name": "提示与注意",
   "hotbath.entry.tips.page1": "使用浴液时请注意：$(br)$(li)$(thing)水生生物$()：不会在浴液中自然生成，且热带鱼以外的鱼类和章鱼在浴液中会受到伤害。$(li)$(thing)放置限制$()：地表植物、睡莲、海草、海龟蛋无法放置在浴液中，且珊瑚植物放置其中一会后会变成失活珊瑚。$(li)$(thing)钓鱼$()：在浴液中钓鱼不会钓到任何东西。",
   "hotbath.entry.tips.interactions.title": "流体交互",
   "hotbath.entry.tips.interactions": "$(li)$(thing)气泡柱$()：灵魂沙产生上升气泡，岩浆块产生下沉气泡$(li)$(thing)自定义粒子$()：气泡和滴水粒子颜色与液体一致",
-
   "hotbath.entry.hot_water.name": "热水",
   "hotbath.entry.hot_water.page1": "$(item)热水$()是所有浴液的基础。简单却有效，它能洗去疲惫并提供速度加成。",
   "hotbath.entry.hot_water.recipe": "在任意熔炉中烧炼水桶即可制作热水。",
   "hotbath.entry.hot_water.effects.title": "效果",
   "hotbath.entry.hot_water.effects": "$(li)浸泡15秒获得$(thing)速度 I$() (20秒)$(br)$(li)$(thing)隐藏进度$()：[足力健] - 浸泡100次获得100经验",
-
   "hotbath.entry.milk_bath.name": "牛奶浴",
   "hotbath.entry.milk_bath.page1": "$(item)牛奶浴$() - 传说中的美容圣品！这种奶白色的浴液能移除负面效果，同时恢复生命值和饥饿值。",
   "hotbath.entry.milk_bath.recipe": "将热水与牛奶桶组合。",
   "hotbath.entry.milk_bath.effects.title": "效果",
   "hotbath.entry.milk_bath.effects": "$(li)恢复$(thing)生命值$() (0.25/2秒)$(br)$(li)恢复$(thing)饥饿值$() (1/15秒)$(br)$(li)浸泡15秒移除除霉运外的所有负面效果$(br)$(li)$(thing)隐藏进度$()：[牛奶肌] - 浸泡100次获得100经验",
-
   "hotbath.entry.herbal_bath.name": "草药浴",
   "hotbath.entry.herbal_bath.page1": "$(item)草药浴$() - 古老智慧的结晶！这种治疗性浴液提供抗性提升并对亡灵生物造成伤害。",
   "hotbath.entry.herbal_bath.recipe": "将热水与2个洗浴用药草组合。",
   "hotbath.entry.herbal_bath.effects.title": "效果",
   "hotbath.entry.herbal_bath.effects": "$(li)恢复$(thing)生命值$() (0.25/2秒)$(br)$(li)浸泡15秒移除$(thing)所有$()负面效果$(br)$(li)浸泡5秒获得$(thing)抗性提升 I$() (10秒)$(br)$(li)对亡灵生物造成伤害 (0.5/秒)$(br)$(li)$(thing)隐藏进度$()：[药罐子] - 浸泡100次获得100经验",
-
   "hotbath.entry.honey_bath.name": "蜂蜜浴",
   "hotbath.entry.honey_bath.page1": "$(item)蜂蜜浴$() - 埃及艳后的美容秘方！这种黏稠的浴液提供伤害吸收并快速恢复饥饿值，但会让你变慢。",
   "hotbath.entry.honey_bath.recipe": "将热水与蜜脾块组合。",
   "hotbath.entry.honey_bath.effects.title": "效果",
   "hotbath.entry.honey_bath.effects": "$(li)恢复$(thing)生命值$() (0.25/秒) 和 $(thing)饥饿值$() (1/4秒)$(br)$(li)浸泡时获得$(thing)缓慢 I$()$(br)$(li)浸泡15秒移除负面效果（除缓慢/霉运）$(br)$(li)浸泡15秒获得$(thing)伤害吸收 II$() (20秒)",
-
   "hotbath.entry.peony_bath.name": "牡丹浴",
   "hotbath.entry.peony_bath.page1": "$(item)牡丹浴$() - 花中之王的馈赠！这种优雅的浴液提供击退抗性，最终还能赋予幸运。",
   "hotbath.entry.peony_bath.recipe": "将热水与2朵牡丹组合。",
   "hotbath.entry.peony_bath.effects.title": "效果",
   "hotbath.entry.peony_bath.effects": "$(li)恢复$(thing)生命值$() (0.25/2秒)$(br)$(li)浸泡15秒移除负面效果和不祥之兆$(br)$(li)浸泡15秒获得$(thing)击退抗性$() (+0.05, 30秒)$(br)$(li)浸泡15秒获得$(thing)攻击速度$() (+10%, 15秒)$(br)$(li)$(thing)特殊$()：累计浸泡50次后，获得$(thing)幸运 I$() (45秒)",
-
   "hotbath.entry.rose_bath.name": "玫瑰浴",
   "hotbath.entry.rose_bath.page1": "$(item)玫瑰浴$() - 浪漫的享受！这种芬芳的浴液提供力量加成并移除不祥之兆。",
   "hotbath.entry.rose_bath.recipe": "将热水与8个玫瑰丛组合。",
   "hotbath.entry.rose_bath.effects.title": "效果",
   "hotbath.entry.rose_bath.effects": "$(li)恢复$(thing)生命值$() (0.25/秒)$(br)$(li)浸泡15秒移除负面效果和不祥之兆$(br)$(li)浸泡15秒获得$(thing)力量 I$() (20秒)$(br)$(li)$(thing)隐藏进度$()：[玫瑰体香] - 浸泡100次获得100经验",
-
   "hotbath.entry.drinkable_bottles.name": "饮用型浴水瓶",
   "hotbath.entry.drinkable_bottles.page1": "浴水可以装瓶携带！右键点击任何浴液并使用玻璃瓶即可收集。这些瓶子在饮用时会提供效果。",
   "hotbath.entry.bottles.hot_water.title": "热水瓶",
@@ -217,7 +196,6 @@
   "hotbath.entry.bottles.peony": "带着优雅的花香，泡澡水也能如此芬芳？$(br2)$(l)效果$(): 获得$(thing)幸运 I$() 45秒。",
   "hotbath.entry.bottles.rose.title": "玫瑰浴水瓶",
   "hotbath.entry.bottles.rose": "浓郁的玫瑰芬芳令人陶醉，忍不住想品尝一番...$(br2)$(l)效果$(): 获得$(thing)力量 I$() 45秒。",
-
   "hotbath.entry.splash_bottles.name": "喷溅型浴水瓶",
   "hotbath.entry.splash_bottles.page1": "喷溅型浴水瓶可以像药水一样投掷！在酿造台中用任意浴水瓶与火药酿造即可制作喷溅版本。",
   "hotbath.entry.splash.hot_water.title": "喷溅型热水瓶",
@@ -232,7 +210,6 @@
   "hotbath.entry.splash.peony": "植物学空袭。命中时赋予好运。幸运从未如此芬芳。$(br2)$(l)效果$(): 获得$(thing)幸运 II$() 30秒。",
   "hotbath.entry.splash.rose.title": "喷溅型玫瑰浴水瓶",
   "hotbath.entry.splash.rose": "高速投递的液体浪漫。赋予千根荆棘般的力量。$(br2)$(l)效果$(): 获得$(thing)力量 II$() 30秒。",
-
   "hotbath.entry.cold_sweat.name": "冷汗 (Cold Sweat)",
   "hotbath.entry.cold_sweat.page1": "$(l)Cold Sweat$()提供最深度的温度联动。热浴会智能地与模组的温度系统交互。",
   "hotbath.entry.cold_sweat.immersion.title": "浸泡效果",
@@ -241,7 +218,6 @@
   "hotbath.entry.cold_sweat.bottles": "$(li)饮用浴水瓶会提升体温$(li)喷溅瓶会在范围内施加温度效果$(li)普通瓶和喷溅瓶都提供抗寒 II 30秒",
   "hotbath.entry.cold_sweat.custom.title": "自定义液体",
   "hotbath.entry.cold_sweat.custom": "$(li)温度≥35°C的自定义液体与Cold Sweat联动$(li)液体的温度值会转换为MC单位$(li)温度较低的自定义液体不参与温度系统",
-
   "hotbath.entry.tough_as_nails.name": "意志坚定 (TAN)",
   "hotbath.entry.tough_as_nails.page1": "$(l)Tough As Nails$()联动通过热浴提供温度调节和口渴管理。",
   "hotbath.entry.tough_as_nails.temperature.title": "温度控制",
@@ -250,7 +226,6 @@
   "hotbath.entry.tough_as_nails.thirst": "$(li)空手在浴池中右键点击可饮水$(li)手动饮水恢复口渴值$(li)浴水瓶饮用时也恢复口渴值",
   "hotbath.entry.tough_as_nails.bottles.title": "浴水瓶联动",
   "hotbath.entry.tough_as_nails.bottles": "$(li)饮用浴水瓶提供升温效果$(li)喷溅瓶对附近实体施加效果$(li)两种类型都提供抗寒增益",
-
   "hotbath.entry.lso.name": "传奇生存大修 (LSO)",
   "hotbath.entry.lso.page1": "$(l)Legendary Survival Overhaul$()提供最全面的联动，包括高级温度、口渴和抗寒机制。",
   "hotbath.entry.lso.temperature.title": "温度升温",
@@ -259,12 +234,10 @@
   "hotbath.entry.lso.resistance": "$(li)泡澡$(thing)10秒$()后，获得$(thing)抗寒 III$()$(li)效果随泡澡时间$(thing)累积$()$(li)最大持续时间：$(thing)5分钟$()$(li)离开后$(thing)寒冷免疫$()增益持续10秒$(li)防止立即再次冻结！",
   "hotbath.entry.lso.thirst.title": "口渴与浴水瓶",
   "hotbath.entry.lso.thirst": "$(li)在浴池中饮水恢复$(thing)5点口渴$() + $(thing)0.5饱和度$()$(li)浴水瓶提供$(thing)热饮$()效果（等级 I）$(li)泡澡时饮用获得增强$(thing)热饮 III$()$(li)有助于维持体温！",
-
   "hotbath.entry.other_compat.name": "其他联动",
   "hotbath.entry.other_compat.page1": "热水澡还与许多其他模组兼容！在本分类中查看每个支持模组的详细条目。",
   "hotbath.entry.other_compat.mods.title": "快速参考",
   "hotbath.entry.other_compat.mods": "$(li)$(l)Alex's Mobs$()：浣熊、猴子、污渍度$(li)$(l)Alex's Caves$()：软糖熊、辐射治愈$(li)$(l)Twilight Forest$()：冰冻移除、萤火虫$(li)$(l)Farmer's Delight$()：舒适效果$(li)$(l)Serene Seasons$()：冬季抗性加成",
-
   "hotbath.entry.alexs_mobs.name": "Alex的生物",
   "hotbath.entry.alexs_mobs.page1": "$(l)Alex's Mobs$()联动添加了真实的动物行为和$(thing)污渍度$()系统来吸引虫子。",
   "hotbath.entry.alexs_mobs.raccoon.title": "浣熊洗涤",
@@ -273,7 +246,6 @@
   "hotbath.entry.alexs_mobs.capuchin": "$(li)$(thing)卷尾猴$()会被温泉吸引$(li)它们会像日本雪猴一样坐着泡澡！$(li)在温泉中的猴子获得$(thing)生命恢复$()增益$(li)在温水中放松时更容易驯服",
   "hotbath.entry.alexs_mobs.dirtiness.title": "污渍与虫子",
   "hotbath.entry.alexs_mobs.dirtiness": "$(li)极度肮脏时，$(thing)苍蝇$()会围着你飞$(li)$(thing)深红蚊子$()变得具有攻击性$(li)$(thing)蟑螂$()在3-6格距离处徘徊$(li)泡个澡变得干净，远离虫子！",
-
   "hotbath.entry.alexs_caves.name": "Alex的洞穴",
   "hotbath.entry.alexs_caves.page1": "$(l)Alex's Caves$()联动包括糖果融化、辐射治愈和洞穴生物互动。",
   "hotbath.entry.alexs_caves.gummy.title": "软糖熊融化",
@@ -284,12 +256,10 @@
   "hotbath.entry.alexs_caves.gammaroach": "$(li)$(thing)伽马蟑螂$()会被肮脏的玩家吸引$(br)$(li)污渍度达到80%%+时，它们会小心靠近$(br)$(li)有苍蝇状态（极度肮脏）时，它们变得$(thing)具有攻击性$()！$(br)$(li)定期泡澡以避免核蟑螂攻击！",
   "hotbath.entry.alexs_caves.raycat.title": "射线猫休息",
   "hotbath.entry.alexs_caves.raycat": "$(li)$(thing)射线猫$()喜欢坐在温泉附近$(br)$(li)使用共享的猫行为系统$(br)$(li)它们觉得温暖的地方很放松",
-
   "hotbath.entry.farmers_delight.name": "农夫乐事",
   "hotbath.entry.farmers_delight.page1": "$(l)Farmer's Delight$()联动在泡澡时提供$(thing)舒适$()效果。",
   "hotbath.entry.farmers_delight.comfort.title": "舒适效果",
   "hotbath.entry.farmers_delight.comfort": "$(li)在任何热浴中时，获得$(thing)舒适 I$()$(li)效果每2秒刷新$(li)舒适提供$(thing)缓慢恢复$()（1生命值/4秒）$(li)无论饥饿值如何都有效！$(li)完美适合辛苦劳作一天后放松",
-
   "hotbath.entry.twilight_forest.name": "暮色森林",
   "hotbath.entry.twilight_forest.page1": "$(l)Twilight Forest$()联动提供冰冻保护和氛围效果。",
   "hotbath.entry.twilight_forest.frosted.title": "冰冻治愈",
@@ -298,22 +268,18 @@
   "hotbath.entry.twilight_forest.firefly": "$(li)在$(thing)暮色森林维度$()，萤火虫粒子会在浴池周围生成$(li)营造魔幻氛围$(li)每0.5秒出现粒子$(li)在浴池8格范围内",
   "hotbath.entry.twilight_forest.ice_mobs.title": "冰霜生物伤害",
   "hotbath.entry.twilight_forest.ice_mobs": "$(li)$(c)冰霜生物$()在热浴中会受到伤害！$(li)受影响生物：$(thing)冰晶$(), $(thing)稳定/不稳定冰核$()$(li)$(thing)雪卫士$()和$(thing)雪女王$()Boss$(li)每秒造成1点伤害$(li)热水会融化它们！",
-
   "hotbath.entry.serene_seasons.name": "静谧四季",
   "hotbath.entry.serene_seasons.page1": "$(l)Serene Seasons$()联动提供季节性加成和冰雪融化。",
   "hotbath.entry.serene_seasons.winter.title": "冬季加成",
   "hotbath.entry.serene_seasons.winter": "$(li)在$(thing)冬季$()，泡澡获得额外$(thing)抗性$()$(li)$(thing)初冬/晚冬$()：抗性 I$(li)$(thing)仲冬$()：抗性 II + 生命恢复 I$(li)效果持续10秒，每2秒刷新$(li)热浴还会融化附近的冰雪！",
-
   "hotbath.entry.custom_overview.name": "概述",
   "hotbath.entry.custom_overview.page1": "热水澡支持$(thing)数据驱动的自定义液体$()！你可以使用数据包创建拥有独特颜色、效果和属性的浴液。",
   "hotbath.entry.custom_overview.features.title": "功能特性",
   "hotbath.entry.custom_overview.features": "$(li)自定义颜色和视觉效果$(li)可配置的药水效果$(li)可调节的触发时间$(li)温度和粘度设置$(li)多语言支持$(li)自动生成桶和瓶子物品$(li)支持酿造台",
-
   "hotbath.entry.custom_structure.name": "文件结构",
   "hotbath.entry.custom_structure.page1": "自定义液体在数据包中定义。将JSON文件放在正确的文件夹中，游戏才能识别它们。",
   "hotbath.entry.custom_structure.datapack.title": "数据包结构",
   "hotbath.entry.custom_structure.datapack": "将液体定义放在：$(br2)$(8)data/<命名空间>/hotbath/custom_fluids/<名称>.json$()$(br2)示例：$(br)$(8)data/mypack/hotbath/custom_fluids/golden_bath.json$()$(br2)$(翻译文件（可选）：如需自定义翻译，可将lang文件添加到资源包中。液体JSON也可以包含内联翻译。",
-
   "hotbath.entry.custom_json.name": "JSON格式",
   "hotbath.entry.custom_json.page1": "每个自定义液体由一个JSON文件定义，包含各种属性。除了$(thing)id$()之外，所有字段都是可选的，并有合理的默认值。",
   "hotbath.entry.custom_json.fields.title": "基本字段",
@@ -326,7 +292,6 @@
   "hotbath.entry.custom_json.effects": "效果定义为对象数组：$(br2)$(li)$(thing)effect$()：药水效果ID$(li)$(thing)duration$()：持续时间（游戏刻）$(li)$(thing)amplifier$()：效果等级（0 = I级）$(li)$(thing)ambient$()：是否显示淡化粒子$(li)$(thing)show_particles$()：是否显示效果粒子$(li)$(thing)show_icon$()：是否显示HUD图标",
   "hotbath.entry.custom_json.translations.title": "翻译",
   "hotbath.entry.custom_json.translations": "在JSON中添加$(thing)translations$()对象：$(br2)$(li)$(thing)en_us$()、$(thing)zh_cn$()等：液体名称$(li)$(thing)en_us.desc$()、$(thing)zh_cn.desc$()等：描述$(br2)HotBath会在加载液体时自动读取这些翻译 - 无需资源包！",
-
   "hotbath.entry.custom_example.name": "示例",
   "hotbath.entry.custom_example.page1": "热水澡包含一个示例数据包，其中有$(thing)7种自定义液体$()。查看模组数据包目录中的$(thing)hotbath_example_fluids$()文件夹来了解它们的工作原理！",
   "hotbath.entry.custom_example.golden.title": "黄金浴",

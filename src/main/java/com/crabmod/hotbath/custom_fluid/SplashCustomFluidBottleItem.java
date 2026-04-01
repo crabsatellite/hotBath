@@ -142,7 +142,7 @@ public class SplashCustomFluidBottleItem extends Item {
                 String level_str = amplifier > 0 ? " " + toRoman(amplifier + 1) : "";
                 tooltipComponents.add(Component.translatable(effectName)
                         .append(level_str)
-                        .append(" (" + durationSeconds + "s)")
+                        .append(Component.translatable("tooltip.hotbath.duration", durationSeconds))
                         .withStyle(effect.getEffect().isBeneficial() ? ChatFormatting.BLUE : ChatFormatting.RED));
             }
         }

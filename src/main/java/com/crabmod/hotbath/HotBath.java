@@ -210,7 +210,10 @@ public class HotBath {
             "sereneseasons",
             "Serene Seasons",
             SereneSeasonsIntegration::isSereneSeasonsLoaded,
-            SereneSeasonsCompat::init
+            SereneSeasonsCompat::init,
+            "sereneseasons.api.season.SeasonHelper",
+            "sereneseasons.api.season.Season",
+            "sereneseasons.api.season.ISeasonState"
         );
         
         // TODO: Create mod integration - temporarily disabled

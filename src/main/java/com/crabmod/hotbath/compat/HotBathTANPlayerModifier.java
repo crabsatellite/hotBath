@@ -30,7 +30,7 @@ public class HotBathTANPlayerModifier implements IPlayerTemperatureModifier {
     @Override
     public TemperatureLevel modify(Player player, TemperatureLevel current) {
         // Check if the player is inside any hot bath block using the existing utility method
-        boolean inBath = CustomFluidHandler.isPlayerInHotBathBlock(player);
+        boolean inBath = CustomFluidHandler.isPlayerInHotBath(player);
         long currentTime = System.currentTimeMillis();
         UUID uuid = player.getUUID();
 

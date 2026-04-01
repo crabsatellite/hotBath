@@ -27,7 +27,7 @@ public class HotBathImmersionLSOModifier {
 
     public static void tick(Player player) {
         UUID playerUUID = player.getUUID();
-        boolean isInBath = CustomFluidHandler.isPlayerInHotBathBlock(player);
+        boolean isInBath = CustomFluidHandler.isPlayerInHotBath(player);
 
         if (isInBath) {
             int timer = BATH_TIMERS.getOrDefault(playerUUID, 0) + 1;
