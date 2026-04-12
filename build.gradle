@@ -92,6 +92,7 @@ mixin {
 repositories {
     // Put repositories for dependencies here
     // ForgeGradle automatically adds the Forge maven and Maven Central for you
+    mavenCentral()
     maven {
         url "https://cursemaven.com"
         content {
@@ -176,6 +177,12 @@ dependencies {
     compileOnly "curse.maven:sodium-394468:6382651"
     runtimeOnly "curse.maven:sodium-394468:6382651"
 
+    // ---- Unit tests ----
+    // Pure-Java unit tests for compat logic that does not touch Minecraft types
+    // (see ColdSweatImmersionGate). No Minecraft bootstrapping required.
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
@@ -241,6 +248,15 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+// Run unit tests with the JUnit 5 platform.
+// These tests are scoped to pure-Java compat helpers (no Minecraft runtime).
+tasks.named('test', Test).configure {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
 eclipse {
