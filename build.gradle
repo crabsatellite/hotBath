@@ -119,6 +119,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     // Put repositories for dependencies here
     // ForgeGradle automatically adds the Forge maven and Maven Central for you
+    mavenCentral()
     maven {
         url "https://cursemaven.com"
         content {
@@ -154,7 +155,7 @@ dependencies {
     // ToughAsNails - Temperature and thirst mod (optional dependency)
     // Project ID: 246391 - Disabled runtime: triggers Forge early class loading bug
     compileOnly fg.deobf("curse.maven:tough-as-nails-246391:4750298")
-    // runtimeOnly fg.deobf("curse.maven:tough-as-nails-246391:4750298")
+//     runtimeOnly fg.deobf("curse.maven:tough-as-nails-246391:4750298")
 
     // Legendary Survival Overhaul - Temperature and survival overhaul mod (optional dependency)
     // Project ID: 840254 - Testing runtime after MixinPlugin fix
@@ -233,6 +234,21 @@ dependencies {
 
     // Mixin annotation processor
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    // ---- Unit tests ----
+    // Pure-Java unit tests for compat logic that does not touch Minecraft types
+    // (see ColdSweatImmersionGate). No Minecraft bootstrapping required.
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// Run unit tests with the JUnit 5 platform.
+// These tests are scoped to pure-Java compat helpers (no Minecraft runtime).
+tasks.named('test', Test).configure {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
 // Mixin configuration
