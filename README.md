@@ -17,12 +17,121 @@ Welcome to **Hot Bath Mod**! Take a break from your adventures and soak in a rel
 
 - **🌟 Highly Recommended | Fluidlogged 🌟**  
   [Modrinth Link](https://modrinth.com/mod/fluidlogged/versions)  
-  Fluidlogged enables custom fluid blocks to have a waterlogged effect with blocks like stairs, slabs, and more, allowing hotbath fluids to integrate naturally into various structures.
+  Fluidlogged enables custom fluid blocks to have a waterlogged effect with blocks like stairs, slabs, and more, allowing hotbath fluids to integrate naturally into various structures.  
+  **Note**: Starting from HotBath 4.0.0 (1.21.1), the mod handles waterlogging natively — Fluidlogged is no longer needed for 1.21.1 users.
 
 ## Known Issues
 
 - **Optifine Incompatibility**:  
   Optifine may cause rendering issues with fluid colors in this mod. For example, fluids like milk bath may not display their correct colors and appear watery. This is a known incompatibility with Optifine, which affects the rendering of many mods. We recommend using alternative shader mods such as **Sodium** or **Oculus** for better compatibility.
+
+## Update 4.0 (1.20.1 Forge / 1.21.1 NeoForge)
+
+### Dirtiness System
+
+A brand-new hygiene mechanic that tracks how dirty your character gets over time.
+
+- **Gradual dirt accumulation** over 5 in-game days (base rate), influenced by multiple environmental factors:
+  - **Biome**: Nether (1.6x), Badlands/Desert/Swamp (1.5x), Jungle (1.3x), Mushroom Island (0.8x), Ocean/River (0.85x)
+  - **Activity**: Sprinting (1.3x), Crawling (1.4x), Swimming (0.7x), Flying (0.9x)
+  - **Weather**: Rain (0.6x) and Thunderstorms (0.5x) help wash you off
+  - **Depth**: Deep caves below Y=0 (1.4x), caves below Y=50 (1.2x)
+  - **Ground type**: Dirt/Sand blocks slightly increase accumulation
+- **Instant dirt events**: Getting hurt (+2%), killing mobs (+3%), killing bosses (+8%), nearby explosions (+5%), mining (+0.5%)
+- **Visual dirt overlay** on player model with 10 procedural patterns, progressively covering legs → body → arms → head
+- **Fly particles** spawn around the player after staying at 100% dirtiness for 2+ in-game days
+- **Bathing cleans you up**: Standing in any hot bath fluid cleans you in ~20 seconds; moving in the water speeds it up to ~15 seconds
+- Debug commands: `/dirtiness get`, `/dirtiness set`, `/dirtiness clean`
+- Can be toggled off in config
+
+---
+
+### Datapack-Driven Custom Fluids
+
+Create unlimited custom bath fluids via datapacks — no code or recompilation required.
+
+- **Datapack path**: `data/<namespace>/hotbath/custom_fluids/<name>.json`
+- **Fully configurable properties**:
+  - Color (RGB), opacity, luminosity (0–15)
+  - Temperature (°C), viscosity, density
+  - Still and flowing textures (defaults to grayscale tinting)
+  - Particle toggles: splash, bubbles, steam
+  - Potion effects with configurable duration, amplifier, ambient, and icon visibility
+  - Trigger time (seconds before effects apply)
+  - Nutrition and thirst values (for compat mod integration)
+- **Built-in localization**: Define translations for multiple languages directly in the JSON (`en_us`, `zh_cn`, `ja_jp`, etc.) with locale fallback chains
+- **Full item support**: Custom fluid buckets, drinkable bottles, and splash bottles are automatically generated
+- **Fluid spreading**: Custom fluids propagate their identity through BlockEntity data when flowing
+- **Waterlogging support**: Any block can be waterlogged with custom fluids
+- **Hot reload**: Fluids update when datapacks are reloaded
+- **Public API** (`CustomFluidAPI`): Other mods can query, create, and apply custom fluid effects programmatically
+- **Guide book** (Patchouli): Includes documentation, JSON format reference, and example fluids (Golden Bath, Slime Bath, Blazing Bath, Ender Bath, Enchanted Bath, Milk Tea Bath, Silent Spring Bath)
+
+**Example Datapack Downloads:**
+
+- [hotbath_example_fluids_1.21.1.zip](https://github.com/crabsatellite/hotBath/releases/download/example-datapacks/hotbath_example_fluids_1.21.1.zip) — For Minecraft 1.21.1 (NeoForge)
+- [hotbath_example_fluids_1.20.1.zip](https://github.com/crabsatellite/hotBath/releases/download/example-datapacks/hotbath_example_fluids_1.20.1.zip) — For Minecraft 1.20.1 (Forge)
+
+---
+
+### Mod Compatibility
+
+All integrations are optional — Hot Bath detects installed mods at runtime and enables features automatically. If a compat fails, it is disabled gracefully with an in-game notification.
+
+#### Cold Sweat
+
+- Bathing forces the player to a comfortable body temperature, neutralizing Cold Sweat's water temperature modifier (-5°C offset)
+- Drinking a bath water bottle provides 36°C warmth for 20 seconds
+
+#### Tough As Nails
+
+- Bathing applies the WARM temperature level
+- Drinking a bath water bottle restores 4 thirst + 0.6 hydration and grants 10 seconds of warmth
+
+#### Legendary Survival Overhaul
+
+- Bathing grants HOT_DRINK potion effect (Level 3 while bathing, Level 1 otherwise, 5 seconds)
+- Drinking bath water bottles restores thirst
+- Integrated via Mixin into the thirst consumption system
+
+#### Alex's Mobs
+
+- **Dirty player interactions**: Dirty players attract flies, mosquitoes (aggressive), and cockroaches (loitering)
+- **Raccoons**: Wash items 1.5x faster in hot bath fluids; increased tame chance near hot baths
+- **Capuchin monkeys**: Attracted to hot springs, receive Regeneration buff, easier to tame (inspired by Japanese macaques)
+
+#### Alex's Caves
+
+- **Gummy Bears** take damage in hot water (melting mechanic)
+- **Herbal Bath** can cure the IRRADIATED effect
+- **Gammaroach** attracted to dirty players
+- **Raycat** sits near hot springs
+
+#### Serene Seasons
+
+- Bathing in winter grants bonus Resistance (Early/Late Winter: Level I, Mid Winter: Level II)
+- Ice and snow melt near hot bath fluids
+
+#### Twilight Forest
+
+- Bathing in hot water removes Frost effects and grants frost resistance
+- Firefly particle effects appear around bath pools in the Twilight Forest dimension
+- Ice-type mobs (Ice Crystal, Stable/Unstable Ice Core, Snow Guardian, Snow Queen) take damage in hot water
+
+#### Farmer's Delight
+
+- Bathing grants the Comfort effect (regenerates 1 HP every 4 seconds, ignoring hunger level)
+
+#### Create (Temporarily Disabled)
+
+- Open Pipe effect handlers for all bath fluids: Hot Water → Speed, Honey Bath → Absorption + Slowness, Milk Bath → Remove negative effects, Herbal Bath → Resistance + Regeneration, Peony Bath → Luck, Rose Bath → Strength
+- Cauldron filling via block spouting
+
+#### Patchouli
+
+- In-game Hot Bath Guide book with dynamic page visibility based on which compat mods are active
+
+---
 
 ## Update 3.0 (1.20.1 Forge / 1.21.1 NeoForge+)
 
@@ -205,12 +314,121 @@ Add **Gunpowder** to any Bath Water Bottle to create its splash version.
 
 - **🌟 强烈推荐 | Fluidlogged 🌟**  
   [Modrinth 链接](https://modrinth.com/mod/fluidlogged/versions)  
-  Fluidlogged 可以让自定义流体方块（如本模组的浴水）与楼梯、台阶等方块共存（含水效果），让你的浴室设计更加自然美观。
+  Fluidlogged 可以让自定义流体方块（如本模组的浴水）与楼梯、台阶等方块共存（含水效果），让你的浴室设计更加自然美观。  
+  **注意**: 从 HotBath 4.0.0 (1.21.1) 起，模组已内置含水功能 — 1.21.1 用户不再需要 Fluidlogged。
 
 ## 已知问题
 
 - **不支持 Optifine**:  
   Optifine 可能会导致本模组中的流体颜色渲染出现问题，例如牛奶浴等流体可能不会显示正确的颜色，呈现出水样效果。这是 Optifine 与许多模组不兼容的已知问题。我们建议使用 **Sodium (钠)** 或 **Oculus** 等替代光影模组以获得更好的兼容性。
+
+## 4.0 重大更新 (1.20.1 Forge / 1.21.1 NeoForge)
+
+### 脏污度系统
+
+全新的卫生系统，追踪你的角色随时间变脏的程度。
+
+- **渐进式脏污积累**，基础速率为 5 个游戏日达到最脏，受多种环境因素影响：
+  - **生物群系**: 下界 (1.6x)、恶地/沙漠/沼泽 (1.5x)、丛林 (1.3x)、蘑菇岛 (0.8x)、海洋/河流 (0.85x)
+  - **活动状态**: 疾跑 (1.3x)、匍匐 (1.4x)、游泳 (0.7x)、飞行 (0.9x)
+  - **天气**: 雨天 (0.6x) 和雷暴 (0.5x) 能帮助冲洗
+  - **深度**: Y=0 以下的深层洞穴 (1.4x)、Y=50 以下的洞穴 (1.2x)
+  - **地面类型**: 泥土/沙子方块会略微增加积累速度
+- **瞬时脏污事件**: 受伤 (+2%)、击杀生物 (+3%)、击杀 Boss (+8%)、附近爆炸 (+5%)、挖矿 (+0.5%)
+- **视觉污垢覆盖层**: 玩家模型上有 10 种程序化污垢图案，按腿部 → 躯干 → 手臂 → 头部渐进显示
+- **苍蝇粒子**: 100% 脏污度持续 2 个以上游戏日后，苍蝇会在玩家周围生成
+- **泡澡清洁**: 站在任何温泉液体中约 20 秒即可完全清洁；在水中移动可加速至约 15 秒
+- 调试命令：`/dirtiness get`、`/dirtiness set`、`/dirtiness clean`
+- 可在配置中关闭
+
+---
+
+### 数据包驱动的自定义液体
+
+通过数据包创建无限自定义浴液 — 无需编程或重新编译。
+
+- **数据包路径**: `data/<namespace>/hotbath/custom_fluids/<name>.json`
+- **完全可配置的属性**:
+  - 颜色 (RGB)、透明度、亮度 (0–15)
+  - 温度 (°C)、粘度、密度
+  - 静止和流动纹理（默认灰度着色）
+  - 粒子开关: 水花、气泡、蒸汽
+  - 药水效果（可配置持续时间、等级、环境效果和图标可见性）
+  - 触发时间（效果生效前所需秒数）
+  - 营养值和口渴值（用于兼容模组联动）
+- **内置本地化**: 直接在 JSON 中定义多语言翻译（`en_us`、`zh_cn`、`ja_jp` 等），支持语言回退链
+- **完整物品支持**: 自动生成自定义液体桶、饮用瓶和喷溅瓶
+- **流体传播**: 自定义液体通过 BlockEntity 数据在流动时传播其身份标识
+- **含水支持**: 任何方块都可以被自定义液体含水
+- **热重载**: 数据包重载时液体即时更新
+- **公共 API** (`CustomFluidAPI`): 其他模组可以通过编程查询、创建和应用自定义液体效果
+- **指南书** (Patchouli): 包含文档、JSON 格式参考和示例液体（黄金浴、史莱姆浴、烈焰浴、末影浴、附魔浴、奶茶浴、寂静之泉浴）
+
+**示例数据包下载:**
+
+- [hotbath_example_fluids_1.21.1.zip](https://github.com/crabsatellite/hotBath/releases/download/example-datapacks/hotbath_example_fluids_1.21.1.zip) — 适用于 Minecraft 1.21.1 (NeoForge)
+- [hotbath_example_fluids_1.20.1.zip](https://github.com/crabsatellite/hotBath/releases/download/example-datapacks/hotbath_example_fluids_1.20.1.zip) — 适用于 Minecraft 1.20.1 (Forge)
+
+---
+
+### 模组兼容
+
+所有联动均为可选 — Hot Bath 在运行时自动检测已安装的模组并启用对应功能。若联动失败，会优雅地禁用并在游戏内通知玩家。
+
+#### Cold Sweat
+
+- 泡澡时强制设为舒适体温，中和 Cold Sweat 水温修正器的 -5°C 偏移
+- 喝洗澡水瓶提供 36°C 暖意（20 秒）
+
+#### Tough As Nails
+
+- 泡澡时提供 WARM 温度等级
+- 喝洗澡水瓶恢复 4 口渴值 + 0.6 水合度，并给予 10 秒暖意
+
+#### Legendary Survival Overhaul
+
+- 泡澡时给予 HOT_DRINK 药水效果（泡澡中 3 级，否则 1 级，持续 5 秒）
+- 喝水瓶恢复口渴值
+- 通过 Mixin 集成口渴系统
+
+#### Alex's Mobs
+
+- **脏污玩家互动**: 脏污的玩家会吸引苍蝇、蚊子（攻击性）和蟑螂（徘徊）
+- **浣熊**: 在温泉液体中洗物品速度提升 1.5 倍；在温泉旁更容易驯化
+- **卷尾猴**: 被温泉吸引，获得再生 buff，更容易驯化（灵感来自日本猕猴）
+
+#### Alex's Caves
+
+- **软糖熊**在热水中受到伤害（融化机制）
+- **草药浴**可以治愈辐射效果
+- **伽马蟑螂**被脏污的玩家吸引
+- **辐射猫**在温泉旁坐下
+
+#### Serene Seasons（四季）
+
+- 冬季泡澡获得额外抗性提升（初冬/晚冬: I 级，仲冬: II 级）
+- 温泉附近的冰雪会融化
+
+#### Twilight Forest（暮色森林）
+
+- 泡热水澡移除冰冻效果并获得抗冻 buff
+- 暮色森林维度的浴池周围出现萤火虫粒子效果
+- 冰系怪物（冰晶、稳定/不稳定冰核、雪卫兵、雪女王）在热水中受到伤害
+
+#### Farmer's Delight（农夫乐事）
+
+- 泡澡获得舒适（Comfort）效果（每 4 秒恢复 1 HP，无视饥饿值）
+
+#### Create（机械动力）— 暂时禁用
+
+- 开放管道效果：热水→速度、蜂蜜浴→吸收+缓慢、牛奶浴→清除负面效果、草药浴→抗性+再生、牡丹浴→幸运、玫瑰浴→力量
+- 支持炼药锅填充行为
+
+#### Patchouli
+
+- 游戏内 Hot Bath 指南书，根据已启用的兼容模组动态显示/隐藏对应页面
+
+---
 
 ## 3.0 版本更新 (1.20.1 Forge / 1.21.1 NeoForge+)
 
