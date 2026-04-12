@@ -49,7 +49,13 @@ public class ToughAsNailsClientHandler {
             }
 
             ItemStack stack = event.getItemStack();
-            
+
+            // Skip items in any TAN tag (thirst, hydration, drinks, etc.)
+            // TAN's own tooltip handler already covers these items
+            if (stack.getTags().anyMatch(tag -> tag.location().getNamespace().equals("toughasnails"))) {
+                return;
+            }
+
             // Check if it's a custom fluid bottle
             if (stack.getItem() instanceof CustomFluidBottleItem) {
                 CustomFluidDefinition definition = CustomFluidDataComponents.getFluidDefinition(stack);

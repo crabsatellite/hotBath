@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -43,20 +44,40 @@ public class CustomFluidTranslationManager {
     /**
      * Registers translations from a fluid definition's translations map.
      * The map should have language codes as keys and translated names as values.
-     * 
+     * Keys with a ".desc" suffix are treated as description translations and registered
+     * under the translationKey + ".desc" key for the base language.
+     *
      * @param translationKey The translation key for this fluid
-     * @param translations Map of language code to translated name
+     * @param translations Map of language code (or languageCode.desc) to translated name
      */
     public static void registerTranslations(String translationKey, Map<String, String> translations) {
         for (Map.Entry<String, String> entry : translations.entrySet()) {
-            registerTranslation(entry.getKey(), translationKey, entry.getValue());
+            String mapKey = entry.getKey();
+            if (mapKey.endsWith(".desc")) {
+                // "zh_hk.desc" → language "zh_hk", key "translationKey.desc"
+                String langCode = mapKey.substring(0, mapKey.length() - ".desc".length());
+                registerTranslation(langCode, translationKey + ".desc", entry.getValue());
+            } else {
+                registerTranslation(mapKey, translationKey, entry.getValue());
+            }
         }
     }
     
+    // Locale fallback chains for regional variants
+    private static final Map<String, List<String>> LOCALE_FALLBACKS = Map.of(
+            "zh_hk", List.of("zh_hk", "zh_tw", "zh_cn"),
+            "zh_tw", List.of("zh_tw", "zh_cn"),
+            "zh_cn", List.of("zh_cn", "zh_tw"),
+            "pt_br", List.of("pt_br", "pt_pt"),
+            "pt_pt", List.of("pt_pt", "pt_br"),
+            "en_gb", List.of("en_gb", "en_us"),
+            "en_au", List.of("en_au", "en_gb", "en_us")
+    );
+
     /**
      * Gets the translation for a key in the current game language.
-     * Falls back to English, then to the key itself.
-     * 
+     * Uses a locale fallback chain (e.g., zh_hk → zh_tw → zh_cn → en_us).
+     *
      * @param key The translation key
      * @return The translated text, or the key if no translation exists
      */
@@ -65,24 +86,35 @@ public class CustomFluidTranslationManager {
         if (I18n.exists(key)) {
             return I18n.get(key);
         }
-        
+
         // Get current language
         String currentLang = getCurrentLanguage();
-        
-        // Try current language
-        String result = getTranslationForLanguage(currentLang, key);
-        if (result != null) {
-            return result;
-        }
-        
-        // Try fallback to English
-        if (!currentLang.equals(DEFAULT_LANGUAGE)) {
-            result = getTranslationForLanguage(DEFAULT_LANGUAGE, key);
+
+        // Try locale fallback chain (e.g., zh_hk → zh_tw → zh_cn)
+        List<String> fallbackChain = LOCALE_FALLBACKS.get(currentLang);
+        if (fallbackChain != null) {
+            for (String fallbackLang : fallbackChain) {
+                String result = getTranslationForLanguage(fallbackLang, key);
+                if (result != null) {
+                    return result;
+                }
+            }
+        } else {
+            // No fallback chain defined, just try current language
+            String result = getTranslationForLanguage(currentLang, key);
             if (result != null) {
                 return result;
             }
         }
-        
+
+        // Try fallback to English
+        if (!currentLang.equals(DEFAULT_LANGUAGE)) {
+            String result = getTranslationForLanguage(DEFAULT_LANGUAGE, key);
+            if (result != null) {
+                return result;
+            }
+        }
+
         // Return the key itself as last resort
         return key;
     }
@@ -123,18 +155,27 @@ public class CustomFluidTranslationManager {
     }
     
     /**
-     * Gets the current game language code.
-     * 
-     * @return The current language code (e.g., "en_us", "zh_cn")
+     * Gets the current game language code via LanguageManager (most reliable API).
+     * Falls back to Options.languageCode, then to "en_us".
      */
     private static String getCurrentLanguage() {
         try {
             Minecraft mc = Minecraft.getInstance();
-            if (mc != null && mc.options != null) {
-                return mc.options.languageCode;
+            if (mc != null) {
+                // Prefer LanguageManager.getSelected() - this is the authoritative source
+                if (mc.getLanguageManager() != null) {
+                    String selected = mc.getLanguageManager().getSelected();
+                    if (selected != null && !selected.isEmpty()) {
+                        return selected;
+                    }
+                }
+                // Fallback to options field
+                if (mc.options != null && mc.options.languageCode != null) {
+                    return mc.options.languageCode;
+                }
             }
         } catch (Exception e) {
-            // May fail during early initialization
+            // May fail during early loading
         }
         return DEFAULT_LANGUAGE;
     }
