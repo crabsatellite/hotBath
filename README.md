@@ -32,7 +32,7 @@ Welcome to **Hot Bath Mod**! Take a break from your adventures and soak in a rel
 A brand-new hygiene mechanic that tracks how dirty your character gets over time.
 
 - **Gradual dirt accumulation** over 5 in-game days (base rate), influenced by multiple environmental factors:
-  - **Biome**: Nether (1.6x), Badlands/Desert/Swamp (1.5x), Jungle (1.3x), Mushroom Island (0.8x), Ocean/River (0.85x)
+  - **Biome**: Nether (1.6x), Badlands/Desert/Swamp (1.5x), Jungle (1.3x), Ocean/River (0.85x)
   - **Activity**: Sprinting (1.3x), Crawling (1.4x), Swimming (0.7x), Flying (0.9x)
   - **Weather**: Rain (0.6x) and Thunderstorms (0.5x) help wash you off
   - **Depth**: Deep caves below Y=0 (1.4x), caves below Y=50 (1.2x)
@@ -81,7 +81,7 @@ All integrations are optional — Hot Bath detects installed mods at runtime and
 #### Alex's Mobs
 
 - **Dirty player interactions**: Dirty players attract flies, mosquitoes (aggressive), and cockroaches (loitering)
-- **Raccoons**: Wash items 1.5x faster in hot bath fluids; increased tame chance near hot baths
+- **Raccoons**: Wash items 1.5x faster in hot bath fluids; increased tame chance when washing items in hot bath fluids
 - **Capuchin monkeys**: Attracted to hot springs, receive Regeneration buff, easier to tame (inspired by Japanese macaques)
 
 #### Alex's Caves
@@ -98,7 +98,7 @@ All integrations are optional — Hot Bath detects installed mods at runtime and
 
 #### Twilight Forest
 
-- Bathing in hot water removes Frost effects and grants frost resistance
+- Bathing in hot water removes Frost effects
 - Firefly particle effects appear around bath pools in the Twilight Forest dimension
 - Ice-type mobs (Ice Crystal, Stable/Unstable Ice Core, Snow Guardian, Snow Queen) take damage in hot water
 
@@ -308,7 +308,7 @@ Add **Gunpowder** to any Bath Water Bottle to create its splash version.
 全新的卫生系统，追踪你的角色随时间变脏的程度。
 
 - **渐进式脏污积累**，基础速率为 5 个游戏日达到最脏，受多种环境因素影响：
-  - **生物群系**: 下界 (1.6x)、恶地/沙漠/沼泽 (1.5x)、丛林 (1.3x)、蘑菇岛 (0.8x)、海洋/河流 (0.85x)
+  - **生物群系**: 下界 (1.6x)、恶地/沙漠/沼泽 (1.5x)、丛林 (1.3x)、海洋/河流 (0.85x)
   - **活动状态**: 疾跑 (1.3x)、匍匐 (1.4x)、游泳 (0.7x)、飞行 (0.9x)
   - **天气**: 雨天 (0.6x) 和雷暴 (0.5x) 能帮助冲洗
   - **深度**: Y=0 以下的深层洞穴 (1.4x)、Y=50 以下的洞穴 (1.2x)
@@ -357,7 +357,7 @@ Add **Gunpowder** to any Bath Water Bottle to create its splash version.
 #### Alex's Mobs
 
 - **脏污玩家互动**: 脏污的玩家会吸引苍蝇、蚊子（攻击性）和蟑螂（徘徊）
-- **浣熊**: 在温泉液体中洗物品速度提升 1.5 倍；在温泉旁更容易驯化
+- **浣熊**: 在温泉液体中洗物品速度提升 1.5 倍；在温泉液体中洗物品时更容易驯化
 - **卷尾猴**: 被温泉吸引，获得再生 buff，更容易驯化（灵感来自日本猕猴）
 
 #### Alex's Caves
@@ -374,7 +374,7 @@ Add **Gunpowder** to any Bath Water Bottle to create its splash version.
 
 #### Twilight Forest（暮色森林）
 
-- 泡热水澡移除冰冻效果并获得抗冻 buff
+- 泡热水澡移除冰冻效果
 - 暮色森林维度的浴池周围出现萤火虫粒子效果
 - 冰系怪物（冰晶、稳定/不稳定冰核、雪卫兵、雪女王）在热水中受到伤害
 
