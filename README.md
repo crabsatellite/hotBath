@@ -78,22 +78,6 @@ Create unlimited custom bath fluids via datapacks — no code or recompilation r
 
 All integrations are optional — Hot Bath detects installed mods at runtime and enables features automatically. If a compat fails, it is disabled gracefully with an in-game notification.
 
-#### Cold Sweat
-
-- Bathing forces the player to a comfortable body temperature, neutralizing Cold Sweat's water temperature modifier (-5°C offset)
-- Drinking a bath water bottle provides 36°C warmth for 20 seconds
-
-#### Tough As Nails
-
-- Bathing applies the WARM temperature level
-- Drinking a bath water bottle restores 4 thirst + 0.6 hydration and grants 10 seconds of warmth
-
-#### Legendary Survival Overhaul
-
-- Bathing grants HOT_DRINK potion effect (Level 3 while bathing, Level 1 otherwise, 5 seconds)
-- Drinking bath water bottles restores thirst
-- Integrated via Mixin into the thirst consumption system
-
 #### Alex's Mobs
 
 - **Dirty player interactions**: Dirty players attract flies, mosquitoes (aggressive), and cockroaches (loitering)
@@ -121,11 +105,6 @@ All integrations are optional — Hot Bath detects installed mods at runtime and
 #### Farmer's Delight
 
 - Bathing grants the Comfort effect (regenerates 1 HP every 4 seconds, ignoring hunger level)
-
-#### Create (Temporarily Disabled)
-
-- Open Pipe effect handlers for all bath fluids: Hot Water → Speed, Honey Bath → Absorption + Slowness, Milk Bath → Remove negative effects, Herbal Bath → Resistance + Regeneration, Peony Bath → Luck, Rose Bath → Strength
-- Cauldron filling via block spouting
 
 #### Patchouli
 
@@ -375,22 +354,6 @@ Add **Gunpowder** to any Bath Water Bottle to create its splash version.
 
 所有联动均为可选 — Hot Bath 在运行时自动检测已安装的模组并启用对应功能。若联动失败，会优雅地禁用并在游戏内通知玩家。
 
-#### Cold Sweat
-
-- 泡澡时强制设为舒适体温，中和 Cold Sweat 水温修正器的 -5°C 偏移
-- 喝洗澡水瓶提供 36°C 暖意（20 秒）
-
-#### Tough As Nails
-
-- 泡澡时提供 WARM 温度等级
-- 喝洗澡水瓶恢复 4 口渴值 + 0.6 水合度，并给予 10 秒暖意
-
-#### Legendary Survival Overhaul
-
-- 泡澡时给予 HOT_DRINK 药水效果（泡澡中 3 级，否则 1 级，持续 5 秒）
-- 喝水瓶恢复口渴值
-- 通过 Mixin 集成口渴系统
-
 #### Alex's Mobs
 
 - **脏污玩家互动**: 脏污的玩家会吸引苍蝇、蚊子（攻击性）和蟑螂（徘徊）
@@ -418,11 +381,6 @@ Add **Gunpowder** to any Bath Water Bottle to create its splash version.
 #### Farmer's Delight（农夫乐事）
 
 - 泡澡获得舒适（Comfort）效果（每 4 秒恢复 1 HP，无视饥饿值）
-
-#### Create（机械动力）— 暂时禁用
-
-- 开放管道效果：热水→速度、蜂蜜浴→吸收+缓慢、牛奶浴→清除负面效果、草药浴→抗性+再生、牡丹浴→幸运、玫瑰浴→力量
-- 支持炼药锅填充行为
 
 #### Patchouli
 
