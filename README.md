@@ -1,4 +1,4 @@
-![100w.png](https://s2.loli.net/2026/02/03/bqO9GLKJoiIcNDZ.png)
+![100w.png](https://s2.loli.net/2026/02/03/1CustOA9eSNYqEk.png)
 
 # Hot-bath Mod
 
