@@ -59,7 +59,7 @@ public class BrittleFlaskItemMixin {
             ClickAction action, Player player, SlotAccess access, CallbackInfoReturnable<Boolean> cir) {
         
         if (action != ClickAction.SECONDARY) return;
-        
+
         try {
             // Handle custom fluid bottles (data-driven)
             if (other.getItem() instanceof CustomFluidBottleItem) {
@@ -68,7 +68,7 @@ public class BrittleFlaskItemMixin {
                     return;
                 }
             }
-            
+
             // Handle legacy bath water bottles
             if (other.getItem() instanceof BathWaterBottleItem) {
                 if (hotbath$handleLegacyBathBottle(stack, other, player)) {
@@ -270,19 +270,19 @@ public class BrittleFlaskItemMixin {
         if (flaskTag.contains("Refillable") && !flaskTag.getBoolean("Refillable")) {
             return false;
         }
-        
+
         int currentUses = flaskTag.getInt("Uses");
-        
+
         // Check if flask is full
         if (currentUses >= MAX_USES) {
             return false;
         }
-        
+
         // Check if flask is empty or contains the same potion
         if (!flaskTag.contains("Potion")) {
             return true;
         }
-        
+
         String currentPotion = flaskTag.getString("Potion");
         return currentPotion.equals(potionId);
     }

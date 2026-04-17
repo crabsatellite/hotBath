@@ -1,15 +1,11 @@
 package com.crabmod.hotbath.compat;
 
 import com.crabmod.hotbath.HotBath;
-import com.crabmod.hotbath.custom_fluid.CustomFluidBottleItem;
-import com.crabmod.hotbath.custom_fluid.CustomFluidDefinition;
-import com.crabmod.hotbath.custom_fluid.CustomFluidNBTHelper;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
@@ -29,33 +25,19 @@ public class LSOClientHandler {
 
     /**
      * Event handler for game events (FORGE bus)
+     *
+     * NOTE: Custom fluid bottles are registered in LSO's consumable data system
+     * (data/hotbath/legendarysurvivaloverhaul/thirst/consumables/custom_fluid_bottle.json),
+     * so LSO handles their thirst tooltip natively. This handler only adds tooltips for
+     * custom fluid bottles that LSO doesn't already cover (i.e., none currently).
+     * Kept for potential future use with items outside LSO's data system.
      */
     @Mod.EventBusSubscriber(modid = HotBath.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
     public static class ForgeEvents {
-        /**
-         * Adds hydration icon tooltip component for custom fluid bottles when LSO is loaded.
-         */
         @SubscribeEvent
         public static void onRenderTooltip(RenderTooltipEvent.GatherComponents event) {
-            // Only add if LSO is loaded
-            if (!LegendarySurvivalOverhaulIntegration.isLSOLoaded()) {
-                return;
-            }
-
-            ItemStack stack = event.getItemStack();
-
-            // Check if it's a custom fluid bottle
-            if (stack.getItem() instanceof CustomFluidBottleItem) {
-                CustomFluidDefinition definition = CustomFluidNBTHelper.getFluidDefinition(stack);
-                if (definition != null && definition.thirst() > 0) {
-                    // Add the hydration tooltip component
-                    event.getTooltipElements().add(
-                        com.mojang.datafixers.util.Either.right(
-                            new HydrationTooltipComponent(definition.thirst())
-                        )
-                    );
-                }
-            }
+            // LSO handles custom_fluid_bottle via its consumable data system,
+            // so we no longer need to add a duplicate tooltip here.
         }
     }
 

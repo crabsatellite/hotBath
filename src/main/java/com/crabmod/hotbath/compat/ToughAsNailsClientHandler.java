@@ -8,11 +8,8 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
@@ -28,9 +25,6 @@ public class ToughAsNailsClientHandler {
 
     // ToughAsNails thirst icons texture
     private static final ResourceLocation TAN_ICONS = new ResourceLocation("toughasnails", "textures/gui/icons.png");
-
-    // ToughAsNails drinks tag - items in this tag already get TAN's native thirst tooltip
-    private static final TagKey<Item> TAN_DRINKS_TAG = ItemTags.create(new ResourceLocation("toughasnails", "drinks"));
 
     /**
      * Event handler for game events (FORGE bus)
@@ -49,8 +43,9 @@ public class ToughAsNailsClientHandler {
 
             ItemStack stack = event.getItemStack();
 
-            // Skip items already in TAN's drinks tag - TAN's own tooltip handler covers them
-            if (stack.is(TAN_DRINKS_TAG)) {
+            // Skip items in any TAN tag (thirst, hydration, drinks, etc.)
+            // TAN's own tooltip handler already covers these items
+            if (stack.getTags().anyMatch(tag -> tag.location().getNamespace().equals("toughasnails"))) {
                 return;
             }
 

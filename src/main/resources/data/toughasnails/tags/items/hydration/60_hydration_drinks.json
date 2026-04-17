@@ -6,6 +6,7 @@
     "hotbath:milk_bath_bottle",
     "hotbath:herbal_bath_bottle",
     "hotbath:peony_bath_bottle",
-    "hotbath:rose_bath_bottle"
+    "hotbath:rose_bath_bottle",
+    "hotbath:custom_fluid_bottle"
   ]
 }

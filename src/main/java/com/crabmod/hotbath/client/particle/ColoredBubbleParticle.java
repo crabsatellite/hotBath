@@ -15,19 +15,22 @@ import net.minecraft.tags.FluidTags;
  * A bubble particle that accepts its color via the speed parameters (xSpeed=R, ySpeed=G, zSpeed=B).
  * Used for DynamicFluidType bubble columns where the color is determined at runtime
  * from the CustomFluidDefinition stored in the BlockEntity.
- * Uses the same grayscale bubble texture tinted with the dynamic color.
+ * Physics replicate vanilla {@code BubbleColumnUpParticle} exactly.
  */
 public class ColoredBubbleParticle extends TextureSheetParticle {
+
     ColoredBubbleParticle(ClientLevel level, double x, double y, double z,
                            double rSpeed, double gSpeed, double bSpeed) {
         super(level, x, y, z);
+        this.gravity = -0.125F;
+        this.friction = 0.85F;
         this.setSize(0.02F, 0.02F);
-        this.quadSize *= this.random.nextFloat() * 0.6F + 0.2F;
-        // Fixed bubble physics - speed params are color, not velocity
-        this.xd = (Math.random() * 2.0D - 1.0D) * 0.02D;
-        this.yd = (Math.random() * 2.0D - 1.0D) * 0.02D;
-        this.zd = (Math.random() * 2.0D - 1.0D) * 0.02D;
-        this.lifetime = (int)(8.0D / (Math.random() * 0.8D + 0.2D));
+        this.quadSize = this.quadSize * (this.random.nextFloat() * 0.6F + 0.2F);
+        // Speed params carry color, not velocity
+        this.xd = (Math.random() * 2.0 - 1.0) * 0.02;
+        this.yd = (Math.random() * 2.0 - 1.0) * 0.02;
+        this.zd = (Math.random() * 2.0 - 1.0) * 0.02;
+        this.lifetime = (int)(40.0 / (Math.random() * 0.8 + 0.2));
         // Apply color from speed params
         this.rCol = (float) rSpeed;
         this.gCol = (float) gSpeed;
@@ -36,19 +39,11 @@ public class ColoredBubbleParticle extends TextureSheetParticle {
 
     @Override
     public void tick() {
-        this.xo = this.x;
-        this.yo = this.y;
-        this.zo = this.z;
-        if (this.lifetime-- <= 0) {
-            this.remove();
-        } else {
-            this.yd += 0.002D;
-            this.move(this.xd, this.yd, this.zd);
-            this.xd *= 0.85F;
-            this.yd *= 0.85F;
-            this.zd *= 0.85F;
-            if (!this.level.getFluidState(BlockPos.containing(this.x, this.y, this.z)).is(FluidTags.WATER) &&
-                !(this.level.getBlockState(BlockPos.containing(this.x, this.y, this.z)).getBlock() instanceof AbstractHotbathBlock)) {
+        super.tick();
+        if (!this.removed) {
+            BlockPos pos = BlockPos.containing(this.x, this.y, this.z);
+            if (!this.level.getFluidState(pos).is(FluidTags.WATER)
+                    && !(this.level.getBlockState(pos).getBlock() instanceof AbstractHotbathBlock)) {
                 this.remove();
             }
         }
@@ -56,7 +51,7 @@ public class ColoredBubbleParticle extends TextureSheetParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return HotBathBubbleParticle.PARTICLE_SHEET_OPAQUE_NO_DEPTH;
+        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
 
     public static class Provider implements ParticleProvider<SimpleParticleType> {
