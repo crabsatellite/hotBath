@@ -4,6 +4,7 @@ import com.crabmod.hotbath.fluid_blocks.AbstractHotbathBlock;
 import com.github.alexthe666.alexsmobs.entity.EntityRaccoon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.util.FakePlayer;
@@ -14,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -23,23 +23,19 @@ import java.util.Random;
  * items in hot bath fluids.
  */
 @Mixin(value = EntityRaccoon.class, remap = false)
-public abstract class RaccoonTamingMixin {
-    
+public abstract class RaccoonTamingMixin extends TamableAnimal {
+
+    // Private constructor to satisfy TamableAnimal requirement - never called
+    private RaccoonTamingMixin() {
+        super(null, null);
+    }
+
     @Shadow
-    public abstract Optional<BlockPos> getWashPos();
-    
-    @Shadow
-    public abstract boolean isTame();
-    
-    @Shadow
-    public abstract void setTame(boolean tamed, boolean updateOwner);
-    
-    @Shadow
-    public abstract void setOwnerUUID(java.util.UUID ownerUUID);
-    
+    public abstract BlockPos getWashPos();
+
     @Shadow
     public java.util.UUID eggThrowerUUID;
-    
+
     @Unique
     private static final Random HOTBATH_RANDOM = new Random();
     
@@ -56,10 +52,9 @@ public abstract class RaccoonTamingMixin {
         if (this.isTame() || this.eggThrowerUUID == null) return;
         
         // Check if washing in hot bath fluid
-        Optional<BlockPos> washPosOpt = this.getWashPos();
-        if (washPosOpt.isEmpty()) return;
-        
-        BlockPos washPos = washPosOpt.get();
+        BlockPos washPos = this.getWashPos();
+        if (washPos == null) return;
+
         if (!(self.level().getBlockState(washPos).getBlock() instanceof AbstractHotbathBlock)) return;
         
         // Provide bonus taming attempt (15% additional chance)

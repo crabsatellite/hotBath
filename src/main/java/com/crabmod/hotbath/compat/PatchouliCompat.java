@@ -69,8 +69,8 @@ public class PatchouliCompat {
         // Set disabled flags for each compat module
         String[] compatModIds = {
             "cold_sweat", "toughasnails", "legendarysurvivaloverhaul",
-            "alexsmobs", "alexscaves", "farmersdelight", 
-            "twilightforest", "sereneseasons", "create"
+            "alexsmobs", "alexscaves", "farmersdelight",
+            "twilightforest", "sereneseasons", "create", "epicfight"
         };
         
         for (String modId : compatModIds) {

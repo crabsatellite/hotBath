@@ -172,6 +172,10 @@ dependencies {
     compileOnly "curse.maven:serene-seasons-291874:6182596"
     runtimeOnly "curse.maven:serene-seasons-291874:6182596"
 
+    // Epic Fight - Combat animation mod (optional dependency)
+    // Using local project build output
+    compileOnly files('../epicfight-1.21.1/neoforge/build/libs/epic-fight-21.16.3-mc1.21.1-neoforge.jar')
+
     // Sodium - Performance optimization mod (optional dependency for testing)
     // Project ID: 394468, File ID 6382651
     compileOnly "curse.maven:sodium-394468:6382651"

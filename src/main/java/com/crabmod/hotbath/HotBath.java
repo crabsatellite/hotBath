@@ -21,6 +21,8 @@ import com.crabmod.hotbath.compat.TwilightForestCompat;
 import com.crabmod.hotbath.compat.TwilightForestIntegration;
 import com.crabmod.hotbath.compat.FarmersDelightCompat;
 import com.crabmod.hotbath.compat.FarmersDelightIntegration;
+import com.crabmod.hotbath.compat.EpicFightCompat;
+import com.crabmod.hotbath.compat.EpicFightIntegration;
 import com.crabmod.hotbath.compat.SereneSeasonsCompat;
 import com.crabmod.hotbath.compat.SereneSeasonsIntegration;
 import com.crabmod.hotbath.dirtiness.DirtinessAttachment;
@@ -223,7 +225,20 @@ public class HotBath {
             "sereneseasons.api.season.Season",
             "sereneseasons.api.season.ISeasonState"
         );
-        
+
+        // Epic Fight - combat animation mod dirtiness overlay compat
+        CompatManager.registerCompat(
+            "epicfight",
+            "Epic Fight",
+            EpicFightIntegration::isEpicFightLoaded,
+            EpicFightCompat::init,
+            "yesman.epicfight.client.renderer.patched.layer.PatchedLayer",
+            "yesman.epicfight.client.renderer.patched.entity.PPlayerRenderer",
+            "yesman.epicfight.client.renderer.FirstPersonRenderer",
+            "yesman.epicfight.api.client.event.EpicFightClientEventHooks",
+            "yesman.epicfight.client.events.engine.RenderEngine"
+        );
+
         // TODO: Create mod integration - temporarily disabled
         // CompatManager.registerCompat(
         //     "create",
