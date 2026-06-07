@@ -242,7 +242,7 @@
   "hotbath.entry.other_compat.name": "其他联动",
   "hotbath.entry.other_compat.page1": "热水澡还与许多其他模组兼容！在本分类中查看每个支持模组的详细条目。",
   "hotbath.entry.other_compat.mods.title": "快速参考",
-  "hotbath.entry.other_compat.mods": "$(li)$(l)Alex's Mobs$()：浣熊、猴子、污渍度$(li)$(l)Alex's Caves$()：软糖熊、辐射治愈$(li)$(l)Twilight Forest$()：冰冻移除、萤火虫$(li)$(l)Farmer's Delight$()：滋养效果$(li)$(l)Serene Seasons$()：冬季抗性加成",
+  "hotbath.entry.other_compat.mods": "$(li)$(l)Alex's Mobs$()：浣熊、猴子、污渍度$(li)$(l)Alex's Caves$()：软糖熊、辐射治愈$(li)$(l)Twilight Forest$()：冰冻移除、萤火虫$(li)$(l)Farmer's Delight$()：滋养效果$(li)$(l)Serene Seasons$()：冬季抗性加成$(li)$(l)史诗战斗$()：战斗动画模型上的污垢覆盖层",
   "hotbath.entry.alexs_mobs.name": "Alex的生物",
   "hotbath.entry.alexs_mobs.page1": "$(l)Alex's Mobs$()联动添加了真实的动物行为和$(thing)污渍度$()系统来吸引虫子。",
   "hotbath.entry.alexs_mobs.raccoon.title": "浣熊洗涤",

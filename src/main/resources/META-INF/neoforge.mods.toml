@@ -150,7 +150,7 @@ description='''${mod_description}'''
 [[dependencies.${mod_id}]]
     modId="epicfight"
     type="optional"
-    versionRange="[21.16.3,)"
+    versionRange="[21.17.3.1,)"
     ordering="AFTER"
     side="CLIENT"
 

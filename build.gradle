@@ -173,9 +173,9 @@ dependencies {
     runtimeOnly "curse.maven:serene-seasons-291874:6182596"
 
     // Epic Fight - Combat animation mod (optional dependency)
-    // Project ID: 405076, File ID 7919295 corresponds to Epic Fight 21.16.3 for NeoForge 1.21.1
-    compileOnly "curse.maven:epic-fight-mod-405076:7919295"
-    runtimeOnly "curse.maven:epic-fight-mod-405076:7919295"
+    // Project ID: 405076, File ID 8175609 corresponds to Epic Fight 21.17.3.1 for NeoForge 1.21.1
+    compileOnly "curse.maven:epic-fight-mod-405076:8175609"
+    runtimeOnly "curse.maven:epic-fight-mod-405076:8175609"
 
     // Sodium - Performance optimization mod (optional dependency for testing)
     // Project ID: 394468, File ID 6382651
