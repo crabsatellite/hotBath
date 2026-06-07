@@ -18,6 +18,8 @@ import com.crabmod.hotbath.compat.TwilightForestCompat;
 import com.crabmod.hotbath.compat.TwilightForestIntegration;
 import com.crabmod.hotbath.compat.FarmersDelightCompat;
 import com.crabmod.hotbath.compat.FarmersDelightIntegration;
+import com.crabmod.hotbath.compat.EpicFightCompat;
+import com.crabmod.hotbath.compat.EpicFightIntegration;
 import com.crabmod.hotbath.compat.SereneSeasonsCompat;
 import com.crabmod.hotbath.compat.SereneSeasonsIntegration;
 import com.crabmod.hotbath.custom_fluid.CustomFluidBrewingRecipe;
@@ -64,6 +66,7 @@ public class HotBath {
     public static final String MOD_ID = "hotbath";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
+    private final IEventBus modEventBus;
 
     @SuppressWarnings("removal")
     public HotBath() {
@@ -71,7 +74,8 @@ public class HotBath {
     }
 
     public HotBath(FMLJavaModLoadingContext context) {
-        IEventBus modEventBus = context.getModEventBus();
+        this.modEventBus = context.getModEventBus();
+        IEventBus modEventBus = this.modEventBus;
         
         // Register config
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, HotBathConfig.SPEC);
@@ -214,6 +218,19 @@ public class HotBath {
             "sereneseasons.api.season.SeasonHelper",
             "sereneseasons.api.season.Season",
             "sereneseasons.api.season.ISeasonState"
+        );
+
+        CompatManager.registerCompat(
+            "epicfight",
+            "Epic Fight",
+            EpicFightIntegration::isEpicFightLoaded,
+            () -> EpicFightCompat.init(this.modEventBus),
+            "yesman.epicfight.client.renderer.patched.layer.PatchedLayer",
+            "yesman.epicfight.client.renderer.patched.entity.PPlayerRenderer",
+            "yesman.epicfight.client.renderer.FirstPersonRenderer",
+            "yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent$Modify",
+            "yesman.epicfight.client.ClientEngine",
+            "yesman.epicfight.client.events.engine.RenderEngine"
         );
         
         // TODO: Create mod integration - temporarily disabled

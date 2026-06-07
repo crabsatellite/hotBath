@@ -1,0 +1,140 @@
+package com.crabmod.hotbath.compat;
+
+import com.crabmod.hotbath.HotBath;
+import com.crabmod.hotbath.HotBathConfig;
+import com.crabmod.hotbath.dirtiness.DirtinessClientData;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import yesman.epicfight.api.client.model.Meshes;
+import yesman.epicfight.api.client.model.SkinnedMesh.SkinnedMeshPart;
+import yesman.epicfight.api.model.Armature;
+import yesman.epicfight.api.utils.math.OpenMatrix4f;
+import yesman.epicfight.client.mesh.HumanoidMesh;
+import yesman.epicfight.client.renderer.patched.layer.PatchedLayer;
+import yesman.epicfight.world.capabilities.entitypatch.LivingEntityPatch;
+
+import javax.annotation.Nullable;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+@SuppressWarnings("unchecked")
+public class EpicFightDirtinessPatchedLayer<E extends LivingEntity, T extends LivingEntityPatch<E>, M extends EntityModel<E>, R extends RenderLayer<E, M>> extends PatchedLayer<E, T, M, R> {
+
+    private static final int NUM_PATTERNS = 10;
+    private static final ResourceLocation[] DIRT_TEXTURES = new ResourceLocation[NUM_PATTERNS];
+    private static final float MIN_DIRTINESS = 0.01f;
+
+    static {
+        for (int i = 0; i < NUM_PATTERNS; i++) {
+            DIRT_TEXTURES[i] = new ResourceLocation(
+                    HotBath.MOD_ID, "textures/entity/player/dirt_overlay_" + i + ".png");
+        }
+    }
+
+    @Override
+    protected void renderLayer(T entitypatch, E entity, @Nullable R vanillaLayer,
+                               PoseStack poseStack, MultiBufferSource buffer, int packedLight,
+                               OpenMatrix4f[] poses, float bob, float yRot, float xRot, float partialTicks) {
+        if (!HotBathConfig.isDirtinessEnabled()) return;
+        if (!(entity instanceof Player player)) return;
+
+        float dirtiness = DirtinessClientData.getDirtiness(player.getUUID());
+        if (dirtiness < MIN_DIRTINESS) return;
+
+        long seed = DirtinessClientData.getDirtSeed(player.getUUID());
+        if (seed == 0) {
+            seed = player.getUUID().getMostSignificantBits() ^ player.getUUID().getLeastSignificantBits();
+        }
+        int patternIndex = Math.abs((int) seed) % NUM_PATTERNS;
+        RenderType renderType = RenderType.entityTranslucent(DIRT_TEXTURES[patternIndex]);
+
+        HumanoidMesh mesh = getMesh(entity);
+        if (mesh == null) return;
+
+        Armature armature = entitypatch.getArmature();
+        Map<SkinnedMeshPart, Boolean> savedVisibility = saveVisibility(mesh);
+        try {
+            hideAll(mesh);
+            renderPartGroup(mesh, poseStack, buffer, renderType, packedLight, poses, armature,
+                    dirtiness, 1.0f, 0.0f,
+                    mesh.leftLeg, mesh.rightLeg, mesh.leftPants, mesh.rightPants);
+
+            hideAll(mesh);
+            renderPartGroup(mesh, poseStack, buffer, renderType, packedLight, poses, armature,
+                    dirtiness, 0.8f, 0.15f,
+                    mesh.torso, mesh.jacket);
+
+            hideAll(mesh);
+            renderPartGroup(mesh, poseStack, buffer, renderType, packedLight, poses, armature,
+                    dirtiness, 0.7f, 0.2f,
+                    mesh.leftArm, mesh.rightArm, mesh.leftSleeve, mesh.rightSleeve);
+
+            hideAll(mesh);
+            renderPartGroup(mesh, poseStack, buffer, renderType, packedLight, poses, armature,
+                    dirtiness, 0.4f, 0.5f,
+                    mesh.head, mesh.hat);
+        } finally {
+            restoreVisibility(savedVisibility);
+        }
+    }
+
+    private void renderPartGroup(HumanoidMesh mesh, PoseStack poseStack, MultiBufferSource buffer,
+                                 RenderType renderType, int packedLight, OpenMatrix4f[] poses,
+                                 Armature armature, float dirtiness, float intensityMultiplier,
+                                 float threshold, SkinnedMeshPart... parts) {
+        if (dirtiness < threshold) return;
+
+        float effectiveDirtiness = (dirtiness - threshold) / (1.0f - threshold);
+        effectiveDirtiness *= intensityMultiplier;
+        if (effectiveDirtiness < MIN_DIRTINESS) return;
+
+        float alpha = calculateAlpha(effectiveDirtiness);
+
+        for (SkinnedMeshPart part : parts) {
+            if (part != null) {
+                part.setHidden(false);
+            }
+        }
+
+        mesh.draw(poseStack, buffer, renderType, packedLight,
+                1.0f, 1.0f, 1.0f, alpha,
+                OverlayTexture.NO_OVERLAY, armature, poses);
+    }
+
+    private static float calculateAlpha(float dirtiness) {
+        return Math.min(0.95f, dirtiness * 0.95f);
+    }
+
+    private static HumanoidMesh getMesh(LivingEntity entity) {
+        if (entity instanceof AbstractClientPlayer clientPlayer) {
+            return ("slim".equals(clientPlayer.getModelName()) ? Meshes.ALEX : Meshes.BIPED).get();
+        }
+        return Meshes.BIPED.get();
+    }
+
+    private static Map<SkinnedMeshPart, Boolean> saveVisibility(HumanoidMesh mesh) {
+        Map<SkinnedMeshPart, Boolean> saved = new LinkedHashMap<>();
+        for (Map.Entry<String, SkinnedMeshPart> entry : mesh.getPartEntry()) {
+            saved.put(entry.getValue(), entry.getValue().isHidden());
+        }
+        return saved;
+    }
+
+    private static void hideAll(HumanoidMesh mesh) {
+        for (SkinnedMeshPart part : mesh.getAllParts()) {
+            part.setHidden(true);
+        }
+    }
+
+    private static void restoreVisibility(Map<SkinnedMeshPart, Boolean> saved) {
+        saved.forEach(SkinnedMeshPart::setHidden);
+    }
+}

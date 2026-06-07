@@ -70,7 +70,7 @@ public class PatchouliCompat {
         String[] compatModIds = {
             "cold_sweat", "toughasnails", "legendarysurvivaloverhaul",
             "alexsmobs", "alexscaves", "farmersdelight", 
-            "twilightforest", "sereneseasons", "create"
+            "twilightforest", "sereneseasons", "create", "epicfight"
         };
         
         for (String modId : compatModIds) {

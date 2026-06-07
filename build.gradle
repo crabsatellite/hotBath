@@ -212,6 +212,11 @@ dependencies {
     compileOnly fg.deobf("curse.maven:serene-seasons-291874:6398227")
     runtimeOnly fg.deobf("curse.maven:serene-seasons-291874:6398227")
 
+    // Epic Fight - Combat animation mod (optional dependency)
+    // Project ID: 405076, File ID 8049910 corresponds to Epic Fight 20.14.17 for Forge 1.20.1
+    compileOnly fg.deobf("curse.maven:epic-fight-mod-405076:8049910")
+    runtimeOnly fg.deobf("curse.maven:epic-fight-mod-405076:8049910")
+
     // Patchouli - Guide book mod (optional dependency)
     // Project ID: 306770 - Testing runtime
     compileOnly fg.deobf("curse.maven:patchouli-306770:6164575")

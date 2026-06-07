@@ -1,0 +1,15 @@
+{
+  "name": "hotbath.entry.epic_fight.name",
+  "icon": "minecraft:wooden_sword",
+  "category": "hotbath:compat",
+  "flag": "!mod:epicfight",
+  "sortnum": 15,
+  "entry_color": "777777",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.epic_fight.name",
+      "text": "hotbath.compat.not_installed.epic_fight"
+    }
+  ]
+}
