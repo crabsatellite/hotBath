@@ -146,6 +146,14 @@ description='''${mod_description}'''
     ordering="AFTER"
     side="BOTH"
 
+# Optional dependency for Epic Fight - animated player renderer dirtiness overlay
+[[dependencies.${mod_id}]]
+    modId="epicfight"
+    type="optional"
+    versionRange="[21.16.3,)"
+    ordering="AFTER"
+    side="CLIENT"
+
 # Mixin configuration
 [modproperties.${mod_id}]
     mixins=["hotbath.mixins.json", "hotbath.alexsmobs.mixins.json", "hotbath.alexscaves.mixins.json", "hotbath.sodium.mixins.json", "hotbath.twilightforest.mixins.json"]

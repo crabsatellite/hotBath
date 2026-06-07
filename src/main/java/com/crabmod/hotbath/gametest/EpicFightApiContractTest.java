@@ -38,7 +38,7 @@ public class EpicFightApiContractTest {
                 }
             }
             if (!found) {
-                helper.fail("PatchedLayer.renderLayer(public) not found — EpicFightDirtinessPatchedLayer will break");
+                helper.fail("PatchedLayer.renderLayer(public) not found - EpicFightDirtinessPatchedLayer will break");
                 return;
             }
         } catch (ClassNotFoundException e) {
@@ -53,12 +53,9 @@ public class EpicFightApiContractTest {
         if (!isEpicFightPresent()) { helper.succeed(); return; }
         try {
             Class<?> cls = Class.forName("yesman.epicfight.client.renderer.patched.entity.PPlayerRenderer");
-            Method m = findMethod(cls, "addPatchedLayer", Class.class);
+            Method m = findMethod(cls, "addPatchedLayerAlways", Class.class);
             if (m == null) {
-                m = findMethod(cls, "addPatchedLayer");
-            }
-            if (m == null) {
-                helper.fail("PPlayerRenderer.addPatchedLayer not found — EpicFightCompat registration will fail");
+                helper.fail("PPlayerRenderer.addPatchedLayerAlways not found - EpicFightCompat registration will fail");
                 return;
             }
         } catch (ClassNotFoundException e) {
@@ -73,12 +70,9 @@ public class EpicFightApiContractTest {
         if (!isEpicFightPresent()) { helper.succeed(); return; }
         try {
             Class<?> cls = Class.forName("yesman.epicfight.client.renderer.FirstPersonRenderer");
-            Method m = findMethod(cls, "addPatchedLayer", Class.class);
+            Method m = findMethod(cls, "addPatchedLayerAlways", Class.class);
             if (m == null) {
-                m = findMethod(cls, "addPatchedLayer");
-            }
-            if (m == null) {
-                helper.fail("FirstPersonRenderer.addPatchedLayer not found — first-person compat will fail");
+                helper.fail("FirstPersonRenderer.addPatchedLayerAlways not found - first-person compat will fail");
                 return;
             }
         } catch (ClassNotFoundException e) {
@@ -161,7 +155,7 @@ public class EpicFightApiContractTest {
                         return;
                     }
                 } catch (NoSuchFieldException e) {
-                    helper.fail("HumanoidMesh." + part + " field missing — dirt overlay part mapping will fail");
+                    helper.fail("HumanoidMesh." + part + " field missing - dirt overlay part mapping will fail");
                     return;
                 }
             }

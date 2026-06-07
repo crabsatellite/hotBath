@@ -15,20 +15,20 @@ import vectorwing.farmersdelight.common.registry.ModEffects;
  * Event handler for Farmer's Delight integration.
  * 
  * Features:
- * - Grant Comfort effect when bathing in hot water
- *   Comfort provides slow regeneration (1 HP every 4 seconds) regardless of hunger
+ * - Grant Nourishment effect when bathing in hot water
+ *   Nourishment now covers Farmer's Delight's retired Comfort role
  */
 public class FarmersDelightEventHandler {
     private static final Logger LOGGER = LogUtils.getLogger();
     
-    // How often to apply Comfort effect (every 40 ticks = 2 seconds)
+    // How often to apply Nourishment effect (every 40 ticks = 2 seconds)
     private static final int EFFECT_APPLY_INTERVAL = 40;
     
-    // Comfort effect duration when in bath (5 seconds, will be refreshed)
-    private static final int COMFORT_DURATION = 100;
+    // Nourishment effect duration when in bath (5 seconds, will be refreshed)
+    private static final int NOURISHMENT_DURATION = 100;
     
-    // Comfort effect amplifier (0 = level I)
-    private static final int COMFORT_AMPLIFIER = 0;
+    // Nourishment effect amplifier (0 = level I)
+    private static final int NOURISHMENT_AMPLIFIER = 0;
     
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
@@ -40,38 +40,36 @@ public class FarmersDelightEventHandler {
             
             if (isInBath) {
                 if (player.tickCount % EFFECT_APPLY_INTERVAL == 0) {
-                    grantComfortEffect(player);
+                    grantNourishmentEffect(player);
                 }
             }
         });
     }
     
     /**
-     * Grant the Comfort effect to the player while bathing.
-     * Comfort provides slow regeneration (1 HP every 4 seconds) regardless of hunger level.
+     * Grant the Nourishment effect to the player while bathing.
      * This represents the relaxing, healing nature of a hot bath.
      */
-    private static void grantComfortEffect(ServerPlayer player) {
+    private static void grantNourishmentEffect(ServerPlayer player) {
         try {
-            // Get the Comfort effect from Farmer's Delight
-            Holder<MobEffect> comfortEffect = ModEffects.COMFORT;
-            if (comfortEffect != null) {
+            Holder<MobEffect> nourishmentEffect = ModEffects.NOURISHMENT;
+            if (nourishmentEffect != null) {
                 // Only apply if player doesn't already have a longer duration
-                MobEffectInstance currentEffect = player.getEffect(comfortEffect);
-                if (currentEffect == null || currentEffect.getDuration() < COMFORT_DURATION) {
+                MobEffectInstance currentEffect = player.getEffect(nourishmentEffect);
+                if (currentEffect == null || currentEffect.getDuration() < NOURISHMENT_DURATION) {
                     player.addEffect(new MobEffectInstance(
-                        comfortEffect,
-                        COMFORT_DURATION,
-                        COMFORT_AMPLIFIER,
+                        nourishmentEffect,
+                        NOURISHMENT_DURATION,
+                        NOURISHMENT_AMPLIFIER,
                         false,  // Not ambient
                         true,   // Show particles
                         true    // Show icon
                     ));
-                    LOGGER.debug("Granted Comfort effect to player {} in hot bath", player.getName().getString());
+                    LOGGER.debug("Granted Nourishment effect to player {} in hot bath", player.getName().getString());
                 }
             }
         } catch (Exception e) {
-            LOGGER.debug("Could not apply Comfort effect: {}", e.getMessage());
+            LOGGER.debug("Could not apply Nourishment effect: {}", e.getMessage());
         }
     }
 }

@@ -16,15 +16,16 @@ class EpicFightClientHelper {
     static void registerLayers() {
         EpicFightClientEventHooks.Registry.MODIFY_PATCHED_ENTITY.registerEvent(event -> {
             CompatManager.safeEventCall("epicfight", "registerDirtinessLayer", () -> {
+                // Replace Epic Fight's default RenderOriginalModelLayer fallback if it already saw our vanilla layer.
                 if (event.get(EntityType.PLAYER) instanceof PPlayerRenderer playerRenderer) {
-                    playerRenderer.addPatchedLayer(DirtinessOverlayRenderer.class,
+                    playerRenderer.addPatchedLayerAlways(DirtinessOverlayRenderer.class,
                             new EpicFightDirtinessPatchedLayer());
                     LOGGER.info("Registered dirtiness layer on Epic Fight player renderer (3rd person)");
                 }
 
                 FirstPersonRenderer fpRenderer = RenderEngine.getInstance().getFirstPersonRenderer();
                 if (fpRenderer != null) {
-                    fpRenderer.addPatchedLayer(DirtinessOverlayRenderer.class,
+                    fpRenderer.addPatchedLayerAlways(DirtinessOverlayRenderer.class,
                             new EpicFightDirtinessPatchedLayer());
                     LOGGER.info("Registered dirtiness layer on Epic Fight first-person renderer");
                 }
