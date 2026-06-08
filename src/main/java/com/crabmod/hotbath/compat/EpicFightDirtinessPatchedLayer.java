@@ -39,11 +39,21 @@ public class EpicFightDirtinessPatchedLayer<E extends LivingEntity, T extends Li
     private static final float DIRT_G = 0.22f;
     private static final float DIRT_B = 0.15f;
 
+    private final boolean firstPerson;
+
     static {
         for (int i = 0; i < NUM_PATTERNS; i++) {
             DIRT_TEXTURES[i] = ResourceLocation.fromNamespaceAndPath(
                     HotBath.MOD_ID, "textures/entity/player/dirt_overlay_" + i + ".png");
         }
+    }
+
+    public EpicFightDirtinessPatchedLayer() {
+        this(false);
+    }
+
+    EpicFightDirtinessPatchedLayer(boolean firstPerson) {
+        this.firstPerson = firstPerson;
     }
 
     @Override
@@ -71,6 +81,14 @@ public class EpicFightDirtinessPatchedLayer<E extends LivingEntity, T extends Li
 
         Map<SkinnedMeshPart, Boolean> savedVisibility = saveVisibility(mesh);
         try {
+            if (firstPerson) {
+                hideAll(mesh);
+                renderPartGroup(mesh, poseStack, buffer, renderType, packedLight, poses, armature,
+                        dirtiness, 1.0f, 0.0f,
+                        mesh.leftArm, mesh.rightArm, mesh.leftSleeve, mesh.rightSleeve);
+                return;
+            }
+
             hideAll(mesh);
             renderPartGroup(mesh, poseStack, buffer, renderType, packedLight, poses, armature,
                     dirtiness, 1.0f, 0.0f,
