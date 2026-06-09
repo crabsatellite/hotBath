@@ -166,6 +166,11 @@ class CreateCompatContractTest {
                 () -> assertTrue(helper.contains("hasSameFluidId")
                                 && helper.contains("leftId.equals(getFluidId(right))"),
                         "Custom fluid capabilities should distinguish datapack ids sharing the same dynamic Fluid"),
+                () -> assertTrue(helper.contains("hasDifferentFluidIdAt")
+                                && helper.contains("existingId != null")
+                                && helper.contains("!existingId.equals(fluidId)")
+                                && helper.contains("return false;"),
+                        "Create filling must not overwrite an existing different custom fluid id"),
                 () -> assertTrue(context.contains("ThreadLocal<FluidStack>"),
                         "Create filling must preserve the full FluidStack while Create passes only Fluid to tryDeposit"),
                 () -> assertTrue(fillingMixin.contains("FluidFillingBehaviour.class")
@@ -173,7 +178,11 @@ class CreateCompatContractTest {
                                 && fillingMixin.contains("FluidManipulationBehaviourAccessor")
                                 && fillingMixin.contains("BlockEntityBehaviour")
                                 && fillingMixin.contains("CustomFluidStackContext.getCreateDepositStack")
-                                && fillingMixin.contains("CustomFluidStackHelper.setFluidIdAt"),
+                                && fillingMixin.contains("CustomFluidStackHelper.setFluidIdAt")
+                                && fillingMixin.contains("@Inject(method = \"getAtPos\"")
+                                && fillingMixin.contains("cancellable = true")
+                                && fillingMixin.contains("CustomFluidStackHelper.hasDifferentFluidIdAt")
+                                && fillingMixin.contains("cir.setReturnValue(hotbath$blockingSpaceType())"),
                         "Create world filling should restore the custom id onto placed HotBath dynamic fluid blocks"),
                 () -> assertTrue(drainingMixin.contains("FluidDrainingBehaviour.class")
                                 && drainingMixin.contains("remap = false")

@@ -72,6 +72,11 @@ public final class CustomFluidStackHelper {
         return leftId != null && leftId.equals(getFluidId(right));
     }
 
+    public static boolean hasDifferentFluidIdAt(LevelAccessor level, BlockPos pos, ResourceLocation fluidId) {
+        ResourceLocation existingId = getFluidIdAt(level, pos);
+        return existingId != null && !existingId.equals(fluidId);
+    }
+
     @Nullable
     public static ResourceLocation getFluidIdAt(LevelAccessor level, BlockPos pos) {
         if (level == null || pos == null) {
@@ -104,7 +109,11 @@ public final class CustomFluidStackHelper {
         if (!fluidState.isEmpty() && isDynamicCustomFluid(fluidState.getType())) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof CustomFluidBlockEntity customFluidBlockEntity) {
-                if (fluidId.equals(customFluidBlockEntity.getFluidId())) {
+                ResourceLocation existingId = customFluidBlockEntity.getFluidId();
+                if (fluidId.equals(existingId)) {
+                    return false;
+                }
+                if (existingId != null) {
                     return false;
                 }
                 customFluidBlockEntity.setFluidId(fluidId);
@@ -119,6 +128,9 @@ public final class CustomFluidStackHelper {
             if (isDynamicCustomFluid(storedFluid)) {
                 ResourceLocation existingId = HotbathWaterloggingHelper.getStoredCustomFluidId(level, pos);
                 if (fluidId.equals(existingId)) {
+                    return false;
+                }
+                if (existingId != null) {
                     return false;
                 }
                 HotbathWaterloggingHelper.storeCustomFluidId(level, pos, fluidId);
