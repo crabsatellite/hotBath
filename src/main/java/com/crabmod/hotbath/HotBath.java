@@ -11,9 +11,7 @@ import com.crabmod.hotbath.compat.AlexsMobsCompat;
 import com.crabmod.hotbath.compat.AlexsMobsIntegration;
 import com.crabmod.hotbath.compat.AlexsCavesCompat;
 import com.crabmod.hotbath.compat.AlexsCavesIntegration;
-// TODO: Create mod integration - temporarily disabled
-// import com.crabmod.hotbath.compat.CreateCompat;
-// import com.crabmod.hotbath.compat.CreateIntegration;
+import com.crabmod.hotbath.compat.CreateCompat;
 import com.crabmod.hotbath.compat.TwilightForestCompat;
 import com.crabmod.hotbath.compat.TwilightForestIntegration;
 import com.crabmod.hotbath.compat.FarmersDelightCompat;
@@ -233,13 +231,14 @@ public class HotBath {
             "yesman.epicfight.client.events.engine.RenderEngine"
         );
         
-        // TODO: Create mod integration - temporarily disabled
-        // CompatManager.registerCompat(
-        //     "create",
-        //     "Create",
-        //     CreateIntegration::isCreateLoaded,
-        //     CreateCompat::init
-        // );
+        CompatManager.registerCompat(
+            "create",
+            "Create",
+            CreateCompat::isCreateLoaded,
+            CreateCompat::init,
+            "com.simibubi.create.api.effect.OpenPipeEffectHandler",
+            "com.simibubi.create.content.fluids.spout.FillingBySpout"
+        );
     }
     
     private void registerBrewingRecipes(final FMLCommonSetupEvent event) {
