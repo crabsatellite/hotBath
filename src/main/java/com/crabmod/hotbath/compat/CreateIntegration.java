@@ -1,8 +1,12 @@
 package com.crabmod.hotbath.compat;
 
+import com.crabmod.hotbath.custom_fluid.CustomFluidDefinition;
+import com.crabmod.hotbath.custom_fluid.CustomFluidStackHelper;
+import com.crabmod.hotbath.custom_fluid.DynamicFluidRegistry;
 import com.crabmod.hotbath.registers.FluidsRegister;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.api.effect.OpenPipeEffectHandler;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -88,6 +92,14 @@ public class CreateIntegration {
             FluidsRegister.ROSE_BATH_FLUID.get(),
             FluidsRegister.ROSE_BATH_FLOWING.get(),
             new RoseBathPipeEffect()
+        );
+
+        // Data-pack custom fluids share one registered fluid. The FluidStack NBT
+        // carries the actual custom fluid ID.
+        registerPipeEffect(
+            DynamicFluidRegistry.DYNAMIC_FLUID_STILL.get(),
+            DynamicFluidRegistry.DYNAMIC_FLUID_FLOWING.get(),
+            new DynamicCustomFluidPipeEffect()
         );
         
         LOGGER.debug("Registered Open Pipe Effect Handlers for all Hot Bath fluids.");
@@ -268,6 +280,46 @@ public class CreateIntegration {
                         false, false, true
                     ));
                     // Extinguish fire
+                    if (living.isOnFire()) {
+                        living.clearFire();
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Dynamic custom fluid pipe effect - applies the effects stored in the
+     * custom fluid definition carried by the FluidStack.
+     */
+    private static class DynamicCustomFluidPipeEffect implements OpenPipeEffectHandler {
+        @Override
+        public void apply(Level level, AABB area, FluidStack fluid) {
+            if (level.getGameTime() % PIPE_EFFECT_INTERVAL != 0) return;
+
+            ResourceLocation fluidId = CustomFluidStackHelper.getFluidId(fluid);
+            if (fluidId == null) {
+                return;
+            }
+
+            CustomFluidDefinition definition = CustomFluidStackHelper.getDefinition(fluid).orElse(null);
+            if (definition == null) {
+                return;
+            }
+
+            List<Entity> entities = level.getEntities((Entity) null, area, e -> e instanceof LivingEntity);
+            for (Entity entity : entities) {
+                if (entity instanceof LivingEntity living) {
+                    for (MobEffectInstance effect : definition.createEffectInstances()) {
+                        living.addEffect(new MobEffectInstance(
+                            effect.getEffect(),
+                            effect.getDuration(),
+                            effect.getAmplifier(),
+                            effect.isAmbient(),
+                            effect.isVisible(),
+                            effect.showIcon()
+                        ));
+                    }
                     if (living.isOnFire()) {
                         living.clearFire();
                     }
