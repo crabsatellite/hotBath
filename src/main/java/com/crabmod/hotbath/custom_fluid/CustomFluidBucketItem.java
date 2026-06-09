@@ -3,6 +3,7 @@ package com.crabmod.hotbath.custom_fluid;
 import com.crabmod.hotbath.registers.CustomFluidBlocksRegister;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,6 +45,11 @@ public class CustomFluidBucketItem extends Item {
     
     public CustomFluidBucketItem(Properties properties) {
         super(properties.stacksTo(1));
+    }
+
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return CustomFluidCapabilities.createProvider(stack, true);
     }
 
     @Override

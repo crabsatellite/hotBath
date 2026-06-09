@@ -3,6 +3,7 @@ package com.crabmod.hotbath.custom_fluid;
 import com.crabmod.hotbath.compat.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,6 +34,11 @@ public class CustomFluidBottleItem extends Item {
     
     public CustomFluidBottleItem(Properties properties) {
         super(properties.stacksTo(16));
+    }
+
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+        return CustomFluidCapabilities.createProvider(stack, false);
     }
 
     @Override
