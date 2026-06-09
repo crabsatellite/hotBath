@@ -69,6 +69,10 @@ class CreateCompatContractTest {
                 () -> assertPipePair(source, "HERBAL_BATH_FLUID", "HERBAL_BATH_FLOWING"),
                 () -> assertPipePair(source, "PEONY_BATH_FLUID", "PEONY_BATH_FLOWING"),
                 () -> assertPipePair(source, "ROSE_BATH_FLUID", "ROSE_BATH_FLOWING"),
+                () -> assertTrue(source.contains("DynamicFluidRegistry.DYNAMIC_FLUID_STILL.get()")
+                                && source.contains("DynamicFluidRegistry.DYNAMIC_FLUID_FLOWING.get()")
+                                && source.contains("DynamicCustomFluidPipeEffect"),
+                        "Open pipe handlers should cover data-pack custom fluids through their shared dynamic fluid"),
                 () -> assertFalse(source.contains("import com.simibubi.create.api.behaviour.spouting.BlockSpoutingBehaviour;"),
                         "HotBath should not import block spouting API without a custom block behavior"),
                 () -> assertFalse(source.contains("BlockSpoutingBehaviour.BY_BLOCK"),
@@ -80,7 +84,7 @@ class CreateCompatContractTest {
     void createRecipesUseNeoForgeCreateFormats() throws IOException {
         List<Path> recipes = listJson("src/main/resources/data/hotbath/recipe/create");
 
-        assertEquals(11, recipes.size(), "HotBath should keep all Create mixing and filling recipes");
+        assertEquals(17, recipes.size(), "HotBath should keep all Create mixing, filling, and emptying recipes");
         for (Path recipe : recipes) {
             String json = read(recipe.toString());
             String name = recipe.getFileName().toString();
@@ -98,12 +102,23 @@ class CreateCompatContractTest {
 
             if (name.startsWith("filling_")) {
                 assertAll(name,
-                        () -> assertTrue(json.contains("\"type\": \"create:filling\""),
-                                "Bottle recipes should be Create filling recipes"),
-                        () -> assertTrue(json.contains("\"type\": \"neoforge:single\""),
-                                "NeoForge Create filling recipes use SizedFluidIngredient JSON"),
+                    () -> assertTrue(json.contains("\"type\": \"create:filling\""),
+                            "Bottle recipes should be Create filling recipes"),
+                    () -> assertTrue(json.contains("\"type\": \"neoforge:single\""),
+                            "NeoForge Create filling recipes use SizedFluidIngredient JSON"),
+                    () -> assertTrue(json.contains("\"id\": \"hotbath:"),
+                            "NeoForge recipe results should use id")
+                );
+            } else if (name.startsWith("emptying_")) {
+                assertAll(name,
+                        () -> assertTrue(json.contains("\"type\": \"create:emptying\""),
+                                "Bottle drain recipes should be Create emptying recipes"),
+                        () -> assertTrue(json.contains("\"id\": \"minecraft:glass_bottle\""),
+                                "Emptying recipes should return a glass bottle"),
+                        () -> assertTrue(json.contains("\"amount\": 250"),
+                                "Bath bottles should contain 250 mB"),
                         () -> assertTrue(json.contains("\"id\": \"hotbath:"),
-                                "NeoForge recipe results should use id")
+                                "NeoForge emptying fluid results should use id")
                 );
             } else if (name.startsWith("mixing_")) {
                 assertAll(name,
@@ -118,6 +133,75 @@ class CreateCompatContractTest {
                 );
             }
         }
+    }
+
+    @Test
+    void dynamicCustomFluidCreateContractIsExplicit() throws IOException {
+        String helper = read("src/main/java/com/crabmod/hotbath/custom_fluid/CustomFluidStackHelper.java");
+        String capabilities = read("src/main/java/com/crabmod/hotbath/custom_fluid/CustomFluidCapabilities.java");
+        String context = read("src/main/java/com/crabmod/hotbath/custom_fluid/CustomFluidStackContext.java");
+        String fillingMixin = read("src/main/java/com/crabmod/hotbath/mixin/create/FluidFillingBehaviourMixin.java");
+        String drainingMixin = read("src/main/java/com/crabmod/hotbath/mixin/create/FluidDrainingBehaviourMixin.java");
+        String hoseMixin = read("src/main/java/com/crabmod/hotbath/mixin/create/HosePulleyFluidHandlerMixin.java");
+        String manipulationAccessor = read("src/main/java/com/crabmod/hotbath/mixin/create/FluidManipulationBehaviourAccessor.java");
+        String mixinConfig = read("src/main/resources/hotbath.create.mixins.json");
+        String modToml = read("src/main/resources/META-INF/neoforge.mods.toml");
+        String build = read("build.gradle");
+        String hotbath = read("src/main/java/com/crabmod/hotbath/HotBath.java");
+
+        assertAll(
+                () -> assertTrue(helper.contains("stack.set(CustomFluidDataComponents.CUSTOM_FLUID_ID.get(), fluidId.toString())"),
+                        "NeoForge FluidStack should carry the custom fluid id as a data component"),
+                () -> assertTrue(helper.contains("getFluidIdAt(LevelAccessor level, BlockPos pos)")
+                                && helper.contains("CustomFluidBlockEntity")
+                                && helper.contains("HotbathWaterloggingHelper.getStoredCustomFluidId"),
+                        "Create world draining should be able to recover custom ids from blocks and waterlogging storage"),
+                () -> assertTrue(capabilities.contains("Capabilities.FluidHandler.ITEM")
+                                && capabilities.contains("Items.BUCKET")
+                                && capabilities.contains("Items.GLASS_BOTTLE")
+                                && capabilities.contains("CustomFluidAPI.createBucket")
+                                && capabilities.contains("CustomFluidAPI.createBottle")
+                                && capabilities.contains("CustomFluidStackHelper.hasSameFluidId"),
+                        "Custom buckets and bottles should expose a fluid item capability for arbitrary datapack ids"),
+                () -> assertTrue(helper.contains("hasSameFluidId")
+                                && helper.contains("leftId.equals(getFluidId(right))"),
+                        "Custom fluid capabilities should distinguish datapack ids sharing the same dynamic Fluid"),
+                () -> assertTrue(context.contains("ThreadLocal<FluidStack>"),
+                        "Create filling must preserve the full FluidStack while Create passes only Fluid to tryDeposit"),
+                () -> assertTrue(fillingMixin.contains("FluidFillingBehaviour.class")
+                                && fillingMixin.contains("remap = false")
+                                && fillingMixin.contains("FluidManipulationBehaviourAccessor")
+                                && fillingMixin.contains("BlockEntityBehaviour")
+                                && fillingMixin.contains("CustomFluidStackContext.getCreateDepositStack")
+                                && fillingMixin.contains("CustomFluidStackHelper.setFluidIdAt"),
+                        "Create world filling should restore the custom id onto placed HotBath dynamic fluid blocks"),
+                () -> assertTrue(drainingMixin.contains("FluidDrainingBehaviour.class")
+                                && drainingMixin.contains("remap = false")
+                                && drainingMixin.contains("FluidManipulationBehaviourAccessor")
+                                && drainingMixin.contains("BlockEntityBehaviour")
+                                && drainingMixin.contains("queue.first().pos()")
+                                && drainingMixin.contains("CustomFluidStackHelper.setFluidId"),
+                        "Create world draining should write the recovered custom id into the returned FluidStack"),
+                () -> assertTrue(hoseMixin.contains("HosePulleyFluidHandler.class")
+                                && hoseMixin.contains("remap = false")
+                                && hoseMixin.contains("setCreateDepositStack")
+                                && hoseMixin.contains("clearCreateDepositStack"),
+                        "Hose pulley filling should bracket Create deposit calls with the full FluidStack context"),
+                () -> assertTrue(manipulationAccessor.contains("FluidManipulationBehaviour.class")
+                                && manipulationAccessor.contains("@Accessor(value = \"affectedArea\", remap = false)"),
+                        "Create inherited fluid search state should be read through a parent-class accessor"),
+                () -> assertTrue(mixinConfig.contains("CreateMixinPlugin")
+                                && mixinConfig.contains("FluidDrainingBehaviourMixin")
+                                && mixinConfig.contains("FluidFillingBehaviourMixin")
+                                && mixinConfig.contains("FluidManipulationBehaviourAccessor")
+                                && mixinConfig.contains("HosePulleyFluidHandlerMixin"),
+                        "Create-only mixins should be isolated in their own optional mixin config"),
+                () -> assertTrue(modToml.contains("hotbath.create.mixins.json")
+                                && build.contains("config 'hotbath.create.mixins.json'"),
+                        "The Create mixin config should be included in runtime metadata and Gradle mixin processing"),
+                () -> assertTrue(hotbath.contains("CustomFluidCapabilities::registerCapabilities"),
+                        "Custom fluid item capabilities should be registered on the mod event bus")
+        );
     }
 
     private static String read(String path) throws IOException {
