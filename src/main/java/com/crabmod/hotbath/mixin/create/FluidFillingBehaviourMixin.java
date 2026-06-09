@@ -57,6 +57,20 @@ public abstract class FluidFillingBehaviourMixin {
         }
     }
 
+    @Inject(method = "getAtPos", at = @At("RETURN"), cancellable = true, remap = false)
+    private void hotbath$blockDifferentCustomFluid(Level level, BlockPos pos, Fluid fluid, CallbackInfoReturnable<Object> cir) {
+        if (!CustomFluidStackHelper.isDynamicCustomFluid(fluid)) {
+            return;
+        }
+
+        ResourceLocation fluidId = CustomFluidStackHelper.getFluidId(CustomFluidStackContext.getCreateDepositStack());
+        if (fluidId == null || !CustomFluidStackHelper.hasDifferentFluidIdAt(level, pos, fluidId)) {
+            return;
+        }
+
+        cir.setReturnValue(hotbath$blockingSpaceType());
+    }
+
     private boolean hotbath$applyCustomFluidId(Level level, BlockPos pos, ResourceLocation fluidId) {
         return CustomFluidStackHelper.setFluidIdAt(level, pos, fluidId);
     }
@@ -69,5 +83,15 @@ public abstract class FluidFillingBehaviourMixin {
     @Nullable
     private BoundingBox hotbath$getAffectedArea() {
         return ((FluidManipulationBehaviourAccessor) (Object) this).hotbath$getAffectedArea();
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    private static Object hotbath$blockingSpaceType() {
+        try {
+            Class<?> spaceType = Class.forName("com.simibubi.create.content.fluids.transfer.FluidFillingBehaviour$SpaceType");
+            return Enum.valueOf((Class<? extends Enum>) spaceType.asSubclass(Enum.class), "BLOCKING");
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException("Create FluidFillingBehaviour.SpaceType is unavailable", e);
+        }
     }
 }
