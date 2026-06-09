@@ -58,6 +58,7 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.brewing.BrewingRecipeRegistry;
 import com.crabmod.hotbath.custom_fluid.CustomFluidDataComponents;
+import com.crabmod.hotbath.custom_fluid.CustomFluidCapabilities;
 import com.crabmod.hotbath.custom_fluid.CustomFluidItems;
 import com.crabmod.hotbath.custom_fluid.CustomFluidCraftingRecipe;
 import com.crabmod.hotbath.custom_fluid.DynamicFluidRegistry;
@@ -95,6 +96,7 @@ public class HotBath {
         CustomFluidDataComponents.register(modEventBus);
         CustomFluidItems.register(modEventBus);
         CustomFluidCraftingRecipe.register(modEventBus);
+        modEventBus.addListener(CustomFluidCapabilities::registerCapabilities);
         
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
