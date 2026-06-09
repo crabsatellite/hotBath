@@ -2,29 +2,22 @@ package com.crabmod.hotbath.compat;
 
 import com.crabmod.hotbath.registers.FluidsRegister;
 import com.mojang.logging.LogUtils;
-import com.simibubi.create.api.behaviour.spouting.BlockSpoutingBehaviour;
 import com.simibubi.create.api.effect.OpenPipeEffectHandler;
-import com.simibubi.create.content.fluids.spout.SpoutBlockEntity;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LayeredCauldronBlock;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.slf4j.Logger;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * Create mod integration for Hot Bath fluids.
- * Registers Open Pipe Effect Handlers and Block Spouting Behaviours.
+ * Registers Open Pipe Effect Handlers and relies on Create filling recipes for spouts.
  */
 public class CreateIntegration {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -56,55 +49,62 @@ public class CreateIntegration {
      */
     private static void registerOpenPipeEffects() {
         // Hot Water - Speed effect
-        OpenPipeEffectHandler.REGISTRY.register(
+        registerPipeEffect(
             FluidsRegister.HOT_WATER_FLUID.get(),
+            FluidsRegister.HOT_WATER_FLOWING.get(),
             new HotWaterPipeEffect()
         );
         
         // Honey Bath - Absorption and Slowness
-        OpenPipeEffectHandler.REGISTRY.register(
+        registerPipeEffect(
             FluidsRegister.HONEY_BATH_FLUID.get(),
+            FluidsRegister.HONEY_BATH_FLOWING.get(),
             new HoneyBathPipeEffect()
         );
         
         // Milk Bath - Remove negative effects
-        OpenPipeEffectHandler.REGISTRY.register(
+        registerPipeEffect(
             FluidsRegister.MILK_BATH_FLUID.get(),
+            FluidsRegister.MILK_BATH_FLOWING.get(),
             new MilkBathPipeEffect()
         );
         
         // Herbal Bath - Resistance and Regeneration
-        OpenPipeEffectHandler.REGISTRY.register(
+        registerPipeEffect(
             FluidsRegister.HERBAL_BATH_FLUID.get(),
+            FluidsRegister.HERBAL_BATH_FLOWING.get(),
             new HerbalBathPipeEffect()
         );
         
         // Peony Bath - Luck
-        OpenPipeEffectHandler.REGISTRY.register(
+        registerPipeEffect(
             FluidsRegister.PEONY_BATH_FLUID.get(),
+            FluidsRegister.PEONY_BATH_FLOWING.get(),
             new PeonyBathPipeEffect()
         );
         
         // Rose Bath - Strength
-        OpenPipeEffectHandler.REGISTRY.register(
+        registerPipeEffect(
             FluidsRegister.ROSE_BATH_FLUID.get(),
+            FluidsRegister.ROSE_BATH_FLOWING.get(),
             new RoseBathPipeEffect()
         );
         
         LOGGER.debug("Registered Open Pipe Effect Handlers for all Hot Bath fluids.");
     }
+
+    private static void registerPipeEffect(Fluid sourceFluid, Fluid flowingFluid, OpenPipeEffectHandler handler) {
+        OpenPipeEffectHandler.REGISTRY.register(sourceFluid, handler);
+        OpenPipeEffectHandler.REGISTRY.register(flowingFluid, handler);
+    }
     
     /**
-     * Register Block Spouting Behaviours for cauldrons.
-     * Allows filling cauldrons with Hot Bath fluids using Create spouts.
+     * Create spouts fill items through create:filling recipes.
+     * Hot Bath does not define dedicated cauldron blocks, so there is no custom
+     * BlockSpoutingBehaviour to register here.
      */
     private static void registerSpoutBehaviours() {
-        // Register cauldron filling behavior for hot water
-        // Note: Create already handles water cauldron, we add support for our fluids
-        // For now, we'll keep the default behaviors since our fluids don't have
-        // special cauldron blocks. Players can use buckets or other methods.
-        
-        LOGGER.debug("Block Spouting Behaviours registered (using default Create behaviors).");
+        LOGGER.debug("Create spout item filling is provided by Hot Bath create:filling recipes.");
     }
     
     // ==================== Open Pipe Effect Handler Implementations ====================

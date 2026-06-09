@@ -18,6 +18,10 @@ public class CreateCompat {
      * Check if Create mod is loaded.
      */
     public static boolean isCreateLoaded() {
+        return ModList.get().isLoaded(CREATE_MOD_ID);
+    }
+
+    public static boolean isIntegrationActive() {
         return createLoaded;
     }
     
@@ -33,9 +37,16 @@ public class CreateCompat {
             try {
                 CreateIntegration.init();
                 LOGGER.info("Create integration initialized successfully.");
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 LOGGER.error("Failed to initialize Create integration", e);
                 createLoaded = false;
+                if (e instanceof RuntimeException runtimeException) {
+                    throw runtimeException;
+                }
+                if (e instanceof Error error) {
+                    throw error;
+                }
+                throw new RuntimeException("Failed to initialize Create integration", e);
             }
         } else {
             LOGGER.debug("Create mod not detected, skipping integration.");
