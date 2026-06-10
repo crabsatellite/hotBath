@@ -848,6 +848,8 @@
 - [ ] 安装 Create 后，日志显示 "Create mod detected! Initializing Hot Bath integration..."
 - [ ] 配方在 JEI/REI 中正确显示（如果安装了这些模组）
 - [ ] Create 管道可以正常传输所有 Hot Bath 液体
+- [ ] 安装 Patchouli + Create 后，Hot Bath 手册中能看到「机械动力 / Create」兼容条目
+- [ ] 手册条目能简单说明储罐/管道、开放管道效果、灌装/倒出/搅拌和自定义浴液兼容
 
 ---
 

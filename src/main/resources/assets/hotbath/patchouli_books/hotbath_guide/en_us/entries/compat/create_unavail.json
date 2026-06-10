@@ -1,0 +1,15 @@
+{
+  "name": "hotbath.entry.create.name",
+  "icon": "minecraft:copper_ingot",
+  "category": "hotbath:compat_world",
+  "flag": "!mod:create",
+  "sortnum": 13,
+  "entry_color": "777777",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.create.name",
+      "text": "hotbath.compat.not_installed.create"
+    }
+  ]
+}
