@@ -1,0 +1,24 @@
+{
+  "name": "hotbath.entry.create.name",
+  "icon": "create:fluid_pipe",
+  "category": "hotbath:compat_world",
+  "flag": "mod:create",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "hotbath.entry.create.page1"
+    },
+    {
+      "type": "patchouli:text",
+      "flag": "hotbath:create_disabled",
+      "title": "hotbath.compat.disabled.title",
+      "text": "hotbath.compat.disabled.create"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "hotbath.entry.create.automation.title",
+      "text": "hotbath.entry.create.automation"
+    }
+  ]
+}

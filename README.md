@@ -85,6 +85,9 @@ Add **Gunpowder** to any Bath Water Bottle to create its splash version.
 - **[Legendary Survival Overhaul](https://www.curseforge.com/minecraft/mc-mods/legendary-survival-overhaul)**:
   - Bottles restore thirst ![Hydration](https://s2.loli.net/2025/12/07/IbFe9QB1EdzwKHM.png) and give "Hot Drink" buff ![Hot Drink](https://s2.loli.net/2025/12/07/4ndgOW6GizqkD72.png).
   - HotBath fluids provide "Cold Resistance" ![Cold Resistance](https://s2.loli.net/2025/12/07/FrMAaPkR7gbKj3x.png) and "Thermostatic" buffs ![Thermostatic](https://s2.loli.net/2025/12/07/sA1TaRtDWKE3ymX.png).
+- **[Create](https://www.curseforge.com/minecraft/mc-mods/create)**:
+  - HotBath fluids can move through Create tanks, pumps, pipes, and hose-pulley style fluid handling.
+  - Open pipes apply bath-style effects; mixers, spouts, emptying recipes, data-pack custom bath fluids, and similar automation features are supported.
 - **[Epic Fight](https://www.curseforge.com/minecraft/mc-mods/epic-fight-mod)**:
   - Dirtiness overlays render on Epic Fight's animated player model.
   - Both third-person combat animations and first-person arms are supported automatically.
@@ -273,6 +276,9 @@ Add **Gunpowder** to any Bath Water Bottle to create its splash version.
 - **[Legendary Survival Overhaul](https://www.curseforge.com/minecraft/mc-mods/legendary-survival-overhaul)**:
   - 浴水瓶恢复口渴值 ![Hydration](https://s2.loli.net/2025/12/07/IbFe9QB1EdzwKHM.png) 并给予“热饮”buff ![Hot Drink](https://s2.loli.net/2025/12/07/4ndgOW6GizqkD72.png)。
   - HotBath 流体提供“抗寒” ![Cold Resistance](https://s2.loli.net/2025/12/07/FrMAaPkR7gbKj3x.png) 和“恒温”buff ![Thermostatic](https://s2.loli.net/2025/12/07/sA1TaRtDWKE3ymX.png)。
+- **[机械动力 / Create](https://www.curseforge.com/minecraft/mc-mods/create)**:
+  - HotBath 流体可进入 Create 储罐、泵、管道以及软管滑轮等流体处理流程。
+  - 开放管道会触发浴液效果；搅拌、灌装、倒出配方、数据包自定义浴液等自动化功能兼容。
 - **[史诗战斗 / Epic Fight](https://www.curseforge.com/minecraft/mc-mods/epic-fight-mod)**:
   - 污渍度覆盖层会显示在史诗战斗的动画玩家模型上。
   - 第三人称战斗动画和第一人称手臂都会自动兼容。
