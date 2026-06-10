@@ -47,6 +47,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -218,18 +219,24 @@ public class HotBath {
             "sereneseasons.api.season.ISeasonState"
         );
 
-        CompatManager.registerCompat(
-            "epicfight",
-            "Epic Fight",
-            EpicFightIntegration::isEpicFightLoaded,
-            () -> EpicFightCompat.init(this.modEventBus),
-            "yesman.epicfight.client.renderer.patched.layer.PatchedLayer",
-            "yesman.epicfight.client.renderer.patched.entity.PPlayerRenderer",
-            "yesman.epicfight.client.renderer.FirstPersonRenderer",
-            "yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent$Modify",
-            "yesman.epicfight.client.ClientEngine",
-            "yesman.epicfight.client.events.engine.RenderEngine"
-        );
+        // Epic Fight is a client-only rendering integration. Do not verify its
+        // client API classes on dedicated servers.
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            CompatManager.registerCompat(
+                "epicfight",
+                "Epic Fight",
+                EpicFightIntegration::isEpicFightLoaded,
+                () -> EpicFightCompat.init(this.modEventBus),
+                "yesman.epicfight.client.renderer.patched.layer.PatchedLayer",
+                "yesman.epicfight.client.renderer.patched.entity.PPlayerRenderer",
+                "yesman.epicfight.client.renderer.FirstPersonRenderer",
+                "yesman.epicfight.api.client.forgeevent.PatchedRenderersEvent$Modify",
+                "yesman.epicfight.client.ClientEngine",
+                "yesman.epicfight.client.events.engine.RenderEngine"
+            );
+        } else {
+            LOGGER.info("Skipping Epic Fight compat registration on dedicated server (client-only rendering).");
+        }
         
         CompatManager.registerCompat(
             "create",
