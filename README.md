@@ -91,6 +91,7 @@ Add **Gunpowder** to any Bath Water Bottle to create its splash version.
 - **External bath containers / API**:
   - Other mods can identify HotBath fluids with the `hotbath:bath_fluids` and `hotbath:cleansing_fluids` fluid tags or `com.crabmod.hotbath.api.HotBathApi`.
   - External containers can call the API to apply gradual dirtiness cleaning after they validate their own fluid storage, shape, and immersion checks.
+  - `CustomFluidAPI` exposes FluidStack helpers so third-party tanks can preserve data-pack custom bath fluid ids.
 - **[Epic Fight](https://www.curseforge.com/minecraft/mc-mods/epic-fight-mod)**:
   - Dirtiness overlays render on Epic Fight's animated player model.
   - Both third-person combat animations and first-person arms are supported automatically.

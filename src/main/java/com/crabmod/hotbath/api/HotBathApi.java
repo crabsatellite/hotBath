@@ -1,12 +1,14 @@
 package com.crabmod.hotbath.api;
 
 import com.crabmod.hotbath.HotBath;
+import com.crabmod.hotbath.HotBathConfig;
 import com.crabmod.hotbath.dirtiness.DirtinessHandler;
 import com.crabmod.hotbath.util.HotbathFluidHelper;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.Fluid;
 
 /**
@@ -46,6 +48,30 @@ public final class HotBathApi {
      */
     public static boolean applyDirtinessCleaning(ServerPlayer player, Fluid fluid, boolean isMoving) {
         return isCleansingFluid(fluid) && applyDirtinessCleaning(player, isMoving);
+    }
+
+    /**
+     * Gets the current dirtiness value for a player.
+     *
+     * @return a value from 0.0 to 1.0, or 0.0 when no player is supplied
+     */
+    public static float getDirtiness(Player player) {
+        return player == null ? 0.0f : DirtinessHandler.getDirtiness(player);
+    }
+
+    /**
+     * Adds dirtiness from an external source while respecting Hot Bath's dirtiness toggle.
+     *
+     * @param player the player to dirty
+     * @param percentage amount of maximum dirtiness to add, where 0.10 is 10%
+     * @return true if the request was accepted
+     */
+    public static boolean addDirtiness(ServerPlayer player, float percentage) {
+        if (!HotBathConfig.isDirtinessEnabled() || player == null || percentage <= 0.0f) {
+            return false;
+        }
+        DirtinessHandler.addDirtToPlayer(player, percentage);
+        return true;
     }
 
     private static boolean isTaggedOrKnownHotBathFluid(Fluid fluid, TagKey<Fluid> tag) {

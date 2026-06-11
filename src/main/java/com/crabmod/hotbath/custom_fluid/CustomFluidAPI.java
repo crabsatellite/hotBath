@@ -4,6 +4,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
@@ -96,6 +99,70 @@ public final class CustomFluidAPI {
      */
     public static Collection<CustomFluidDefinition> getAllFluids() {
         return CustomFluidRegistry.getAllDefinitions();
+    }
+
+    /**
+     * Checks whether a Fluid is Hot Bath's shared dynamic custom fluid.
+     */
+    public static boolean isDynamicCustomFluid(Fluid fluid) {
+        return CustomFluidStackHelper.isDynamicCustomFluid(fluid);
+    }
+
+    /**
+     * Checks whether a FluidStack contains Hot Bath's shared dynamic custom fluid.
+     */
+    public static boolean isDynamicCustomFluid(FluidStack stack) {
+        return CustomFluidStackHelper.isDynamicCustomFluid(stack);
+    }
+
+    /**
+     * Creates a FluidStack for a registered or data-pack custom bath fluid.
+     *
+     * <p>The returned stack uses Hot Bath's shared dynamic fluid and stores the
+     * supplied custom fluid id on the stack so external tanks can preserve the
+     * exact data-pack bath fluid.</p>
+     *
+     * @param fluidId The resource location of the custom fluid
+     * @param amount The amount in millibuckets
+     * @return A dynamic custom fluid stack carrying the supplied id
+     */
+    public static FluidStack createCustomFluidStack(ResourceLocation fluidId, int amount) {
+        return CustomFluidStackHelper.createStack(fluidId, amount);
+    }
+
+    /**
+     * Stores a custom fluid id on a dynamic custom FluidStack.
+     *
+     * @return true if the id was stored on the stack
+     */
+    public static boolean setCustomFluidId(FluidStack stack, ResourceLocation fluidId) {
+        if (stack == null || stack.isEmpty() || fluidId == null || !isDynamicCustomFluid(stack)) {
+            return false;
+        }
+        CustomFluidStackHelper.setFluidId(stack, fluidId);
+        return fluidId.equals(CustomFluidStackHelper.getFluidId(stack));
+    }
+
+    /**
+     * Gets the custom fluid id stored on a dynamic custom FluidStack.
+     */
+    @Nullable
+    public static ResourceLocation getCustomFluidId(FluidStack stack) {
+        return CustomFluidStackHelper.getFluidId(stack);
+    }
+
+    /**
+     * Gets the custom fluid definition stored on a dynamic custom FluidStack.
+     */
+    public static Optional<CustomFluidDefinition> getCustomFluidDefinition(FluidStack stack) {
+        return CustomFluidStackHelper.getDefinition(stack);
+    }
+
+    /**
+     * Checks whether two dynamic custom FluidStacks carry the same custom fluid id.
+     */
+    public static boolean hasSameCustomFluidId(FluidStack left, FluidStack right) {
+        return CustomFluidStackHelper.hasSameFluidId(left, right);
     }
 
     /**
