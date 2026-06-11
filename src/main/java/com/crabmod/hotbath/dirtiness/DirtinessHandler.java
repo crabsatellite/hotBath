@@ -148,11 +148,33 @@ public class DirtinessHandler {
      * Handle bathing logic - gradual cleaning
      */
     private static void handleBathing(ServerPlayer player, DirtinessData data, long gameTime) {
+        progressBathing(player, data, gameTime, isPlayerMoving(player));
+    }
+
+    /**
+     * Applies one tick of gradual dirtiness cleaning from an external bath container.
+     *
+     * <p>External integrations should validate their own container geometry and fluid
+     * contents, then call this once per server tick while the player is bathing.</p>
+     *
+     * @param player the player to clean
+     * @param isMoving whether the player is moving, which accelerates cleaning
+     * @return true if dirtiness was reduced
+     */
+    public static boolean applyExternalBathing(ServerPlayer player, boolean isMoving) {
+        if (!HotBathConfig.isDirtinessEnabled() || player == null) {
+            return false;
+        }
+
+        long gameTime = player.level().getGameTime();
+        return DirtinessCapability.get(player)
+                .map(data -> progressBathing(player, data, gameTime, isMoving))
+                .orElse(false);
+    }
+
+    private static boolean progressBathing(ServerPlayer player, DirtinessData data, long gameTime, boolean isMoving) {
         boolean wasClean = data.isClean(gameTime);
-        
-        // Check if player is moving (swimming accelerates cleaning)
-        boolean isMoving = isPlayerMoving(player);
-        
+
         // Gradually clean the player
         if (data.progressBath(gameTime, isMoving)) {
             // Sync more frequently during bathing for smooth visual feedback
@@ -164,7 +186,11 @@ public class DirtinessHandler {
             if (!wasClean && data.isClean(gameTime)) {
                 // Could add achievement/advancement/sound here
             }
+
+            return true;
         }
+
+        return false;
     }
     
     /**
