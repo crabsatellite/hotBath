@@ -261,6 +261,24 @@ CustomFluidDefinition custom = CustomFluidAPI.builder(
     .build();
 ```
 
+### Custom FluidStack Identity
+
+Third-party tanks and pipes should preserve the custom fluid id stored on HotBath's shared dynamic fluid:
+
+```java
+import net.neoforged.neoforge.fluids.FluidStack;
+
+ResourceLocation fluidId = ResourceLocation.fromNamespaceAndPath("mymod", "my_bath");
+FluidStack stack = CustomFluidAPI.createCustomFluidStack(fluidId, 1000);
+
+ResourceLocation storedId = CustomFluidAPI.getCustomFluidId(stack);
+CustomFluidAPI.getCustomFluidDefinition(stack).ifPresent(definition -> {
+    float temperature = definition.temperature();
+});
+```
+
+Use `CustomFluidAPI.setCustomFluidId(stack, fluidId)` when copying or reconstructing a dynamic custom fluid stack. Use `CustomFluidAPI.hasSameCustomFluidId(left, right)` when comparing stacks, because different data-pack fluids share the same underlying dynamic fluid type.
+
 ### External Bath Container Integration
 
 Other mods should use the public integration surface instead of depending on HotBath internals:
@@ -271,6 +289,9 @@ import com.crabmod.hotbath.api.HotBathApi;
 if (HotBathApi.isCleansingFluid(storedFluid)) {
     HotBathApi.applyDirtinessCleaning(serverPlayer, storedFluid, isMoving);
 }
+
+float dirtiness = HotBathApi.getDirtiness(serverPlayer);
+HotBathApi.addDirtiness(serverPlayer, 0.10f);
 ```
 
 The same contract is also available to data packs and tags through:
