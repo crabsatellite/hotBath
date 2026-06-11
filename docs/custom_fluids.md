@@ -261,6 +261,25 @@ CustomFluidDefinition custom = CustomFluidAPI.builder(
     .build();
 ```
 
+### External Bath Container Integration
+
+Other mods should use the public integration surface instead of depending on HotBath internals:
+
+```java
+import com.crabmod.hotbath.api.HotBathApi;
+
+if (HotBathApi.isCleansingFluid(storedFluid)) {
+    HotBathApi.applyDirtinessCleaning(serverPlayer, storedFluid, isMoving);
+}
+```
+
+The same contract is also available to data packs and tags through:
+
+- `hotbath:bath_fluids`
+- `hotbath:cleansing_fluids`
+
+External bath containers are responsible for validating their own fluid storage, shape, and immersion checks before calling the API.
+
 ## Custom Textures
 
 You can provide your own grayscale textures by:
