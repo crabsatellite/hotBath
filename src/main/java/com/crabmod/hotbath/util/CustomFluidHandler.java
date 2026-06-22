@@ -1,8 +1,10 @@
 package com.crabmod.hotbath.util;
 
 import com.crabmod.hotbath.custom_fluid.CustomFluidBlockEntity;
+import com.crabmod.hotbath.custom_fluid.CustomFluidAPI;
 import com.crabmod.hotbath.custom_fluid.CustomFluidDefinition;
 import com.crabmod.hotbath.custom_fluid.DynamicCustomFluidBlock;
+import com.crabmod.hotbath.custom_fluid.DynamicFluidRegistry;
 import com.crabmod.hotbath.fluid_blocks.AbstractHotbathBlock;
 import com.crabmod.hotbath.fluid_blocks.HerbalBathBlock;
 import com.crabmod.hotbath.fluid_blocks.HoneyBathBlock;
@@ -10,12 +12,17 @@ import com.crabmod.hotbath.fluid_blocks.HotWaterBlock;
 import com.crabmod.hotbath.fluid_blocks.MilkBathBlock;
 import com.crabmod.hotbath.fluid_blocks.PeonyBathBlock;
 import com.crabmod.hotbath.fluid_blocks.RoseBathBlock;
+import com.crabmod.hotbath.registers.FluidsRegister;
+import com.crabmod.hotbath.waterlogging.HotbathWaterloggingHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluid;
 
 import java.util.Optional;
 
@@ -24,13 +31,15 @@ public class CustomFluidHandler {
     public static boolean isPlayerHeadInHotBath(Player player) {
         BlockPos playerEyePos = BlockPos.containing(player.getEyePosition());
         BlockState stateAtPlayerPos = player.level().getBlockState(playerEyePos);
-        return stateAtPlayerPos.getBlock() instanceof AbstractHotbathBlock;
+        return stateAtPlayerPos.getBlock() instanceof AbstractHotbathBlock
+                || getStoredBathFluid(player.level(), playerEyePos) != null;
     }
 
     public static boolean isPlayerInHotBathBlock(Player player) {
         BlockPos playerPos = player.blockPosition();
         BlockState stateAtPlayerPos = player.level().getBlockState(playerPos);
-        return stateAtPlayerPos.getBlock() instanceof AbstractHotbathBlock;
+        return stateAtPlayerPos.getBlock() instanceof AbstractHotbathBlock
+                || getStoredBathFluid(player.level(), playerPos) != null;
     }
     
     /**
@@ -56,7 +65,21 @@ public class CustomFluidHandler {
         }
         
         // For built-in bath types, they are always considered hot
-        return block instanceof AbstractHotbathBlock;
+        if (block instanceof AbstractHotbathBlock) {
+            return true;
+        }
+
+        Fluid storedFluid = getStoredBathFluid(player.level(), playerPos);
+        if (storedFluid == null) {
+            return false;
+        }
+        if (storedFluid == DynamicFluidRegistry.DYNAMIC_FLUID_STILL.get()) {
+            return getStoredCustomDefinition(player.level(), playerPos)
+                    .map(CustomFluidDefinition::isHot)
+                    .orElse(false);
+        }
+
+        return true;
     }
     
     /**
@@ -88,50 +111,90 @@ public class CustomFluidHandler {
         if (block instanceof AbstractHotbathBlock) {
             return 37.0f; // Default bath temperature
         }
-        
-        return 0;
+
+        Fluid storedFluid = getStoredBathFluid(player.level(), playerPos);
+        if (storedFluid == null) {
+            return 0;
+        }
+        if (storedFluid == DynamicFluidRegistry.DYNAMIC_FLUID_STILL.get()) {
+            return getStoredCustomDefinition(player.level(), playerPos)
+                    .map(CustomFluidDefinition::temperature)
+                    .orElse(0.0f);
+        }
+        return 37.0f;
+    }
+
+    private static Fluid getStoredBathFluid(Level level, BlockPos pos) {
+        BlockState state = level.getBlockState(pos);
+        if (!state.hasProperty(BlockStateProperties.WATERLOGGED)
+                || !state.getValue(BlockStateProperties.WATERLOGGED)) {
+            return null;
+        }
+
+        Fluid storedFluid = HotbathWaterloggingHelper.getStoredFluidType(level, pos);
+        if (!HotbathFluidHelper.isHotbathFluid(storedFluid)) {
+            return null;
+        }
+
+        return HotbathFluidHelper.getSourceFluid(storedFluid);
+    }
+
+    private static Optional<CustomFluidDefinition> getStoredCustomDefinition(Level level, BlockPos pos) {
+        return Optional.ofNullable(HotbathWaterloggingHelper.getStoredCustomFluidId(level, pos))
+                .flatMap(CustomFluidAPI::getFluidDefinition);
+    }
+
+    private static boolean isStoredBathFluid(Player player, Fluid sourceFluid) {
+        return getStoredBathFluid(player.level(), player.blockPosition()) == sourceFluid;
     }
 
     public static boolean isPlayerInHerbalBathBlock(Player player) {
         BlockPos playerPos = player.blockPosition();
         BlockState stateAtPlayerPos = player.level().getBlockState(playerPos);
-        return stateAtPlayerPos.getBlock() instanceof HerbalBathBlock;
+        return stateAtPlayerPos.getBlock() instanceof HerbalBathBlock
+                || isStoredBathFluid(player, FluidsRegister.HERBAL_BATH_FLUID.get());
     }
 
     public static boolean isPlayerInHoneyBathBlock(Player player) {
         BlockPos playerPos = player.blockPosition();
         BlockState stateAtPlayerPos = player.level().getBlockState(playerPos);
-        return stateAtPlayerPos.getBlock() instanceof HoneyBathBlock;
+        return stateAtPlayerPos.getBlock() instanceof HoneyBathBlock
+                || isStoredBathFluid(player, FluidsRegister.HONEY_BATH_FLUID.get());
     }
 
     public static boolean isPlayerInHotWaterBlock(Player player) {
         BlockPos playerPos = player.blockPosition();
         BlockState stateAtPlayerPos = player.level().getBlockState(playerPos);
-        return stateAtPlayerPos.getBlock() instanceof HotWaterBlock;
+        return stateAtPlayerPos.getBlock() instanceof HotWaterBlock
+                || isStoredBathFluid(player, FluidsRegister.HOT_WATER_FLUID.get());
     }
 
     public static boolean isPlayerInPeonyBathBlock(Player player) {
         BlockPos playerPos = player.blockPosition();
         BlockState stateAtPlayerPos = player.level().getBlockState(playerPos);
-        return stateAtPlayerPos.getBlock() instanceof PeonyBathBlock;
+        return stateAtPlayerPos.getBlock() instanceof PeonyBathBlock
+                || isStoredBathFluid(player, FluidsRegister.PEONY_BATH_FLUID.get());
     }
 
     public static boolean isPlayerInMilkBathBlock(Player player) {
         BlockPos playerPos = player.blockPosition();
         BlockState stateAtPlayerPos = player.level().getBlockState(playerPos);
-        Block currentBlock = stateAtPlayerPos.getBlock();
-        return stateAtPlayerPos.getBlock() instanceof MilkBathBlock;
+        return stateAtPlayerPos.getBlock() instanceof MilkBathBlock
+                || isStoredBathFluid(player, FluidsRegister.MILK_BATH_FLUID.get());
     }
 
     public static boolean isPlayerInRoseBathBlock(Player player) {
         BlockPos playerPos = player.blockPosition();
         BlockState stateAtPlayerPos = player.level().getBlockState(playerPos);
-        return stateAtPlayerPos.getBlock() instanceof RoseBathBlock;
+        return stateAtPlayerPos.getBlock() instanceof RoseBathBlock
+                || isStoredBathFluid(player, FluidsRegister.ROSE_BATH_FLUID.get());
     }
 
     public static boolean isEntityInHerbalBathBlock(Entity entity) {
         BlockPos entityPos = entity.blockPosition();
         BlockState stateAtEntityPos = entity.level().getBlockState(entityPos);
-        return stateAtEntityPos.getBlock() instanceof HerbalBathBlock;
+        Fluid storedFluid = getStoredBathFluid(entity.level(), entityPos);
+        return stateAtEntityPos.getBlock() instanceof HerbalBathBlock
+                || storedFluid == FluidsRegister.HERBAL_BATH_FLUID.get();
     }
 }

@@ -207,13 +207,15 @@ public class DynamicCustomFluidBlock extends AbstractHotbathBlock implements Ent
         if (be instanceof CustomFluidBlockEntity customBe) {
             return customBe.getFluidDefinition();
         }
-        return Optional.empty();
+
+        ResourceLocation customFluidId = HotbathWaterloggingHelper.getStoredCustomFluidId(level, pos);
+        return customFluidId == null
+                ? Optional.empty()
+                : CustomFluidAPI.getFluidDefinition(customFluidId);
     }
 
     @Override
-    public void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
-        super.entityInside(state, level, pos, entity);
-        
+    protected void applyBathEffects(@NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
         if (level.isClientSide) {
             return;
         }

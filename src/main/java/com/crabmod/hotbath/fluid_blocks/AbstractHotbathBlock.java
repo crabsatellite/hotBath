@@ -88,6 +88,20 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         super.entityInside(state, level, pos, entity);
 
+        applyCommonEntityInsideEffects(level, pos, entity);
+        applyBathEffects(level, pos, entity);
+        applyBubbleColumnPhysics(level, pos, entity);
+    }
+
+    public void applyWaterloggedEntityInside(Level level, BlockPos pos, Entity entity) {
+        applyCommonEntityInsideEffects(level, pos, entity);
+        applyBathEffects(level, pos, entity);
+    }
+
+    protected void applyBathEffects(Level level, BlockPos pos, Entity entity) {
+    }
+
+    private void applyCommonEntityInsideEffects(Level level, BlockPos pos, Entity entity) {
         if (isNonTropicalAquatic(entity)) {
             entity.hurt(level.damageSources().magic(), 1.0F);
         }
@@ -104,7 +118,9 @@ public abstract class AbstractHotbathBlock extends LiquidBlock {
         // Note: Splash effects are handled by SplashSyncHandler for proper multiplayer sync
         // Note: Player cleaning is handled gradually by DirtinessHandler.onPlayerTick()
         // No instant bath trigger here - bathing is progressive
+    }
 
+    private void applyBubbleColumnPhysics(Level level, BlockPos pos, Entity entity) {
         // Bubble column physics
         int direction = getBubbleColumnDirection(level, pos);
         if (direction != 0) {

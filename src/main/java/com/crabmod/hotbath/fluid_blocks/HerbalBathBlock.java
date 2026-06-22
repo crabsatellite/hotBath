@@ -28,8 +28,7 @@ public class HerbalBathBlock extends AbstractHotbathBlock implements IInsideArea
     private static final int EFFECT_TRIGGER_SECONDS = 5;
 
     @Override
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        super.entityInside(state, level, pos, entity);
+    protected void applyBathEffects(Level level, BlockPos pos, Entity entity) {
         if (level.isClientSide) {
             return;
         }

@@ -23,6 +23,14 @@ base {
     archivesName = mod_id
 }
 
+def gameTestNamespaces = providers.gradleProperty('hotbath.gameTestNamespaces')
+        .orElse(mod_id)
+        .get()
+def skipOptionalRuntimeMods = providers.gradleProperty('hotbath.skipOptionalRuntimeMods')
+        .map { it.toBoolean() }
+        .orElse(false)
+        .get()
+
 // Mojang ships Java 21 to end users in 1.20.5+, so your mod should target Java 21.
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
@@ -52,11 +60,13 @@ runs {
 
     client {
         // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-        systemProperty 'forge.enabledGameTestNamespaces', mod_id
+        systemProperty 'forge.enabledGameTestNamespaces', gameTestNamespaces
+        systemProperty 'neoforge.enabledGameTestNamespaces', gameTestNamespaces
     }
 
     server {
-        systemProperty 'forge.enabledGameTestNamespaces', mod_id
+        systemProperty 'forge.enabledGameTestNamespaces', gameTestNamespaces
+        systemProperty 'neoforge.enabledGameTestNamespaces', gameTestNamespaces
         programArgument '--nogui'
     }
 
@@ -64,7 +74,8 @@ runs {
     // By default, the server will crash when no gametests are provided.
     // The gametest system is also enabled by default for other run configs under the /test command.
     gameTestServer {
-        systemProperty 'forge.enabledGameTestNamespaces', mod_id
+        systemProperty 'forge.enabledGameTestNamespaces', gameTestNamespaces
+        systemProperty 'neoforge.enabledGameTestNamespaces', gameTestNamespaces
     }
 
     data {
@@ -109,12 +120,18 @@ repositories {
 }
 
 dependencies {
+    def optionalRuntimeOnly = { dependencyNotation ->
+        if (!skipOptionalRuntimeMods) {
+            add("runtimeOnly", dependencyNotation)
+        }
+    }
+
     implementation "net.neoforged:neoforge:${neo_version}"
 
     // Patchouli - Guide book mod (optional dependency)
     // Project ID: 306770, File ID 6842247 corresponds to Patchouli for NeoForge 1.21.1
     compileOnly "curse.maven:patchouli-306770:6842247"
-    runtimeOnly "curse.maven:patchouli-306770:6842247"
+    optionalRuntimeOnly "curse.maven:patchouli-306770:6842247"
 
     // ColdSweat - Temperature and season mod (optional dependency)
     // compileOnly for API access, runtimeOnly to have it in dev environment
@@ -124,19 +141,19 @@ dependencies {
     // GlitchCore - Library mod required by ToughAsNails
     // Project ID: 955399, File ID 5660740 corresponds to GlitchCore-neoforge-1.21.1-2.1.0.0.jar
     // runtimeOnly because it's a library dependency needed at runtime
-    runtimeOnly "curse.maven:glitchcore-955399:5660740"
+    optionalRuntimeOnly "curse.maven:glitchcore-955399:5660740"
 
     // ToughAsNails - Temperature and thirst mod (optional dependency)
     // Project ID: 246391, File ID 5766204 corresponds to ToughAsNails-neoforge-1.21.1-10.1.0.11.jar
     // compileOnly for API access, runtimeOnly to have it in dev environment
     compileOnly "curse.maven:tough-as-nails-246391:5766204"
-    runtimeOnly "curse.maven:tough-as-nails-246391:5766204"
+    optionalRuntimeOnly "curse.maven:tough-as-nails-246391:5766204"
 
     // Legendary Survival Overhaul - Temperature and survival overhaul mod (optional dependency)
     // Project ID: 840254, File ID 7254309 corresponds to legendarysurvivaloverhaul-1.21.1-2.3.24.5.jar
     // compileOnly for API access, runtimeOnly to have it in dev environment
     compileOnly "curse.maven:legendary-survival-overhaul-840254:7254309"
-    runtimeOnly "curse.maven:legendary-survival-overhaul-840254:7254309"
+    optionalRuntimeOnly "curse.maven:legendary-survival-overhaul-840254:7254309"
 
     // Alex's Mobs - Animal/creature mod (optional dependency)
     // Using local project build output since 1.21 version is not yet published
@@ -145,43 +162,43 @@ dependencies {
     // Using local project build output
     compileOnly files('../Citadel/build/libs/citadel-1.21.1-2.7.0.jar')
     // Uncomment to test in dev environment:
-    runtimeOnly files('../AlexsMobs/build/libs/alexsmobs-1.22.9.jar')
-    runtimeOnly files('../Citadel/build/libs/citadel-1.21.1-2.7.0.jar')
+    optionalRuntimeOnly files('../AlexsMobs/build/libs/alexsmobs-1.22.9.jar')
+    optionalRuntimeOnly files('../Citadel/build/libs/citadel-1.21.1-2.7.0.jar')
 
     // Alex's Caves - Cave biome and creature mod (optional dependency)
     // Using local project build output since 1.21 version is not yet published
     compileOnly files('../AlexsCaves/build/libs/alexscaves-2.0.2.jar')
-    runtimeOnly files('../AlexsCaves/build/libs/alexscaves-2.0.2.jar')
+    optionalRuntimeOnly files('../AlexsCaves/build/libs/alexscaves-2.0.2.jar')
 
     // Twilight Forest - Fantasy dimension mod (optional dependency)
     // Project ID: 227639, File ID 7398100 corresponds to twilightforest for 1.21.1
     compileOnly "curse.maven:the-twilight-forest-227639:7398100"
-    runtimeOnly "curse.maven:the-twilight-forest-227639:7398100"
+    optionalRuntimeOnly "curse.maven:the-twilight-forest-227639:7398100"
 
     // Create - Mechanical and automation mod (optional dependency)
     // Project ID: 328085, File ID 7408951 corresponds to Create 6.0.4 for NeoForge 1.21.1
     compileOnly "curse.maven:create-328085:7408951"
-    runtimeOnly "curse.maven:create-328085:7408951"
+    optionalRuntimeOnly "curse.maven:create-328085:7408951"
 
     // Farmer's Delight - Cooking and farming mod (optional dependency)
     // Project ID: 398521, File ID 8083481 corresponds to Farmer's Delight 1.3.2 for NeoForge 1.21.1
     compileOnly "curse.maven:farmers-delight-398521:8083481"
-    runtimeOnly "curse.maven:farmers-delight-398521:8083481"
+    optionalRuntimeOnly "curse.maven:farmers-delight-398521:8083481"
 
     // Serene Seasons - Seasons mod (optional dependency)
     // Project ID: 291874, File ID 6182596 corresponds to sereneseasons for NeoForge 1.21.1
     compileOnly "curse.maven:serene-seasons-291874:6182596"
-    runtimeOnly "curse.maven:serene-seasons-291874:6182596"
+    optionalRuntimeOnly "curse.maven:serene-seasons-291874:6182596"
 
     // Epic Fight - Combat animation mod (optional dependency)
     // Project ID: 405076, File ID 8175609 corresponds to Epic Fight 21.17.3.1 for NeoForge 1.21.1
     compileOnly "curse.maven:epic-fight-mod-405076:8175609"
-    runtimeOnly "curse.maven:epic-fight-mod-405076:8175609"
+    optionalRuntimeOnly "curse.maven:epic-fight-mod-405076:8175609"
 
     // Sodium - Performance optimization mod (optional dependency for testing)
     // Project ID: 394468, File ID 6382651
     compileOnly "curse.maven:sodium-394468:6382651"
-    runtimeOnly "curse.maven:sodium-394468:6382651"
+    optionalRuntimeOnly "curse.maven:sodium-394468:6382651"
 
     // ---- Unit tests ----
     // Pure-Java unit tests for compat logic that does not touch Minecraft types

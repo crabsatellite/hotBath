@@ -29,8 +29,7 @@ public class RoseBathBlock extends AbstractHotbathBlock implements IInsideAreaTr
     private static final String ADVANCEMENT_ID = "hotbath:rose_body_fragrance";
 
     @Override
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        super.entityInside(state, level, pos, entity);
+    protected void applyBathEffects(Level level, BlockPos pos, Entity entity) {
         if (level.isClientSide) {
             return;
         }

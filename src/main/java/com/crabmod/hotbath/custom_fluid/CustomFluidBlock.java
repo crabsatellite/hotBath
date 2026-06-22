@@ -63,9 +63,7 @@ public class CustomFluidBlock extends AbstractHotbathBlock implements IInsideAre
     }
 
     @Override
-    public void entityInside(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
-        super.entityInside(state, level, pos, entity);
-        
+    protected void applyBathEffects(@NotNull Level level, @NotNull BlockPos pos, @NotNull Entity entity) {
         if (level.isClientSide) {
             return;
         }
