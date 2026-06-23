@@ -18,7 +18,7 @@ Welcome to **Hot Bath Mod**! Take a break from your adventures and soak in a rel
 - **🌟 Highly Recommended | Fluidlogged 🌟**  
   [Modrinth Link](https://modrinth.com/mod/fluidlogged/versions)  
   Fluidlogged enables custom fluid blocks to have a waterlogged effect with blocks like stairs, slabs, and more, allowing hotbath fluids to integrate naturally into various structures.  
-  **Version note**: Minecraft 1.20.1 needs Fluidlogged for this. Native Hot Bath waterlogging is 1.21.1 NeoForge only.
+  **Version note**: Minecraft 1.20.1 needs Fluidlogged for this. Native Hot Bath waterlogging is 1.21.1+ NeoForge.
 
 ## Known Issues
 
@@ -62,7 +62,7 @@ Create unlimited custom bath fluids via datapacks — no code or recompilation r
 - **Built-in localization**: Define translations for multiple languages directly in the JSON (`en_us`, `zh_cn`, `ja_jp`, etc.) with locale fallback chains
 - **Full item support**: Custom fluid buckets, drinkable bottles, and splash bottles are automatically generated
 - **Fluid spreading**: Custom fluids propagate their identity through BlockEntity data when flowing
-- **Waterlogging support (1.21.1 NeoForge only)**: Hot Bath fluids can be placed in waterloggable blocks such as stairs and slabs
+- **Waterlogging support (1.21.1+ NeoForge)**: Hot Bath fluids can be placed in waterloggable blocks such as stairs and slabs
 - **Hot reload**: Fluids update when datapacks are reloaded
 - **Public API** (`CustomFluidAPI`): Other mods can query, create, and apply custom fluid effects programmatically
 - **Guide book** (Patchouli): Includes documentation, JSON format reference, and example fluids (Golden Bath, Slime Bath, Blazing Bath, Ender Bath, Enchanted Bath, Milk Tea Bath, Silent Spring Bath)
@@ -294,7 +294,7 @@ Add **Gunpowder** to any Bath Water Bottle to create its splash version.
 - **🌟 强烈推荐 | Fluidlogged 🌟**  
   [Modrinth 链接](https://modrinth.com/mod/fluidlogged/versions)  
   Fluidlogged 可以让自定义流体方块（如本模组的浴水）与楼梯、台阶等方块共存（含水效果），让你的浴室设计更加自然美观。  
-  **版本说明**：Minecraft 1.20.1 需要 Fluidlogged；Hot Bath 原生 waterlogging 仅限 1.21.1 NeoForge。
+  **版本说明**：Minecraft 1.20.1 需要 Fluidlogged；Hot Bath 原生 waterlogging 支持 1.21.1+ NeoForge。
 
 ## 已知问题
 
@@ -338,7 +338,7 @@ Add **Gunpowder** to any Bath Water Bottle to create its splash version.
 - **内置本地化**: 直接在 JSON 中定义多语言翻译（`en_us`、`zh_cn`、`ja_jp` 等），支持语言回退链
 - **完整物品支持**: 自动生成自定义液体桶、饮用瓶和喷溅瓶
 - **流体传播**: 自定义液体通过 BlockEntity 数据在流动时传播其身份标识
-- **含水支持（仅 1.21.1 NeoForge）**: Hot Bath 流体可放入楼梯、台阶等可含水方块
+- **含水支持（1.21.1+ NeoForge）**: Hot Bath 流体可放入楼梯、台阶等可含水方块
 - **热重载**: 数据包重载时液体即时更新
 - **公共 API** (`CustomFluidAPI`): 其他模组可以通过编程查询、创建和应用自定义液体效果
 - **指南书** (Patchouli): 包含文档、JSON 格式参考和示例液体（黄金浴、史莱姆浴、烈焰浴、末影浴、附魔浴、奶茶浴、寂静之泉浴）
