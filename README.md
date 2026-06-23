@@ -17,6 +17,7 @@ Welcome to **Hot Bath Mod**! Take a break from your adventures and soak in a rel
 - **🌟 Highly Recommended | Fluidlogged 🌟**  
   [Modrinth Link](https://modrinth.com/mod/fluidlogged/versions)  
   Fluidlogged enables custom fluid blocks to have a waterlogged effect with blocks like stairs, slabs, and more, allowing hotbath fluids to integrate naturally into various structures.
+  **Note**: On Minecraft 1.20.1, Hot Bath uses Fluidlogged for this. Native Hot Bath waterlogging starts on the 1.21.1 NeoForge branch.
 
 ## Known Issues
 
@@ -212,6 +213,7 @@ Add **Gunpowder** to any Bath Water Bottle to create its splash version.
 - **🌟 强烈推荐 | Fluidlogged 🌟**  
   [Modrinth 链接](https://modrinth.com/mod/fluidlogged/versions)  
   Fluidlogged 可以让自定义流体方块（如本模组的浴水）与楼梯、台阶等方块共存（含水效果），让你的浴室设计更加自然美观。
+  **注意**：Minecraft 1.20.1 需要 Fluidlogged；Hot Bath 原生支持 waterlogging 是从 1.21.1 NeoForge 分支开始的。
 
 ## 已知问题
 
