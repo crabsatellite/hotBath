@@ -1,0 +1,10 @@
+{
+    "values": [
+		"hotbath:hot_water_bottle",
+		"hotbath:honey_bath_bottle",
+		"hotbath:herbal_bath_bottle",
+		"hotbath:peony_bath_bottle",
+		"hotbath:rose_bath_bottle",
+        "hotbath:milk_bath_bottle"
+	]
+}
