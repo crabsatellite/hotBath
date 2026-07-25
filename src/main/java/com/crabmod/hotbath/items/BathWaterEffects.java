@@ -115,19 +115,15 @@ public class BathWaterEffects {
     }
 
     /**
-     * Apply temperature and thirst effects for ToughAsNails, Cold Sweat, and Legendary Survival Overhaul if mods are loaded
+     * Apply drink effects that are not supplied by item tags.
+     * Tough As Nails handles built-in bottle warming, thirst, and hydration
+     * through its consumed-item tags.
      */
     private static void applyDrinkTemperatureEffects(LivingEntity entity) {
         if (!(entity instanceof net.minecraft.world.entity.player.Player player)) {
             return;
         }
-        
-        // Apply ToughAsNails temperature effect (10 seconds, WARM) and restore thirst
-        if (ToughAsNailsIntegration.isToughAsNailsLoaded()) {
-            BathWaterBottleTANModifier.applyWarmEffect(player);
-            ToughAsNailsThirstHelper.restoreThirst(player);
-        }
-        
+
         // Apply Cold Sweat temperature effect (20 seconds, 36°C)
         if (ColdSweatIntegration.isColdSweatLoaded()) {
             BathWaterBottleColdSweatModifier.applyWarmEffect(player);
