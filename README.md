@@ -1,5 +1,19 @@
 # Hot Bath
 
+<!-- PROMO-VIDEO:START -->
+
+**Take a break from your adventures. Build a warm bath, wash away dirt and recharge with six bath fluids, portable bath bottles and useful mod integrations.**
+
+`Forge 1.20.1` · `NeoForge 1.21.1`
+
+[![Watch the trailer](https://i.ytimg.com/vi/4oi4OFmUXuY/maxresdefault.jpg)](https://www.youtube.com/watch?v=4oi4OFmUXuY)
+
+▶ [Watch the trailer](https://www.youtube.com/watch?v=4oi4OFmUXuY) · 0:54 · 1080p · English captions, music and effects
+
+[CurseForge](https://www.curseforge.com/minecraft/mc-mods/hotbath) · [Modrinth](https://modrinth.com/mod/hot-bath) · [GitHub](https://github.com/crabsatellite/hotBath)
+
+<!-- PROMO-VIDEO:END -->
+
 Hot Bath adds bath fluids, bath bottles, dirtiness, and mod integrations for Minecraft 1.21.1 on NeoForge.
 
 ## Compatibility
